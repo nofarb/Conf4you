@@ -1,0 +1,50 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!-- ~ Hibernate, Relational Persistence for Idiomatic Java ~ ~ Copyright 
+	(c) 2010, Red Hat Inc. or third-party contributors as ~ indicated by the 
+	@author tags or express copyright attribution ~ statements applied by the 
+	authors. All third-party contributions are ~ distributed under license by 
+	Red Hat Inc. ~ ~ This copyrighted material is made available to anyone wishing 
+	to use, modify, ~ copy, or redistribute it subject to the terms and conditions 
+	of the GNU ~ Lesser General Public License, as published by the Free Software 
+	Foundation. ~ ~ This program is distributed in the hope that it will be useful, 
+	~ but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY 
+	~ or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public 
+	License ~ for more details. ~ ~ You should have received a copy of the GNU 
+	Lesser General Public License ~ along with this distribution; if not, write 
+	to: ~ Free Software Foundation, Inc. ~ 51 Franklin Street, Fifth Floor ~ 
+	Boston, MA 02110-1301 USA -->
+<!DOCTYPE hibernate-configuration PUBLIC
+        "-//Hibernate/Hibernate Configuration DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd">
+
+<hibernate-configuration>
+	<session-factory>
+		<property name="connection.url">jdbc:mysql://localhost:3306/test</property>
+		<property name="connection.username">root</property>
+		<property name="connection.password">root</property>
+		<property name="connection.driver_class">com.mysql.jdbc.Driver</property>
+		<property name="hibernate.default_schema">test</property>
+		<property name="dialect">org.hibernate.dialect.MySQL5Dialect</property>
+
+		<property name="show_sql">true</property>
+
+		<property name="format_sql">true</property>
+		<property name="hbm2ddl.auto">create-drop</property>
+
+		<!-- JDBC connection pool (use the built-in) -->
+		<property name="connection.pool_size">1</property>
+		<property name="current_session_context_class">thread</property>
+
+		<!-- Mapping files will go here.... -->
+
+		<mapping class="model.Company" />
+		<mapping class="model.Conference" />
+		<mapping class="model.ConferencesParticipants" />
+		<mapping class="model.ConferencesParticipants" />
+		<mapping class="model.ConferencesRolls" />
+		<mapping class="model.ConferencesSpeakers" />
+		<mapping class="model.Location" />
+		<mapping class="model.User" />
+
+	</session-factory>
+</hibernate-configuration>

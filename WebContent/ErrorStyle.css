@@ -1,0 +1,12 @@
+
+body {
+	background-image: url('images/WebAppMonitorBackGround.jpg');
+	font: 100% Arial, Helvetica, sans-serif;
+	text-align: left;
+}
+
+h1 {
+	text-align: center;
+	color: white;
+	text-decoration: underline;
+}

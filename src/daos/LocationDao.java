@@ -1,0 +1,50 @@
+package daos;
+
+import java.util.List;
+
+import model.Location;
+import model.User;
+
+public class LocationDao {
+
+	
+	/**
+	 * Get all locations from DB
+	 * @return
+	 */
+	public List<Location> getLocations(){
+		return null;
+	}
+	
+	
+	/**
+	 * Get Location by its database primary key
+	 * @param id
+	 * @return
+	 */
+	public User getLocationById(String id){
+		return null;
+		
+	}
+	
+	
+	/**
+	 * Add new Location
+	 * @param location
+	 * @return
+	 */
+	public Location addLocation(Location location){
+		return null;
+		
+	}
+	
+	/**
+	 * update a Location
+	 * @param location
+	 * @return
+	 */
+	public Location updateLocation(Location location){
+		return null;
+		
+	}
+}
