@@ -15,6 +15,7 @@ public class ConferenceDao {
 	 */
 	public List<User> getConferences(Filters.ConferenceFilter filter){
 		return null;
+		//yada
 	}
 	
 	
