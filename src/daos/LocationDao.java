@@ -7,6 +7,16 @@ import model.User;
 
 public class LocationDao {
 
+	private static LocationDao instance = null;
+
+	private LocationDao() {}
+
+	public static LocationDao getInstance() {
+		if (instance == null) {
+			instance = new LocationDao();
+		}
+		return instance;
+	}
 	
 	/**
 	 * Get all locations from DB

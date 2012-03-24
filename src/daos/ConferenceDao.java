@@ -8,6 +8,16 @@ import model.User;
 
 public class ConferenceDao {
 
+	private static ConferenceDao instance = null;
+
+	private ConferenceDao() {}
+
+	public static ConferenceDao getInstance() {
+		if (instance == null) {
+			instance = new ConferenceDao();
+		}
+		return instance;
+	}
 	
 	/**
 	 * Get all conferences according to the selected filter
