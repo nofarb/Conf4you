@@ -23,7 +23,6 @@ public class ConferencesRolls implements Serializable {
 	private static final long serialVersionUID = 741942055847334800L;
 	
 	private User user;
-	private UserType userType; //the roll the user plays in the conference
 	private Conference conference; 	
 	
 	@Id
@@ -43,16 +42,6 @@ public class ConferencesRolls implements Serializable {
 	public void setConference(Conference conference) {
 		this.conference = conference;
 	}
-	
-	@Enumerated(EnumType.STRING)
-	public UserType getUserType() {
-		return userType;
-	}
-	public void setUserType(UserType userType) {
-		this.userType = userType;
-	}
-	
-	
 
 }
 
