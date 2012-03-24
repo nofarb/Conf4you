@@ -1,4 +1,4 @@
-package systemExceptions;
+package system.exceptions;
 
 public class ItemAlreadyExist extends Exception{
 

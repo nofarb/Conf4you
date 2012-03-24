@@ -9,6 +9,7 @@ import db.HibernateUtil;
 import model.Company;
 import model.CompanyType;
 
+
 public class CompanyDao {
 
 	private static CompanyDao instance = null;
