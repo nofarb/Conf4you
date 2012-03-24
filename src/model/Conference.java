@@ -1,5 +1,6 @@
 package model;
 
+import java.io.Serializable;
 import java.util.Date;
 
 import javax.persistence.CascadeType;
@@ -15,7 +16,7 @@ import org.hibernate.annotations.GenericGenerator;
 
 @Entity
 @Table( name = "CONFERENCES" )
-public class Conference {
+public class Conference implements Serializable{
 
 	private int conferenceID; //key
 	private Location location; 

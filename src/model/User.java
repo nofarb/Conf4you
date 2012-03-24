@@ -1,5 +1,7 @@
 package model;
 
+import java.io.Serializable;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -16,7 +18,7 @@ import model.UserType;
 
 @Entity
 @Table( name = "Users" )
-public abstract class User{
+public abstract class User implements Serializable{
 
 	private int userID;
 	private int countryID;

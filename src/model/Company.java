@@ -1,5 +1,7 @@
 package model;
 
+import java.io.Serializable;
+
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -11,7 +13,7 @@ import org.hibernate.annotations.GenericGenerator;
 
 @Entity
 @Table( name = "COMPANIES" )
-public class Company {
+public class Company implements Serializable {
 
 	private int companyID;
 	private CompanyType companyType;

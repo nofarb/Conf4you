@@ -15,8 +15,8 @@ public class ConferencesSpeakers implements Serializable{
 
 	private static final long serialVersionUID = -3401337605668111437L;
 	
-	private Conference conference; //TODO - should be the ID?
-	private User speaker; 	//TODO - should be the ID?
+	private Conference conference;
+	private User speaker; 
 
 	
 	@Id
