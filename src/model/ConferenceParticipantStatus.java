@@ -1,5 +1,7 @@
 package model;
 
+import java.io.Serializable;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -11,7 +13,7 @@ import org.hibernate.annotations.GenericGenerator;
 
 @Entity
 @Table( name = "Conference_Participant_Status" )
-public class ConferenceParticipantStatus {
+public class ConferenceParticipantStatus implements Serializable {
 
 	private long id;
 	private Conference conference;
