@@ -2,6 +2,8 @@ package daos;
 
 import java.util.List;
 
+import model.Company;
+import model.CompanyType;
 import model.User;
 
 public class UserDao {
@@ -94,6 +96,25 @@ public class UserDao {
 	private void sendResetForgottenPasswordEmail(String emailAddr){
 		
 	}
+	
+	/**
+	 * get users that belong to a given company
+	 * @param company
+	 * @return
+	 */
+	public List<User> getUserInCompany(Company company){
+		return null;
+	}
+	
+	/**
+	 * get users that belong to a given company type
+	 * @param companyType
+	 * @return
+	 */
+	public List<User> getUserInCompanyOfType(CompanyType companyType){
+		return null;
+	}
+	
 
 	
 }

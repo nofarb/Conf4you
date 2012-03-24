@@ -10,12 +10,20 @@ public class ConferenceDao {
 
 	
 	/**
-	 * Get all conferences from DB according to the selected filter
+	 * Get all conferences according to the selected filter
 	 * @return
 	 */
-	public List<User> getConferences(Filters.ConferenceFilter filter){
+	public List<Conference> getConferences(Filters.ConferencePreDefinedFilter filter){
 		return null;
-		//yada
+	}
+	
+	/**
+	 * Get all conferences between the given dates
+	 * @param filter
+	 * @return
+	 */
+	public List<Conference> getConferences(Filters.ConferenceDatesFIlter filter){
+		return null;
 	}
 	
 	
@@ -86,6 +94,16 @@ public class ConferenceDao {
 	 * @param conference
 	 */
 	public void markUserAsArrived(User user, Conference conference){
+		
+	}
+	
+	/**
+	 * Get conferences associated with a given user
+	 * @param user
+	 * @return
+	 */
+	public List<Conference> getConferencesForUser(User user){
+		return null;
 		
 	}
 }
