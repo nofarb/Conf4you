@@ -2,10 +2,36 @@ package daos;
 
 import java.util.List;
 
+import org.hibernate.Session;
+
+import db.HibernateUtil;
+
 import model.Company;
 import model.CompanyType;
 
 public class CompanyDao {
+	
+	/**
+	 * get all companies
+	 * @return
+	 */
+	private List<Company> getAllCompanies() {
+        Session session = HibernateUtil.getSessionFactory().getCurrentSession();
+        session.beginTransaction();
+        List<Company> result = (List<Company>)session.createQuery("from COMPANIES").list();
+        session.getTransaction().commit();
+        return result;
+    }
+	
+	
+	/**
+	 * Get all companies of a given type
+	 * @param companyType
+	 * @return
+	 */
+	public List<Company> getCompaniesOfType (CompanyType companyType){
+		return null;
+	}
 	
 	/**
 	 * Add company to DB
@@ -13,8 +39,15 @@ public class CompanyDao {
 	 * @return
 	 */
 	public Company addCompany (Company company){
-		return null;
 		
+		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
+		session.beginTransaction();
+
+		session.save(company);
+
+		session.getTransaction().commit();
+		
+		return company;
 	}
 	
 	/**
@@ -25,14 +58,6 @@ public class CompanyDao {
 	public Company updateCompany(Company company){
 		return null;
 	}
-	
-	/**
-	 * Get all companies of a given type
-	 * @param companyType
-	 * @return
-	 */
-	public List<Company> getCompaniesOfType (CompanyType companyType){
-		return null;
-	}
+
 
 }
