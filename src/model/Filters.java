@@ -2,15 +2,29 @@ package model;
 
 import java.util.Date;
 
+/**
+ * Container class for filter classes
+ * @author nofar
+ *
+ */
 public class Filters {
 
+	/**
+	 * Class that supplies predefined filters
+	 * @author nofar
+	 *
+	 */
 	public enum ConferencePreDefinedFilter {
 
 		ALL, LAST7DAYS, LAST30DAYS, LAST90DAYS
 	}
 	
 	
-	
+	/**
+	 * Filter between start date and end date
+	 * @author nofar
+	 *
+	 */
 	public class ConferenceDatesFIlter{
 		
 		private Date fromDate;

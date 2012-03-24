@@ -22,9 +22,9 @@ public class ConferencesRolls implements Serializable {
 	
 	private static final long serialVersionUID = 741942055847334800L;
 	
-	private User user; 	//TODO - should be the ID?
+	private User user;
 	private UserType userType; //the roll the user plays in the conference
-	private Conference conference; 	//TODO - should be the ID?
+	private Conference conference; 	
 	
 	@Id
 	@OneToOne(cascade = CascadeType.ALL)

@@ -11,6 +11,11 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import model.Company;
+import model.CompanyType;
+
+import daos.CompanyDao;
+
 
 /**
  * Servlet implementation class MonitorWebApp
@@ -41,7 +46,14 @@ public class MonitorWebApp extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
+		
+		CompanyDao.getInstance().addCompany(new Company("yada", CompanyType.B));
+		
+		
+		
 		String servletPath = request.getServletPath();
+		
+		
 
 		try {
 			if (servletPath == null) {

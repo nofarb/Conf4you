@@ -40,7 +40,7 @@
 		<mapping class="model.Company" />
 		<mapping class="model.Conference" />
 		<mapping class="model.ConferencesParticipants" />
-		<mapping class="model.ConferencesParticipants" />
+		<mapping class="model.ConferenceParticipantStatus" />
 		<mapping class="model.ConferencesRolls" />
 		<mapping class="model.ConferencesSpeakers" />
 		<mapping class="model.Location" />
