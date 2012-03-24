@@ -25,7 +25,7 @@ public abstract class User{
 	private String email;
 	private String phone1;
 	private String phone2;
-	private String password; //may be null/empty
+	private String password; //may be null/empty , will be kept hashed
 	private UserType userType;
 	
 	
