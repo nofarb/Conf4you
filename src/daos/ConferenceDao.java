@@ -32,7 +32,7 @@ public class ConferenceDao {
 	 * @param filter
 	 * @return
 	 */
-	public List<Conference> getConferences(Filters.ConferenceDatesFIlter filter){
+	public List<Conference> getConferences(Filters.ConferenceDatesFilter filter){
 		return null;
 	}
 	

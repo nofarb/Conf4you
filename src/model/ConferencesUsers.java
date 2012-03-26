@@ -10,13 +10,13 @@ import javax.persistence.Table;
 
 
 @Entity
-@Table( name = "Conferences_Speakers" )
-public class ConferencesSpeakers implements Serializable{
+@Table( name = "Conferences_Users" )
+public class ConferencesUsers implements Serializable{
 
 	private static final long serialVersionUID = -3401337605668111437L;
 	
 	private Conference conference;
-	private User speaker; 
+	private User user; 
 
 	
 	@Id
@@ -31,10 +31,10 @@ public class ConferencesSpeakers implements Serializable{
 	@Id
 	@OneToOne(cascade = CascadeType.ALL)
 	public User getUser() {
-		return speaker;
+		return user;
 	}
 	public void setUser(User user) {
-		this.speaker = user;
+		this.user = user;
 	}
 
 }

@@ -32,7 +32,7 @@ public class LocationDao {
 	 * @param id
 	 * @return
 	 */
-	public User getLocationById(String id){
+	public Location getLocationById(String id){
 		return null;
 		
 	}

@@ -25,15 +25,15 @@ public class Filters {
 	 * @author nofar
 	 *
 	 */
-	public class ConferenceDatesFIlter{
+	public class ConferenceDatesFilter{
 		
 		private Date fromDate;
 		private Date toDate;
 		
-		private ConferenceDatesFIlter(){} // private on purpose!
+		private ConferenceDatesFilter(){} // private on purpose!
 		
 		
-		public ConferenceDatesFIlter(Date fromDate, Date toDate) {
+		public ConferenceDatesFilter(Date fromDate, Date toDate) {
 			super();
 			this.fromDate = fromDate;
 			this.toDate = toDate;
