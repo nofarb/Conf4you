@@ -37,7 +37,7 @@ public class HibernateUtil {
     }
     
     /**
-     * close the current session with the database
+     * close the current session to the database
      */
     public static void closeSession(){
     	sessionFactory.close();
