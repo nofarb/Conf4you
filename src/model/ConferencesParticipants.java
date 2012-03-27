@@ -11,6 +11,12 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+/**
+ * This class is an entity class that represents the connection between conferences and invitees participants in 
+ * in the database (e.g. whether a user arrived to a conference).
+ * This class holds no logic, only getters, setter and constructors.
+ * This class also contains instructions to hibernate that define how the entity should be saved to the database.
+ */
 @Entity
 @Table( name = "Conferences_Participants" )
 public class ConferencesParticipants implements Serializable {

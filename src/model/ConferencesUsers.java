@@ -9,6 +9,12 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 
+/**
+ * This class is an entity class that represents the connection between conferences and their participants in 
+ * in the database (i.e. which user is associated to which conference).
+ * This class holds no logic, only getters, setter and constructors.
+ * This class also contains instructions to hibernate that define how the entity should be saved to the database.
+ */
 @Entity
 @Table( name = "Conferences_Users" )
 public class ConferencesUsers implements Serializable{

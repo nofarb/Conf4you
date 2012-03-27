@@ -7,10 +7,10 @@ import java.util.Date;
  * @author nofar
  *
  */
-public class Filters {
+public class ConferenceFilters {
 
 	/**
-	 * Class that supplies predefined filters
+	 * Class that supplies predefined conference filters
 	 * @author nofar
 	 *
 	 */
@@ -21,7 +21,7 @@ public class Filters {
 	
 	
 	/**
-	 * Filter between start date and end date
+	 * Filter between start date and end date of a conference
 	 * @author nofar
 	 *
 	 */

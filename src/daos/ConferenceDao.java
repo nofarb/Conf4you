@@ -3,7 +3,7 @@ package daos;
 import java.util.List;
 
 import model.Conference;
-import model.Filters;
+import model.ConferenceFilters;
 import model.User;
 
 /**
@@ -26,7 +26,7 @@ public class ConferenceDao {
 	/**
 	 * Get a list of all the Conferences that are stored in the database
 	 */
-	public List<Conference> getConferences(Filters.ConferencePreDefinedFilter filter){
+	public List<Conference> getConferences(ConferenceFilters.ConferencePreDefinedFilter filter){
 		return null;
 	}
 	
@@ -36,7 +36,7 @@ public class ConferenceDao {
 	 * @param filter
 	 * @return
 	 */
-	public List<Conference> getConferences(Filters.ConferenceDatesFilter filter){
+	public List<Conference> getConferences(ConferenceFilters.ConferenceDatesFilter filter){
 		return null;
 	}
 	

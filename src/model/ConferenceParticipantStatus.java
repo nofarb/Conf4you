@@ -11,6 +11,12 @@ import javax.persistence.Table;
 
 import org.hibernate.annotations.GenericGenerator;
 
+/**
+ * This class is an entity class that represent connection between a conference and the status of an invitee 
+ * in the database (e.g. whether a user approved coming to a conference)
+ * This class holds no logic, only getters, setter and constructors.
+ * This class also contains instructions to hibernate that define how the entity should be saved to the database.
+ */
 @Entity
 @Table( name = "Conference_Participant_Status" )
 public class ConferenceParticipantStatus implements Serializable {

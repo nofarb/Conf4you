@@ -16,13 +16,18 @@ import org.hibernate.annotations.GenericGenerator;
 import model.UserType;
 
 
+/**
+ * This class is an entity class that represent the User object in the database.
+ * This class holds no logic, only getters, setter and constructors.
+ * This class also contains instructions to hibernate that define how the entity should be saved to the database.
+ */
 @Entity
 @Table( name = "Users" )
 public abstract class User implements Serializable{
 
 	private int userID;
 	private int countryID;
-	private Company company; //TODO - should be the ID? 
+	private Company company; 
 	private String name;
 	private String email;
 	private String phone1;

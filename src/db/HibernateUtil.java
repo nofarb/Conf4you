@@ -6,6 +6,11 @@ import org.hibernate.cfg.Configuration;
 import org.hibernate.service.ServiceRegistry;
 import org.hibernate.service.ServiceRegistryBuilder;
 
+/**
+ * This class is responsible for obtaining and ending sessions with the database.
+ * @author nofar
+ *
+ */
 public class HibernateUtil {
 
     
@@ -20,6 +25,10 @@ public class HibernateUtil {
         return sessionFactory;
     }
 
+    /**
+     * get a session to the database
+     * @return
+     */
     public static SessionFactory getSessionFactory() {
     	if(sessionFactory== null){
     		sessionFactory = configureSessionFactory();
@@ -27,6 +36,9 @@ public class HibernateUtil {
         return sessionFactory;
     }
     
+    /**
+     * close the current session with the database
+     */
     public static void closeSession(){
     	sessionFactory.close();
     }
