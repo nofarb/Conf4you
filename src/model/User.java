@@ -32,7 +32,7 @@ public abstract class User implements Serializable{
 	
 	
 	
-	User() {} //not public on purpose!
+	private User() {} //not public on purpose!
 	
 	public User(int countryID, Company company, String name, String email,
 			String phone1, String phone2, String password, UserType userType) {

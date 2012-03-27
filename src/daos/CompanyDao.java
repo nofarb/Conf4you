@@ -9,7 +9,10 @@ import db.HibernateUtil;
 import model.Company;
 import model.CompanyType;
 
-
+/**
+ * This class is responsible of supplying services related to the Company entity which require database access.
+ * Singleton class.
+ */
 public class CompanyDao {
 
 	private static CompanyDao instance = null;
@@ -24,9 +27,7 @@ public class CompanyDao {
 	}
 
 	/**
-	 * get all companies
-	 * 
-	 * @return
+	 * Get a list of all the Companies that are stored in the database
 	 */
 	private List<Company> getAllCompanies() {
 		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
@@ -37,20 +38,14 @@ public class CompanyDao {
 	}
 
 	/**
-	 * Get all companies of a given type
-	 * 
-	 * @param companyType
-	 * @return
+	 * Get a list of all the Companies of type <Company Type> that are stored in the database
 	 */
 	public List<Company> getCompaniesOfType(CompanyType companyType) {
 		return null;
 	}
 
 	/**
-	 * Add company to DB
-	 * 
-	 * @param company
-	 * @return
+	 * Add a new Company to the database
 	 */
 	public Company addCompany(Company company) {
 
@@ -65,10 +60,7 @@ public class CompanyDao {
 	}
 
 	/**
-	 * update company details
-	 * 
-	 * @param company
-	 * @return
+	 * Update an existing company is the database
 	 */
 	public Company updateCompany(Company company) {
 		return null;

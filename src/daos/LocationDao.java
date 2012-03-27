@@ -5,6 +5,10 @@ import java.util.List;
 import model.Location;
 import model.User;
 
+/**
+ * This class is responsible of supplying services related to the Location entity which require database access.
+ * Singleton class.
+ */
 public class LocationDao {
 
 	private static LocationDao instance = null;

@@ -6,6 +6,10 @@ import model.Conference;
 import model.Filters;
 import model.User;
 
+/**
+ * This class is responsible of supplying services related to the Conference entity which require database access.
+ * Singleton class.
+ */
 public class ConferenceDao {
 
 	private static ConferenceDao instance = null;

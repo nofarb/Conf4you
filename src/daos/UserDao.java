@@ -6,6 +6,10 @@ import model.Company;
 import model.CompanyType;
 import model.User;
 
+/**
+ * This class is responsible of supplying services related to the User entity which require database access.
+ * Singleton class.
+ */
 public class UserDao {
 
 	private static UserDao instance = null;
