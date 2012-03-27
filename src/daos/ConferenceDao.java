@@ -24,15 +24,15 @@ public class ConferenceDao {
 	}
 	
 	/**
-	 * Get all conferences according to the selected filter
-	 * @return
+	 * Get a list of all the Conferences that are stored in the database
 	 */
 	public List<Conference> getConferences(Filters.ConferencePreDefinedFilter filter){
 		return null;
 	}
 	
+
 	/**
-	 * Get all conferences between the given dates
+	 * Get a list of all the Companies that match the given filter.
 	 * @param filter
 	 * @return
 	 */
@@ -42,7 +42,7 @@ public class ConferenceDao {
 	
 	
 	/**
-	 * Get conference by its database primary key
+	 * Get a conference by its database key ID
 	 * @param id
 	 * @return
 	 */
@@ -52,10 +52,9 @@ public class ConferenceDao {
 	}
 	
 	
+
 	/**
-	 * add new conference
-	 * @param conference
-	 * @return
+	 * Add a new Conference to the database
 	 */
 	public Conference addNewConference(Conference conference){
 		return null;
@@ -63,10 +62,9 @@ public class ConferenceDao {
 	}
 	
 
+
 	/**
-	 * update conference
-	 * @param conference
-	 * @return
+	 * Update an existing conference in the database
 	 */
 	public Conference updateConference(Conference conference){
 		return null;
@@ -75,7 +73,7 @@ public class ConferenceDao {
 	}
 	
 	/**
-	 * assign users to a conference
+	 * Assign users to a conference
 	 * @param conference
 	 * @return
 	 */
@@ -85,7 +83,7 @@ public class ConferenceDao {
 	
 	
 	/**
-	 * remove users from a conference
+	 * Remove users from a conference
 	 * @param conference
 	 * @return
 	 */
@@ -95,7 +93,8 @@ public class ConferenceDao {
 	}
 	
 	/**
-	 * Send predefined email to users that never got such mail for this conference
+	 * This function sends a predefined invitation to a conference email to users, 
+	 * as long as they have never gotten such mail before about this conference
 	 * @param user
 	 */
 	public void sendConferenceAssignmentNotificationEmailToUsers(List<User> user){
@@ -103,7 +102,7 @@ public class ConferenceDao {
 	}
 
 	/**
-	 * Mark user as arrived to the conference on today's date+
+	 * Mark user as arrived to the conference in respect to this date
 	 * @param user
 	 * @param conference
 	 */
@@ -112,7 +111,7 @@ public class ConferenceDao {
 	}
 	
 	/**
-	 * Get conferences associated with a given user
+	 * Get all conferences associated with a given user
 	 * @param user
 	 * @return
 	 */

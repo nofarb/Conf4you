@@ -23,8 +23,7 @@ public class LocationDao {
 	}
 	
 	/**
-	 * Get all locations from DB
-	 * @return
+	 * Get a list of all the locations that are stored in the database
 	 */
 	public List<Location> getLocations(){
 		return null;
@@ -32,7 +31,7 @@ public class LocationDao {
 	
 	
 	/**
-	 * Get Location by its database primary key
+	 * Get a location from the database by its database key ID
 	 * @param id
 	 * @return
 	 */
@@ -43,7 +42,7 @@ public class LocationDao {
 	
 	
 	/**
-	 * Add new Location
+	 * Add a new location to the database
 	 * @param location
 	 * @return
 	 */
@@ -53,7 +52,7 @@ public class LocationDao {
 	}
 	
 	/**
-	 * update a Location
+	 * Update an existing location in the database
 	 * @param location
 	 * @return
 	 */

@@ -24,8 +24,7 @@ public class UserDao {
 	}
 	
 	/**
-	 * Get all users from DB
-	 * @return
+	 * Get a list of all the users that are stored in the database
 	 */
 	public List<User> getUsers(){
 		return null;
@@ -33,7 +32,7 @@ public class UserDao {
 	
 	
 	/**
-	 * Get user by its database primary key
+	 * Get a user by its database key ID
 	 * @param emailAddr
 	 * @return
 	 */
@@ -43,7 +42,7 @@ public class UserDao {
 	}
 	
 	/**
-	 * Get user by its email
+	 * Get a user by its email
 	 * @param emailAddr
 	 * @return
 	 */
@@ -53,7 +52,7 @@ public class UserDao {
 	}
 	
 	/**
-	 * Add new user
+	 * Add a new user to the database
 	 * @param emailAddr
 	 * @return
 	 */
@@ -63,7 +62,7 @@ public class UserDao {
 	}
 	
 	/**
-	 * Authenticate user on login
+	 * Authenticate a user on login
 	 * @param user
 	 * @param password
 	 * @return the authenticated user, or null otherwise.
@@ -74,8 +73,8 @@ public class UserDao {
 	}
 	
 	/**
-	 * Sends an email with a new password to emailAddr, if exists in the system. 
-	 * If the user doesn't exist nothing is being sent. In such case we do not give an error alert
+	 * This function sends an email with a new password to emailAddr, if exists in the system. 
+	 * If the user doesn't exist nothing is being sent. In such case we do not provide an error alert
 	 * for security reasons.
 	 * @param emailAddr
 	 */
@@ -85,7 +84,7 @@ public class UserDao {
 	
 	
 	/**
-	 * Changed password for a logged in user
+	 * Changed a password of a logged in user
 	 * @param user
 	 * @param newPassword
 	 */
@@ -94,7 +93,7 @@ public class UserDao {
 	}
 	
 	/**
-	 * Update user details
+	 * Update an existing user details in the database
 	 * @param user
 	 */
 	public void changedUserDetails(User user){
@@ -103,7 +102,7 @@ public class UserDao {
 
 	
 	/**
-	 * Send email with a new password if the email address exist in the DB
+	 * This function sends an email with a new password if the email address exist in the DB
 	 * @param emailAddr
 	 */
 	private void sendResetForgottenPasswordEmail(String emailAddr){
@@ -111,7 +110,7 @@ public class UserDao {
 	}
 	
 	/**
-	 * get users that belong to a given company
+	 * get a list of all users that belong to a given company
 	 * @param company
 	 * @return
 	 */
@@ -120,7 +119,7 @@ public class UserDao {
 	}
 	
 	/**
-	 * get users that belong to a given company type
+	 * get a list of users that belong to a given company type
 	 * @param companyType
 	 * @return
 	 */
