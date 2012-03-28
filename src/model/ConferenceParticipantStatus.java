@@ -24,7 +24,7 @@ public class ConferenceParticipantStatus implements Serializable {
 	private long id;
 	private Conference conference;
 	private User user;
-	private boolean approved;
+	private UserAttendanceStatus attendanceStatus;
 	private boolean notifiedByMail;
 	
 	
@@ -55,21 +55,16 @@ public class ConferenceParticipantStatus implements Serializable {
 	public void setUser(User user) {
 		this.user = user;
 	}
-	public boolean isApproved() {
-		return approved;
-	}
-	public void setApproved(boolean approved) {
-		this.approved = approved;
-	}
 	public boolean isNotifiedByMail() {
 		return notifiedByMail;
 	}
 	public void setNotifiedByMail(boolean notifiedByMail) {
 		this.notifiedByMail = notifiedByMail;
 	}
-	
-	
-	
-	
-
+	public UserAttendanceStatus getAttendanceStatus() {
+		return attendanceStatus;
+	}
+	public void setAttendanceStatus(UserAttendanceStatus attendanceStatus) {
+		this.attendanceStatus = attendanceStatus;
+	}
 }

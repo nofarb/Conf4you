@@ -3,8 +3,10 @@ package daos;
 import java.util.List;
 
 import model.Conference;
-import model.ConferenceFilters;
+import model.Filters;
+import model.Location;
 import model.User;
+import model.UserAttendanceStatus;
 
 /**
  * This class is responsible of supplying services related to the Conference entity which require database access.
@@ -26,7 +28,7 @@ public class ConferenceDao {
 	/**
 	 * Get a list of all the Conferences that are stored in the database
 	 */
-	public List<Conference> getConferences(ConferenceFilters.ConferencePreDefinedFilter filter){
+	public List<Conference> getConferences(Filters.ConferencePreDefinedFilter filter){
 		return null;
 	}
 	
@@ -36,7 +38,7 @@ public class ConferenceDao {
 	 * @param filter
 	 * @return
 	 */
-	public List<Conference> getConferences(ConferenceFilters.ConferenceDatesFilter filter){
+	public List<Conference> getConferences(Filters.ConferenceDatesFilter filter){
 		return null;
 	}
 	
@@ -81,6 +83,14 @@ public class ConferenceDao {
 		return null;
 	}
 	
+	/**
+	 * assign location to a conference
+	 * @param conference
+	 * @return
+	 */
+	public Conference assignLocationToConference(Conference conference, Location Location){
+		return null;
+	}
 	
 	/**
 	 * Remove users from a conference
@@ -102,11 +112,24 @@ public class ConferenceDao {
 	}
 
 	/**
-	 * Mark user as arrived to the conference in respect to this date
-	 * @param user
+	 * update users arrival to the conference
 	 * @param conference
+	 * @param user
+	 * @return
 	 */
-	public void markUserAsArrived(User user, Conference conference){
+	public Conference updateUserArrival(Conference conference, List<User> user){
+		return null;
+		
+	}	
+	
+	/**
+	 * update users attendance approval to the conference
+	 * @param conference
+	 * @param user
+	 * @return
+	 */
+	public Conference updateUserAttendanceApproval(Conference conference, User user, UserAttendanceStatus status){
+		return null;
 		
 	}
 	

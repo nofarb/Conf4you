@@ -114,7 +114,7 @@ public class UserDao {
 	 * @param company
 	 * @return
 	 */
-	public List<User> getUserInCompany(Company company){
+	public List<User> getUsersInCompany(Company company){
 		return null;
 	}
 	
@@ -123,7 +123,7 @@ public class UserDao {
 	 * @param companyType
 	 * @return
 	 */
-	public List<User> getUserInCompanyOfType(CompanyType companyType){
+	public List<User> getUsersInCompanyOfType(CompanyType companyType){
 		return null;
 	}
 	
