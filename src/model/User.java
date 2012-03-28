@@ -26,7 +26,7 @@ import model.UserType;
 public abstract class User implements Serializable{
 
 	private int userID;
-	private int countryID;
+	private int pasportID;
 	private Company company; 
 	private String name;
 	private String email;
@@ -41,7 +41,7 @@ public abstract class User implements Serializable{
 	
 	public User(int countryID, Company company, String name, String email,
 			String phone1, String phone2, String password, UserType userType) {
-		this.countryID = countryID;
+		this.pasportID = countryID;
 		this.company = company;
 		this.name = name;
 		this.email = email;
@@ -50,8 +50,6 @@ public abstract class User implements Serializable{
 		this.password = password;
 		this.userType = userType;
 	}
-
-
 
 	@Id
 	@GeneratedValue(generator="increment")
@@ -63,10 +61,10 @@ public abstract class User implements Serializable{
 		this.userID = userID;
 	}
 	public int getStateID() {
-		return countryID;
+		return pasportID;
 	}
 	public void setStateID(int stateID) {
-		this.countryID = stateID;
+		this.pasportID = stateID;
 	}
 	
 	@OneToOne(cascade = CascadeType.ALL)

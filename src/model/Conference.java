@@ -21,13 +21,13 @@ public class Conference implements Serializable{
 	private int conferenceID; //key
 	private Location location; 
 	private String name;
-	private int description;
+	private String description;
 	private Date startDate;
 	private Date endtDate;
 	
 	Conference() {}  //not public on purpose!
 	
-	public Conference(Location location, String name, int description,
+	public Conference(Location location, String name, String description,
 			Date startDate, Date endtDate) {
 		this.location = location;
 		this.name = name;
@@ -67,10 +67,10 @@ public class Conference implements Serializable{
 	public void setName(String name) {
 		this.name = name;
 	}
-	public int getDescription() {
+	public String getDescription() {
 		return description;
 	}
-	public void setDescription(int description) {
+	public void setDescription(String description) {
 		this.description = description;
 	}
 	
