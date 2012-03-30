@@ -1,6 +1,7 @@
 package model;
 
 import java.io.Serializable;
+import java.util.Date;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
@@ -14,7 +15,7 @@ import javax.persistence.Table;
 import org.hibernate.annotations.GenericGenerator;
 
 import model.UserType;
-
+import model.Company;
 
 /**
  * This class is an entity class that represent the User object in the database.
@@ -33,14 +34,15 @@ public abstract class User implements Serializable{
 	private String phone1;
 	private String phone2;
 	private String password; //may be null/empty , will be kept hashed
-	private UserType userType;
+	private boolean isAdmin;
+	private Date lastLogin;
 	
 	
 	
 	private User() {} //not public on purpose!
 	
 	public User(int countryID, Company company, String name, String email,
-			String phone1, String phone2, String password, UserType userType) {
+			String phone1, String phone2, String password, boolean isAdmin) {
 		this.pasportID = countryID;
 		this.company = company;
 		this.name = name;
@@ -48,7 +50,7 @@ public abstract class User implements Serializable{
 		this.phone1 = phone1;
 		this.phone2 = phone2;
 		this.password = password;
-		this.userType = userType;
+		this.isAdmin = isAdmin;
 	}
 
 	@Id
@@ -104,14 +106,29 @@ public abstract class User implements Serializable{
 	public void setPassword(String password) {
 		this.password = password;
 	}
-	
-	@Enumerated(EnumType.STRING)
-	public UserType getUserType() {
-		return userType;
+
+	public int getPasportID() {
+		return pasportID;
 	}
-	public void setUserType(UserType userType) {
-		this.userType = userType;
+
+	public void setPasportID(int pasportID) {
+		this.pasportID = pasportID;
 	}
-	
+
+	public boolean isAdmin() {
+		return isAdmin;
+	}
+
+	public void setAdmin(boolean isAdmin) {
+		this.isAdmin = isAdmin;
+	}
+
+	public Date getLastLogin() {
+		return lastLogin;
+	}
+
+	public void setLastLogin(Date lastLogin) {
+		this.lastLogin = lastLogin;
+	}
 	
 }

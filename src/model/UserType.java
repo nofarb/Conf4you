@@ -6,5 +6,5 @@ package model;
  *
  */
 public enum UserType {
-	ADMIN, CONF_MNGR, RECEPTIONIST, PARTICIPANT
+	SPEAKER, CONF_MNGR, RECEPTIONIST, PARTICIPANT
 }
