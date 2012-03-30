@@ -93,7 +93,7 @@ public class MonitorWebApp extends HttpServlet {
 
 		// Get ApplicationList.jsp dispatcher
 		//applicationListDispatcher = request.getRequestDispatcher("/ApplicationList.jsp");
-		applicationListDispatcher = request.getRequestDispatcher("/test.jsp");
+		applicationListDispatcher = request.getRequestDispatcher("/userDetails.jsp");
 
 
 

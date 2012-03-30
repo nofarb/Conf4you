@@ -13,6 +13,8 @@ import org.hibernate.annotations.GenericGenerator;
 public class Location implements Serializable{
 	
 
+	private static final long serialVersionUID = -6691679149775091891L;
+	
 	private int locationId; //auto incremented key
 	private String name;
 	private String address;

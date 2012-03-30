@@ -18,7 +18,10 @@ import org.hibernate.annotations.GenericGenerator;
  * This class holds no logic, only getters, setter and constructors.
  */
 public class Company implements Serializable {
+	
 
+	private static final long serialVersionUID = -4809404779999217296L;
+	
 	private int companyID;
 	private CompanyType companyType;
 	private String name;

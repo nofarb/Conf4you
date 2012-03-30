@@ -2,6 +2,10 @@ package daos;
 
 import java.util.List;
 
+import org.hibernate.Session;
+
+import db.HibernateUtil;
+
 import model.Company;
 import model.CompanyType;
 import model.User;
@@ -27,7 +31,10 @@ public class UserDao {
 	 * Get a list of all the users that are stored in the database
 	 */
 	public List<User> getUsers(){
-		return null;
+		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
+		List<User> result = (List<User>) session.createQuery("from users").list();
+		session.getTransaction().commit();
+		return result;
 	}
 	
 	
@@ -37,7 +44,14 @@ public class UserDao {
 	 * @return
 	 */
 	public User getUserById(String id){
-		return null;
+
+		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
+        
+		session.beginTransaction();
+        User user = (User) session.load(User.class, id);
+        session.getTransaction().commit();
+        
+        return user;
 		
 	}
 	

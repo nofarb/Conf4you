@@ -21,6 +21,8 @@ import org.hibernate.annotations.GenericGenerator;
 @Table( name = "Conference_Participant_Status" )
 public class ConferenceParticipantStatus implements Serializable {
 
+	private static final long serialVersionUID = 1698853675165927660L;
+	
 	private long id;
 	private Conference conference;
 	private User user;
