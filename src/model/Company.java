@@ -22,7 +22,7 @@ public class Company implements Serializable {
 
 	private static final long serialVersionUID = -4809404779999217296L;
 	
-	private int companyID;
+	private long companyID;
 	private CompanyType companyType;
 	private String name;
 	
@@ -37,10 +37,10 @@ public class Company implements Serializable {
 	@Id
 	@GeneratedValue(generator="increment")
 	@GenericGenerator(name="increment", strategy = "increment")
-	public int getCompanyID() {
+	public long getCompanyID() {
 		return companyID;
 	}
-	public void setCompanyID(int companyID) {
+	public void setCompanyID(long companyID) {
 		this.companyID = companyID;
 	}
 	

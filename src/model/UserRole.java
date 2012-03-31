@@ -5,6 +5,6 @@ package model;
  * @author nofar
  *
  */
-public enum UserType {
-	SPEAKER, CONF_MNGR, RECEPTIONIST, PARTICIPANT
+public enum UserRole {
+	SPEAKER, CONF_MNGR, RECEPTIONIST
 }

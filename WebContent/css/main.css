@@ -1,0 +1,16 @@
+
+
+
+.horizontal-line{
+	background-color: #002E63;
+	height:  20px;
+	text-align: center;
+	color: white;
+	font-size: 16px;
+	font-family:"Times New Roman",Georgia,Serif;
+	padding-top: 2px;
+	padding-bottom: 2px;
+	letter-spacing:1px;
+	margin-bottom: 10px;
+	margin-top: 10px;
+}

@@ -15,7 +15,7 @@ public class Location implements Serializable{
 
 	private static final long serialVersionUID = -6691679149775091891L;
 	
-	private int locationId; //auto incremented key
+	private long locationId; //auto incremented key
 	private String name;
 	private String address;
 	private int maxCapacity;
@@ -39,10 +39,10 @@ public class Location implements Serializable{
 	@Id
 	@GeneratedValue(generator="increment")
 	@GenericGenerator(name="increment", strategy = "increment")
-	public int getLocationId() {
+	public long getLocationId() {
 		return locationId;
 	}
-	public void setLocationId(int locationId) {
+	public void setLocationId(long locationId) {
 		this.locationId = locationId;
 	}
 	public String getName() {

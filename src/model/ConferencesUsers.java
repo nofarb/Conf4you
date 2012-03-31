@@ -4,6 +4,8 @@ import java.io.Serializable;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.Id;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
@@ -23,6 +25,7 @@ public class ConferencesUsers implements Serializable{
 	
 	private Conference conference;
 	private User user; 
+	private UserRole userRole;
 
 	
 	@Id
@@ -43,5 +46,15 @@ public class ConferencesUsers implements Serializable{
 	public void setUser(User user) {
 		this.user = user;
 	}
+	
+	@Enumerated(EnumType.STRING)
+	public UserRole getUserRole() {
+		return userRole;
+	}
+	public void setUserRole(UserRole userRole) {
+		this.userRole = userRole;
+	}
+	
+	
 
 }

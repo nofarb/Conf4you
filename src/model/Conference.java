@@ -18,7 +18,9 @@ import org.hibernate.annotations.GenericGenerator;
 @Table( name = "CONFERENCES" )
 public class Conference implements Serializable{
 
-	private int conferenceID; //key
+	private static final long serialVersionUID = -5770762179112826708L;
+	
+	private long conferenceID; //key
 	private Location location; 
 	private String name;
 	private String description;
@@ -39,10 +41,10 @@ public class Conference implements Serializable{
 	@Id
 	@GeneratedValue(generator="increment")
 	@GenericGenerator(name="increment", strategy = "increment")
-	public int getConferenceID() {
+	public long getConferenceID() {
 		return conferenceID;
 	}
-	public void setConferenceID(int conferenceID) {
+	public void setConferenceID(long conferenceID) {
 		this.conferenceID = conferenceID;
 	}
 	

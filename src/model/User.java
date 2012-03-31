@@ -2,19 +2,15 @@ package model;
 
 import java.io.Serializable;
 import java.util.Date;
-
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
-
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import org.hibernate.annotations.GenericGenerator;
-
-import model.UserType;
 import model.Company;
 
 /**
@@ -24,9 +20,9 @@ import model.Company;
  */
 @Entity
 @Table( name = "Users" )
-public abstract class User implements Serializable{
+public class User implements Serializable{
 
-	private int userID;
+	private long userID;
 	private int pasportID;
 	private Company company; 
 	private String name;
@@ -39,7 +35,7 @@ public abstract class User implements Serializable{
 	
 	
 	
-	private User() {} //not public on purpose!
+	User() {} //not public on purpose!
 	
 	public User(int countryID, Company company, String name, String email,
 			String phone1, String phone2, String password, boolean isAdmin) {
@@ -56,10 +52,10 @@ public abstract class User implements Serializable{
 	@Id
 	@GeneratedValue(generator="increment")
 	@GenericGenerator(name="increment", strategy = "increment")
-	public int getUserID() {
+	public long getUserID() {
 		return userID;
 	}
-	public void setUserID(int userID) {
+	public void setUserID(long userID) {
 		this.userID = userID;
 	}
 	public int getStateID() {
@@ -123,6 +119,7 @@ public abstract class User implements Serializable{
 		this.isAdmin = isAdmin;
 	}
 
+	@Temporal(TemporalType.TIMESTAMP) 
 	public Date getLastLogin() {
 		return lastLogin;
 	}
