@@ -44,7 +44,7 @@ body {
 		<ul>
 			<li><a href="#tabs-1">First</a></li>
 			<li><a href="#tabs-2">Users</a></li>
-			<li><a href="#tabs-3">Third</a></li>
+			<li><a href="#tabs-3">Users</a></li>
 		</ul>
 		<div id="tabs-1">Lorem ipsum dolor sit amet, consectetur
 			adipisicing elit, sed do eiusmod tempor incididunt ut labore et
