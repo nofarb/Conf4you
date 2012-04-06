@@ -9,7 +9,6 @@
     <servlet-name>MainServlet</servlet-name>
     <servlet-class>servlets.MainServlet</servlet-class>
   </servlet>
-  
   <servlet-mapping>
     <servlet-name>MainServlet</servlet-name>
     <url-pattern>*.monitor</url-pattern>

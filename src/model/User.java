@@ -22,6 +22,8 @@ import model.Company;
 @Table( name = "Users" )
 public class User implements Serializable{
 
+	private static final long serialVersionUID = -3550174731709532722L;
+
 	private long userID;
 	private int pasportID;
 	private Company company; 

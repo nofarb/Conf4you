@@ -10,11 +10,17 @@
 
 
 <script type="text/javascript">
+
 $(document).ready(function() {
 
-				$('#tabs').tabs();
-
- });
+    $('#tabs').tabs();
+    $('#tabs').on('click', 'a', function(event) {
+        event.preventDefault();
+        $.get($(this).attr('href'), function (response){
+           $(this).parent().html(response);
+        });
+    });
+});
  
 </script>
 
@@ -48,12 +54,10 @@ body {
 			<jsp:include page="users.jsp" />
 		</div>
 		<div id="tabs-3">
-			Hello! The time is now
-			<%= new java.util.Date() %></div>
+			<iframe  style="width: 100%; height: 768px;"  src="users.jsp" /></iframe>
+			</div>
 	</div>
 
 
 </body>
 </html>
-
-

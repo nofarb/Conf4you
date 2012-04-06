@@ -20,7 +20,7 @@ public class MockCreation {
 		
 		Company comp = new Company("yada", CompanyType.C);
 
-		for(int i = 0 ; i < 100; i++){
+		for(int i = 0 ; i < 5; i++){
 			User user = new User(i, comp, "user"+i, "yada"+i+"@gmail.com", "Num1"+i, "num2"+i, "pass"+i, false );
 			user.setLastLogin(new Date());
 			users.add(user);
@@ -33,7 +33,7 @@ public class MockCreation {
 		
 		Location location = new Location("location", "ydaa", 30, "moo", "56464654", "54564654");
 		
-		for(int i = 0 ; i < 100; i++){
+		for(int i = 0 ; i < 5; i++){
 			Conference conference = new Conference(location, "conf"+i, "yada", new Date(), new Date());
 			conferences.add(conference);
 		}

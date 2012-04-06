@@ -12,6 +12,7 @@ body {font:10px Verdana,Arial; margin:25px; background:#fff url(images/tables/bg
 .sortable .head:hover, .sortable .desc:hover, .sortable .asc:hover {color:#fff}
 .sortable .evenrow td {background:#fff}
 .sortable .oddrow td {background:#ecf2f6}
+
 /* .sortable td.evenselected {background:#ecf2f6}
 .sortable td.oddselected {background:#dce6ee} */
 

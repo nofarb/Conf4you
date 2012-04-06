@@ -1,5 +1,5 @@
 <%@page import="daos.UserDao"%>
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="ISO-8859-1" %>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="ISO-8859-1"%>
 <%@ page import="java.util.List"%>
 <%@ page import="java.util.Date"%>
 <%@ page import="java.text.SimpleDateFormat"%>
@@ -10,6 +10,23 @@
 <head>
 <link type="text/css" href="css/main.css" rel="stylesheet" />
 <link type="text/css" href="css/tables/tableList.css" rel="stylesheet" />
+<link type="text/css" href="css/cupertino/jquery-ui-1.8.18.custom.css"
+	rel="stylesheet" />
+<script type="text/javascript" src="js/jquery-1.7.1.min.js"></script>
+<script type="text/javascript" src="js/jquery-ui-1.8.18.custom.min.js"></script>
+
+<script>
+	$(function() {
+		$( ".addButton" ).button({
+            icons: {
+                primary: "ui-icon-plus"
+            }
+		});
+		
+	});
+	</script>
+
+
 </head>
 
 <body>
@@ -18,6 +35,7 @@
 
 	<p class="horizontal-line">Users</p>
 
+<a class="addButton" href="userDetails.jsp">Add User</a>
 
 	<table cellpadding="0" cellspacing="0" border="0" id="table"
 		class="sortable">
@@ -47,11 +65,10 @@
 				<td><%=user.getName()%></td>
 				<td><%=user.getPhone1()%></td>
 				<td><%=user.getPhone2()%></td>
-				<td><a style="color:blue;" href="mailto:<%=user.getEmail()%>"><%=user.getEmail()%></a></td>
+				<td><a style="color: blue;" href="mailto:<%=user.getEmail()%>"><%=user.getEmail()%></a></td>
 				<td><%=user.getCompany().getName()%></td>
 				<td><%=newsDate%></td>
-				<td><a style="color:blue;" href="http://icanhascheezburger.com/">Details</a></td>
-				<!-- todo- change details link -->
+				<td><a href="userDetails.jsp?userid=<%=user.getUserID()%>"  style="color: blue;">Details</a></td>
 			</tr>
 			<%	} %>
 		</tbody>
@@ -67,12 +84,14 @@
 			</select> <span>Entries Per Page</span>
 		</div>
 		<div id="navigation">
-			<img src="css/tables/images/first.gif" width="16" height="16" alt="First Page"
-				onclick="sorter.move(-1,true)" /> <img src="css/tables/images/previous.gif"
-				width="16" height="16" alt="First Page" onclick="sorter.move(-1)" />
-			<img src="css/tables/images/next.gif" width="16" height="16" alt="First Page"
-				onclick="sorter.move(1)" /> <img src="css/tables/images/last.gif" width="16"
-				height="16" alt="Last Page" onclick="sorter.move(1,true)" />
+			<img src="css/tables/images/first.gif" width="16" height="16"
+				alt="First Page" onclick="sorter.move(-1,true)" /> <img
+				src="css/tables/images/previous.gif" width="16" height="16"
+				alt="First Page" onclick="sorter.move(-1)" /> <img
+				src="css/tables/images/next.gif" width="16" height="16"
+				alt="First Page" onclick="sorter.move(1)" /> <img
+				src="css/tables/images/last.gif" width="16" height="16"
+				alt="Last Page" onclick="sorter.move(1,true)" />
 		</div>
 		<div id="text">
 			Displaying Page <span id="currentpage"></span> of <span
@@ -95,5 +114,6 @@
 		sorter.limitid = "pagelimit";
 		sorter.init("table", 1);
 	</script>
+
 </body>
 </html>
