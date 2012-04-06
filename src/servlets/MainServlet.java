@@ -47,7 +47,7 @@ public class MainServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
-		List<User> users = MockCreation.createMockUsers();
+		List<User> users = MockCreation.createMockUsers(); 
 
 		UserDao.getInstance().addUsers(users);
 

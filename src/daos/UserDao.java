@@ -132,7 +132,7 @@ public class UserDao {
 	 * 
 	 * @param user
 	 */
-	public void changedUserDetails(User user) {
+	public void changeUserDetails(User user) {
 
 	}
 
