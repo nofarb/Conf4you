@@ -58,7 +58,7 @@ body {
 			<iframe  style="width: 100%; height: 768px;"  src="users.jsp" /></iframe>
 		</div>
 		<div id="tabs-4">
-			<jsp:include page="conferense.jsp" />
+			<jsp:include page="conference.jsp" />
 		</div>>
 	</div>
 
