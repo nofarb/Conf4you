@@ -11,6 +11,8 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import com.sun.istack.internal.Nullable;
+
 /**
  * This class is an entity class that represents the connection between conferences and invitees participants in 
  * in the database (e.g. whether a user arrived to a conference).
@@ -25,8 +27,16 @@ public class ConferencesParticipants implements Serializable {
 	
 	private Conference conference; 
 	private User participant; 
-	private Date date;
-	private boolean arrived;
+	private Date conferenceDateDay;
+	
+	ConferencesParticipants() {}  //not public on purpose!
+	
+	public ConferencesParticipants(Conference conf, User user, Date date) 
+	{
+		this.conference = conf;
+		this.participant = user;
+		this.conferenceDateDay = date;
+	}
 	
 	
 	@Id
@@ -46,19 +56,13 @@ public class ConferencesParticipants implements Serializable {
 	public void setUser(User user) {
 		this.participant = user;
 	}
-	
+
 	@Temporal(TemporalType.TIMESTAMP)
 	public Date getDate() {
-		return date;
+		return conferenceDateDay;
 	}
 	public void setDate(Date date) {
-		this.date = date;
-	}
-	public boolean isArrived() {
-		return arrived;
-	}
-	public void setArrived(boolean arrived) {
-		this.arrived = arrived;
+		this.conferenceDateDay = date;
 	}
 	
 }

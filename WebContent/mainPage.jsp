@@ -45,6 +45,7 @@ body {
 			<li><a href="#tabs-1">First</a></li>
 			<li><a href="#tabs-2">Users</a></li>
 			<li><a href="#tabs-3">Users</a></li>
+			<li><a href="#tabs-4">Conferences</a></li>
 		</ul>
 		<div id="tabs-1">Lorem ipsum dolor sit amet, consectetur
 			adipisicing elit, sed do eiusmod tempor incididunt ut labore et
@@ -55,7 +56,10 @@ body {
 		</div>
 		<div id="tabs-3">
 			<iframe  style="width: 100%; height: 768px;"  src="users.jsp" /></iframe>
-			</div>
+		</div>
+		<div id="tabs-4">
+			<jsp:include page="conferense.jsp" />
+		</div>>
 	</div>
 
 

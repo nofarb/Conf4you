@@ -1,6 +1,7 @@
 package model;
 
 import java.io.Serializable;
+import java.util.Date;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
@@ -10,6 +11,8 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.GenericGenerator;
+
+import com.sun.istack.internal.Nullable;
 
 /**
  * This class is an entity class that represent connection between a conference and the status of an invitee 
@@ -29,6 +32,15 @@ public class ConferenceParticipantStatus implements Serializable {
 	private UserAttendanceStatus attendanceStatus;
 	private boolean notifiedByMail;
 	
+	ConferenceParticipantStatus() {}  //not public on purpose!
+	
+	public ConferenceParticipantStatus(Conference conf, User user, UserAttendanceStatus attendanceStatus, boolean notifiedByMail) 
+	{
+		this.conference = conf;
+		this.user = user;
+		this.attendanceStatus = attendanceStatus;
+		this.notifiedByMail = notifiedByMail;
+	}
 	
 	@Id
 	@GeneratedValue(generator="increment")
@@ -63,10 +75,13 @@ public class ConferenceParticipantStatus implements Serializable {
 	public void setNotifiedByMail(boolean notifiedByMail) {
 		this.notifiedByMail = notifiedByMail;
 	}
+	
+	@Nullable
 	public UserAttendanceStatus getAttendanceStatus() {
 		return attendanceStatus;
 	}
-	public void setAttendanceStatus(UserAttendanceStatus attendanceStatus) {
+	public ConferenceParticipantStatus setAttendanceStatus(UserAttendanceStatus attendanceStatus) {
 		this.attendanceStatus = attendanceStatus;
+		return this;
 	}
 }

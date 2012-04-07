@@ -18,10 +18,10 @@ public class MockCreation {
 	
 	public static List<User> createMockUsers(){
 		
-		Company comp = new Company("yada", CompanyType.C);
+ 		Company comp = new Company("yada", CompanyType.C);
 
 		for(int i = 0 ; i < 5; i++){
-			User user = new User(i, comp, "user"+i, "yada"+i+"@gmail.com", "Num1"+i, "num2"+i, "pass"+i, false );
+			User user = new User("userName"+i, "yada"+i+"@gmail.com", "user"+i, comp, "Num1"+i, "num2"+i, "pass"+i, false);
 			user.setLastLogin(new Date());
 			users.add(user);
 		}
@@ -31,7 +31,7 @@ public class MockCreation {
 	
 	public static List<Conference> createMockConferences(){
 		
-		Location location = new Location("location", "ydaa", 30, "moo", "56464654", "54564654");
+		Location location = new Location("locationNameBlah", "ydaa", 30, "moo", "56464654", "54564654");
 		
 		for(int i = 0 ; i < 5; i++){
 			Conference conference = new Conference(location, "conf"+i, "yada", new Date(), new Date());

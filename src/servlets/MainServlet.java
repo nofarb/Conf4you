@@ -15,9 +15,11 @@ import utils.MockCreation;
 
 import model.Company;
 import model.CompanyType;
+import model.Conference;
 import model.User;
 
 import daos.CompanyDao;
+import daos.ConferenceDao;
 import daos.UserDao;
 
 /**
@@ -50,6 +52,10 @@ public class MainServlet extends HttpServlet {
 		List<User> users = MockCreation.createMockUsers(); 
 
 		UserDao.getInstance().addUsers(users);
+		
+		List<Conference> conferences = MockCreation.createMockConferences();
+		
+		ConferenceDao.getInstance().addNewConference(conferences);
 
 		String servletPath = request.getServletPath();
 

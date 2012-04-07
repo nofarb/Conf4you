@@ -25,17 +25,20 @@ public class Conference implements Serializable{
 	private String name;
 	private String description;
 	private Date startDate;
-	private Date endtDate;
+	private Date endDate;
 	
-	Conference() {}  //not public on purpose!
+	public Conference()
+	{
+		
+	}
 	
-	public Conference(Location location, String name, String description,
-			Date startDate, Date endtDate) {
+	public Conference(Location location, String name, String description, Date startDate, Date endtDate) 
+	{
 		this.location = location;
 		this.name = name;
 		this.description = description;
 		this.startDate = startDate;
-		this.endtDate = endtDate;
+		this.setEndDate(endtDate);
 	}
 	
 	@Id
@@ -52,38 +55,44 @@ public class Conference implements Serializable{
 	public Location getLocation() {
 		return location;
 	}
-	public void setLocation(Location location) {
+	public Conference setLocation(Location location) {
 		this.location = location;
+		return this;
 	}
 	
-	@Temporal(TemporalType.TIMESTAMP)
-	public Date getEndtDate() {
-		return endtDate;
-	}
-	public void setEndtDate(Date endtDate) {
-		this.endtDate = endtDate;
-	}
 	public String getName() {
 		return name;
 	}
-	public void setName(String name) {
+	public Conference setName(String name) {
 		this.name = name;
+		return this;
 	}
 	public String getDescription() {
 		return description;
 	}
-	public void setDescription(String description) {
+	public Conference setDescription(String description) {
 		this.description = description;
+		return this;
 	}
 	
 	@Temporal(TemporalType.TIMESTAMP)
 	public Date getStartDate() {
 		return startDate;
 	}
-	public void setStartDate(Date startDate) {
+	public Conference setStartDate(Date startDate) {
 		this.startDate = startDate;
+		return this;
 	}
 	
-	
+	@Temporal(TemporalType.TIMESTAMP)
+	public Date getEndDate() {
+		return endDate;
+	}
+
+	public Conference setEndDate(Date endDate) {
+		this.endDate = endDate;
+		return this;
+	}
+
 	
 }

@@ -1,6 +1,7 @@
 package model;
 
 import java.io.Serializable;
+import java.util.Date;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
@@ -26,7 +27,15 @@ public class ConferencesUsers implements Serializable{
 	private Conference conference;
 	private User user; 
 	private UserRole userRole;
-
+	
+	ConferencesUsers() {}  //not public on purpose!
+	
+	public ConferencesUsers(Conference conf, User user, UserRole userRole) 
+	{
+		this.conference = conf;
+		this.user = user;
+		this.userRole = userRole;
+	}
 	
 	@Id
 	@OneToOne(cascade = CascadeType.ALL)
@@ -54,7 +63,5 @@ public class ConferencesUsers implements Serializable{
 	public void setUserRole(UserRole userRole) {
 		this.userRole = userRole;
 	}
-	
-	
 
 }

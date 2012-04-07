@@ -4,13 +4,11 @@ import java.io.Serializable;
 import java.util.Date;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
-import org.hibernate.annotations.GenericGenerator;
 import model.Company;
 
 /**
@@ -24,7 +22,8 @@ public class User implements Serializable{
 
 	private static final long serialVersionUID = -3550174731709532722L;
 
-	private long userID;
+	private String userName;
+	
 	private int pasportID;
 	private Company company; 
 	private String name;
@@ -39,9 +38,9 @@ public class User implements Serializable{
 	
 	User() {} //not public on purpose!
 	
-	public User(int countryID, Company company, String name, String email,
+	public User(String userName, String email, String name, Company company, 
 			String phone1, String phone2, String password, boolean isAdmin) {
-		this.pasportID = countryID;
+		this.setUserName(userName);
 		this.company = company;
 		this.name = name;
 		this.email = email;
@@ -52,14 +51,14 @@ public class User implements Serializable{
 	}
 
 	@Id
-	@GeneratedValue(generator="increment")
-	@GenericGenerator(name="increment", strategy = "increment")
-	public long getUserID() {
-		return userID;
+	public String getUserName() {
+		return userName;
 	}
-	public void setUserID(long userID) {
-		this.userID = userID;
+
+	public void setUserName(String userName) {
+		this.userName = userName;
 	}
+	
 	public int getStateID() {
 		return pasportID;
 	}
@@ -71,6 +70,7 @@ public class User implements Serializable{
 	public Company getCompany() {
 		return company;
 	}
+	
 	public void setCompany(Company company) {
 		this.company = company;
 	}
@@ -80,37 +80,33 @@ public class User implements Serializable{
 	public void setName(String name) {
 		this.name = name;
 	}
+	
 	public String getEmail() {
 		return email;
 	}
 	public void setEmail(String email) {
 		this.email = email;
 	}
+	
 	public String getPhone1() {
 		return phone1;
 	}
 	public void setPhone1(String phone1) {
 		this.phone1 = phone1;
 	}
+	
 	public String getPhone2() {
 		return phone2;
 	}
 	public void setPhone2(String phone2) {
 		this.phone2 = phone2;
 	}
+	
 	public String getPassword() {
 		return password;
 	}
 	public void setPassword(String password) {
 		this.password = password;
-	}
-
-	public int getPasportID() {
-		return pasportID;
-	}
-
-	public void setPasportID(int pasportID) {
-		this.pasportID = pasportID;
 	}
 
 	public boolean isAdmin() {
@@ -129,5 +125,7 @@ public class User implements Serializable{
 	public void setLastLogin(Date lastLogin) {
 		this.lastLogin = lastLogin;
 	}
+
+
 	
 }
