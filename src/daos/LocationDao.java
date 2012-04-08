@@ -26,6 +26,7 @@ public class LocationDao {
 	 * Get a list of all the locations that are stored in the database
 	 */
 	public List<Location> getLocations(){
+		
 		return null;
 	}
 	
@@ -36,6 +37,7 @@ public class LocationDao {
 	 * @return
 	 */
 	public Location getLocationById(String id){
+		
 		return null;
 		
 	}
