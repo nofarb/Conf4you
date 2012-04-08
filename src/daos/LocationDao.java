@@ -27,7 +27,7 @@ public class LocationDao {
 	 */
 	public List<Location> getLocations(){
 		return (List<Location>)HibernateUtil.getSessionFactory().getCurrentSession().createQuery(
-				"select Loc from Location Loc)
+				"select Loc from Location Loc")
                 .list();
 	}
 	
