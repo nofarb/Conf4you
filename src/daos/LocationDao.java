@@ -26,8 +26,9 @@ public class LocationDao {
 	 * Get a list of all the locations that are stored in the database
 	 */
 	public List<Location> getLocations(){
-		
-		return null;
+		return (List<Location>)HibernateUtil.getSessionFactory().getCurrentSession().createQuery(
+				"select Loc from Location Loc)
+                .list();
 	}
 	
 	
@@ -38,7 +39,10 @@ public class LocationDao {
 	 */
 	public Location getLocationById(String id){
 		
-		return null;
+		return (Location)HibernateUtil.getSessionFactory().getCurrentSession().createQuery(
+				"select Loc from  Location Loc where Loc.locationId = :locId")
+                .setLong("locId", id)
+                .uniqueResult();
 		
 	}
 	
@@ -49,7 +53,13 @@ public class LocationDao {
 	 * @return
 	 */
 	public Location addLocation(Location location){
-		return null;
+	Location loc = new Location(location.getName(), location.getAddress(), location.getMaxCapacity(), location.getContactName(), location.getPhone1(), location.getPhone2());
+		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
+		session.beginTransaction();
+		session.save(loc);
+		session.getTransaction().commit();
+
+		return loc;
 		
 	}
 	
@@ -59,7 +69,18 @@ public class LocationDao {
 	 * @return
 	 */
 	public Location updateLocation(Location location){
-		return null;
+		
+		Location loc = getLocationById(location.getLocationId());
+		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
+		session.beginTransaction();
+		session.update(loc.setName(location.getName())
+				.setMaxCapacity(location.getMaxCapacity())
+				.setContactName(location.getContactName())
+				.setPhone1(location.getPhone1())
+				.setPhone2(location.getPhone2()));
+		session.getTransaction().commit();
+
+		return loc;
 		
 	}
 }
