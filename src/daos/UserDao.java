@@ -4,6 +4,9 @@ import java.util.List;
 
 import org.hibernate.Session;
 import org.hibernate.Query;
+
+import servlets.UsersServices;
+import system.exceptions.ItemNotFoundException;
 import db.HibernateUtil;
 
 import model.Company;
@@ -45,9 +48,10 @@ public class UserDao {
 	 * @param emailAddr
 	 * @return
 	 */
-	public User getUserById(String id) {
-		return null;
-
+	public User getUserById(long id) {
+		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
+		session.beginTransaction();
+		return (User)session.load(User.class, id);
 	}
 
 	/**
@@ -100,9 +104,22 @@ public class UserDao {
 	 * @param user
 	 * @param password
 	 * @return the authenticated user, or null otherwise.
+	 * @throws ItemNotFoundException 
 	 */
-	public User authenticateUser(String emailAddr, String password) {
-		return null;
+	public User authenticateUser(String emailAddr, String password) throws ItemNotFoundException {
+		
+		List<User> users = getUserByEmail(emailAddr);
+		if(users.size() == 0){
+			throw new ItemNotFoundException("User", emailAddr);
+		}
+		User user = users.get(0);
+		
+		if(user.getPassword().equals("")){ //TODO - operate the hash function on the password and match!
+			return user;
+		}
+		else{
+			return null;
+		}
 
 	}
 
@@ -124,7 +141,7 @@ public class UserDao {
 	 * @param newPassword
 	 */
 	public void changePassword(User user, String newPassword) {
-
+			//TODO - use update, doesn't require a special function
 	}
 
 	/**
@@ -134,18 +151,14 @@ public class UserDao {
 	 */
 	public void changeUserDetails(User user) {
 
+		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
+		session.beginTransaction();
+
+		session.update(user); //TODO - check if works
+
+		session.getTransaction().commit();
 	}
-
-	/**
-	 * This function sends an email with a new password if the email address
-	 * exist in the DB
-	 * 
-	 * @param emailAddr
-	 */
-	private void sendResetForgottenPasswordEmail(String emailAddr) {
-
-	}
-
+	
 	/**
 	 * get a list of all users that belong to a given company
 	 * 
@@ -165,5 +178,17 @@ public class UserDao {
 	public List<User> getUsersInCompanyOfType(CompanyType companyType) {
 		return null;
 	}
+
+	/**
+	 * This function sends an email with a new password if the email address
+	 * exist in the DB
+	 * 
+	 * @param emailAddr
+	 */
+	private void sendResetForgottenPasswordEmail(String emailAddr) {
+
+	}
+
+
 
 }

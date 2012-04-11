@@ -60,7 +60,7 @@ public class CompanyDao {
 	}
 
 	/**
-	 * Update an existing company is the database
+	 * Update an existing company in the database
 	 */
 	public Company updateCompany(Company company) {
 		return null;

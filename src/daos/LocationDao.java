@@ -1,6 +1,9 @@
 package daos;
 
 import java.util.List;
+import org.hibernate.Session;
+
+import db.HibernateUtil;
 
 import model.Location;
 import model.User;
@@ -40,8 +43,8 @@ public class LocationDao {
 	public Location getLocationById(String id){
 		
 		return (Location)HibernateUtil.getSessionFactory().getCurrentSession().createQuery(
-				"select Loc from  Location Loc where Loc.locationId = :locId")
-                .setLong("locId", id)
+				"select Loc from Location Loc where Loc.locationId = :locId")
+                .setEntity("locId", id)
                 .uniqueResult();
 		
 	}
@@ -69,8 +72,8 @@ public class LocationDao {
 	 * @return
 	 */
 	public Location updateLocation(Location location){
-		
-		Location loc = getLocationById(location.getLocationId());
+		return null;
+/*		Location loc = getLocationById(location.getLocationId());
 		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
 		session.beginTransaction();
 		session.update(loc.setName(location.getName())
@@ -80,7 +83,7 @@ public class LocationDao {
 				.setPhone2(location.getPhone2()));
 		session.getTransaction().commit();
 
-		return loc;
+		return loc;*/
 		
 	}
 }

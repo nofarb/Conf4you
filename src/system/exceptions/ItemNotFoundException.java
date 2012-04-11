@@ -10,4 +10,8 @@ public class ItemNotFoundException extends Exception {
 	public ItemNotFoundException(String errMessage) {
 		super(errMessage);
 	}
+	
+	public ItemNotFoundException(String itemType , String itemName) {
+		super(String.format("%s [%s] doesn't exist", itemType, itemName));
+	}
 }
