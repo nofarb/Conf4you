@@ -66,26 +66,17 @@ jQuery(function($) {
 	<h2 class="demoHeaders">Tabs</h2>
 	<div id="tabs">
 		<ul>
-			<li><a href="#tabs-1">First</a></li>
-			<li><a href="#tabs-2">Users</a></li>
-			<li><a href="#tabs-3">Users</a></li>
-			<li><a href="#tabs-4">Conferences</a></li>
-			<li><a href="#tabs-5">Companies</a></li>
+			<li><a href="#tabs-1">Users</a></li>
+			<li><a href="#tabs-2">Conferences</a></li>
+			<li><a href="#tabs-3">Companies</a></li>
 		</ul>
-		<div id="tabs-1">Lorem ipsum dolor sit amet, consectetur
-			adipisicing elit, sed do eiusmod tempor incididunt ut labore et
-			dolore magna aliqua. Ut enim ad minim veniam, quis nostrud
-			exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</div>
-		<div id="tabs-2">
-			<jsp:include page="users.jsp" />
-		</div>
-		<div id="tabs-3">
+		<div id="tabs-1">
 			<iframe  style="width: 100%; height: 768px; border: none"  src="users.jsp" /></iframe>
 		</div>
-		<div id="tabs-4">
+		<div id="tabs-2">
 			<iframe  style="width: 100%; height: 768px; border: none"  src="conference.jsp" /></iframe>
 		</div>
-		<div id="tabs-5">
+		<div id="tabs-3">
 			<iframe  style="width: 100%; height: 768px; border: none"  src="companies.jsp" /></iframe>
 		</div>
 	</div>
