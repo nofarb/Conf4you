@@ -85,9 +85,8 @@ public class UserDao {
 
 		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
 		session.beginTransaction();
-		session.save(user);
+		session.save(user); 
 		session.getTransaction().commit();
-
 	}
 
 	/**
@@ -179,17 +178,17 @@ public class UserDao {
 	 * @return
 	 */
 	public List<User> getUsersInCompany(long companyId) {
-/*		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
+		
+		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
 		session.beginTransaction();
 		
 		@SuppressWarnings("unchecked")
 		List<User> users = (List<User>)HibernateUtil.getSessionFactory().getCurrentSession().createQuery(
-				"select u from User u, Company c where c.companyID = u.company_companyID and u.companyID=:companyId")
-                .setLong("companyId",companyId)
+				"select u from User u left outer join u.company where u.company.companyID=:companyId")
+                .setLong("companyId",  companyId)
                 .list();
 		session.getTransaction().commit();
-		return users;*/
-		return null;
+		return users;
 	}
 	
 	/**
@@ -200,7 +199,16 @@ public class UserDao {
 	 */
 	public List<User> getUsersInCompany(String companyName) {
 
-		return null;
+		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
+		session.beginTransaction();
+		
+		@SuppressWarnings("unchecked")
+		List<User> users = (List<User>)HibernateUtil.getSessionFactory().getCurrentSession().createQuery(
+				"select u from User u left outer join u.company where u.company.name=:companyName")
+                .setString("companyName",  companyName)
+                .list();
+		session.getTransaction().commit();
+		return users;
 	}
 
 	/**
@@ -211,15 +219,13 @@ public class UserDao {
 	 */
 	public List<User> getUsersInCompanyOfType(CompanyType companyType) {
 		
-		//		TODO - doesn't work!
-		
 		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
 		session.beginTransaction();
 		
 		@SuppressWarnings("unchecked")
 		List<User> users = (List<User>)HibernateUtil.getSessionFactory().getCurrentSession().createQuery(
-				"from User as usr left join Company.companyID as comp where comp.companyType=:companyType")
-                .setString("companyType",companyType.toString())
+				"select u from User u left outer join u.company where u.company.companyType=:companyType")
+                .setString("companyType",  companyType.toString())
                 .list();
 		session.getTransaction().commit();
 		return users;

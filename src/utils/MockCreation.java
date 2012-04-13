@@ -18,9 +18,9 @@ public class MockCreation {
 	
 	public static List<User> createMockUsers(){
 		
- 		Company comp1 = new Company("yada", CompanyType.A);
- 		Company comp2 = new Company("yada", CompanyType.B);
- 		Company comp3 = new Company("yada", CompanyType.C);
+ 		Company comp1 = new Company("comp1", CompanyType.A);
+ 		Company comp2 = new Company("comp2", CompanyType.B);
+ 		Company comp3 = new Company("comp3", CompanyType.C);
 
 
 
