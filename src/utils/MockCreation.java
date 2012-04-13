@@ -21,7 +21,7 @@ public class MockCreation {
  		Company comp = new Company("yada", CompanyType.C);
 
 		for(int i = 0 ; i < 5; i++){
-			User user = new User("userName"+i, "yada"+i+"@gmail.com", "user"+i, comp, "Num1"+i, "num2"+i, "pass"+i, false);
+			User user = new User("userName"+i, "id"+i, comp, "name"+i, "email"+i, "num1 "+i, "num2 "+i, "pass"+i, false);
 			user.setLastLogin(new Date());
 			users.add(user);
 		}

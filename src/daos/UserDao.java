@@ -141,7 +141,10 @@ public class UserDao {
 	 * @param newPassword
 	 */
 	public void changePassword(User user, String newPassword) {
-			//TODO - use update, doesn't require a special function
+				
+		user.setPassword(newPassword); //TODO - hash password
+		updateUser(user);
+		
 	}
 
 	/**
@@ -149,12 +152,12 @@ public class UserDao {
 	 * 
 	 * @param user
 	 */
-	public void changeUserDetails(User user) {
+	public void updateUser(User user) {
 
 		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
 		session.beginTransaction();
 
-		session.update(user); //TODO - check if works
+		session.update(user); 
 
 		session.getTransaction().commit();
 	}
@@ -186,7 +189,7 @@ public class UserDao {
 	 * @param emailAddr
 	 */
 	private void sendResetForgottenPasswordEmail(String emailAddr) {
-
+		//TODO
 	}
 
 

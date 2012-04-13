@@ -23,8 +23,7 @@ public class User implements Serializable{
 	private static final long serialVersionUID = -3550174731709532722L;
 
 	private String userName;
-	
-	private int pasportID;
+	private String pasportID;
 	private Company company; 
 	private String name;
 	private String email;
@@ -38,9 +37,13 @@ public class User implements Serializable{
 	
 	User() {} //not public on purpose!
 	
-	public User(String userName, String email, String name, Company company, 
-			String phone1, String phone2, String password, boolean isAdmin) {
-		this.setUserName(userName);
+
+
+	public User(String userName, String pasportID, Company company,
+			String name, String email, String phone1, String phone2,
+			String password, boolean isAdmin) {
+		this.userName = userName;
+		this.pasportID = pasportID;
 		this.company = company;
 		this.name = name;
 		this.email = email;
@@ -50,6 +53,8 @@ public class User implements Serializable{
 		this.isAdmin = isAdmin;
 	}
 
+
+
 	@Id
 	public String getUserName() {
 		return userName;
@@ -57,13 +62,6 @@ public class User implements Serializable{
 
 	public void setUserName(String userName) {
 		this.userName = userName;
-	}
-	
-	public int getStateID() {
-		return pasportID;
-	}
-	public void setStateID(int stateID) {
-		this.pasportID = stateID;
 	}
 	
 	@OneToOne(cascade = CascadeType.ALL)
@@ -124,6 +122,16 @@ public class User implements Serializable{
 
 	public void setLastLogin(Date lastLogin) {
 		this.lastLogin = lastLogin;
+	}
+
+
+	public String getPasportID() {
+		return pasportID;
+	}
+
+
+	public void setPasportID(String pasportID) {
+		this.pasportID = pasportID;
 	}
 
 

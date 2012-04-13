@@ -53,6 +53,14 @@ public class MainServlet extends HttpServlet {
 
 		UserDao.getInstance().addUsers(users);
 		
+		User toUpdate = users.get(0);
+		
+		toUpdate.setName("nofar");
+		toUpdate.setPasportID("061504866");
+		
+		UserDao.getInstance().updateUser(toUpdate);
+		
+		
 		List<Conference> conferences = MockCreation.createMockConferences();
 		
 		ConferenceDao.getInstance().addNewConference(conferences);
