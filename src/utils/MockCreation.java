@@ -18,9 +18,24 @@ public class MockCreation {
 	
 	public static List<User> createMockUsers(){
 		
- 		Company comp = new Company("yada", CompanyType.C);
+ 		Company comp1 = new Company("yada", CompanyType.A);
+ 		Company comp2 = new Company("yada", CompanyType.B);
+ 		Company comp3 = new Company("yada", CompanyType.C);
+
+
 
 		for(int i = 0 ; i < 5; i++){
+			
+			Company comp;
+			
+			if(i%3 == 0){
+				comp = comp1;
+			}else if(i%3 == 1){
+				comp = comp2;
+			}else{
+				comp = comp3;
+			}
+			
 			User user = new User("userName"+i, "id"+i, comp, "name"+i, "email"+i, "num1 "+i, "num2 "+i, "pass"+i, false);
 			user.setLastLogin(new Date());
 			users.add(user);

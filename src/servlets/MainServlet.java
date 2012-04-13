@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import sun.security.krb5.internal.UDPClient;
 import utils.MockCreation;
 
 import model.Company;
@@ -53,13 +54,10 @@ public class MainServlet extends HttpServlet {
 
 		UserDao.getInstance().addUsers(users);
 		
-		User toUpdate = users.get(0);
+		List<User> users1 = UserDao.getInstance().getUsersInCompany("yada");
 		
-		toUpdate.setName("nofar");
-		toUpdate.setPasportID("061504866");
-		
-		UserDao.getInstance().updateUser(toUpdate);
-		
+		List<User> users2 = UserDao.getInstance().getUsersInCompany("2L");
+
 		
 		List<Conference> conferences = MockCreation.createMockConferences();
 		

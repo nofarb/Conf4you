@@ -11,6 +11,7 @@ import db.HibernateUtil;
 
 import model.Company;
 import model.CompanyType;
+import model.Conference;
 import model.User;
 
 /**
@@ -61,7 +62,17 @@ public class UserDao {
 	 * @return
 	 */
 	public List<User> getUserByEmail(String emailAddr) {
-		return null;
+		
+		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
+		session.beginTransaction();
+		
+		@SuppressWarnings("unchecked")
+		List<User> users = (List<User>)HibernateUtil.getSessionFactory().getCurrentSession().createQuery(
+				"from User where email=:mail")
+                .setString("mail",emailAddr)
+                .list();
+		session.getTransaction().commit();
+		return users;
 	}
 
 	/**
@@ -131,7 +142,7 @@ public class UserDao {
 	 * @param emailAddr
 	 */
 	public void resetForgottenPassword(String emailAddr) {
-
+			//TODO
 	}
 
 	/**
@@ -168,7 +179,37 @@ public class UserDao {
 	 * @param company
 	 * @return
 	 */
-	public List<User> getUsersInCompany(Company company) {
+	public List<User> getUsersInCompany(long companyId) {
+/*		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
+		session.beginTransaction();
+		
+		@SuppressWarnings("unchecked")
+		List<User> users = (List<User>)HibernateUtil.getSessionFactory().getCurrentSession().createQuery(
+				"select u from User u, Company c where c.companyID = u.company_companyID and u.companyID=:companyId")
+                .setLong("companyId",companyId)
+                .list();
+		session.getTransaction().commit();
+		return users;*/
+		return null;
+	}
+	
+	/**
+	 * get a list of all users that belong to a given company
+	 * 
+	 * @param company
+	 * @return
+	 */
+	public List<User> getUsersInCompany(String companyName) {
+	/*	Session session = HibernateUtil.getSessionFactory().getCurrentSession();
+		session.beginTransaction();
+		
+		@SuppressWarnings("unchecked")
+		List<User> users = (List<User>)HibernateUtil.getSessionFactory().getCurrentSession().createQuery(
+				"select u from Users u, Companines c where c.companyId = u.company_companyID and u.name=:companyName")
+                .setString("companyName",companyName)
+                .list();
+		session.getTransaction().commit();
+		return users;*/
 		return null;
 	}
 
