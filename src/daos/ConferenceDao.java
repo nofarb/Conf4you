@@ -98,10 +98,14 @@ public class ConferenceDao {
 	 * @return
 	 */
 	public Conference getConferenceById(long id){
-		
 		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
 		session.beginTransaction();
-		return (Conference)session.load(Conference.class, id);
+		Conference conf = (Conference)session.createQuery(
+				"select conf from  Conference conf where conf.conferenceID = :confId")
+                .setLong("confId", id)
+                .uniqueResult();
+		session.getTransaction().commit();
+		return conf;
 	}
 	
 	

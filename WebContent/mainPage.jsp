@@ -34,6 +34,30 @@ body {
 .demoHeaders {
 	margin-top: 2em;
 }
+
+jQuery(function($) {
+
+    $("<p>").html("Loaded at " + new Date()).appendTo(
+        document.body
+    );
+    showTab(location.hash || "1");
+
+    $("#nav a").click(function() {
+        var hash = this.getAttribute("href");
+        if (hash.substring(0, 1) === "#") {
+            hash = hash.substring(1);
+        }
+        location.hash = hash;
+        showTab(hash);
+        return false;
+    });
+
+    function showTab(hash) {
+        $("div.tab").hide();
+        $("#tab-" + hash).show();
+    }
+
+});
 </style>
 </head>
 <body>
@@ -59,7 +83,7 @@ body {
 		</div>
 		<div id="tabs-4">
 			<jsp:include page="conference.jsp" />
-		</div>>
+		</div>
 	</div>
 
 

@@ -29,9 +29,12 @@ public class LocationDao {
 	 * Get a list of all the locations that are stored in the database
 	 */
 	public List<Location> getLocations(){
-		return (List<Location>)HibernateUtil.getSessionFactory().getCurrentSession().createQuery(
-				"select Loc from Location Loc")
-                .list();
+		
+		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
+		session.beginTransaction();
+		List<Location> result = (List<Location>) session.createQuery("from Location").list();
+		session.getTransaction().commit();
+		return result;
 	}
 	
 	

@@ -18,30 +18,31 @@
 <script type="text/javascript" src="js/jquery-1.7.1.min.js"></script>
 <script type="text/javascript" src="js/jquery-ui-1.8.18.custom.min.js"></script>
 
-<script>
-	$(function() {
-		$( ".addButton" ).button({
-            icons: {
-                primary: "ui-icon-plus"
-            }
-		});
-		
-	});
-	</script>
-
-
-</head>
-
 <body>
+<div id="body_wrap">
+<div id="content">
 
-	<p class="horizontal-line">Actions</p>
+	<div class="pageTitle">
+	<div class="titleMain ">Conferences</div>
+	<br/>
+	<div style="clear:both;"></div>
+	<div class="titleSeparator"></div>
+	<div class="titleSub">manage, view details and add new conferences</div>
+	</div>
 
-	<p class="horizontal-line">Conferences</p>
-
-<a class="addButton" href="blah.jsp">Add Conference</a>
-
-	<table cellpadding="0" cellspacing="0" border="0" id="table"
-		class="sortable">
+	<div id="vn_mainbody">
+	
+	<div class="buttons">
+		<a id="createNewConference" href="#" onClick="location.href='conferenceAdd.jsp'">
+		<span></span>
+		<img src="/conf4u/resources/imgs/vn_action_add.png">
+		Add Conference
+		</a>
+	</div>
+	
+	<div>
+	<div class="groupedList">
+	<table cellpadding="0" cellspacing="0" border="0" class="sortable">
 		<thead>
 			<tr>
 				<th><h3>Name</h3></th>
@@ -60,16 +61,21 @@
 			for (Conference conference : conferences )
 			{
 		%>
-			<tr>
+			<tr class="gridRow">
 				<td><%=conference.getName()%></td>
 				<td><%=conference.getLocation().getName()%></td>
 				<td><%=conference.getStartDate()%></td>
 				<td><%=conference.getEndDate()%></td>
-				<td><a href="conferenceDetails.jsp?userid=<%=conference.getConferenceID()%>"  style="color: blue;">Details</a></td>
+				<td><a class="vn_boldtext" href="#" onClick="location.href='conferenceDetails.jsp?conferenceId=<%=conference.getConferenceID()%>'">
+				<img src="/conf4u/resources/imgs/vn_world.png" alt="">
+				Details
+				</a>
+				</td>
 			</tr>
 			<%	} %>
 		</tbody>
 	</table>
+	</div>
 	<div id="controls">
 		<div id="perpage">
 			<select onchange="sorter.size(this.value)">
@@ -95,7 +101,6 @@
 				id="pagelimit"></span>
 		</div>
 	</div>
-
 	<script type="text/javascript" src="js/tables/script.js"></script>
 	<script type="text/javascript">
 		var sorter = new TINY.table.sorter("sorter");
@@ -111,6 +116,9 @@
 		sorter.limitid = "pagelimit";
 		sorter.init("table", 1);
 	</script>
-
+</div>
+</div>
+</div>
+</div>
 </body>
 </html>
