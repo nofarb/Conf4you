@@ -70,6 +70,7 @@ jQuery(function($) {
 			<li><a href="#tabs-2">Users</a></li>
 			<li><a href="#tabs-3">Users</a></li>
 			<li><a href="#tabs-4">Conferences</a></li>
+			<li><a href="#tabs-5">Companies</a></li>
 		</ul>
 		<div id="tabs-1">Lorem ipsum dolor sit amet, consectetur
 			adipisicing elit, sed do eiusmod tempor incididunt ut labore et
@@ -83,6 +84,9 @@ jQuery(function($) {
 		</div>
 		<div id="tabs-4">
 			<jsp:include page="conference.jsp" />
+		</div>
+		<div id="tabs-5">
+			<jsp:include page="companies.jsp" />
 		</div>
 	</div>
 
