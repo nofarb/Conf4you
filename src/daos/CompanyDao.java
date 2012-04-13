@@ -33,7 +33,7 @@ public class CompanyDao {
 	public List<Company> getAllCompanies() {
 		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
 		session.beginTransaction();
-		List<Company> result = (List<Company>) session.createQuery("from COMPANIES").list();
+		List<Company> result = (List<Company>) session.createQuery("from Company").list();
 		session.getTransaction().commit();
 		return result;
 	}

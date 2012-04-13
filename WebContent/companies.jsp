@@ -63,7 +63,7 @@
 		%>
 			<tr class="gridRow">
 				<td><%=company.getName()%></td>
-				<td><%=company.getCompanyType()%></td>
+				<td><%=company.getCompanyType().toString()%></td>
 				<td><a class="vn_boldtext" href="#" onClick="location.href='companyDetails.jsp?companyId=<%=company.getCompanyID()%>'">
 				<img src="/conf4u/resources/imgs/vn_world.png" alt="">
 				Details
