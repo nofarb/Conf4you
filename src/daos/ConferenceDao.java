@@ -84,11 +84,15 @@ public class ConferenceDao {
 	 */
 	@SuppressWarnings("unchecked")
 	public List<Conference> getConferences(ConferenceFilters.ConferenceDatesFilter filter){
-		return (List<Conference>)HibernateUtil.getSessionFactory().getCurrentSession().createQuery(
+		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
+		session.beginTransaction();
+		List<Conference> result = (List<Conference>)HibernateUtil.getSessionFactory().getCurrentSession().createQuery(
 				"select conf from Conference conf where conf.startDate >= :startDate and conf.endtDate <= :endDate")
                 .setDate("startDate", filter.getFromDate())
                 .setDate("endDate", filter.getToDate())
                 .list();
+		session.getTransaction().commit();
+		return result;
 	}
 	
 	
@@ -284,6 +288,8 @@ public class ConferenceDao {
 	 * @return
 	 */
 	public List<Conference> getConferencesForUser(User user){
+		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
+		session.beginTransaction();
 		List<Conference> conferernces = null;
 		
 		conferernces.addAll(
@@ -296,7 +302,7 @@ public class ConferenceDao {
 				(List<Conference>)HibernateUtil.getSessionFactory().getCurrentSession().createQuery(
 				"select confPart.conference from  ConferenceParticipantStatus confPart where confPart.user = :user")
                 .setEntity("user", user));
-		
+		session.getTransaction().commit();
 		return conferernces;
 	}
 }
