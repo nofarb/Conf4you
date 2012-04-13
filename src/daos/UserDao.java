@@ -1,17 +1,10 @@
 package daos;
 
 import java.util.List;
-
 import org.hibernate.Session;
-import org.hibernate.Query;
-
-import servlets.UsersServices;
 import system.exceptions.ItemNotFoundException;
 import db.HibernateUtil;
-
-import model.Company;
 import model.CompanyType;
-import model.Conference;
 import model.User;
 
 /**

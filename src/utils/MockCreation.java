@@ -22,8 +22,6 @@ public class MockCreation {
  		Company comp2 = new Company("comp2", CompanyType.B);
  		Company comp3 = new Company("comp3", CompanyType.C);
 
-
-
 		for(int i = 0 ; i < 5; i++){
 			
 			Company comp;
