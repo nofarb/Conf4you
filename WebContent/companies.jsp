@@ -1,3 +1,5 @@
+<%@page import="daos.CompanyDao"%>
+<%@page import="model.Company"%>
 <%@page import="model.Conference"%>
 <%@page import="model.ConferenceFilters.ConferencePreDefinedFilter"%>
 <%@page import="daos.ConferenceDao"%>
@@ -23,20 +25,20 @@
 <div id="content">
 
 	<div class="pageTitle">
-	<div class="titleMain ">Conferences</div>
+	<div class="titleMain ">Companies</div>
 	<br/>
 	<div style="clear:both;"></div>
 	<div class="titleSeparator"></div>
-	<div class="titleSub">manage, view details and add new conferences</div>
+	<div class="titleSub">manage, view details and add new Companies</div>
 	</div>
 
 	<div id="vn_mainbody">
 	
 	<div class="buttons">
-		<a id="createNewConference" href="#" onClick="location.href='conferenceAdd.jsp'">
+		<a id="createNewCompany" href="#" onClick="location.href='companyAdd.jsp'">
 		<span></span>
 		<img src="/conf4u/resources/imgs/vn_action_add.png">
-		Add Conference
+		Add Company
 		</a>
 	</div>
 	
@@ -46,27 +48,23 @@
 		<thead>
 			<tr>
 				<th><h3>Name</h3></th>
-				<th><h3>Location</h3></th>
-				<th><h3>Start date</h3></th>
-				<th><h3>End date</h3></th>
+				<th><h3>Type</h3></th>
 				<th class="nosort"><h3>Details</h3></th>
 			</tr>
 		</thead>
 		<tbody>
 			<% 
 
-			List <Conference> conferences = ConferenceDao.getInstance().getConferences(ConferencePreDefinedFilter.ALL);
+			List <Company> companies = CompanyDao.getInstance().getAllCompanies();
 		
 			// Print each application in a single row
-			for (Conference conference : conferences )
+			for (Company company : companies )
 			{
 		%>
 			<tr class="gridRow">
-				<td><%=conference.getName()%></td>
-				<td><%=conference.getLocation().getName()%></td>
-				<td><%=conference.getStartDate()%></td>
-				<td><%=conference.getEndDate()%></td>
-				<td><a class="vn_boldtext" href="#" onClick="location.href='conferenceDetails.jsp?conferenceId=<%=conference.getConferenceID()%>'">
+				<td><%=company.getName()%></td>
+				<td><%=company.getCompanyType()%></td>
+				<td><a class="vn_boldtext" href="#" onClick="location.href='companyDetails.jsp?companyId=<%=company.getCompanyID()%>'">
 				<img src="/conf4u/resources/imgs/vn_world.png" alt="">
 				Details
 				</a>

@@ -8,6 +8,7 @@ import db.HibernateUtil;
 
 import model.Company;
 import model.CompanyType;
+import model.Conference;
 
 /**
  * This class is responsible of supplying services related to the Company entity which require database access.
@@ -29,7 +30,7 @@ public class CompanyDao {
 	/**
 	 * Get a list of all the Companies that are stored in the database
 	 */
-	private List<Company> getAllCompanies() {
+	public List<Company> getAllCompanies() {
 		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
 		session.beginTransaction();
 		List<Company> result = (List<Company>) session.createQuery("from COMPANIES").list();
@@ -47,6 +48,15 @@ public class CompanyDao {
 	/**
 	 * Add a new Company to the database
 	 */
+	public void addCompany(List<Company> companies) {
+
+		 for (Company comp:companies)
+		 {
+			 addCompany(comp);
+		 }
+
+	}
+	
 	public Company addCompany(Company company) {
 
 		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
@@ -64,6 +74,22 @@ public class CompanyDao {
 	 */
 	public Company updateCompany(Company company) {
 		return null;
+	}
+	
+	/**
+	 * Get a company by its database key ID
+	 * @param id
+	 * @return
+	 */
+	public Company getCompanyById(long id){
+		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
+		session.beginTransaction();
+		Company comp = (Company)session.createQuery(
+				"select comp from  COMPANIES comp where comp.companyID = :compId")
+                .setLong("compId", id)
+                .uniqueResult();
+		session.getTransaction().commit();
+		return comp;
 	}
 
 }
