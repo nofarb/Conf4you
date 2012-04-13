@@ -51,18 +51,16 @@ public class MainServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
 		List<User> users = MockCreation.createMockUsers(); 
+		List<Conference> confrences = MockCreation.createMockConferences();
 
 		UserDao.getInstance().addUsers(users);
+		ConferenceDao.getInstance().addNewConference(confrences);
 		
-		List<User> users1 = UserDao.getInstance().getUsersInCompany("yada");
+/*		@SuppressWarnings("unused")
+		List<User> users2  = UserDao.getInstance().getUsersInCompanyOfType(CompanyType.C);*/
 		
-		List<User> users2 = UserDao.getInstance().getUsersInCompany("2L");
-
-		
-		List<Conference> conferences = MockCreation.createMockConferences();
-		
-		ConferenceDao.getInstance().addNewConference(conferences);
-
+		String s = "sas";
+		s.substring(0);
 		String servletPath = request.getServletPath();
 
 		yada(request, response);

@@ -35,9 +35,7 @@ public class User implements Serializable{
 	private Date lastLogin;
 	
 	
-	
 	User() {} //not public on purpose!
-	
 
 
 	public User(String userName, String pasportID, Company company,
@@ -53,7 +51,6 @@ public class User implements Serializable{
 		this.password = password;
 		this.isAdmin = isAdmin;
 	}
-
 
 
 	@Id

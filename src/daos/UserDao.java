@@ -106,7 +106,6 @@ public class UserDao {
 		}
 
 		session.getTransaction().commit();
-
 	}
 
 	/**
@@ -200,16 +199,7 @@ public class UserDao {
 	 * @return
 	 */
 	public List<User> getUsersInCompany(String companyName) {
-	/*	Session session = HibernateUtil.getSessionFactory().getCurrentSession();
-		session.beginTransaction();
-		
-		@SuppressWarnings("unchecked")
-		List<User> users = (List<User>)HibernateUtil.getSessionFactory().getCurrentSession().createQuery(
-				"select u from Users u, Companines c where c.companyId = u.company_companyID and u.name=:companyName")
-                .setString("companyName",companyName)
-                .list();
-		session.getTransaction().commit();
-		return users;*/
+
 		return null;
 	}
 
@@ -220,7 +210,19 @@ public class UserDao {
 	 * @return
 	 */
 	public List<User> getUsersInCompanyOfType(CompanyType companyType) {
-		return null;
+		
+		//		TODO - doesn't work!
+		
+		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
+		session.beginTransaction();
+		
+		@SuppressWarnings("unchecked")
+		List<User> users = (List<User>)HibernateUtil.getSessionFactory().getCurrentSession().createQuery(
+				"from User as usr left join Company.companyID as comp where comp.companyType=:companyType")
+                .setString("companyType",companyType.toString())
+                .list();
+		session.getTransaction().commit();
+		return users;
 	}
 
 	/**

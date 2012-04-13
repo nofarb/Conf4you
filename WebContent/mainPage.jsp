@@ -80,10 +80,10 @@ jQuery(function($) {
 			<jsp:include page="users.jsp" />
 		</div>
 		<div id="tabs-3">
-			<iframe  style="width: 100%; height: 768px;"  src="users.jsp" /></iframe>
+			<iframe  style="width: 100%; height: 768px; border: none"  src="users.jsp" /></iframe>
 		</div>
 		<div id="tabs-4">
-			<jsp:include page="conference.jsp" />
+			<iframe  style="width: 100%; height: 768px; border: none"  src="conference.jsp" /></iframe>
 		</div>
 		<div id="tabs-5">
 			<jsp:include page="companies.jsp" />
