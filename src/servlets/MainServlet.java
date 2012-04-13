@@ -58,9 +58,7 @@ public class MainServlet extends HttpServlet {
 		
 /*		@SuppressWarnings("unused")
 		List<User> users2  = UserDao.getInstance().getUsersInCompanyOfType(CompanyType.C);*/
-		
-		String s = "sas";
-		s.substring(0);
+
 		String servletPath = request.getServletPath();
 
 		yada(request, response);

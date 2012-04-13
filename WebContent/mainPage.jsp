@@ -86,7 +86,7 @@ jQuery(function($) {
 			<iframe  style="width: 100%; height: 768px; border: none"  src="conference.jsp" /></iframe>
 		</div>
 		<div id="tabs-5">
-			<jsp:include page="companies.jsp" />
+			<iframe  style="width: 100%; height: 768px; border: none"  src="companies.jsp" /></iframe>
 		</div>
 	</div>
 
