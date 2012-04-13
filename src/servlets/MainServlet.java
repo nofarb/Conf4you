@@ -51,17 +51,13 @@ public class MainServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
 		List<User> users = MockCreation.createMockUsers(); 
+		List<Conference> confrences = MockCreation.createMockConferences();
 
 		UserDao.getInstance().addUsers(users);
+		ConferenceDao.getInstance().addNewConference(confrences);
 		
-		List<User> users1 = UserDao.getInstance().getUsersInCompany("yada");
-		
-		List<User> users2 = UserDao.getInstance().getUsersInCompany("2L");
-
-		
-		List<Conference> conferences = MockCreation.createMockConferences();
-		
-		ConferenceDao.getInstance().addNewConference(conferences);
+/*		@SuppressWarnings("unused")
+		List<User> users2  = UserDao.getInstance().getUsersInCompanyOfType(CompanyType.C);*/
 
 		String servletPath = request.getServletPath();
 
