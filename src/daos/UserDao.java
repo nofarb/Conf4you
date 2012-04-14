@@ -41,18 +41,22 @@ public class UserDao {
 	 * 
 	 * @param emailAddr
 	 * @return
+	 * @throws ItemNotFoundException 
 	 */
-	public User getUserByUserName(String userName) {
+	public User getUserByUserName(String userName) throws ItemNotFoundException {
 		
 		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
 		session.beginTransaction();
 		
 		@SuppressWarnings("unchecked")
-		User user = (User)HibernateUtil.getSessionFactory().getCurrentSession().createQuery(
+		List<User> users = (List<User>)HibernateUtil.getSessionFactory().getCurrentSession().createQuery(
 				"from User where userName=:userName")
-                .setString("userName",userName);
+                .setString("userName",userName).list();
 		session.getTransaction().commit();
-		return user;
+		if(users.size() == 0){
+			throw new ItemNotFoundException("User Name", userName);
+		}
+		return users.get(0);
 
 	}
 

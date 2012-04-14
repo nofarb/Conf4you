@@ -35,7 +35,7 @@
 
 	<p class="horizontal-line">Users</p>
 
-<a class="addButton" href="userDetails.jsp">Add User</a>
+<a class="addButton" href="addUser.jsp">Add User</a>
 
 	<table cellpadding="0" cellspacing="0" border="0" id="table"
 		class="sortable">
