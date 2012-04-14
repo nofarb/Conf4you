@@ -48,17 +48,10 @@ body {
 	<div class="titleSeparator"></div>
 	<div id="tabs">
 		<ul>
-			<li><a href="#tabs-1"><span>Users</span></a></li>
+			<li><a href="users.jsp"><span>Users</span></a></li>
 			<li><a href="conference.jsp"><span>Conferences</span></a></li>
-			<li><a href="#tabs-3"><span>Companies</span></a></li>
+			<li><a href="companies.jsp"><span>Companies</span></a></li>
 		</ul>
-		<div id="tabs-1">
-			<iframe  style="width: 100%; height: 768px; border: none"  src="users.jsp" /></iframe>
-		</div>
-
-		<div id="tabs-3">
-			<iframe  style="width: 100%; height: 768px; border: none"  src="companies.jsp" /></iframe>
-		</div>
 	</div>
 
 

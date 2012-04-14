@@ -37,15 +37,23 @@ public class UserDao {
 	}
 
 	/**
-	 * Get a user by its database key ID
+	 * Get a user by its database key 
 	 * 
 	 * @param emailAddr
 	 * @return
 	 */
-	public User getUserById(long id) {
+	public User getUserByUserName(String userName) {
+		
 		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
 		session.beginTransaction();
-		return (User)session.load(User.class, id);
+		
+		@SuppressWarnings("unchecked")
+		User user = (User)HibernateUtil.getSessionFactory().getCurrentSession().createQuery(
+				"from User where userName=:userName")
+                .setString("userName",userName);
+		session.getTransaction().commit();
+		return user;
+
 	}
 
 	/**
