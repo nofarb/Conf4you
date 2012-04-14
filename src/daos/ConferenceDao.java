@@ -114,10 +114,10 @@ public class ConferenceDao {
 	
 	
 	public void addNewConference(List<Conference> conferences){
-	 for (Conference conf:conferences)
-	 {
-		 addNewConference(conf);
-	 }
+		 for (Conference conf:conferences)
+		 {
+			 addNewConference(conf);
+		 }
 	}
 	
 	
@@ -125,13 +125,12 @@ public class ConferenceDao {
 	 * Add a new Conference to the database
 	 */
 	public Conference addNewConference(Conference conference){
-		Conference conf = new Conference(conference.getLocation(), conference.getName(), conference.getDescription(), conference.getStartDate(), conference.getEndDate());
 		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
 		session.beginTransaction();
-		session.save(conf);
+		session.merge(conference);
 		session.getTransaction().commit();
 		
-		return conf;
+		return conference;
 	}
 	
 

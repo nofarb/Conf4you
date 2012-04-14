@@ -78,7 +78,7 @@ public class UserDao {
 
 		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
 		session.beginTransaction();
-		session.save(user); 
+		session.merge(user);
 		session.getTransaction().commit();
 	}
 
@@ -90,14 +90,9 @@ public class UserDao {
 	 */
 	public void addUsers(List<User> users) {
 
-		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
-		session.beginTransaction();
-
 		for (User user : users) {
-			session.save(user);
+			addUser(user);
 		}
-
-		session.getTransaction().commit();
 	}
 
 	/**

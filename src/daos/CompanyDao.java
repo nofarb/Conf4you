@@ -72,9 +72,7 @@ public class CompanyDao {
 
 		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
 		session.beginTransaction();
-
-		session.save(company);
-
+		session.merge(company);
 		session.getTransaction().commit();
 
 		return company;

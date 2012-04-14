@@ -62,7 +62,7 @@ public class LocationDao {
 	Location loc = new Location(location.getName(), location.getAddress(), location.getMaxCapacity(), location.getContactName(), location.getPhone1(), location.getPhone2());
 		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
 		session.beginTransaction();
-		session.save(loc);
+		session.merge(loc);
 		session.getTransaction().commit();
 
 		return loc;

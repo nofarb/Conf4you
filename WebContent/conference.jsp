@@ -32,7 +32,7 @@
 	<div id="vn_mainbody">
 	
 	<div class="buttons">
-		<a id="createNewConference" href="#" onClick="location.href='conferenceAdd.jsp'">
+		<a id="createNewConference" href="conferenceAdd.jsp">
 		<span></span>
 		<img src="/conf4u/resources/imgs/vn_action_add.png">
 		Add Conference
@@ -65,7 +65,7 @@
 				<td><%=conference.getLocation().getName()%></td>
 				<td><%=conference.getStartDate()%></td>
 				<td><%=conference.getEndDate()%></td>
-				<td><a class="vn_boldtext" href="#" onClick="location.href='conferenceDetails.jsp?conferenceId=<%=conference.getConferenceID()%>'">
+				<td><a class="vn_boldtext" href="conferenceDetails.jsp?conferenceId=<%=conference.getConferenceID()%>">
 				<img src="/conf4u/resources/imgs/vn_world.png" alt="">
 				Details
 				</a>
@@ -74,47 +74,7 @@
 			<%	} %>
 		</tbody>
 	</table>
-	</div>
-	<div id="controls">
-		<div id="perpage">
-			<select onchange="sorter.size(this.value)">
-				<option value="5">5</option>
-				<option value="10" selected="selected">10</option>
-				<option value="20">20</option>
-				<option value="50">50</option>
-				<option value="100">100</option>
-			</select> <span>Entries Per Page</span>
-		</div>
-		<div id="navigation">
-			<img src="css/tables/images/first.gif" width="16" height="16"
-				alt="First Page" onclick="sorter.move(-1,true)" /> <img
-				src="css/tables/images/previous.gif" width="16" height="16"
-				alt="First Page" onclick="sorter.move(-1)" /> <img
-				src="css/tables/images/next.gif" width="16" height="16"
-				alt="First Page" onclick="sorter.move(1)" /> <img
-				src="css/tables/images/last.gif" width="16" height="16"
-				alt="Last Page" onclick="sorter.move(1,true)" />
-		</div>
-		<div id="text">
-			Displaying Page <span id="currentpage"></span> of <span
-				id="pagelimit"></span>
-		</div>
-	</div>
-	<script type="text/javascript" src="js/tables/script.js"></script>
-	<script type="text/javascript">
-		var sorter = new TINY.table.sorter("sorter");
-		sorter.head = "head";
-		sorter.asc = "asc";
-		sorter.desc = "desc";
-		sorter.even = "evenrow";
-		sorter.odd = "oddrow";
-		sorter.evensel = "evenselected";
-		sorter.oddsel = "oddselected";
-		sorter.paginate = true;
-		sorter.currentid = "currentpage";
-		sorter.limitid = "pagelimit";
-		sorter.init("table", 1);
-	</script>
+</div>
 </div>
 </div>
 </div>

@@ -21,8 +21,12 @@
 <script type="text/javascript" src="js/jquery-ui-1.8.18.custom.min.js"></script>
 
 <script>
-$(function() {
-	$( ".datepicker" ).datepicker();
+
+
+$(document).ready(function(){
+	var $(function() {
+		$( ".datepicker" ).datepicker();
+	});
 });
 
 </script>
@@ -127,10 +131,10 @@ $(function() {
 				<img class="img_png" width="16" height="16" alt="" src="/conf4u/resources/imgs/table_save.png">
 				Create
 				</button>
-				<button id="cancelButton" type="button" onClick="history.back()">
+				<a id="cancelButton" href="#" onClick="window.location.reload( true )">
 				<img class="img_png" width="16" height="16" alt="" src="/conf4u/resources/imgs/cancel.png">
 				Cancel
-				</button>
+				</a>
 			</div>
 		</td>
 	</tr>
