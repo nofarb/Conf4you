@@ -14,13 +14,14 @@ public class MockCreation {
 
 	private static List<User> users = new LinkedList<User>();
 	private static List<Conference> conferences = new LinkedList<Conference>();
-	
+	private static List<Company> companies = new LinkedList<Company>();
 	
 	public static List<User> createMockUsers(){
 		
  		Company comp1 = new Company("comp1", CompanyType.A);
  		Company comp2 = new Company("comp2", CompanyType.B);
  		Company comp3 = new Company("comp3", CompanyType.C);
+
 
 		for(int i = 0 ; i < 5; i++){
 			
@@ -53,4 +54,29 @@ public class MockCreation {
 		return conferences;
 		
 	}
+
+	public static List<Company> createMockCompanies(){
+		
+		CompanyType type = CompanyType.A;
+
+		for(int i = 0 ; i < 5; i++)
+		{
+			if(i%3 == 0)
+			{
+				type = CompanyType.A;
+			}else if(i%3 == 1)
+			{
+				type = CompanyType.B;
+			}else
+			{
+				type = CompanyType.C;
+			}
+			
+			Company comp = new Company("comp" + i + i, type);
+			companies.add(comp);
+		}
+		
+		return companies;
+	}
+
 }

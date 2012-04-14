@@ -9,6 +9,7 @@ import db.HibernateUtil;
 import model.Company;
 import model.CompanyType;
 import model.Conference;
+import model.User;
 
 /**
  * This class is responsible of supplying services related to the Company entity which require database access.
@@ -33,6 +34,7 @@ public class CompanyDao {
 	public List<Company> getAllCompanies() {
 		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
 		session.beginTransaction();
+		@SuppressWarnings("unchecked")
 		List<Company> result = (List<Company>) session.createQuery("from Company").list();
 		session.getTransaction().commit();
 		return result;
@@ -42,7 +44,16 @@ public class CompanyDao {
 	 * Get a list of all the Companies of type <Company Type> that are stored in the database
 	 */
 	public List<Company> getCompaniesOfType(CompanyType companyType) {
-		return null;
+		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
+		session.beginTransaction();
+		
+		@SuppressWarnings("unchecked")
+		List<Company> companies = (List<Company>)HibernateUtil.getSessionFactory().getCurrentSession().createQuery(
+				"from Company where companyType=:companyType")
+                .setString("companyType",  companyType.toString())
+                .list();
+		session.getTransaction().commit();
+		return companies;
 	}
 
 	/**
@@ -73,7 +84,11 @@ public class CompanyDao {
 	 * Update an existing company in the database
 	 */
 	public Company updateCompany(Company company) {
-		return null;
+		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
+		session.beginTransaction();
+		session.update(company); 
+		session.getTransaction().commit();
+		return company;
 	}
 	
 	/**
@@ -85,7 +100,7 @@ public class CompanyDao {
 		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
 		session.beginTransaction();
 		Company comp = (Company)session.createQuery(
-				"select comp from  COMPANIES comp where comp.companyID = :compId")
+				"select comp from  Company comp where comp.companyID = :compId")
                 .setLong("compId", id)
                 .uniqueResult();
 		session.getTransaction().commit();

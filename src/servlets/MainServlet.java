@@ -52,12 +52,20 @@ public class MainServlet extends HttpServlet {
 
 		List<User> users = MockCreation.createMockUsers(); 
 		List<Conference> confrences = MockCreation.createMockConferences();
+		List<Company> companies = MockCreation.createMockCompanies();
 
 		UserDao.getInstance().addUsers(users);
 		ConferenceDao.getInstance().addNewConference(confrences);
+		CompanyDao.getInstance().addCompany(companies);
 		
 /*		@SuppressWarnings("unused")
 		List<User> users2  = UserDao.getInstance().getUsersInCompanyOfType(CompanyType.C);*/
+/*		@SuppressWarnings("unused")
+		List<Company> companiesA = CompanyDao.getInstance().getCompaniesOfType(CompanyType.A);
+		@SuppressWarnings("unused")
+		List<Company> companiesB = CompanyDao.getInstance().getCompaniesOfType(CompanyType.B);
+		@SuppressWarnings("unused")
+		List<Company> companiesC = CompanyDao.getInstance().getCompaniesOfType(CompanyType.C);*/
 
 		String servletPath = request.getServletPath();
 
