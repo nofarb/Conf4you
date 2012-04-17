@@ -1,12 +1,12 @@
 package daos;
 
 import java.util.List;
+
+import model.Location;
+
 import org.hibernate.Session;
 
 import db.HibernateUtil;
-
-import model.Location;
-import model.User;
 
 /**
  * This class is responsible of supplying services related to the Location entity which require database access.
@@ -32,6 +32,7 @@ public class LocationDao {
 		
 		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
 		session.beginTransaction();
+		@SuppressWarnings("unchecked")
 		List<Location> result = (List<Location>) session.createQuery("from Location").list();
 		session.getTransaction().commit();
 		return result;
@@ -75,18 +76,12 @@ public class LocationDao {
 	 * @return
 	 */
 	public Location updateLocation(Location location){
-		return null;
-/*		Location loc = getLocationById(location.getLocationId());
+		
 		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
 		session.beginTransaction();
-		session.update(loc.setName(location.getName())
-				.setMaxCapacity(location.getMaxCapacity())
-				.setContactName(location.getContactName())
-				.setPhone1(location.getPhone1())
-				.setPhone2(location.getPhone2()));
+		session.update(location); 
 		session.getTransaction().commit();
-
-		return loc;*/
+		return location;
 		
 	}
 }
