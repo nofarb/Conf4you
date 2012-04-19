@@ -1,9 +1,5 @@
 <%@page import="daos.CompanyDao"%>
 <%@page import="model.Company"%>
-<%@page import="model.Conference"%>
-<%@page import="model.ConferenceFilters.ConferencePreDefinedFilter"%>
-<%@page import="daos.ConferenceDao"%>
-<%@page import="daos.UserDao"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="ISO-8859-1"%>
 <%@ page import="java.util.List"%>
 <%@ page import="java.util.Date"%>
@@ -20,31 +16,30 @@
 <script type="text/javascript" src="js/jquery-1.7.1.min.js"></script>
 <script type="text/javascript" src="js/jquery-ui-1.8.18.custom.min.js"></script>
 
+<script>
+	$(function() {
+		$( ".addButton" ).button({
+            icons: {
+                primary: "ui-icon-plus"
+            }
+		});
+		
+	});
+	</script>
+
+
+</head>
+
 <body>
-<div id="body_wrap">
-<div id="content">
 
-	<div class="pageTitle">
-	<div class="titleMain ">Companies</div>
-	<br/>
-	<div style="clear:both;"></div>
-	<div class="titleSeparator"></div>
-	<div class="titleSub">manage, view details and add new Companies</div>
-	</div>
+	<p class="horizontal-line">Actions</p>
 
-	<div id="vn_mainbody">
-	
-	<div class="buttons">
-		<a id="createNewCompany" href="#" onClick="location.href='companyAdd.jsp'">
-		<span></span>
-		<img src="/conf4u/resources/imgs/vn_action_add.png">
-		Add Company
-		</a>
-	</div>
-	
-	<div>
-	<div class="groupedList">
-	<table cellpadding="0" cellspacing="0" border="0" class="sortable">
+	<p class="horizontal-line">Companies</p>
+
+<a class="addButton" href="companyAdd.jsp">Add Company</a>
+
+	<table cellpadding="0" cellspacing="0" border="0" id="table"
+		class="sortable">
 		<thead>
 			<tr>
 				<th><h3>Name</h3></th>
@@ -58,22 +53,17 @@
 			List <Company> companies = CompanyDao.getInstance().getAllCompanies();
 		
 			// Print each application in a single row
-			for (Company company : companies )
+			for (Company comp : companies )
 			{
 		%>
-			<tr class="gridRow">
-				<td><%=company.getName()%></td>
-				<td><%=company.getCompanyType().toString()%></td>
-				<td><a class="vn_boldtext" href="#" onClick="location.href='companyDetails.jsp?companyId=<%=company.getCompanyID()%>'">
-				<img src="/conf4u/resources/imgs/vn_world.png" alt="">
-				Details
-				</a>
-				</td>
+			<tr>
+				<td><%=comp.getName()%></td>
+				<td><%=comp.getCompanyType().toString()%></td>
+				<td><a class="vn_boldtext"href="companyDetails.jsp?companyId=<%=comp.getCompanyID()%>"> <img src="/conf4u/resources/imgs/vn_world.png" alt=""> Details </a> </td>
 			</tr>
 			<%	} %>
 		</tbody>
 	</table>
-	</div>
 	<div id="controls">
 		<div id="perpage">
 			<select onchange="sorter.size(this.value)">
@@ -99,6 +89,7 @@
 				id="pagelimit"></span>
 		</div>
 	</div>
+
 	<script type="text/javascript" src="js/tables/script.js"></script>
 	<script type="text/javascript">
 		var sorter = new TINY.table.sorter("sorter");
@@ -114,9 +105,6 @@
 		sorter.limitid = "pagelimit";
 		sorter.init("table", 1);
 	</script>
-</div>
-</div>
-</div>
-</div>
+
 </body>
 </html>

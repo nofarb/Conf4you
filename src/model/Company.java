@@ -12,7 +12,7 @@ import javax.persistence.Table;
 import org.hibernate.annotations.GenericGenerator;
 
 @Entity
-@Table( name = "COMPANIES" )
+@Table( name = "Company" )
 /**
  * This class is an entity class that represent the company object in the database.
  * This class holds no logic, only getters, setter and constructors.

@@ -62,18 +62,6 @@ $(function() {
 			<div></div>
 		</td>
 	</tr>
-		<tr>
-		<td class="labelcell required">
-			<label for="compName">
-			Company name:
-			<span class="required_star"> *</span>
-			</label>
-		</td>
-			<td class="inputcell">
-			<input id="compName" type="text" value="" name="compName">
-			<div></div>
-		</td>
-	</tr>
 	<tr>
 		<td class="labelcell required">
 			<label for="Type">
