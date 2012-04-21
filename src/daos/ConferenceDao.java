@@ -112,6 +112,18 @@ public class ConferenceDao {
 		return conf;
 	}
 	
+	public Boolean isConferenceNameExists(String name){
+		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
+		session.beginTransaction();
+		Boolean exists = session.createQuery(
+				"select conf from  Conference conf where conf.name = :name")
+                .setString("confId", name)
+                .uniqueResult() != null;
+		session.getTransaction().commit();
+		return exists;
+	}
+	
+	
 	
 	public void addNewConference(List<Conference> conferences){
 		 for (Conference conf:conferences)

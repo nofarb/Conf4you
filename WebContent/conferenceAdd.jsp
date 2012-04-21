@@ -39,6 +39,31 @@ $(function() {
 });
 
 $(document).ready(function(){
+	$.validator.addMethod("uniqueConferenceName", function(value, element) {
+	      $.ajax({
+	          type: "POST",
+	           url: "ConferenceServices",
+	          data: "confName="+value,
+	          dataType:"html",
+	       success: function(msg)
+	       {
+	          //If conference exists, set response to true
+	          var response = ( msg == 'true' ) ? true : false;
+	          return response;
+	       }
+	     });
+	 }, "conference name is Already Taken");
+	
+	 $.validator.addMethod("endDateValidate", function(value, element) {
+         var startDate = $('.startDate').val();
+         return Date.parse(value) <= Date.parse(startDate) || value == "";
+     }, "Start date should be greater than End date");
+	 
+	 $.validator.addMethod("startDateGreaterThanNow", function(value, element) {
+         var now = Date.now();
+         return Date.parse(value) <= Date.parse(now) || value == "";
+     }, "Start date must be in the future");
+	
 	$("#conferenceAddForm").validate({
 		  onkeyup: false,
 		  onfocusout: false,
@@ -47,6 +72,7 @@ $(document).ready(function(){
 			    required: true,
 			    minlength: 4,
 			    maxlength: 30,
+			    uniqueConferenceName: true,
 			  },
 			  confDesc: {
 			  	required: true,
@@ -59,10 +85,12 @@ $(document).ready(function(){
 			  startDate: {
 			  	required: true,
 				date: true,
+				startDateGreaterThanNow: true,
 			  },
 			  endDate: {
 			  	required: true,
 			 	date: true,
+			 	endDateValidate:true,
 			  },
 		  },
 		  messages: {
@@ -70,6 +98,7 @@ $(document).ready(function(){
 					 required: "Required",
 					 minlength: "You need to use at least 4 characters for your conference name.",
 					 maxlength: "You need to use at most 30 characters for your conference name.",
+					 uniqueConferenceName : "This conference name is already exists",
 				},
 				confDesc: {
 					 required: "Required",
@@ -82,10 +111,12 @@ $(document).ready(function(){
 				startDate: {
 					required: "Required",
 					date: "Date format required",
+					startDateGreaterThanNow: "Start date must be in the future",
 				 },
 				endDate: {
 					required: "Required",
 					date: "Date format required",
+					endDateValidate: "Start date should be greater than End date"
 				}
 	  		},
 		  errorElement: "div",

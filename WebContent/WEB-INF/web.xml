@@ -9,8 +9,18 @@
     <servlet-name>MainServlet</servlet-name>
     <servlet-class>servlets.MainServlet</servlet-class>
   </servlet>
+  
+   <servlet>
+    <servlet-name>ConferenceServices</servlet-name>
+    <servlet-class>servlets.ConferenceServices</servlet-class>
+  </servlet>
+  
   <servlet-mapping>
     <servlet-name>MainServlet</servlet-name>
     <url-pattern>*.monitor</url-pattern>
+  </servlet-mapping>
+   <servlet-mapping>
+    <servlet-name>ConferenceServices</servlet-name>
+    <url-pattern>*.ConferenceServices</url-pattern>
   </servlet-mapping>
 </web-app>
