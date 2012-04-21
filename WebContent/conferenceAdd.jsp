@@ -15,20 +15,91 @@
 <head>
 <link type="text/css" href="css/main.css" rel="stylesheet" />
 <link type="text/css" href="css/tables/tableList.css" rel="stylesheet" />
-<link type="text/css" href="css/cupertino/jquery-ui-1.8.18.custom.css"
-	rel="stylesheet" />
+<link type="text/css" href="css/cupertino/jquery-ui-1.8.18.custom.css" rel="stylesheet" />
 <script type="text/javascript" src="js/jquery-1.7.1.min.js"></script>
 <script type="text/javascript" src="js/jquery-ui-1.8.18.custom.min.js"></script>
+<script type="text/javascript" src="js/jquery.validate.js"></script>
+<style type="text/css">
+div.message{
+    background: transparent url(/conf4u/resources/imgs/msg_arrow.gif) no-repeat scroll left center;
+    padding-left: 7px;
+}
 
+div.error{
+    background-color:#F3E6E6;
+    border-color: #924949;
+    border-style: solid solid solid none;
+    border-width: 2px;
+    padding: 4px;
+}
+</style>
 <script>
-
-
-$(document).ready(function(){
-	var $(function() {
-		$( ".datepicker" ).datepicker();
-	});
+$(function() {
+	$( ".datepicker" ).datepicker();
 });
 
+$(document).ready(function(){
+	$("#conferenceAddForm").validate({
+		  onkeyup: false,
+		  onfocusout: false,
+		  rules: {
+			confName: {
+			    required: true,
+			    minlength: 4,
+			    maxlength: 30,
+			  },
+			  confDesc: {
+			  	required: true,
+			    minlength: 4,
+			    maxlength: 254,
+			  },
+			  locations: {
+			  	required: true,
+			  },
+			  startDate: {
+			  	required: true,
+				date: true,
+			  },
+			  endDate: {
+			  	required: true,
+			 	date: true,
+			  },
+		  },
+		  messages: {
+				confName: {
+					 required: "Required",
+					 minlength: "You need to use at least 4 characters for your conference name.",
+					 maxlength: "You need to use at most 30 characters for your conference name.",
+				},
+				confDesc: {
+					 required: "Required",
+					 minlength: "You need to use at least 4 characters for your conference description.",
+					 maxlength: "You need to use at most 254 characters for your conference description.",
+				},
+				locations: {
+					required: "Stand up for your comments or go home.",
+				},
+				startDate: {
+					required: "Required",
+					date: "Date format required",
+				 },
+				endDate: {
+					required: "Required",
+					date: "Date format required",
+				}
+	  		},
+		  errorElement: "div",
+	        wrapper: "div",  // a wrapper around the error message
+	        errorPlacement: function(error, element) {
+	            offset = element.offset();
+	            error.insertBefore(element);
+	            error.addClass('message');  // add a class to the wrapper
+	            error.css('position', 'absolute');
+	            error.css('left', offset.left + element.outerWidth());
+	        }
+
+		});
+});
 </script>
 
 </head>
@@ -42,7 +113,7 @@ $(document).ready(function(){
 </div>
 <div id="vn_mainbody">
 <div class="formtable_wrapper">
-<form method="post" action="conferenceAdd.jsp">
+<form id="conferenceAddForm" method="post" action="conferenceAdd.jsp">
 <table class="formtable" cellspacing="0" cellpadding="0" border="0">
 	<thead>
 		<tr>
@@ -57,7 +128,7 @@ $(document).ready(function(){
 		<td class="labelcell required">
 			<label for="confName">
 			Conference name:
-			<span class="required_star"> *</span>
+			<em>*</em>
 			</label>
 		</td>
 			<td class="inputcell">
@@ -67,13 +138,13 @@ $(document).ready(function(){
 	</tr>
 		<tr>
 		<td class="labelcell required">
-			<label for="confName">
-			Conference name:
-			<span class="required_star"> *</span>
+			<label for="confDesc">
+			Conference description:
+			<em>*</em>
 			</label>
 		</td>
 			<td class="inputcell">
-			<input id="confName" type="text" value="" name="confName">
+			<textarea id="confDesc" name="confDesc"></textarea>
 			<div></div>
 		</td>
 	</tr>
@@ -81,7 +152,7 @@ $(document).ready(function(){
 		<td class="labelcell required">
 			<label for="locations">
 			Locations:
-			<span class="required_star"> *</span>
+			<em>*</em>
 			</label>
 		</td>
 			<td class="inputcell">
@@ -103,7 +174,7 @@ $(document).ready(function(){
 		<td class="labelcell required">
 			<label for="startDate">
 			Start date:
-			<span class="required_star"> *</span>
+			<em>*</em>
 			</label>
 		</td>
 			<td class="inputcell">
@@ -115,7 +186,7 @@ $(document).ready(function(){
 		<td class="labelcell required">
 			<label for="endDate">
 			End date:
-			<span class="required_star"> *</span>
+			<em>*</em>
 			</label>
 		</td>
 			<td class="inputcell">
