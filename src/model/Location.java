@@ -9,7 +9,7 @@ import javax.persistence.Table;
 import org.hibernate.annotations.GenericGenerator;
 
 @Entity
-@Table( name = "LOCATIONS" )
+@Table( name = "LOCATION" )
 public class Location implements Serializable{
 	
 
