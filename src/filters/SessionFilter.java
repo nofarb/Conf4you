@@ -45,6 +45,7 @@ public class SessionFilter implements Filter {
 		}
 
 		if (!allowedRequest) {
+			// TODO - should i verify if the attribute "role" is set instead of checking if session new?
 			HttpSession session = request.getSession(false);
 			if (session!= null && !session.isNew()) {
 				chain.doFilter(request, response);
