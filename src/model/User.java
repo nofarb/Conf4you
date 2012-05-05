@@ -33,7 +33,6 @@ public class User implements Serializable{
 	private boolean isAdmin;
 	private Date lastLogin; 
 	
-	
 	User() {} //not public on purpose!
 
 
@@ -129,7 +128,5 @@ public class User implements Serializable{
 	public void setPasportID(String pasportID) {
 		this.pasportID = pasportID;
 	}
-
-
 	
 }

@@ -1,5 +1,4 @@
-<%@page import="daos.CompanyDao"%>
-<%@page import="model.Company"%>
+<%@page import="daos.UserDao"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="ISO-8859-1"%>
 <%@ page import="java.util.List"%>
 <%@ page import="java.util.Date"%>
@@ -34,32 +33,42 @@
 
 	<p class="horizontal-line">Actions</p>
 
-	<p class="horizontal-line">Companies</p>
+	<p class="horizontal-line">Users</p>
 
-<a class="addButton" href="companyAdd.jsp">Add Company</a>
+<a class="addButton" href="addUser.jsp">Add User</a>
 
 	<table cellpadding="0" cellspacing="0" border="0" id="table"
 		class="sortable">
 		<thead>
 			<tr>
 				<th><h3>Name</h3></th>
-				<th><h3>Type</h3></th>
+				<th><h3>Phone 1</h3></th>
+				<th><h3>Phone 2</h3></th>
+				<th><h3>Email</h3></th>
+				<th><h3>Company</h3></th>
+				<th><h3>Last Access</h3></th>
 				<th class="nosort"><h3>Details</h3></th>
 			</tr>
 		</thead>
 		<tbody>
 			<% 
 
-			List <Company> companies = CompanyDao.getInstance().getAllCompanies();
+			List <User> usersList = UserDao.getInstance().getUsers();
 		
 			// Print each application in a single row
-			for (Company comp : companies )
+			for (User user : usersList )
 			{
+				Date date = user.getLastLogin();
+				String newsDate = new SimpleDateFormat("dd-MM-yyyy hh:mm:ss aaa").format(date);
 		%>
 			<tr>
-				<td><%=comp.getName()%></td>
-				<td><%=comp.getCompanyType().toString()%></td>
-				<td><a class="vn_boldtext"href="companyDetails.jsp?companyId=<%=comp.getCompanyID()%>"> <img src="/conf4u/resources/imgs/vn_world.png" alt=""> Details </a> </td>
+				<td><%=user.getName()%></td>
+				<td><%=user.getPhone1()%></td>
+				<td><%=user.getPhone2()%></td>
+				<td><a style="color: blue;" href="mailto:<%=user.getEmail()%>"><%=user.getEmail()%></a></td>
+				<td><%=user.getCompany().getName()%></td>
+				<td><%=newsDate%></td>
+				<td><a class="vn_boldtext"href="userDetails.jsp?userName=<%=user.getUserName()%>"> <img src="/conf4u/resources/imgs/vn_world.png" alt=""> Details </a> </td>
 			</tr>
 			<%	} %>
 		</tbody>

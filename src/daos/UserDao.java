@@ -1,6 +1,7 @@
 package daos;
 
 import java.util.List;
+import org.hibernate.SQLQuery;
 import org.hibernate.Session;
 import system.exceptions.ItemNotFoundException;
 import utils.Helper;
@@ -255,7 +256,6 @@ public class UserDao {
 	private void sendResetForgottenPasswordEmail(String emailAddr) {
 		//TODO
 	}
-
-
+	
 
 }

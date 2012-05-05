@@ -50,7 +50,7 @@ body {
 		<ul>
 			<li><a href="users.jsp"><span>Users</span></a></li>
 			<li><a href="conference.jsp"><span>Conferences</span></a></li>
-			<li><a href="companies.jsp"><span>Companies</span></a></li>
+			<li><a href="companyList.jsp"><span>Companies</span></a></li>
 		</ul>
 	</div>
 
