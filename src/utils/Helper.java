@@ -5,7 +5,7 @@ import java.util.UUID;
 public class Helper {
 
 	/**
-	 * this methos generates 8 random chars
+	 * this method generates 8 random chars
 	 * @return
 	 */
 	public static String generateRandomChars() {

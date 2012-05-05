@@ -16,7 +16,6 @@ import daos.ConferenceDao;
 /**
  * Servlet implementation class UsersServices
  */
-@WebServlet("/ConferenceServices")
 public class ConferenceServices extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        

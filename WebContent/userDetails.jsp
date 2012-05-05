@@ -17,6 +17,7 @@
 <script type="text/javascript" src="js/jquery-1.7.1.min.js"></script>
 <script type="text/javascript" src="js/jquery-ui-1.8.18.custom.min.js"></script>
 
+	
 <script>
 
 </script>
@@ -32,6 +33,12 @@
 <div class="titleSeparator"></div>
 <div class="titleSub">View, modify, add/remove participants for this user</div>
 </div>
+
+
+	<% String userName = request.getParameter("userName");
+	   User user = UserDao.getInstance().getUserByUserName(userName);
+	%>
+	
 <div id="detailsAndActions">
 
 	<div class="vn_detailsgeneraltitle">Actions </div>
@@ -39,7 +46,7 @@
 		<div class="vn_actionlistcolumn">
 			<div class="vn_actionbuttondiv">
 				<div class="title">
-				<a title="Edit Conference" href="/Edit_bla.jsp">
+				<a title="Edit Conference" href="/userAdd.jsp?userName=<%=user.getUserName()%>">
 					<img src="/conf4u/resources/imgs/vn_action_edit.png" alt=""> 
 					Edit
 				</a>
@@ -47,7 +54,7 @@
 			</div>
 				<div class="vn_actionbuttondiv">
 				<div class="title">
-				<a title="Delete Conference" href="/Delete_bla.jsp">
+				<a title="Delete Conference" href="Users?action=delete&userName=<%=user.getUserName()%>">
 					<img src="/conf4u/resources/imgs/vn_action_delete.png" alt=""> 
 					Delete
 				</a>
@@ -57,12 +64,14 @@
 	</div>
 	<div class="vn_detailsgeneraltitle">Details </div>
 	
-	<% String userName = request.getParameter("userid");
-	   User user = UserDao.getInstance().getUserByUserName(userName);
-	%>
+
 	<div class="groupedList" style="width: 800px;">
 	<table class="vn_envdetails" cellspacing="0" cellpadding="0" style="border-collapse: collapse;">
 		<tbody>
+			<tr>
+				<td>Unique User Name</td>
+				<td><%=user.getUserName()%></td>
+			</tr>
 			<tr>
 				<td>Name</td>
 				<td><%=user.getName()%></td>
@@ -82,10 +91,6 @@
 			<tr>
 				<td>Phone #2</td>
 				<td><%=user.getPhone2()%></td>
-			</tr>
-			<tr>
-				<td>User Name</td>
-				<td><%=user.getUserName()%></td>
 			</tr>
 			<tr>
 				<td>Company Name</td>
