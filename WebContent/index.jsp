@@ -12,7 +12,7 @@
 
 	<%
 		// Redirecting to 'ApplicationList.monitor'. Will be caught by our servlet!!!
-		response.sendRedirect("ApplicationList.monitor"); 
+		response.sendRedirect("yada.MainServlet"); 
 	%>
 
 </body>

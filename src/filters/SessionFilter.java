@@ -50,6 +50,7 @@ public class SessionFilter implements Filter {
 			if (session!= null && !session.isNew()) {
 				chain.doFilter(request, response);
 			}else{
+				//TODO - save to session the url that the user wanted to get to, and after successful login go to this url,
 				response.sendRedirect("login.jsp");
 			}
 		}
