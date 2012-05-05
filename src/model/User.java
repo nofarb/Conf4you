@@ -22,7 +22,7 @@ public class User implements Serializable{
 
 	private static final long serialVersionUID = -3550174731709532722L;
 
-	private String userName;
+	private String userName; //Automatically set
 	private String pasportID;
 	private Company company; 
 	private String name;
@@ -31,16 +31,15 @@ public class User implements Serializable{
 	private String phone2;
 	private String password; //may be null/empty , will be kept hashed
 	private boolean isAdmin;
-	private Date lastLogin;
+	private Date lastLogin; 
 	
 	
 	User() {} //not public on purpose!
 
 
-	public User(String userName, String pasportID, Company company,
+	public User(String pasportID, Company company,
 			String name, String email, String phone1, String phone2,
 			String password, boolean isAdmin) {
-		this.userName = userName;
 		this.pasportID = pasportID;
 		this.company = company;
 		this.name = name;

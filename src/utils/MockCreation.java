@@ -35,7 +35,7 @@ public class MockCreation {
 				comp = comp3;
 			}
 			
-			User user = new User("userName"+i, "id"+i, comp, "name"+i, "email"+i, "num1 "+i, "num2 "+i, "pass"+i, false);
+			User user = new User("id"+i, comp, "name"+i, "email"+i, "num1 "+i, "num2 "+i, "pass"+i, false);
 			user.setLastLogin(new Date());
 			users.add(user);
 		}

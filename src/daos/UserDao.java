@@ -3,6 +3,7 @@ package daos;
 import java.util.List;
 import org.hibernate.Session;
 import system.exceptions.ItemNotFoundException;
+import utils.Helper;
 import db.HibernateUtil;
 import model.CompanyType;
 import model.User;
@@ -87,6 +88,20 @@ public class UserDao {
 	 * @return the auto generated id
 	 */
 	public void addUser(User user) {
+
+		boolean goodUserName = false;
+		String userName;
+
+		//we guess a user name, if it exists we guess again until we find an unused user name:
+		while (!goodUserName) {
+			userName = Helper.generateRandomChars();
+			try {
+				getUserByUserName(userName);
+			} catch (ItemNotFoundException e) {
+				goodUserName = true;
+				user.setUserName(userName);
+			}
+		}
 
 		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
 		session.beginTransaction();
