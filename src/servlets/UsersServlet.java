@@ -18,6 +18,8 @@ public class UsersServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	
 	private static final String DELETE_USER = "delete";
+	private static final String EDIT_USER = "EDIT"; //used both for add and edit
+
        
     /**
      * @see HttpServlet#HttpServlet()
@@ -40,6 +42,9 @@ public class UsersServlet extends HttpServlet {
 			}
 			else if (action.equals(DELETE_USER)) {
 				deleteUser(request, response);
+			}
+			else if (action.equals(EDIT_USER)) {
+				editUser(request, response);
 			}
 			else {
 				throw new Exception("Unknown request");
@@ -70,5 +75,17 @@ public class UsersServlet extends HttpServlet {
 		
 		//TODO - delete - add a mark for inactive user
 	}
+	
+	private void editUser(HttpServletRequest request,	HttpServletResponse response) throws Exception {
+
+
+		String userName = request.getParameter("userName");
+		
+		if ( userName == null || userName.trim().isEmpty()) {
+			throw new Exception("Failed to get user name");
+		}
+		
+		//TODO - edit/add 
+		}
 
 }
