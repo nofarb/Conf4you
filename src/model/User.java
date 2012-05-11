@@ -36,9 +36,10 @@ public class User implements Serializable{
 	User() {} //not public on purpose!
 
 
-	public User(String pasportID, Company company,
+	public User(String userName, String pasportID, Company company,
 			String name, String email, String phone1, String phone2,
 			String password, boolean isAdmin) {
+		this.userName = userName;
 		this.pasportID = pasportID;
 		this.company = company;
 		this.name = name;

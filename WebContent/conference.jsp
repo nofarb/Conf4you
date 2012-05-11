@@ -65,7 +65,7 @@
 				<td><%=conference.getLocation().getName()%></td>
 				<td><%=conference.getStartDate()%></td>
 				<td><%=conference.getEndDate()%></td>
-				<td><a class="vn_boldtext" href="conferenceDetails.jsp?conferenceId=<%=conference.getConferenceID()%>">
+				<td><a class="vn_boldtext" href="conferenceDetails.jsp?conferenceName=<%=conference.getName()%>">
 				<img src="/conf4u/resources/imgs/vn_world.png" alt="">
 				Details
 				</a>

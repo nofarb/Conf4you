@@ -1,3 +1,17 @@
+.message td {
+    background: transparent url(/conf4u/resources/imgs/msg_arrow.gif) no-repeat scroll left center;
+    padding-left: 7px;
+}
+
+.error td {
+    background-color:#F3E6E6;
+    border-color: #924949;
+    border-style: solid solid solid none;
+    border-width: 2px;
+    padding: 4px;
+}
+
+
 .horizontal-line {
 	background-color: #002E63;
 	height: 20px;
@@ -1753,10 +1767,6 @@ button.ui-button::-moz-focus-inner {
 	display: block;
 }
 
-span.error,label.error,div.error,.field-validation-error {
-	color: red;
-}
-
 .annotation {
 	color: #666666;
 }
@@ -2815,10 +2825,6 @@ button.right_submit_button.disabled span {
 	text-align: right;
 	vertical-align: top;
 	width: 135px;
-}
-
-.generaltablelayout .error,.generaltablelayout label {
-	font-size: 11px;
 }
 
 .generaltablelayout td {
@@ -5983,20 +5989,6 @@ label .required_star {
 .formtable .validationStatus {
 	font-size: xx-small;
 	white-space: nowrap;
-}
-
-.validationStatus label.error,.validationStatus span.error {
-	color: #FF3F3F;
-	display: block;
-	font-weight: bold;
-}
-
-.validationStatus label.error a {
-	font-size: 9px;
-}
-
-.formtable .inputcell input.error,.formtable .inputcell select.error {
-	border-color: #FF7070;
 }
 
 .formtable .caption,.reportFilter .caption {

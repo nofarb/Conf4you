@@ -35,7 +35,7 @@ public class MockCreation {
 				comp = comp3;
 			}
 			
-			User user = new User("id"+i, comp, "name"+i, "email"+i, "num1 "+i, "num2 "+i, "pass"+i, false);
+			User user = new User("userName"+i, "id"+i, comp, "name"+i, "email"+i, "num1 "+i, "num2 "+i, "pass"+i, false);
 			user.setLastLogin(new Date());
 			users.add(user);
 		}
@@ -48,11 +48,10 @@ public class MockCreation {
 		Location location = new Location("locationNameBlah", "ydaa", 30, "moo", "56464654", "54564654");
 		
 		for(int i = 0 ; i < 5; i++){
-			Conference conference = new Conference(location, "conf"+i, "yada", new Date(), new Date());
+			Conference conference = new Conference("conf"+i, location, "yada", new Date(), new Date());
 			conferences.add(conference);
 		}
 		return conferences;
-		
 	}
 
 	public static List<Company> createMockCompanies(){

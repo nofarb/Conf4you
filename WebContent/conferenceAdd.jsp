@@ -39,34 +39,61 @@ $(function() {
 });
 
 $(document).ready(function(){
+	
 	$.validator.addMethod("uniqueConferenceName", function(value, element) {
+		 var is_valid = true;
 	      $.ajax({
 	          type: "POST",
-	           url: "ConferenceServices",
-	          data: "confName="+value,
-	          dataType:"html",
-	       success: function(msg)
-	       {
-	          //If conference exists, set response to true
-	          var response = ( msg == 'true' ) ? true : false;
-	          return response;
-	       }
+	          url: "/ConferenceServices",
+	          data: { confName : value },
+	          async: false,
+	          dataType:"json",
+		       success: function(msg)
+		       {
+		          if (msg == 'true')
+		        	  alert("true");
+		    	  if (msg == null)
+		    		  alert("koko");
+		          //If conference exists, set response to true
+		          if (msg != null && msg != 'true' )
+	        	  {
+		        	  $.validator.messages.uniqueConferenceName = value + " is already taken";
+		        	  is_valid = false;
+	        	  }
+		       }
 	     });
-	 }, "conference name is Already Taken");
+      return is_valid;
+	 }, "Conference name is already exists");
 	
 	 $.validator.addMethod("endDateValidate", function(value, element) {
-         var startDate = $('.startDate').val();
-         return Date.parse(value) <= Date.parse(startDate) || value == "";
-     }, "Start date should be greater than End date");
+		 var startDateVal = $("#startDate").val();
+         var startDate = $.date(startDateVal, "MM/dd/yyyy");
+         var myDate = $.date(value, "MM/dd/yyyy");
+         if (myDate >= startDate)
+        	 return true;
+       	 else
+       		return false;		 
+     }, "Start date should be greater than end date");
 	 
 	 $.validator.addMethod("startDateGreaterThanNow", function(value, element) {
-         var now = Date.now();
-         return Date.parse(value) <= Date.parse(now) || value == "";
+         var now = $.date();
+         var myDate = $.date(value, "MM/dd/yyyy");
+         if (myDate >= now)
+        	 return true;
+         else
+        	 return false;
      }, "Start date must be in the future");
 	
 	$("#conferenceAddForm").validate({
 		  onkeyup: false,
 		  onfocusout: false,
+		  submitHandler: function(form) {  
+              if ($(form).valid())
+              {
+                  form.submit(); 
+              }
+              return false;
+     		},
 		  rules: {
 			confName: {
 			    required: true,
@@ -85,12 +112,12 @@ $(document).ready(function(){
 			  startDate: {
 			  	required: true,
 				date: true,
-				startDateGreaterThanNow: true,
+				//startDateGreaterThanNow: true,
 			  },
 			  endDate: {
 			  	required: true,
 			 	date: true,
-			 	endDateValidate:true,
+			 	//endDateValidate:true,
 			  },
 		  },
 		  messages: {
@@ -116,7 +143,7 @@ $(document).ready(function(){
 				endDate: {
 					required: "Required",
 					date: "Date format required",
-					endDateValidate: "Start date should be greater than End date"
+					endDateValidate: "Start date should be greater than end date"
 				}
 	  		},
 		  errorElement: "div",

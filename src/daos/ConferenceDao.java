@@ -97,16 +97,16 @@ public class ConferenceDao {
 	
 	
 	/**
-	 * Get a conference by its database key ID
+	 * Get a conference by its database name
 	 * @param id
 	 * @return
 	 */
-	public Conference getConferenceById(long id){
+	public Conference getConferenceByName(String name){
 		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
 		session.beginTransaction();
 		Conference conf = (Conference)session.createQuery(
-				"select conf from  Conference conf where conf.conferenceID = :confId")
-                .setLong("confId", id)
+				"select conf from  Conference conf where conf.name = :confId")
+                .setString("name", name)
                 .uniqueResult();
 		session.getTransaction().commit();
 		return conf;
@@ -117,7 +117,7 @@ public class ConferenceDao {
 		session.beginTransaction();
 		Boolean exists = session.createQuery(
 				"select conf from  Conference conf where conf.name = :name")
-                .setString("confId", name)
+                .setString("name", name)
                 .uniqueResult() != null;
 		session.getTransaction().commit();
 		return exists;
@@ -151,7 +151,7 @@ public class ConferenceDao {
 	 * Update an existing conference in the database
 	 */
 	public Conference updateConference(Conference conference){
-		Conference conf = getConferenceById(conference.getConferenceID());
+		Conference conf = getConferenceByName(conference.getName());
 		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
 		session.beginTransaction();
 		session.update(conf.setName(conference.getName())
@@ -202,7 +202,7 @@ public class ConferenceDao {
 	 * @return
 	 */
 	public Conference assignLocationToConference(Conference conference, Location location){
-		Conference conf = getConferenceById(conference.getConferenceID());
+		Conference conf = getConferenceByName(conference.getName());
 		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
 		session.beginTransaction();
 		session.update(conf.setLocation(location));

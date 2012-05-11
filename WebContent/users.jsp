@@ -41,6 +41,7 @@
 		class="sortable">
 		<thead>
 			<tr>
+				<th><h3>User Name</h3></th>
 				<th><h3>Name</h3></th>
 				<th><h3>Phone 1</h3></th>
 				<th><h3>Phone 2</h3></th>
@@ -62,6 +63,7 @@
 				String newsDate = new SimpleDateFormat("dd-MM-yyyy hh:mm:ss aaa").format(date);
 		%>
 			<tr>
+				<td><%=user.getUserName()%></td>
 				<td><%=user.getName()%></td>
 				<td><%=user.getPhone1()%></td>
 				<td><%=user.getPhone2()%></td>

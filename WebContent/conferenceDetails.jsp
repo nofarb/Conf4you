@@ -57,8 +57,8 @@
 	</div>
 	<div class="vn_detailsgeneraltitle">Details </div>
 	
-	<% String confId = request.getParameter("conferenceId");
-	   Conference conf = ConferenceDao.getInstance().getConferenceById(Long.valueOf(confId));
+	<% String confName = request.getParameter("conferenceName");
+	   Conference conf = ConferenceDao.getInstance().getConferenceByName(confName);
 	%>
 	<div class="groupedList" style="width: 800px;">
 	<table class="vn_envdetails" cellspacing="0" cellpadding="0" style="border-collapse: collapse;">
