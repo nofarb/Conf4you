@@ -22,7 +22,7 @@ public class User implements Serializable{
 
 	private static final long serialVersionUID = -3550174731709532722L;
 
-	private String userName; //Automatically set
+	private String userName; 
 	private String pasportID;
 	private Company company; 
 	private String name;
