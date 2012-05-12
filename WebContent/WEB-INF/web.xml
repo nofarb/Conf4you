@@ -38,7 +38,7 @@
   	<url-pattern>/LoginServlet</url-pattern>
   </servlet-mapping>
   
-<!--   DO NO DELETE THE FILTER :-->
+<!--   DO NO DELETE THE FILTER (ELAD!):-->
     <!-- 
     <filter> 
     	<filter-name>SessionFilter</filter-name> 
