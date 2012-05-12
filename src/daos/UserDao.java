@@ -251,5 +251,13 @@ public class UserDao {
 		//TODO
 	}
 	
+	private boolean isDeleteAllowed(String userName)
+	{
+		//TODO implement
+		
+		return true;
+		
+	}
+	
 
 }

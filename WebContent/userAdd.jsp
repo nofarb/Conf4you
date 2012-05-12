@@ -227,7 +227,8 @@ div.error {
 								class="type rdOnlyOnEdit" name=<%=ProjConst.COMPANY%>>
 
 									<%
-										List<Company> companies = CompanyDao.getInstance().getAllCompanies();
+										List<Company> companies = CompanyDao.getInstance()
+												.getAllCompanies();
 
 										for (Company company : companies) {
 									%>
@@ -247,14 +248,24 @@ div.error {
 								<input id=<%=ProjConst.PASSWORD%> type="text" value="" name=<%=ProjConst.PASSWORD%>>
 								<div></div></td>
 						</tr>
-						<tr>
-							<td class="labelcell required">
-								<label for=<%=ProjConst.IS_ADMIN%>> Admnin User: <em>*</em> </label>
-							</td>
-							<td class="inputcell">
-								<input id=<%=ProjConst.IS_ADMIN%> type="checkbox" value="true" name=<%=ProjConst.IS_ADMIN%>>
-								<div></div></td>
-						</tr>
+						<%
+							String userName = request.getParameter("userName");
+							if(userName != null){
+								User user = UserDao.getInstance().getUserByUserName(userName);
+								if (user != null && user.isAdmin()) {
+							%>
+									<tr>
+										<td class="labelcell required">
+											<label for=<%=ProjConst.IS_ADMIN%>> Admnin User: <em>*</em> </label>				
+										</td>
+										<td class="inputcell">
+											<input id=<%=ProjConst.IS_ADMIN%> type="checkbox" value="true" name=<%=ProjConst.IS_ADMIN%>><div></div>
+										</td>
+									</tr>
+							<%
+								}
+						}
+						%>
 						<tr>
 							<td></td>
 							<td class="inputcell">
