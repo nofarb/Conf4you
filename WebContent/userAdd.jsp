@@ -1,3 +1,4 @@
+<%@page import="utils.ProjConst"%>
 <%@page import="daos.CompanyDao"%>
 <%@page import="model.Company"%>
 <%@page import="model.Conference"%>
@@ -172,52 +173,58 @@ div.error {
 					<tbody>
 						<tr>
 							<td class="labelcell required">
-								<label for="name"> User name: <em>*</em> </label>
+								<label for=<%=ProjConst.USER_NAME%>> User Name: <em>*</em> </label>
 							</td>
 							<td class="inputcell">
-								<input id="name" type="text" value="" name="name">
+								<input id=<%=ProjConst.USER_NAME%> type="text" value="" name=<%=ProjConst.USER_NAME%>>
 								<div></div></td>
 						</tr>
 						<tr>
 							<td class="labelcell required">
-								<label for="passportId"> Passport #: <em>*</em> </label>
+								<label for=<%=ProjConst.NAME%>> Name: <em>*</em> </label>
 							</td>
 							<td class="inputcell">
-								<input id="passportId" type="text" value="" name="passportId">
+								<input id=<%=ProjConst.NAME%> type="text" value="" name=<%=ProjConst.NAME%>>
 								<div></div></td>
 						</tr>
 						<tr>
 							<td class="labelcell required">
-								<label for="email"> Email: <em>*</em> </label>
+								<label for=<%=ProjConst.PASSPORT_ID%>> Passport #: <em>*</em> </label>
 							</td>
 							<td class="inputcell">
-								<input id="email" type="text" value="" name="email">
+								<input id=<%=ProjConst.PASSPORT_ID%> type="text" value="" name=<%=ProjConst.PASSPORT_ID%>>
 								<div></div></td>
 						</tr>
 						<tr>
 							<td class="labelcell required">
-								<label for="phone1"> Phone #1: <em>*</em> </label>
+								<label for=<%=ProjConst.EMAIL%>> Email: <em>*</em> </label>
 							</td>
 							<td class="inputcell">
-								<input id="phone1" type="text" value="" name="phone1">
+								<input id=<%=ProjConst.EMAIL%> type="text" value="" name=<%=ProjConst.EMAIL%>>
 								<div></div></td>
 						</tr>
 						<tr>
 							<td class="labelcell required">
-								<label for="phone2"> Phone #2: <em>*</em> </label>
+								<label for=<%=ProjConst.PHONE1%>> Phone #1: <em>*</em> </label>
 							</td>
 							<td class="inputcell">
-								<input id="phone2" type="text" value="" name="phone2">
+								<input id=<%=ProjConst.PHONE1%> type="text" value="" name=<%=ProjConst.PHONE1%>>
 								<div></div></td>
 						</tr>
-						
-						
 						<tr>
-							<td class="labelcell required"><label for="company">
+							<td class="labelcell required">
+								<label for=<%=ProjConst.PHONE2%>> Phone #2: <em>*</em> </label>
+							</td>
+							<td class="inputcell">
+								<input id=<%=ProjConst.PHONE2%> type="text" value="" name=<%=ProjConst.PHONE2%>>
+								<div></div></td>
+						</tr>
+						<tr>
+							<td class="labelcell required"><label for=<%=ProjConst.COMPANY%>>
 									Company: <em>*</em>
 							</label></td>
-							<td class="inputcell"><select id="company"
-								class="type rdOnlyOnEdit" name="company">
+							<td class="inputcell"><select id=<%=ProjConst.COMPANY%>
+								class="type rdOnlyOnEdit" name=<%=ProjConst.COMPANY%>>
 
 									<%
 										List<Company> companies = CompanyDao.getInstance().getAllCompanies();
@@ -230,6 +237,14 @@ div.error {
 										}
 									%>
 							</select>
+								<div></div></td>
+						</tr>
+						<tr>
+							<td class="labelcell required">
+								<label for=<%=ProjConst.PASSWORD%>> Password: <em>*</em> </label>
+							</td>
+							<td class="inputcell">
+								<input id=<%=ProjConst.PASSWORD%> type="text" value="" name=<%=ProjConst.PASSWORD%>>
 								<div></div></td>
 						</tr>
 						<tr>

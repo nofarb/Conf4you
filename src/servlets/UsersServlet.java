@@ -9,6 +9,10 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import utils.ProjConst;
+
+import com.mysql.jdbc.Constants;
+
 import model.Company;
 import model.User;
 
@@ -100,18 +104,19 @@ public class UsersServlet extends HttpServlet {
 	private void addUser(HttpServletRequest request, HttpServletResponse response) throws Exception {
 
 
-		String name = request.getParameter("name");
-		String phone1 = request.getParameter("phone1");
-		String phone2 = request.getParameter("phone2");
-		String email = request.getParameter("email");
-		String passportId = request.getParameter("passportId");
-		String companyStr = request.getParameter("company");
-		long companyId = Long.getLong(companyStr);
+		String userName = request.getParameter(ProjConst.USER_NAME);
+		String name = request.getParameter(ProjConst.NAME);
+		String phone1 = request.getParameter(ProjConst.PHONE1);
+		String phone2 = request.getParameter(ProjConst.PHONE2);
+		String email = request.getParameter(ProjConst.EMAIL);
+		String passportId = request.getParameter(ProjConst.PASSPORT_ID);
+		String companyIdStr = request.getParameter(ProjConst.COMPANY);
+		long companyId = new Long(companyIdStr);
 		Company company = CompanyDao.getInstance().getCompanyById(companyId);
-		String password = request.getParameter("password"); //should encrypt
-		boolean isAdmin = Boolean.getBoolean(request.getParameter("isAdmin")); //TODO - needed?
+		String password = request.getParameter(ProjConst.PASSWORD); // TODO should encrypt on client side
+		boolean isAdmin = new Boolean(request.getParameter(ProjConst.IS_ADMIN)); 
 
-		User newUser = new User(passportId, company, name, email, phone1, phone2, password, isAdmin);
+		User newUser = new User(userName, passportId, company, name, email, phone1, phone2, password, isAdmin);
 		UserDao.getInstance().addUser(newUser);
 
 	}
