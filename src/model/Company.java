@@ -25,12 +25,14 @@ public class Company implements Serializable {
 	private long companyID;
 	private CompanyType companyType;
 	private String name;
+	private boolean active;
 	
 	Company() {} //not public on purpose!
 	
 	public Company(String name, CompanyType companyType) {
 		this.companyType = companyType;
 		this.name = name;
+		this.active = true;
 	}
 
 	

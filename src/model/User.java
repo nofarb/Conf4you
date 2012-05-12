@@ -31,7 +31,8 @@ public class User implements Serializable{
 	private String phone2;
 	private String password; //may be null/empty , will be kept hashed
 	private boolean isAdmin;
-	private Date lastLogin; 
+	private Date lastLogin;
+	private boolean active; 
 	
 	User() {} //not public on purpose!
 
@@ -48,6 +49,7 @@ public class User implements Serializable{
 		this.phone2 = phone2;
 		this.password = password;
 		this.isAdmin = isAdmin;
+		this.active = true;
 	}
 
 
@@ -128,6 +130,14 @@ public class User implements Serializable{
 
 	public void setPasportID(String pasportID) {
 		this.pasportID = pasportID;
+	}
+
+	public boolean isActive() {
+		return active;
+	}
+
+	public void setActive(boolean active) {
+		this.active = active;
 	}
 	
 }
