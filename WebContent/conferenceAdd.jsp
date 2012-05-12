@@ -33,36 +33,43 @@ div.error{
     padding: 4px;
 }
 </style>
+
+<script type="text/javascript">	
+
+</script>
+
 <script>
 $(function() {
 	$( ".datepicker" ).datepicker();
 });
 
 $(document).ready(function(){
-	
 	$.validator.addMethod("uniqueConferenceName", function(value, element) {
-		 var is_valid = true;
-	      $.ajax({
-	          type: "POST",
-	          url: "/ConferenceServices",
-	          data: { confName : value },
-	          async: false,
-	          dataType:"json",
-		       success: function(msg)
-		       {
-		          if (msg == 'true')
-		        	  alert("true");
-		    	  if (msg == null)
-		    		  alert("koko");
-		          //If conference exists, set response to true
-		          if (msg != null && msg != 'true' )
-	        	  {
-		        	  $.validator.messages.uniqueConferenceName = value + " is already taken";
-		        	  is_valid = false;
-	        	  }
-		       }
-	     });
-      return is_valid;
+		  var is_valid = false;
+		  	  
+		  $.ajax({
+              url: "ConferenceServlet",
+              dataType: 'json',
+              async: false,
+              type: 'POST',
+                  data: {
+                      "data": value 
+                  },
+              success: function(data) {
+                  if (data != null){
+                      if (data == "true")
+                      {
+                    	 $.validator.messages.uniqueConferenceName = value + " is already taken";
+                       	is_valid = false;
+                      }
+                      else
+                   	  {
+                    	  is_valid = true;
+                   	  }
+                  }
+              }
+          });
+	      return is_valid;
 	 }, "Conference name is already exists");
 	
 	 $.validator.addMethod("endDateValidate", function(value, element) {
