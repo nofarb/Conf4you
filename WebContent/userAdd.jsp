@@ -248,6 +248,14 @@ div.error {
 								<div></div></td>
 						</tr>
 						<tr>
+							<td class="labelcell required">
+								<label for=<%=ProjConst.IS_ADMIN%>> Admnin User: <em>*</em> </label>
+							</td>
+							<td class="inputcell">
+								<input id=<%=ProjConst.IS_ADMIN%> type="checkbox" value="true" name=<%=ProjConst.IS_ADMIN%>>
+								<div></div></td>
+						</tr>
+						<tr>
 							<td></td>
 							<td class="inputcell">
 								<div class="buttons">
