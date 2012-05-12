@@ -54,7 +54,7 @@
 			</div>
 				<div class="vn_actionbuttondiv">
 				<div class="title">
-				<a title="Delete Conference" href="Users?action=delete&userName=<%=user.getUserName()%>">
+				<a title="Delete Conference" href="users?action=delete&userName=<%=user.getUserName()%>">
 					<img src="/conf4u/resources/imgs/vn_action_delete.png" alt=""> 
 					Delete
 				</a>
