@@ -1,8 +1,11 @@
 package daos;
 
+import java.security.NoSuchAlgorithmException;
+import java.sql.SQLException;
 import java.util.List;
 import org.hibernate.Session;
 import system.exceptions.ItemNotFoundException;
+import utils.OwaspAuthentication;
 import db.HibernateUtil;
 import model.CompanyType;
 import model.User;
@@ -43,21 +46,17 @@ public class UserDao {
 	 * @return
 	 * @throws ItemNotFoundException 
 	 */
-	public User getUserByUserName(String userName) throws ItemNotFoundException {
+	public User getUserByUserName(String userName) {
 		
 		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
 		session.beginTransaction();
 		
-		@SuppressWarnings("unchecked")
-		List<User> users = (List<User>)HibernateUtil.getSessionFactory().getCurrentSession().createQuery(
+		User user = (User)HibernateUtil.getSessionFactory().getCurrentSession().createQuery(
 				"from User where userName=:userName")
-                .setString("userName",userName).list();
+                .setString("userName",userName)
+                .uniqueResult();
 		session.getTransaction().commit();
-		if(users.size() == 0){
-			throw new ItemNotFoundException("User Name", userName);
-		}
-		return users.get(0);
-
+		return user;
 	}
 
 	/**
@@ -113,22 +112,34 @@ public class UserDao {
 	 * @param password
 	 * @return the authenticated user, or null otherwise.
 	 * @throws ItemNotFoundException 
+	 * @throws SQLException 
+	 * @throws NoSuchAlgorithmException 
 	 */
-	public User authenticateUser(String emailAddr, String password) throws ItemNotFoundException {
-		
-		List<User> users = getUserByEmail(emailAddr);
-		if(users.size() == 0){
-			throw new ItemNotFoundException("User", emailAddr);
+	public User authenticateUser(String userName, String password) throws ItemNotFoundException, NoSuchAlgorithmException, SQLException
+	{
+	
+		 if (userName==null||password==null)
+		 {
+			 // TIME RESISTANT ATTACK
+			 // Computation time is equal to the time needed by a legitimate user
+			 userName="";
+			 password="";
+			 return null; 
 		}
-		User user = users.get(0);
-		
-		if(user.getPassword().equals("")){ //TODO - operate the hash function on the password and match!
+		 
+		 User user = getUserByUserName(userName);
+		 
+		 if (user == null)
+		 {
+			 return null;
+		 }
+		 
+		 if (OwaspAuthentication.authenticate(userName, password, user))
+		 {
 			return user;
-		}
-		else{
-			return null;
-		}
-
+		 }
+		 
+		return null;
 	}
 
 	/**
