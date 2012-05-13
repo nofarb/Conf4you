@@ -35,7 +35,7 @@
 	<div id="vn_mainbody">
 	
 	<div class="buttons">
-		<a id="createNewLocation" href="#" onClick="location.href='locationAdd.jsp'">
+		<a id="createNewLocation" href="LocationAdd.jsp" >
 		<span></span>
 		<img src="/conf4u/resources/imgs/vn_action_add.png">
 		Add Location
