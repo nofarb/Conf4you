@@ -22,6 +22,7 @@ public class Location implements Serializable{
 	private String contactName;
 	private String phone1;
 	private String phone2;
+	private boolean active;
 	
 		
 	Location() {} //not public on purpose
@@ -34,6 +35,7 @@ public class Location implements Serializable{
 		this.contactName = contactName;
 		this.phone1 = phone1;
 		this.phone2 = phone2;
+		this.active = true;
 	}
 
 	@Id
@@ -86,6 +88,14 @@ public class Location implements Serializable{
 
 	public void setPhone2(String phone2) {
 		this.phone2 = phone2;
+	}
+
+	public boolean isActive() {
+		return active;
+	}
+
+	public void setActive(boolean active) {
+		this.active = active;
 	}
 	
 	

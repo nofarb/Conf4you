@@ -19,15 +19,15 @@
   </servlet>
   <servlet-mapping>
     <servlet-name>MainServlet</servlet-name>
-    <url-pattern>*.MainServlet</url-pattern>
+    <url-pattern>/MainServlet</url-pattern>
   </servlet-mapping>
   <servlet>
-    <servlet-name>ConferenceServices</servlet-name>
-    <servlet-class>servlets.ConferenceServices</servlet-class>
+    <servlet-name>ConferenceServlet</servlet-name>
+    <servlet-class>servlets.ConferenceServlet</servlet-class>
   </servlet>
   <servlet-mapping>
-    <servlet-name>ConferenceServices</servlet-name>
-    <url-pattern>/ConferenceServices</url-pattern>
+    <servlet-name>ConferenceServlet</servlet-name>
+    <url-pattern>/ConferenceServlet</url-pattern>
   </servlet-mapping>
   <servlet>
   	<servlet-name>LoginServlet</servlet-name>

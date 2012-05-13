@@ -105,7 +105,7 @@ public class ConferenceDao {
 		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
 		session.beginTransaction();
 		Conference conf = (Conference)session.createQuery(
-				"select conf from  Conference conf where conf.name = :confId")
+				"select conf from  Conference conf where conf.name = :name")
                 .setString("name", name)
                 .uniqueResult();
 		session.getTransaction().commit();

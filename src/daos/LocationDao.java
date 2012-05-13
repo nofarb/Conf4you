@@ -45,13 +45,28 @@ public class LocationDao {
 	 * @return
 	 */
 	public Location getLocationById(String id){
-		
-		return (Location)HibernateUtil.getSessionFactory().getCurrentSession().createQuery(
+		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
+		session.beginTransaction();
+		Location result = (Location)HibernateUtil.getSessionFactory().getCurrentSession().createQuery(
 				"select Loc from Location Loc where Loc.locationId = :locId")
                 .setEntity("locId", id)
                 .uniqueResult();
+		session.getTransaction().commit();
+		return result;
+	}
+	
+	public Location getLocationByName(String name){
+		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
+		session.beginTransaction();
+		Location result = (Location)HibernateUtil.getSessionFactory().getCurrentSession().createQuery(
+				"select Loc from Location Loc where Loc.name = :name")
+                .setEntity("locId", name)
+                .uniqueResult();
+		session.getTransaction().commit();
+		return result;
 		
 	}
+	
 	
 	
 	/**

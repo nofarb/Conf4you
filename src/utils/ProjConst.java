@@ -14,5 +14,11 @@ public final  class ProjConst {
 	public static final String PASSPORT_ID = "passportId";	
 	public static final String COMPANY = "company";
 	public static final String IS_ADMIN = "isAdmin";
+	
+	public static final String CONF_NAME = "confName";
+	public static final String CONF_DESC = "confDesc";
+	public static final String CONF_LOCATION = "locations";
+	public static final String CONF_START_DATE = "startDate";
+	public static final String CONF_END_DATE = "endDate";
 
 }

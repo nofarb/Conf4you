@@ -1,6 +1,8 @@
 package model;
 
 import java.io.Serializable;
+import java.security.NoSuchAlgorithmException;
+import java.sql.SQLException;
 import java.util.Date;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
@@ -9,6 +11,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+
+import utils.OwaspAuthentication;
 import model.Company;
 
 /**
@@ -31,7 +35,9 @@ public class User implements Serializable{
 	private String phone2;
 	private String password; //may be null/empty , will be kept hashed
 	private boolean isAdmin;
-	private Date lastLogin; 
+	private Date lastLogin;
+	private boolean active; 
+	private String salt;
 	
 	User() {} //not public on purpose!
 
@@ -46,8 +52,19 @@ public class User implements Serializable{
 		this.email = email;
 		this.phone1 = phone1;
 		this.phone2 = phone2;
-		this.password = password;
 		this.isAdmin = isAdmin;
+		this.active = true;
+		
+		try
+		{
+			byte[] bSalt = OwaspAuthentication.getBsalt();
+			this.password = OwaspAuthentication.getUserPassword(userName, password, bSalt);
+			this.salt = OwaspAuthentication.byteToBase64(bSalt);
+		}
+		catch (Exception e)
+		{
+			//TODO: OwaspAuthentication failed
+		}
 	}
 
 
@@ -125,9 +142,25 @@ public class User implements Serializable{
 		return pasportID;
 	}
 
-
 	public void setPasportID(String pasportID) {
 		this.pasportID = pasportID;
 	}
+
+	public boolean isActive() {
+		return active;
+	}
+
+	public void setActive(boolean active) {
+		this.active = active;
+	}
+	
+	public String getSalt() {
+		return salt;
+	}
+
+	public void setSalt(String salt) {
+		this.salt = salt;
+	}
+	
 	
 }

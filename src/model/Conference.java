@@ -24,6 +24,8 @@ public class Conference implements Serializable {
 	private String description;
 	private Date startDate;
 	private Date endDate;
+	private boolean active;
+	
 
 	public Conference() {
 
@@ -36,6 +38,7 @@ public class Conference implements Serializable {
 		this.description = description;
 		this.startDate = startDate;
 		this.setEndDate(endtDate);
+		this.active = true;
 	}
 
 	@Id
@@ -85,6 +88,14 @@ public class Conference implements Serializable {
 	public Conference setEndDate(Date endDate) {
 		this.endDate = endDate;
 		return this;
+	}
+
+	public boolean isActive() {
+		return active;
+	}
+
+	public void setActive(boolean active) {
+		this.active = active;
 	}
 
 }

@@ -9,6 +9,7 @@
 <%@ page import="java.util.Date"%>
 <%@ page import="java.text.SimpleDateFormat"%>
 <%@ page import="model.User"%>
+<%@page import="utils.ProjConst"%>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
@@ -33,6 +34,11 @@ div.error{
     padding: 4px;
 }
 </style>
+
+<script type="text/javascript">	
+
+</script>
+
 <script>
 $(function() {
 	$( ".datepicker" ).datepicker();
@@ -40,29 +46,62 @@ $(function() {
 
 $(document).ready(function(){
 	
+	$('.conferenceAddForm').click(function() {
+		$.ajax({
+            url: "ConferenceServlet",
+            dataType: 'json',
+            async: false,
+            type: 'POST',
+                data: {
+                	"action": "add",
+                	<%=ProjConst.CONF_NAME%> : $("#confName").val(),
+              	 	<%=ProjConst.CONF_DESC%> : $("#confDesc").val(),
+              	 	<%=ProjConst.CONF_LOCATION%> : $("#locations").val(),
+              	 	<%=ProjConst.CONF_START_DATE%> : $("#startDate").val(),
+              	 	<%=ProjConst.CONF_END_DATE%> : $("#endDate").val(), 	
+                },
+            success: function(data) {
+                if (data != null){
+					if (data.resultSuccess == "true")
+					{
+						$(".errorMessage").val(data.message);
+					}
+					else
+					{
+						//TODO: redirect success
+					}
+                }
+            }
+        });
+    });
+	
 	$.validator.addMethod("uniqueConferenceName", function(value, element) {
-		 var is_valid = true;
-	      $.ajax({
-	          type: "POST",
-	          url: "/ConferenceServices",
-	          data: { confName : value },
-	          async: false,
-	          dataType:"json",
-		       success: function(msg)
-		       {
-		          if (msg == 'true')
-		        	  alert("true");
-		    	  if (msg == null)
-		    		  alert("koko");
-		          //If conference exists, set response to true
-		          if (msg != null && msg != 'true' )
-	        	  {
-		        	  $.validator.messages.uniqueConferenceName = value + " is already taken";
-		        	  is_valid = false;
-	        	  }
-		       }
-	     });
-      return is_valid;
+		  var is_valid = false;
+		  	  
+		  $.ajax({
+              url: "ConferenceServlet",
+              dataType: 'json',
+              async: false,
+              type: 'POST',
+                  data: {
+                	  "action": "validation",
+                      "data": value
+                  },
+              success: function(data) {
+                  if (data != null){
+                      if (data == "true")
+                      {
+                    	 $.validator.messages.uniqueConferenceName = value + " is already taken";
+                       	is_valid = false;
+                      }
+                      else
+                   	  {
+                    	  is_valid = true;
+                   	  }
+                  }
+              }
+          });
+	      return is_valid;
 	 }, "Conference name is already exists");
 	
 	 $.validator.addMethod("endDateValidate", function(value, element) {
@@ -169,9 +208,10 @@ $(document).ready(function(){
 <div class="titleSeparator"></div>
 <div class="titleSub">Add a new conference</div>
 </div>
+<div class="errorMessage"></div>
 <div id="vn_mainbody">
 <div class="formtable_wrapper">
-<form id="conferenceAddForm" method="post" action="conferenceAdd.jsp">
+<form id="conferenceAddForm">
 <table class="formtable" cellspacing="0" cellpadding="0" border="0">
 	<thead>
 		<tr>
@@ -184,37 +224,37 @@ $(document).ready(function(){
 	<tbody>
 	<tr>
 		<td class="labelcell required">
-			<label for="confName">
+			<label for=<%=ProjConst.CONF_NAME%>">
 			Conference name:
 			<em>*</em>
 			</label>
 		</td>
 			<td class="inputcell">
-			<input id="confName" type="text" value="" name="confName">
+			<input id="<%=ProjConst.CONF_NAME%>" type="text" value="" name="<%=ProjConst.CONF_NAME%>">
 			<div></div>
 		</td>
 	</tr>
 		<tr>
 		<td class="labelcell required">
-			<label for="confDesc">
+			<label for="<%=ProjConst.CONF_DESC%>">
 			Conference description:
 			<em>*</em>
 			</label>
 		</td>
 			<td class="inputcell">
-			<textarea id="confDesc" name="confDesc"></textarea>
+			<textarea id="<%=ProjConst.CONF_DESC%>" name=<%=ProjConst.CONF_DESC%>"></textarea>
 			<div></div>
 		</td>
 	</tr>
 	<tr>
 		<td class="labelcell required">
-			<label for="locations">
+			<label for="<%=ProjConst.CONF_LOCATION%>">
 			Locations:
 			<em>*</em>
 			</label>
 		</td>
 			<td class="inputcell">
-			<select id="locations" class="type rdOnlyOnEdit" name="locations">
+			<select id="<%=ProjConst.CONF_LOCATION%>" class="type rdOnlyOnEdit" name="<%=ProjConst.CONF_LOCATION%>">
 			
 			<%
 			List<Location> locations = LocationDao.getInstance().getLocations();
@@ -230,25 +270,25 @@ $(document).ready(function(){
 	</tr>
 	<tr>
 		<td class="labelcell required">
-			<label for="startDate">
+			<label for="<%=ProjConst.CONF_START_DATE%>">
 			Start date:
 			<em>*</em>
 			</label>
 		</td>
 			<td class="inputcell">
-			<input id="datepicker startDate" class="datepicker" type="text" name="startDate">
+			<input id="datepicker <%=ProjConst.CONF_START_DATE%>" class="datepicker" type="text" name="<%=ProjConst.CONF_START_DATE%>">
 			<div></div>
 		</td>
 	</tr>
 	<tr>
 		<td class="labelcell required">
-			<label for="endDate">
+			<label for="<%=ProjConst.CONF_END_DATE%>">
 			End date:
 			<em>*</em>
 			</label>
 		</td>
 			<td class="inputcell">
-			<input id="datepicker endDate" class="datepicker" type="text" name="endDate">
+			<input id="datepicker <%=ProjConst.CONF_END_DATE%>" class="datepicker" type="text" name="<%=ProjConst.CONF_END_DATE%>">
 			<div></div>
 		</td>
 	</tr>
