@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import sun.management.LockDataConverterMXBean;
 import sun.security.krb5.internal.UDPClient;
 import utils.MockCreation;
 
@@ -21,6 +22,7 @@ import model.User;
 
 import daos.CompanyDao;
 import daos.ConferenceDao;
+import daos.LocationDao;
 import daos.UserDao;
 
 /**
@@ -57,6 +59,8 @@ public class MainServlet extends HttpServlet {
 		UserDao.getInstance().addUsers(users);
 		ConferenceDao.getInstance().addNewConference(confrences);
 		CompanyDao.getInstance().addCompany(companies);
+	
+
 		
 /*		@SuppressWarnings("unused")
 		List<User> users2  = UserDao.getInstance().getUsersInCompanyOfType(CompanyType.C);*/
