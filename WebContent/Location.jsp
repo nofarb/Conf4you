@@ -74,7 +74,7 @@
 				<td><%=location.getPhone1()%></td>
 				<td><%=location.getPhone2()%></td>
 				
-				<td><a class="vn_boldtext" href="#" onClick="location.href='LocationDetails.jsp?locationId=<%=location.getLocationId()%>'">
+				<td><a class="vn_boldtext" href="LocationDetails.jsp" >
 				<img src="/conf4u/resources/imgs/vn_world.png" alt="">
 				Details
 				</a>
