@@ -91,7 +91,7 @@ public class MainServlet extends HttpServlet {
 
 		RequestDispatcher applicationListDispatcher;
 
-		applicationListDispatcher = request.getRequestDispatcher("/LoginPage.jsp");
+		applicationListDispatcher = request.getRequestDispatcher("/loginPage.jsp");
 
 		try {
 			applicationListDispatcher.forward(request, response);

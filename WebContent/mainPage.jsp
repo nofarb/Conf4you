@@ -42,6 +42,8 @@ body {
 </head>
 <body>
 
+<a href="LoginServlet?action=logout"> Logout </a> 
+
 	<!-- Tabs -->
 	<h1 class="demoHeaders">Conf4u</h1>
 	<div style="clear:both;"></div>

@@ -11,7 +11,6 @@
 <body>
 
 	<%
-		// Redirecting to 'ApplicationList.monitor'. Will be caught by our servlet!!!
 		response.sendRedirect("MainServlet"); 
 	%>
 

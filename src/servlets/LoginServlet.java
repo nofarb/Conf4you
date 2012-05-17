@@ -28,7 +28,7 @@ public class LoginServlet extends HttpServlet {
         // TODO Auto-generated constructor stub
     }
     
-    protected void processRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    protected void processLoginRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
     	try 
 		{
 			String userName = request.getParameter("un");
@@ -42,7 +42,20 @@ public class LoginServlet extends HttpServlet {
 				response.sendRedirect("mainPage.jsp"); //logged-in page
 			}
 			else
-				response.sendRedirect("LoginPage.jsp"); //error page
+				response.sendRedirect("loginPage.jsp"); //error page
+		}
+		catch (Throwable theException)
+		{ 
+			System.out.println(theException);	
+		}
+    }
+    
+    protected void processLogoutRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    	try 
+		{
+				request.getSession(true).setAttribute("currentSessionUser", null);
+				response.sendRedirect("loginPage.jsp"); 
+
 		}
 		catch (Throwable theException)
 		{ 
@@ -54,14 +67,23 @@ public class LoginServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		processRequest(request, response);
+		
+		String action = request.getParameter("action");
+		
+		if(action.equals("login")){
+			processLoginRequest(request, response);
+		}else if(action.equals("logout")){
+			processLogoutRequest(request, response);
+		}else{
+			
+		}
 	}
 
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		processRequest(request, response);
+		processLoginRequest(request, response);
 	}
 
 }
