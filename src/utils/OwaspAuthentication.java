@@ -22,7 +22,7 @@ import model.User;
     * Authenticates the user with a given login and password
     * If password and/or login is null then always returns false.
     * If the user does not exist in the database returns false.
-    * @param con Connection An open connection to a databse
+    * @param con Connection An open connection to a database
     * @param login String The login of the user
     * @param password String The password of the user
     * @return boolean Returns true if the user is authenticated, false otherwise

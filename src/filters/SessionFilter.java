@@ -15,6 +15,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import utils.ProjConst;
+
 /**
  * Servlet Filter implementation class SessionFilter
  */
@@ -33,28 +35,38 @@ public class SessionFilter implements Filter {
 
 	public void doFilter(ServletRequest req, ServletResponse res,
 			FilterChain chain) throws IOException, ServletException {
-		
+
 		HttpServletRequest request = (HttpServletRequest) req;
 		HttpServletResponse response = (HttpServletResponse) res;
 		String url = request.getServletPath();
-		boolean allowedRequest = false;
 
-		if (urlList.contains(url)) {
-			allowedRequest = true;
-			//to make sure the user will always be able to access login.jsp
-		}
+		if (!urlList.contains(url)) {
 
-		if (!allowedRequest) {
-			// TODO - should i verify if the attribute "role" is set instead of checking if session new?
 			HttpSession session = request.getSession(false);
-			if (session!= null && !session.isNew()) {
-				chain.doFilter(request, response);
-			}else{
-				//TODO - save to session the url that the user wanted to get to, and after successful login go to this url,
-				response.sendRedirect("login.jsp");
+			if (session != null) {
+				if (session.isNew()) {
+					navigateToLoginPage(response);
+					return;
+				} else {
+					String currUser = (String) session.getAttribute("currentSessionUser");
+					if (currUser == null) {
+						navigateToLoginPage(response);
+						return;
+					}
+				}
+			} else {
+				// TODO - save to session the url that the user wanted to get
+				// to, and after successful login go to this url,
+				navigateToLoginPage(response);
+				return;
 			}
 		}
+		chain.doFilter(request, response);
 
+	}
+
+	public void navigateToLoginPage(HttpServletResponse response) throws IOException {
+		response.sendRedirect(ProjConst.LOGIN_PAGE);
 	}
 
 
