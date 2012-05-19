@@ -39,118 +39,166 @@ div.error {
 	padding: 4px;
 }
 </style>
+
 <script>
-	$(function() {
-		$(".datepicker").datepicker();
-	});
+$(function() {
+	$( ".datepicker" ).datepicker();
+});
 
-	$(document)
-			.ready(
-					function() {
-						$.validator.addMethod("uniqueConferenceName", function(
-								value, element) {
-							$.ajax({
-								type : "POST",
-								url : "ConferenceServices",
-								data : "confName=" + value,
-								dataType : "html",
-								success : function(msg) {
-									//If conference exists, set response to true
-									var response = (msg == 'true') ? true
-											: false;
-									return response;
-								}
-							});
-						}, "conference name is Already Taken");
+$(document).ready(function(){
+	
+	$('.conferenceAddForm').click(function() {
+		$.ajax({
+            url: "ConferenceServlet",
+            dataType: 'json',
+            async: false,
+            type: 'POST',
+                data: {
+                	"action": "add",
+                	<%=ProjConst.CONF_NAME%> : $("#confName").val(),
+              	 	<%=ProjConst.CONF_DESC%> : $("#confDesc").val(),
+              	 	<%=ProjConst.CONF_LOCATION%> : $("#locations").val(),
+              	 	<%=ProjConst.CONF_START_DATE%> : $("#startDate").val(),
+              	 	<%=ProjConst.CONF_END_DATE%> : $("#endDate").val(), 	
+                },
+            success: function(data) {
+                if (data != null){
+					if (data.resultSuccess == "true")
+					{
+						$(".errorMessage").val(data.message);
+					}
+					else
+					{
+						//TODO: redirect success
+					}
+                }
+            }
+        });
+    });
+	
+	$.validator.addMethod("uniqueConferenceName", function(value, element) {
+		  var is_valid = false;
+		  	  
+		  $.ajax({
+              url: "ConferenceServlet",
+              dataType: 'json',
+              async: false,
+              type: 'POST',
+                  data: {
+                	  "action": "validation",
+                      "data": value
+                  },
+              success: function(data) {
+                  if (data != null){
+                      if (data == "true")
+                      {
+                    	 $.validator.messages.uniqueConferenceName = value + " is already taken";
+                       	is_valid = false;
+                      }
+                      else
+                   	  {
+                    	  is_valid = true;
+                   	  }
+                  }
+              }
+          });
+	      return is_valid;
+	 }, "Conference name is already exists");
+	
+	 $.validator.addMethod("endDateValidate", function(value, element) {
+		 var startDateVal = $("#startDate").val();
+         var startDate = $.date(startDateVal, "MM/dd/yyyy");
+         var myDate = $.date(value, "MM/dd/yyyy");
+         if (myDate >= startDate)
+        	 return true;
+       	 else
+       		return false;		 
+     }, "Start date should be greater than end date");
+	 
+	 $.validator.addMethod("startDateGreaterThanNow", function(value, element) {
+         var now = $.date();
+         var myDate = $.date(value, "MM/dd/yyyy");
+         if (myDate >= now)
+        	 return true;
+         else
+        	 return false;
+     }, "Start date must be in the future");
+	
+	$("#conferenceAddForm").validate({
+		  onkeyup: false,
+		  onfocusout: false,
+		  submitHandler: function(form) {  
+              if ($(form).valid())
+              {
+                  form.submit(); 
+              }
+              return false;
+     		},
+		  rules: {
+			confName: {
+			    required: true,
+			    minlength: 4,
+			    maxlength: 30,
+			    uniqueConferenceName: true,
+			  },
+			  confDesc: {
+			  	required: true,
+			    minlength: 4,
+			    maxlength: 254,
+			  },
+			  locations: {
+			  	required: true,
+			  },
+			  startDate: {
+			  	required: true,
+				date: true,
+				//startDateGreaterThanNow: true,
+			  },
+			  endDate: {
+			  	required: true,
+			 	date: true,
+			 	//endDateValidate:true,
+			  },
+		  },
+		  messages: {
+				confName: {
+					 required: "Required",
+					 minlength: "You need to use at least 4 characters for your conference name.",
+					 maxlength: "You need to use at most 30 characters for your conference name.",
+					 uniqueConferenceName : "This conference name is already exists",
+				},
+				confDesc: {
+					 required: "Required",
+					 minlength: "You need to use at least 4 characters for your conference description.",
+					 maxlength: "You need to use at most 254 characters for your conference description.",
+				},
+				locations: {
+					required: "Stand up for your comments or go home.",
+				},
+				startDate: {
+					required: "Required",
+					date: "Date format required",
+					startDateGreaterThanNow: "Start date must be in the future",
+				 },
+				endDate: {
+					required: "Required",
+					date: "Date format required",
+					endDateValidate: "Start date should be greater than end date"
+				}
+	  		},
+		  errorElement: "div",
+	        wrapper: "div",  // a wrapper around the error message
+	        errorPlacement: function(error, element) {
+	            offset = element.offset();
+	            error.insertBefore(element);
+	            error.addClass('message');  // add a class to the wrapper
+	            error.css('position', 'absolute');
+	            error.css('left', offset.left + element.outerWidth());
+	        }
 
-						$.validator.addMethod("endDateValidate", function(
-								value, element) {
-							var startDate = $('.startDate').val();
-							return Date.parse(value) <= Date.parse(startDate)
-									|| value == "";
-						}, "Start date should be greater than End date");
-
-						$.validator.addMethod("startDateGreaterThanNow",
-								function(value, element) {
-									var now = Date.now();
-									return Date.parse(value) <= Date.parse(now)
-											|| value == "";
-								}, "Start date must be in the future");
-
-						$("#conferenceAddForm")
-								.validate(
-										{
-											onkeyup : false,
-											onfocusout : false,
-											rules : {
-												confName : {
-													required : true,
-													minlength : 4,
-													maxlength : 30,
-													uniqueConferenceName : true,
-												},
-												confDesc : {
-													required : true,
-													minlength : 4,
-													maxlength : 254,
-												},
-												locations : {
-													required : true,
-												},
-												startDate : {
-													required : true,
-													date : true,
-													startDateGreaterThanNow : true,
-												},
-												endDate : {
-													required : true,
-													date : true,
-													endDateValidate : true,
-												},
-											},
-											messages : {
-												confName : {
-													required : "Required",
-													minlength : "You need to use at least 4 characters for your conference name.",
-													maxlength : "You need to use at most 30 characters for your conference name.",
-													uniqueConferenceName : "This conference name is already exists",
-												},
-												confDesc : {
-													required : "Required",
-													minlength : "You need to use at least 4 characters for your conference description.",
-													maxlength : "You need to use at most 254 characters for your conference description.",
-												},
-												locations : {
-													required : "Stand up for your comments or go home.",
-												},
-												startDate : {
-													required : "Required",
-													date : "Date format required",
-													startDateGreaterThanNow : "Start date must be in the future",
-												},
-												endDate : {
-													required : "Required",
-													date : "Date format required",
-													endDateValidate : "Start date should be greater than End date"
-												}
-											},
-											errorElement : "div",
-											wrapper : "div", // a wrapper around the error message
-											errorPlacement : function(error,
-													element) {
-												offset = element.offset();
-												error.insertBefore(element);
-												error.addClass('message'); // add a class to the wrapper
-												error.css('position',
-														'absolute');
-												error.css('left', offset.left
-														+ element.outerWidth());
-											}
-
-										});
-					});
+		});
+});
 </script>
-
 </head>
 
 <body>
