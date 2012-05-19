@@ -45,7 +45,7 @@
    	<filter-class>filters.SessionFilter</filter-class> 
    	<init-param> 
    		<param-name>avoid-urls</param-name> 
-   		<param-value>/loginPage.jsp,/LoginServlet</param-value> 
+   		<param-value>/LoginPage.jsp,/LoginServlet</param-value> 
    	</init-param> 
   </filter> 
   <filter-mapping> 

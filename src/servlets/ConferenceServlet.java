@@ -17,6 +17,7 @@ import model.Location;
 
 import utils.ProjConst;
 import com.google.gson.Gson;
+import com.google.gson.JsonObject;
 
 import daos.ConferenceDao;
 import daos.LocationDao;
@@ -52,7 +53,7 @@ public class ConferenceServlet extends HttpServlet {
 			addConference(request, response);
 		}
 		else if (action.equals(DELETE_CONF)) {
-			//deleteUser(request, response);
+			deleteConference(request, response);
 		}
 		else if (action.equals(EDIT_CONF)) {
 			//editUser(request, response);
@@ -62,12 +63,7 @@ public class ConferenceServlet extends HttpServlet {
 		}
 		else {
 			//throw new Exception("Unknown request");
-		}
-
-
-    	
-    	
-    
+		}	
     }
     
     private void addConference(HttpServletRequest request, HttpServletResponse response) throws IOException, ParseException
@@ -81,7 +77,9 @@ public class ConferenceServlet extends HttpServlet {
     	Date startDate = (Date)formatter.parse(request.getParameter(ProjConst.CONF_START_DATE));
     	Date endDate = (Date)formatter.parse(request.getParameter(ProjConst.CONF_END_DATE));
     	
-    	Location locationInstance = LocationDao.getInstance().getLocationByName(location);
+    	Location locationInstance = LocationDao.getInstance().getLocationById(location);
+    	    	
+    	JsonObject jsonObject = new JsonObject();
     	
     	String resultSuccess;
     	String message;
@@ -103,10 +101,64 @@ public class ConferenceServlet extends HttpServlet {
         try {
             Gson gson = new Gson();
            	String json;
-           	if (ConferenceDao.getInstance().isConferenceNameExists(confName))
-           		json = gson.toJson("{resultSuccess:" + resultSuccess + "," + "message:" + message + "}");
-           	else 
-           		json = gson.toJson("false");
+           	if (ConferenceDao.getInstance().isConferenceNameExists(confName))	
+           	{
+           		jsonObject.addProperty("resultSuccess", resultSuccess);
+           		jsonObject.addProperty("message", message);
+           		json = gson.toJson(jsonObject);
+           	}
+           	else
+           	{
+           		jsonObject.addProperty("resultSuccess", "false");
+           		jsonObject.addProperty("message", "Failed to add conference");
+           		json = gson.toJson(jsonObject);
+           	}
+           	out.write(json);
+            out.flush();
+        }
+         finally {
+            out.close();
+        }
+    }
+    
+    private void deleteConference(HttpServletRequest request, HttpServletResponse response) throws IOException
+    {
+    	JsonObject jsonObject = new JsonObject();
+    	
+    	String confName = request.getParameter(ProjConst.CONF_NAME);
+    	
+      	String resultSuccess;
+    	String message;
+    	try 
+    	{
+    		ConferenceDao.getInstance().deleteConference(confName);
+    		message = "Conference successfully deleted";
+    		resultSuccess = "true";
+    		
+    	}
+    	catch (Exception e)
+    	{
+    		message = "Found problem while deleting conference";
+    		resultSuccess = "false";
+    	}
+    	
+    	response.setContentType("application/json;charset=UTF-8");
+        PrintWriter out = response.getWriter();
+        try {
+            Gson gson = new Gson();
+           	String json;
+           	if (ConferenceDao.getInstance().isConferenceNameExists(confName))	
+           	{
+           		jsonObject.addProperty("resultSuccess", resultSuccess);
+           		jsonObject.addProperty("message", message);
+           		json = gson.toJson(jsonObject);
+           	}
+           	else
+           	{
+           		jsonObject.addProperty("resultSuccess", "false");
+           		jsonObject.addProperty("message", "Failed to delete conference");
+           		json = gson.toJson(jsonObject);
+           	}
            	out.write(json);
             out.flush();
         }

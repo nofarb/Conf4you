@@ -20,6 +20,7 @@
 <script type="text/javascript" src="js/jquery-1.7.1.min.js"></script>
 <script type="text/javascript" src="js/jquery-ui-1.8.18.custom.min.js"></script>
 <script type="text/javascript" src="js/jquery.validate.js"></script>
+<script type="text/javascript" src="js/jquery.floatingmessage.js"></script>
 <style type="text/css">
 div.message{
     background: transparent url(/conf4u/resources/imgs/msg_arrow.gif) no-repeat scroll left center;
@@ -36,17 +37,12 @@ div.error{
 </style>
 
 <script type="text/javascript">	
-
-</script>
-
-<script>
 $(function() {
 	$( ".datepicker" ).datepicker();
 });
 
 $(document).ready(function(){
-	
-	$('.conferenceAddForm').click(function() {
+	var addConfSubmit = function() {
 		$.ajax({
             url: "ConferenceServlet",
             dataType: 'json',
@@ -58,22 +54,29 @@ $(document).ready(function(){
               	 	<%=ProjConst.CONF_DESC%> : $("#confDesc").val(),
               	 	<%=ProjConst.CONF_LOCATION%> : $("#locations").val(),
               	 	<%=ProjConst.CONF_START_DATE%> : $("#startDate").val(),
-              	 	<%=ProjConst.CONF_END_DATE%> : $("#endDate").val(), 	
+              	 	<%=ProjConst.CONF_END_DATE%> : $("#endDate").val()	
                 },
             success: function(data) {
                 if (data != null){
 					if (data.resultSuccess == "true")
 					{
-						$(".errorMessage").val(data.message);
+					
+					 	//window.location.reload();
+					 	    $.floatingMessage(data.message ,{  
+					 	    	height : 30
+						    }); 
+					 	    $(".ui-widget-content").addClass("successFeedback");
+					 	
 					}
 					else
 					{
-						//TODO: redirect success
+						$.floatingMessage(data.message);
+						$(".ui-widget-content").addClass("errorFeedback");
 					}
                 }
             }
         });
-    });
+    };
 	
 	$.validator.addMethod("uniqueConferenceName", function(value, element) {
 		  var is_valid = false;
@@ -129,7 +132,7 @@ $(document).ready(function(){
 		  submitHandler: function(form) {  
               if ($(form).valid())
               {
-                  form.submit(); 
+            	  addConfSubmit();
               }
               return false;
      		},
@@ -208,7 +211,6 @@ $(document).ready(function(){
 <div class="titleSeparator"></div>
 <div class="titleSub">Add a new conference</div>
 </div>
-<div class="errorMessage"></div>
 <div id="vn_mainbody">
 <div class="formtable_wrapper">
 <form id="conferenceAddForm">
@@ -276,7 +278,7 @@ $(document).ready(function(){
 			</label>
 		</td>
 			<td class="inputcell">
-			<input id="datepicker <%=ProjConst.CONF_START_DATE%>" class="datepicker" type="text" name="<%=ProjConst.CONF_START_DATE%>">
+			<input id="<%=ProjConst.CONF_START_DATE%>" class="datepicker" type="text" name="<%=ProjConst.CONF_START_DATE%>">
 			<div></div>
 		</td>
 	</tr>
@@ -288,7 +290,7 @@ $(document).ready(function(){
 			</label>
 		</td>
 			<td class="inputcell">
-			<input id="datepicker <%=ProjConst.CONF_END_DATE%>" class="datepicker" type="text" name="<%=ProjConst.CONF_END_DATE%>">
+			<input id="<%=ProjConst.CONF_END_DATE%>" class="datepicker" type="text" name="<%=ProjConst.CONF_END_DATE%>">
 			<div></div>
 		</td>
 	</tr>

@@ -48,8 +48,8 @@ public class LocationDao {
 		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
 		session.beginTransaction();
 		Location result = (Location)HibernateUtil.getSessionFactory().getCurrentSession().createQuery(
-				"select Loc from Location Loc where Loc.locationId = :locId")
-                .setEntity("locId", id)
+				"select location from  Location location where location.locationId = :id")
+                .setString("id", id)
                 .uniqueResult();
 		session.getTransaction().commit();
 		return result;
@@ -59,8 +59,8 @@ public class LocationDao {
 		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
 		session.beginTransaction();
 		Location result = (Location)HibernateUtil.getSessionFactory().getCurrentSession().createQuery(
-				"select Loc from Location Loc where Loc.name = :name")
-                .setEntity("locId", name)
+				"select loc from Location loc where loc.name = :name")
+                .setEntity("name", name)
                 .uniqueResult();
 		session.getTransaction().commit();
 		return result;
