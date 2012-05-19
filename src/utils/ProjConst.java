@@ -21,7 +21,7 @@ public final  class ProjConst {
 	public static final String CONF_START_DATE = "startDate";
 	public static final String CONF_END_DATE = "endDate";
 	
-	public static final String LOGIN_PAGE = "LoginPage.jsp";
+	public static final String LOGIN_PAGE = "login.jsp";
 	public static final String MAIN_PAGE = "mainPage.jsp";
 
 
