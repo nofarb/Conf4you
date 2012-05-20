@@ -41,25 +41,27 @@ div.error {
 </style>
 
 <script>
-$(function() {
-	$( ".datepicker" ).datepicker();
-});
 
 $(document).ready(function(){
 	
-	$('.conferenceAddForm').click(function() {
+	$('.userAddForm').click(function() {
 		$.ajax({
-            url: "ConferenceServlet",
+            url: "users",
             dataType: 'json',
             async: false,
             type: 'POST',
                 data: {
                 	"action": "add",
-                	<%=ProjConst.CONF_NAME%> : $("#confName").val(),
-              	 	<%=ProjConst.CONF_DESC%> : $("#confDesc").val(),
-              	 	<%=ProjConst.CONF_LOCATION%> : $("#locations").val(),
-              	 	<%=ProjConst.CONF_START_DATE%> : $("#startDate").val(),
-              	 	<%=ProjConst.CONF_END_DATE%> : $("#endDate").val(), 	
+                	<%=ProjConst.USER_NAME%> : $("#userName").val(),
+              	 	<%=ProjConst.NAME%> : $("#name").val(),
+              	 	<%=ProjConst.PASSPORT_ID%> : $("#passportId").val(),
+              	 	<%=ProjConst.PASSWORD%> : $("#password").val(),
+              	 	<%=ProjConst.PHONE1%> : $("#phone1").val(), 	
+              	 	<%=ProjConst.PHONE2%> : $("#phone2").val(), 	
+              	 	<%=ProjConst.EMAIL%> : $("#email").val(), 	
+              	 	<%=ProjConst.COMPANY%> : $("#company").val(), 	
+              	 	<%=ProjConst.IS_ADMIN%> : $("#isAdmin").val(), 	
+
                 },
             success: function(data) {
                 if (data != null){
@@ -76,23 +78,23 @@ $(document).ready(function(){
         });
     });
 	
-	$.validator.addMethod("uniqueConferenceName", function(value, element) {
+	$.validator.addMethod("uniqueUserName", function(value, element) {
 		  var is_valid = false;
 		  	  
 		  $.ajax({
-              url: "ConferenceServlet",
+              url: "users",
               dataType: 'json',
               async: false,
               type: 'POST',
                   data: {
                 	  "action": "validation",
-                      "data": value
+                	  <%=ProjConst.USER_NAME%> : $("#userName").val(),
                   },
               success: function(data) {
                   if (data != null){
                       if (data == "true")
                       {
-                    	 $.validator.messages.uniqueConferenceName = value + " is already taken";
+                    	 $.validator.messages.uniqueUserName = value + " is already taken";
                        	is_valid = false;
                       }
                       else
@@ -103,28 +105,20 @@ $(document).ready(function(){
               }
           });
 	      return is_valid;
-	 }, "Conference name is already exists");
+	 }, "The user name already exists");
 	
-	 $.validator.addMethod("endDateValidate", function(value, element) {
-		 var startDateVal = $("#startDate").val();
-         var startDate = $.date(startDateVal, "MM/dd/yyyy");
-         var myDate = $.date(value, "MM/dd/yyyy");
-         if (myDate >= startDate)
+	 $.validator.addMethod("phoneNumberValidator", function(value, element) {
+		 
+		 var phoneNumber = value;
+
+/*          if (myDate >= startDate)
         	 return true;
-       	 else
-       		return false;		 
+       	 else */
+       		return true;		 
      }, "Start date should be greater than end date");
-	 
-	 $.validator.addMethod("startDateGreaterThanNow", function(value, element) {
-         var now = $.date();
-         var myDate = $.date(value, "MM/dd/yyyy");
-         if (myDate >= now)
-        	 return true;
-         else
-        	 return false;
-     }, "Start date must be in the future");
+
 	
-	$("#conferenceAddForm").validate({
+	$("#userAddForm").validate({
 		  onkeyup: false,
 		  onfocusout: false,
 		  submitHandler: function(form) {  
@@ -135,55 +129,75 @@ $(document).ready(function(){
               return false;
      		},
 		  rules: {
-			confName: {
+			  <%=ProjConst.USER_NAME%>: {
 			    required: true,
 			    minlength: 4,
-			    maxlength: 30,
-			    uniqueConferenceName: true,
+			    maxlength: 10,
+			    uniqueUserName: true,
 			  },
-			  confDesc: {
+			  <%=ProjConst.NAME%>: {
 			  	required: true,
 			    minlength: 4,
 			    maxlength: 254,
 			  },
-			  locations: {
-			  	required: true,
+			  <%=ProjConst.PASSPORT_ID%>: {
+				  	required: true,
+				    minlength: 9,
+				    maxlength: 9,
+					digits: true,
 			  },
-			  startDate: {
-			  	required: true,
-				date: true,
-				//startDateGreaterThanNow: true,
+			  <%=ProjConst.PASSWORD%>: {
+				  	required: true,
+				    minlength: 4,
+				    maxlength: 16,
 			  },
-			  endDate: {
+			  <%=ProjConst.PHONE1%>: {
 			  	required: true,
-			 	date: true,
-			 	//endDateValidate:true,
+			  	phoneNumberValidator: true,
+			  },
+			  <%=ProjConst.PHONE2%>: {
+			  	required: false,
+			  	phoneNumberValidator: true,
+			  },
+			  <%=ProjConst.EMAIL%>: {
+			  	required: true,
+			 	email: true,
 			  },
 		  },
+		   
 		  messages: {
-				confName: {
+			  <%=ProjConst.USER_NAME%>: {
 					 required: "Required",
-					 minlength: "You need to use at least 4 characters for your conference name.",
-					 maxlength: "You need to use at most 30 characters for your conference name.",
-					 uniqueConferenceName : "This conference name is already exists",
+					 minlength: "You need to use at least 4 characters for your user name.",
+					 maxlength: "You need to use at most 10 characters for your user name.",
+					 uniqueUserName : "This user name already exists",
 				},
-				confDesc: {
+				<%=ProjConst.NAME%>: {
 					 required: "Required",
-					 minlength: "You need to use at least 4 characters for your conference description.",
-					 maxlength: "You need to use at most 254 characters for your conference description.",
+					 minlength: "You need to use at least 4 characters for your name.",
+					 maxlength: "You need to use at most 254 characters for your name.",
 				},
-				locations: {
-					required: "Stand up for your comments or go home.",
+				<%=ProjConst.PASSPORT_ID%>: {
+					 required: "Required",
+					 digits: "passport should be consisted of from digits only",
+					 minlength: "IL passport id should exactly 9 characters.",
+					 maxlength: "IL passport id should exactly 9 characters.",
 				},
-				startDate: {
+				<%=ProjConst.PASSWORD%>: {
 					required: "Required",
-					date: "Date format required",
-					startDateGreaterThanNow: "Start date must be in the future",
+					 minlength: "You need to use 4-16 characters for your password.",
+					 maxlength: "You need to use 4-16 characters for your password.",
 				 },
-				endDate: {
+				 <%=ProjConst.PHONE1%>: {
 					required: "Required",
-					date: "Date format required",
-					endDateValidate: "Start date should be greater than end date"
+				 	phoneNumberValidator:"Phone number invalid",
+				},
+			 	<%=ProjConst.PHONE2%>: {
+				 	phoneNumberValidator:"Phone number invalid",
+				},
+			 	<%=ProjConst.EMAIL%>: {
+			 		required: "Required",
+			 		email: "Invalid email address",
 				}
 	  		},
 		  errorElement: "div",
@@ -210,7 +224,7 @@ $(document).ready(function(){
 	</div>
 	<div id="vn_mainbody">
 		<div class="formtable_wrapper">
-			<form id="UserAddForm" method="post" action="users">
+			<form id="userAddForm" method="post" action="users">
 				<input type="hidden" name="action" value="add" /> <!-- hidden input to pass action type -->
 				<table class="formtable" cellspacing="0" cellpadding="0" border="0">
 					<thead>
@@ -261,32 +275,35 @@ $(document).ready(function(){
 						</tr>
 						<tr>
 							<td class="labelcell required">
-								<label for=<%=ProjConst.PHONE2%>> Phone #2: <em>*</em> </label>
+								<label for=<%=ProjConst.PHONE2%>> Phone #2:</label>
 							</td>
 							<td class="inputcell">
 								<input id=<%=ProjConst.PHONE2%> type="text" value="" name=<%=ProjConst.PHONE2%>>
 								<div></div></td>
 						</tr>
 						<tr>
-							<td class="labelcell required"><label for=<%=ProjConst.COMPANY%>>
-									Company: <em>*</em>
-							</label></td>
-							<td class="inputcell"><select id=<%=ProjConst.COMPANY%>
-								class="type rdOnlyOnEdit" name=<%=ProjConst.COMPANY%>>
-
-									<%
-										List<Company> companies = CompanyDao.getInstance()
-												.getAllCompanies();
-
-										for (Company company : companies) {
-									%>
-									<option value="<%=company.getCompanyID()%>"
-										selected="selected"><%=company.getName()%></option>
-									<%
-										}
-									%>
-							</select>
-								<div></div></td>
+							<td class="labelcell required">
+								<label for=<%=ProjConst.COMPANY%>>
+										Company: <em>*</em>
+								</label>
+							</td>
+							<td class="inputcell">
+								<select id=<%=ProjConst.COMPANY%>
+									class="type rdOnlyOnEdit" name=<%=ProjConst.COMPANY%>>
+	
+										<%
+											List<Company> companies = CompanyDao.getInstance()
+													.getAllCompanies();
+	
+											for (Company company : companies) {
+										%>
+										<option value="<%=company.getCompanyID()%>"
+											selected="selected"><%=company.getName()%></option>
+										<%
+											}
+										%>
+								</select>
+							</td>
 						</tr>
 						<tr>
 							<td class="labelcell required">
