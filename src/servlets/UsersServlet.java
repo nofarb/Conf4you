@@ -3,23 +3,16 @@ package servlets;
 import java.io.IOException;
 import java.io.PrintWriter;
 
-import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import utils.ProjConst;
-
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
-import com.mysql.jdbc.Constants;
-
 import model.Company;
-import model.Conference;
 import model.User;
-
 import daos.CompanyDao;
 import daos.ConferenceDao;
 import daos.UserDao;
@@ -84,46 +77,27 @@ public class UsersServlet extends HttpServlet {
 
 		String userName = request.getParameter(ProjConst.USER_NAME);
 
-    	JsonObject jsonObject = new JsonObject();
-    	
-    	String resultSuccess;
-    	String message;
-    	try 
-    	{
-    		User user = UserDao.getInstance().getUserByUserName(userName);
-    		if(user != null){
-        		message = "User name already exists";
-        		resultSuccess = "false";
-    		}else{
-        		message = "User name doesn't exist";
-        		resultSuccess = "true";
-    		}
-    		
-    	}
-    	catch (Exception e)
-    	{
-    		message = "User name already exists";
-    		resultSuccess = "false";
-    	}
-    	
-    	PrintWriter out = response.getWriter();
+        response.setContentType("application/json;charset=UTF-8");
+        PrintWriter out = response.getWriter();
         try {
-            response.setContentType("application/json;charset=UTF-8");
-        	
             Gson gson = new Gson();
-           	String json;
-
-       		jsonObject.addProperty("resultSuccess", resultSuccess);
-       		jsonObject.addProperty("message", message);
-       		json = gson.toJson(jsonObject);
-
-           	out.write(json);
+            
+            if (userName != null)
+            {
+            	User user = UserDao.getInstance().getUserByUserName(userName);
+ 	           	String json;
+ 	           	if (user != null)
+ 	           		json = gson.toJson("true");
+ 	           	else 
+ 	           		json = gson.toJson("false");
+ 	           	out.write(json);
+            	}
             out.flush();
         }
          finally {
             out.close();
         }
-		
+        
 	}
 
 	/**

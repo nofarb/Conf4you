@@ -58,12 +58,16 @@
 			<% 
 
 			List <User> usersList = UserDao.getInstance().getUsers();
-		
+			String newsDate;
 			// Print each application in a single row
 			for (User user : usersList )
 			{
 				Date date = user.getLastLogin();
-				String newsDate = new SimpleDateFormat("dd-MM-yyyy hh:mm:ss aaa").format(date);
+				if(date != null){
+					newsDate = new SimpleDateFormat("dd-MM-yyyy hh:mm:ss aaa").format(date);
+				}else{
+					newsDate = "";
+				}
 		%>
 			<tr>
 				<td><%=user.getUserName()%></td>
