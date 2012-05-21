@@ -64,8 +64,9 @@ public class Company implements Serializable {
 		return active;
 	}
 
-	public void setActive(boolean active) {
+	public Company setActive(boolean active) {
 		this.active = active;
+		return this;
 	}
 	
 	
