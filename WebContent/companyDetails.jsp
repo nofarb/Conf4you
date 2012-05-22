@@ -33,13 +33,15 @@
 <div class="titleSub">View, modify this Company</div>
 </div>
 <div id="detailsAndActions">
-
+<% String companyName = request.getParameter("companyName");
+	   Company comp = CompanyDao.getInstance().getCompanyByName(companyName);
+	%>
 	<div class="vn_detailsgeneraltitle">Actions </div>
 	<div class="vn_actionlistdiv yui-reset yui-base">
 		<div class="vn_actionlistcolumn">
 			<div class="vn_actionbuttondiv">
 				<div class="title">
-				<a title="Edit Company" href="Edit_bla.jsp">
+				<a title="Edit Company" href="companyAddEdit.jsp?action=edit&compName=<%=companyName%>">
 					<img src="/conf4u/resources/imgs/vn_action_edit.png" alt=""> 
 					Edit
 				</a>
@@ -57,9 +59,7 @@
 	</div>
 	<div class="vn_detailsgeneraltitle">Details </div>
 	
-	<% String compId = request.getParameter("companyId");
-	   Company comp = CompanyDao.getInstance().getCompanyById(Long.valueOf(compId));
-	%>
+	
 	<div class="groupedList" style="width: 800px;">
 	<table class="vn_envdetails" cellspacing="0" cellpadding="0" style="border-collapse: collapse;">
 		<tbody>

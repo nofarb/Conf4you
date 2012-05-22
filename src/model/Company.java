@@ -2,11 +2,13 @@ package model;
 
 import java.io.Serializable;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.GenericGenerator;
@@ -27,7 +29,9 @@ public class Company implements Serializable {
 	private String name;
 	private boolean active;
 	
-	Company() {} //not public on purpose!
+	public Company() {
+		
+	} 
 	
 	public Company(String name, CompanyType companyType) {
 		this.companyType = companyType;
@@ -35,8 +39,11 @@ public class Company implements Serializable {
 		this.active = true;
 	}
 
-	
 	@Id
+	public String getName() {
+		return name;
+	}
+	
 	@GeneratedValue(generator="increment")
 	@GenericGenerator(name="increment", strategy = "increment")
 	public long getCompanyID() {
@@ -50,14 +57,16 @@ public class Company implements Serializable {
 	public CompanyType getCompanyType() {
 		return companyType;
 	}
-	public void setCompanyType(CompanyType companyType) {
+	
+	public Company setCompanyType(CompanyType companyType) {
 		this.companyType = companyType;
+		return this;
 	}
-	public String getName() {
-		return name;
-	}
-	public void setName(String name) {
+	
+	
+	public Company setName(String name) {
 		this.name = name;
+		return this;
 	}
 
 	public boolean isActive() {

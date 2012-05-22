@@ -37,7 +37,14 @@
   	<servlet-name>LoginServlet</servlet-name>
   	<url-pattern>/LoginServlet</url-pattern>
   </servlet-mapping>
-  
+  <servlet>
+  	<servlet-name>CompanyServlet</servlet-name>
+  	<servlet-class>servlets.CompanyServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+  	<servlet-name>CompanyServlet</servlet-name>
+  	<url-pattern>/CompanyServlet</url-pattern>
+  </servlet-mapping>
 
 
    <filter> 
