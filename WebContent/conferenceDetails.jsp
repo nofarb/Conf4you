@@ -65,13 +65,15 @@ $(document).ready(function(){
 <div class="titleSub">View, modify, add/remove participants for this conference</div>
 </div>
 <div id="detailsAndActions">
-
+	<% String confName = request.getParameter("conferenceName");
+	   Conference conf = ConferenceDao.getInstance().getConferenceByName(confName);
+	%>
 	<div class="vn_detailsgeneraltitle">Actions </div>
 	<div class="vn_actionlistdiv yui-reset yui-base">
 		<div class="vn_actionlistcolumn">
 			<div class="vn_actionbuttondiv">
 				<div class="title">
-				<a title="Edit Conference" href="/Edit_bla.jsp">
+				<a title="Edit Conference" href="conferenceAddEdit.jsp?action=edit&confName=<%=confName%>">
 					<img src="/conf4u/resources/imgs/vn_action_edit.png" alt=""> 
 					Edit
 				</a>
@@ -89,9 +91,6 @@ $(document).ready(function(){
 	</div>
 	<div class="vn_detailsgeneraltitle">Details </div>
 	
-	<% String confName = request.getParameter("conferenceName");
-	   Conference conf = ConferenceDao.getInstance().getConferenceByName(confName);
-	%>
 	<div class="groupedList" style="width: 800px;">
 	<table class="vn_envdetails" cellspacing="0" cellpadding="0" style="border-collapse: collapse;">
 		<tbody>

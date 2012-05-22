@@ -39,7 +39,7 @@
 		<div class="vn_actionlistcolumn">
 			<div class="vn_actionbuttondiv">
 				<div class="title">
-				<a title="Edit Company" href="/Edit_bla.jsp">
+				<a title="Edit Company" href="Edit_bla.jsp">
 					<img src="/conf4u/resources/imgs/vn_action_edit.png" alt=""> 
 					Edit
 				</a>

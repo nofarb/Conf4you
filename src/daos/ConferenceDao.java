@@ -162,12 +162,11 @@ public class ConferenceDao {
 		
 		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
 		session.beginTransaction();
-		session.update(conference);
+		session.merge(conference);
 		session.getTransaction().commit();
 		
 		return conference;
-
-		
+	
 	}
 	
 	/**

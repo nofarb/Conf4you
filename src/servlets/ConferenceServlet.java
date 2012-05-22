@@ -56,7 +56,7 @@ public class ConferenceServlet extends HttpServlet {
 			deleteConference(request, response);
 		}
 		else if (action.equals(EDIT_CONF)) {
-			//editUser(request, response);
+			editConference(request, response);
 		}
 		else if (action.equals(CONF_NAME_VALIDATION)) {
 			conferenceNameValidation(request, response);
@@ -111,6 +111,67 @@ public class ConferenceServlet extends HttpServlet {
            	{
            		jsonObject.addProperty("resultSuccess", "false");
            		jsonObject.addProperty("message", "Failed to add conference");
+           		json = gson.toJson(jsonObject);
+           	}
+           	out.write(json);
+            out.flush();
+        }
+         finally {
+            out.close();
+        }
+    }
+    
+    private void editConference(HttpServletRequest request, HttpServletResponse response) throws IOException, ParseException
+    {
+    	String confNameBeforeEdit = request.getParameter(ProjConst.CONF_NAME_BEFORE_EDIT);
+    	Conference origConf = ConferenceDao.getInstance().getConferenceByName(confNameBeforeEdit);
+    	
+    	String confName = request.getParameter(ProjConst.CONF_NAME);
+    	String desc = request.getParameter(ProjConst.CONF_DESC);
+    	String location = request.getParameter(ProjConst.CONF_LOCATION);
+    	
+	    DateFormat formatter = new SimpleDateFormat("MM/dd/yyyy");
+    			  
+    	Date startDate = (Date)formatter.parse(request.getParameter(ProjConst.CONF_START_DATE));
+    	Date endDate = (Date)formatter.parse(request.getParameter(ProjConst.CONF_END_DATE));
+    	
+    	Location locationInstance = LocationDao.getInstance().getLocationById(location);  	
+    	
+    	origConf.setName(confName).setDescription(desc).setLocation(locationInstance).setStartDate(startDate).setEndDate(endDate);
+    	
+    	JsonObject jsonObject = new JsonObject();
+    	
+    	String resultSuccess;
+    	String message;
+    	try 
+    	{
+    		
+    		ConferenceDao.getInstance().updateConference(origConf);
+    		message = "Conference successfully edited";
+    		resultSuccess = "true";
+    		
+    	}
+    	catch (Exception e)
+    	{
+    		message = "Found problem while editing conference";
+    		resultSuccess = "false";
+    	}
+    	
+        response.setContentType("application/json;charset=UTF-8");
+        PrintWriter out = response.getWriter();
+        try {
+            Gson gson = new Gson();
+           	String json;
+           	if (ConferenceDao.getInstance().isConferenceNameExists(confName))	
+           	{
+           		jsonObject.addProperty("resultSuccess", resultSuccess);
+           		jsonObject.addProperty("message", message);
+           		json = gson.toJson(jsonObject);
+           	}
+           	else
+           	{
+           		jsonObject.addProperty("resultSuccess", "false");
+           		jsonObject.addProperty("message", "Failed to edit conference");
            		json = gson.toJson(jsonObject);
            	}
            	out.write(json);

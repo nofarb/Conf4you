@@ -2,6 +2,7 @@
 <%@page import="model.ConferenceFilters.ConferencePreDefinedFilter"%>
 <%@page import="daos.ConferenceDao"%>
 <%@page import="daos.UserDao"%>
+<%@page import="utils.*"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="ISO-8859-1"%>
 <%@ page import="java.util.List"%>
 <%@ page import="java.util.Date"%>
@@ -31,7 +32,7 @@
 	<div id="vn_mainbody">
 	
 	<div class="buttons">
-		<a id="createNewConference" href="conferenceAdd.jsp">
+		<a id="createNewConference" href="conferenceAddEdit.jsp?action=add">
 		<span></span>
 		<img src="/conf4u/resources/imgs/vn_action_add.png">
 		Add Conference
