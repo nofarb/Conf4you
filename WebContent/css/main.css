@@ -1,3 +1,17 @@
+.ui-widget-content {
+    background: none repeat scroll 0 0 #000000;
+    font-size: 12px;
+    font-style: bold;
+}
+
+.successFeedback{
+	color: green;
+}
+
+.errorFeedback{
+	color: red;
+}
+
 .message td {
     background: transparent url(/conf4u/resources/imgs/msg_arrow.gif) no-repeat scroll left center;
     padding-left: 7px;
@@ -5276,7 +5290,8 @@ body {
 	margin: 0;
 	min-width: 974px;
 	padding: 0;
-	width: 100%;
+	margin-left: auto;
+	margin-right: auto;
 }
 
 #vn_header_div {

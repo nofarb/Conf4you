@@ -23,7 +23,7 @@ public class MockCreation {
  		Company comp3 = new Company("comp3", CompanyType.C);
 
 
-		for(int i = 0 ; i < 5; i++){
+		for(int i = 0 ; i < 15; i++){
 			
 			Company comp;
 			

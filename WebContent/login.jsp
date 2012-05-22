@@ -8,8 +8,8 @@
 </head>
 <body>
 
-	<form name="loginform" method="post" action="LoginServlet">
-		Please enter your username <input type="text" name="un"/><br>
+	<form name="loginform" method="post" action="LoginServlet?action=login">
+		Please enter your user name <input type="text" name="un"/><br>
 		Please enter your password <input type="password" name="pw"/><br>
 		<input type="submit" value="submit">
 	</form>

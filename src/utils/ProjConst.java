@@ -16,9 +16,18 @@ public final  class ProjConst {
 	public static final String IS_ADMIN = "isAdmin";
 	
 	public static final String CONF_NAME = "confName";
+	public static final String CONF_NAME_BEFORE_EDIT = "confNameEdit";
 	public static final String CONF_DESC = "confDesc";
 	public static final String CONF_LOCATION = "locations";
 	public static final String CONF_START_DATE = "startDate";
 	public static final String CONF_END_DATE = "endDate";
+	
+	public static final String COMP_NAME = "compName";
+	public static final String COMP_TYPE = "compType";
+	
+	public static final String LOGIN_PAGE = "login.jsp";
+	public static final String MAIN_PAGE = "mainPage.jsp";
 
+	public static final String ADD = "add";
+	public static final String EDIT = "edit";
 }

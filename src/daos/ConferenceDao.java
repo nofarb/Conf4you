@@ -69,7 +69,7 @@ public class ConferenceDao {
 		
 		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
 		session.beginTransaction();
-		List<Conference> result = (List<Conference>) session.createQuery("select conf from Conference conf where conf.startDate >= :filterDate")
+		List<Conference> result = (List<Conference>) session.createQuery("select conf from Conference conf where conf.startDate >= :filterDate and conf.active = '1'")
 				.setDate("filterDate", dateToFilter)
 				.list();
 		session.getTransaction().commit();
@@ -87,7 +87,7 @@ public class ConferenceDao {
 		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
 		session.beginTransaction();
 		List<Conference> result = (List<Conference>)HibernateUtil.getSessionFactory().getCurrentSession().createQuery(
-				"select conf from Conference conf where conf.startDate >= :startDate and conf.endtDate <= :endDate")
+				"select conf from Conference conf where conf.startDate >= :startDate and conf.endtDate <= :endDate and conf.active = '1'")
                 .setDate("startDate", filter.getFromDate())
                 .setDate("endDate", filter.getToDate())
                 .list();
@@ -123,7 +123,15 @@ public class ConferenceDao {
 		return exists;
 	}
 	
-	
+	public void deleteConference(String name){
+		
+		Conference conferenceToDelete = getConferenceByName(name);
+		
+		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
+		session.beginTransaction();
+		session.update(conferenceToDelete.setActive(false));
+		session.getTransaction().commit();
+	}
 	
 	public void addNewConference(List<Conference> conferences){
 		 for (Conference conf:conferences)
@@ -151,19 +159,14 @@ public class ConferenceDao {
 	 * Update an existing conference in the database
 	 */
 	public Conference updateConference(Conference conference){
-		Conference conf = getConferenceByName(conference.getName());
+		
 		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
 		session.beginTransaction();
-		session.update(conf.setName(conference.getName())
-				.setDescription(conference.getDescription())
-				.setLocation(conference.getLocation())
-				.setStartDate(conference.getStartDate())
-				.setEndDate(conference.getEndDate()));
+		session.merge(conference);
 		session.getTransaction().commit();
 		
-		return conf;
-
-		
+		return conference;
+	
 	}
 	
 	/**

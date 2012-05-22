@@ -1,6 +1,7 @@
 package servlets;
 
 import java.io.IOException;
+import java.io.PrintWriter;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -11,12 +12,16 @@ import javax.servlet.http.HttpServletResponse;
 
 import utils.ProjConst;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
 import com.mysql.jdbc.Constants;
 
 import model.Company;
+import model.Conference;
 import model.User;
 
 import daos.CompanyDao;
+import daos.ConferenceDao;
 import daos.UserDao;
 
 /**
@@ -28,6 +33,8 @@ public class UsersServlet extends HttpServlet {
 	private static final String DELETE_USER = "delete";
 	private static final String EDIT_USER = "edit";
 	private static final String ADD_USER = "add";
+	private static final String VALIDATION = "validation";
+
 
 
        
@@ -59,6 +66,9 @@ public class UsersServlet extends HttpServlet {
 			else if (action.equals(ADD_USER)) {
 				addUser(request, response);
 			}
+			else if (action.equals(VALIDATION)) {
+				validate(request, response);
+			}
 			else {
 				throw new Exception("Unknown request");
 			}
@@ -69,6 +79,52 @@ public class UsersServlet extends HttpServlet {
 		}
 	}
 
+
+	private void validate(HttpServletRequest request, HttpServletResponse response) throws Exception{
+
+		String userName = request.getParameter(ProjConst.USER_NAME);
+
+    	JsonObject jsonObject = new JsonObject();
+    	
+    	String resultSuccess;
+    	String message;
+    	try 
+    	{
+    		User user = UserDao.getInstance().getUserByUserName(userName);
+    		if(user != null){
+        		message = "User name already exists";
+        		resultSuccess = "false";
+    		}else{
+        		message = "User name doesn't exist";
+        		resultSuccess = "true";
+    		}
+    		
+    	}
+    	catch (Exception e)
+    	{
+    		message = "User name already exists";
+    		resultSuccess = "false";
+    	}
+    	
+    	PrintWriter out = response.getWriter();
+        try {
+            response.setContentType("application/json;charset=UTF-8");
+        	
+            Gson gson = new Gson();
+           	String json;
+
+       		jsonObject.addProperty("resultSuccess", resultSuccess);
+       		jsonObject.addProperty("message", message);
+       		json = gson.toJson(jsonObject);
+
+           	out.write(json);
+            out.flush();
+        }
+         finally {
+            out.close();
+        }
+		
+	}
 
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
@@ -115,10 +171,45 @@ public class UsersServlet extends HttpServlet {
 		Company company = CompanyDao.getInstance().getCompanyById(companyId);
 		String password = request.getParameter(ProjConst.PASSWORD); // TODO should encrypt on client side
 		boolean isAdmin = new Boolean(request.getParameter(ProjConst.IS_ADMIN)); 
+		
 
-		User newUser = new User(userName, passportId, company, name, email, phone1, phone2, password, isAdmin);
-		UserDao.getInstance().addUser(newUser);
+    	JsonObject jsonObject = new JsonObject();
+    	
+    	String resultSuccess;
+    	String message;
+    	try 
+    	{
+    		User newUser = new User(userName, passportId, company, name, email, phone1, phone2, password, isAdmin);
+    		UserDao.getInstance().addUser(newUser);
+    		message = "User successfully added";
+    		resultSuccess = "true";
+    		
+    	}
+    	catch (Exception e)
+    	{
+    		message = "Problem occurred while adding user";
+    		resultSuccess = "false";
+    	}
+    	
+        response.setContentType("application/json;charset=UTF-8");
+        PrintWriter out = response.getWriter();
+        
+        try {
+        	
+            Gson gson = new Gson();
+           	String json;
 
+       		jsonObject.addProperty("resultSuccess", resultSuccess);
+       		jsonObject.addProperty("message", message);
+       		json = gson.toJson(jsonObject);
+
+           	out.write(json);
+            out.flush();
+        }
+         finally {
+            out.close();
+        }
+		
 	}
 
 }

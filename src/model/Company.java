@@ -59,5 +59,16 @@ public class Company implements Serializable {
 	public void setName(String name) {
 		this.name = name;
 	}
+
+	public boolean isActive() {
+		return active;
+	}
+
+	public Company setActive(boolean active) {
+		this.active = active;
+		return this;
+	}
+	
+	
 	
 }

@@ -1,3 +1,5 @@
+<%@page import="daos.CompanyDao"%>
+<%@page import="model.Company"%>
 <%@page import="daos.UserDao"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="ISO-8859-1"%>
 <%@ page import="java.util.List"%>
@@ -35,40 +37,33 @@
 
 	<p class="horizontal-line">Users</p>
 
-<a class="addButton" href="addUser.jsp">Add User</a>
+<a class="addButton" href="companyAdd.jsp">Add Company</a>
 
 	<table cellpadding="0" cellspacing="0" border="0" id="table"
 		class="sortable">
 		<thead>
 			<tr>
 				<th><h3>Name</h3></th>
-				<th><h3>Phone 1</h3></th>
-				<th><h3>Phone 2</h3></th>
-				<th><h3>Email</h3></th>
-				<th><h3>Company</h3></th>
-				<th><h3>Last Access</h3></th>
+				<th><h3>Type</h3></th>
 				<th class="nosort"><h3>Details</h3></th>
 			</tr>
 		</thead>
 		<tbody>
 			<% 
 
-			List <User> usersList = UserDao.getInstance().getUsers();
+			//List <User> usersList = UserDao.getInstance().getUsers();
+			List <Company> companyList = CompanyDao.getInstance().getAllCompanies();
 		
 			// Print each application in a single row
-			for (User user : usersList )
+			for (Company company : companyList )
 			{
-				Date date = user.getLastLogin();
-				String newsDate = new SimpleDateFormat("dd-MM-yyyy hh:mm:ss aaa").format(date);
+				//Date date = user.getLastLogin();
+				//String newsDate = new SimpleDateFormat("dd-MM-yyyy hh:mm:ss aaa").format(date);
 		%>
 			<tr>
-				<td><%=user.getName()%></td>
-				<td><%=user.getPhone1()%></td>
-				<td><%=user.getPhone2()%></td>
-				<td><a style="color: blue;" href="mailto:<%=user.getEmail()%>"><%=user.getEmail()%></a></td>
-				<td><%=user.getCompany().getName()%></td>
-				<td><%=newsDate%></td>
-				<td><a class="vn_boldtext"href="userDetails.jsp?userName=<%=user.getUserName()%>"> <img src="/conf4u/resources/imgs/vn_world.png" alt=""> Details </a> </td>
+				<td><%=company.getName()%></td>
+				<td><%=company.getCompanyType()%></td>
+				<td><a class="vn_boldtext"href="companyDetails.jsp?companyId=<%=company.getCompanyID()%>"> <img src="/conf4u/resources/imgs/vn_world.png" alt=""> Details </a> </td>
 			</tr>
 			<%	} %>
 		</tbody>

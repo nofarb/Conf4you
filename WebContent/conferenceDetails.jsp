@@ -16,9 +16,41 @@
 	rel="stylesheet" />
 <script type="text/javascript" src="js/jquery-1.7.1.min.js"></script>
 <script type="text/javascript" src="js/jquery-ui-1.8.18.custom.min.js"></script>
+<script type="text/javascript" src="js/jquery.floatingmessage.js"></script>
 
-<script>
-
+<script type="text/javascript">	
+$(document).ready(function(){
+	 $('.deleteConf').click(function () { 
+		$.ajax({
+	        url: "ConferenceServlet",
+	        dataType: 'json',
+	        async: false,
+	        type: 'POST',
+	            data: {
+	            	"action": "delete",
+	            	"confName": $(".confName").text()
+	            },
+	        success: function(data) {
+	            if (data != null){
+					if (data.resultSuccess == "true")
+					{
+					
+					 	    $.floatingMessage(data.message ,{  
+					 	    	height : 30
+						    }); 
+					 	    $(".ui-widget-content").addClass("successFeedback");
+					 	
+					}
+					else
+					{
+						$.floatingMessage(data.message);
+						$(".ui-widget-content").addClass("errorFeedback");
+					}
+	            }
+	        }
+	    });
+	});
+});
 </script>
 
 
@@ -33,13 +65,15 @@
 <div class="titleSub">View, modify, add/remove participants for this conference</div>
 </div>
 <div id="detailsAndActions">
-
+	<% String confName = request.getParameter("conferenceName");
+	   Conference conf = ConferenceDao.getInstance().getConferenceByName(confName);
+	%>
 	<div class="vn_detailsgeneraltitle">Actions </div>
 	<div class="vn_actionlistdiv yui-reset yui-base">
 		<div class="vn_actionlistcolumn">
 			<div class="vn_actionbuttondiv">
 				<div class="title">
-				<a title="Edit Conference" href="/Edit_bla.jsp">
+				<a title="Edit Conference" href="conferenceAddEdit.jsp?action=edit&confName=<%=confName%>">
 					<img src="/conf4u/resources/imgs/vn_action_edit.png" alt=""> 
 					Edit
 				</a>
@@ -47,7 +81,7 @@
 			</div>
 				<div class="vn_actionbuttondiv">
 				<div class="title">
-				<a title="Delete Conference" href="/Delete_bla.jsp">
+				<a class="deleteConf" title="Delete Conference">
 					<img src="/conf4u/resources/imgs/vn_action_delete.png" alt=""> 
 					Delete
 				</a>
@@ -57,15 +91,12 @@
 	</div>
 	<div class="vn_detailsgeneraltitle">Details </div>
 	
-	<% String confName = request.getParameter("conferenceName");
-	   Conference conf = ConferenceDao.getInstance().getConferenceByName(confName);
-	%>
 	<div class="groupedList" style="width: 800px;">
 	<table class="vn_envdetails" cellspacing="0" cellpadding="0" style="border-collapse: collapse;">
 		<tbody>
 			<tr>
 				<td>Name</td>
-				<td><%=conf.getName()%></td>
+				<td class="confName"><%=conf.getName()%></td>
 			</tr>
 			<tr>
 				<td>Location</td>

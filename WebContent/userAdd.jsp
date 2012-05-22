@@ -39,118 +39,180 @@ div.error {
 	padding: 4px;
 }
 </style>
+
 <script>
-	$(function() {
-		$(".datepicker").datepicker();
-	});
 
-	$(document)
-			.ready(
-					function() {
-						$.validator.addMethod("uniqueConferenceName", function(
-								value, element) {
-							$.ajax({
-								type : "POST",
-								url : "ConferenceServices",
-								data : "confName=" + value,
-								dataType : "html",
-								success : function(msg) {
-									//If conference exists, set response to true
-									var response = (msg == 'true') ? true
-											: false;
-									return response;
-								}
-							});
-						}, "conference name is Already Taken");
+$(document).ready(function(){
+	
+	$('.userAddForm').click(function() {
+		$.ajax({
+            url: "users",
+            dataType: 'json',
+            async: false,
+            type: 'POST',
+                data: {
+                	"action": "add",
+                	<%=ProjConst.USER_NAME%> : $("#userName").val(),
+              	 	<%=ProjConst.NAME%> : $("#name").val(),
+              	 	<%=ProjConst.PASSPORT_ID%> : $("#passportId").val(),
+              	 	<%=ProjConst.PASSWORD%> : $("#password").val(),
+              	 	<%=ProjConst.PHONE1%> : $("#phone1").val(), 	
+              	 	<%=ProjConst.PHONE2%> : $("#phone2").val(), 	
+              	 	<%=ProjConst.EMAIL%> : $("#email").val(), 	
+              	 	<%=ProjConst.COMPANY%> : $("#company").val(), 	
+              	 	<%=ProjConst.IS_ADMIN%> : $("#isAdmin").val(), 	
 
-						$.validator.addMethod("endDateValidate", function(
-								value, element) {
-							var startDate = $('.startDate').val();
-							return Date.parse(value) <= Date.parse(startDate)
-									|| value == "";
-						}, "Start date should be greater than End date");
+                },
+            success: function(data) {
+                if (data != null){
+					if (data.resultSuccess == "true")
+					{
+						$(".errorMessage").val(data.message);
+					}
+					else
+					{
+						//TODO: redirect success
+					}
+                }
+            }
+        });
+    });
+	
+	$.validator.addMethod("uniqueUserName", function(value, element) {
+		  var is_valid = false;
+		  	  
+		  $.ajax({
+              url: "users",
+              dataType: 'json',
+              async: false,
+              type: 'POST',
+                  data: {
+                	  "action": "validation",
+                	  <%=ProjConst.USER_NAME%> : $("#userName").val(),
+                  },
+              success: function(data) {
+                  if (data != null){
+                      if (data == "true")
+                      {
+                    	 $.validator.messages.uniqueUserName = value + " is already taken";
+                       	is_valid = false;
+                      }
+                      else
+                   	  {
+                    	  is_valid = true;
+                   	  }
+                  }
+              }
+          });
+	      return is_valid;
+	 }, "The user name already exists");
+	
+	 $.validator.addMethod("phoneNumberValidator", function(value, element) {
+		 
+		 var phoneNumber = value;
 
-						$.validator.addMethod("startDateGreaterThanNow",
-								function(value, element) {
-									var now = Date.now();
-									return Date.parse(value) <= Date.parse(now)
-											|| value == "";
-								}, "Start date must be in the future");
+/*          if (myDate >= startDate)
+        	 return true;
+       	 else */
+       		return true;		 
+     }, "Start date should be greater than end date");
 
-						$("#conferenceAddForm")
-								.validate(
-										{
-											onkeyup : false,
-											onfocusout : false,
-											rules : {
-												confName : {
-													required : true,
-													minlength : 4,
-													maxlength : 30,
-													uniqueConferenceName : true,
-												},
-												confDesc : {
-													required : true,
-													minlength : 4,
-													maxlength : 254,
-												},
-												locations : {
-													required : true,
-												},
-												startDate : {
-													required : true,
-													date : true,
-													startDateGreaterThanNow : true,
-												},
-												endDate : {
-													required : true,
-													date : true,
-													endDateValidate : true,
-												},
-											},
-											messages : {
-												confName : {
-													required : "Required",
-													minlength : "You need to use at least 4 characters for your conference name.",
-													maxlength : "You need to use at most 30 characters for your conference name.",
-													uniqueConferenceName : "This conference name is already exists",
-												},
-												confDesc : {
-													required : "Required",
-													minlength : "You need to use at least 4 characters for your conference description.",
-													maxlength : "You need to use at most 254 characters for your conference description.",
-												},
-												locations : {
-													required : "Stand up for your comments or go home.",
-												},
-												startDate : {
-													required : "Required",
-													date : "Date format required",
-													startDateGreaterThanNow : "Start date must be in the future",
-												},
-												endDate : {
-													required : "Required",
-													date : "Date format required",
-													endDateValidate : "Start date should be greater than End date"
-												}
-											},
-											errorElement : "div",
-											wrapper : "div", // a wrapper around the error message
-											errorPlacement : function(error,
-													element) {
-												offset = element.offset();
-												error.insertBefore(element);
-												error.addClass('message'); // add a class to the wrapper
-												error.css('position',
-														'absolute');
-												error.css('left', offset.left
-														+ element.outerWidth());
-											}
+	
+	$("#userAddForm").validate({
+		  onkeyup: false,
+		  onfocusout: false,
+		  submitHandler: function(form) {  
+              if ($(form).valid())
+              {
+                  form.submit(); 
+              }
+              return false;
+     		},
+		  rules: {
+			  <%=ProjConst.USER_NAME%>: {
+			    required: true,
+			    minlength: 4,
+			    maxlength: 10,
+			    uniqueUserName: true,
+			  },
+			  <%=ProjConst.NAME%>: {
+			  	required: true,
+			    minlength: 4,
+			    maxlength: 254,
+			  },
+			  <%=ProjConst.PASSPORT_ID%>: {
+				  	required: true,
+				    minlength: 9,
+				    maxlength: 9,
+					digits: true,
+			  },
+			  <%=ProjConst.PASSWORD%>: {
+				  	required: true,
+				    minlength: 4,
+				    maxlength: 16,
+			  },
+			  <%=ProjConst.PHONE1%>: {
+			  	required: true,
+			  	phoneNumberValidator: true,
+			  },
+			  <%=ProjConst.PHONE2%>: {
+			  	required: false,
+			  	phoneNumberValidator: true,
+			  },
+			  <%=ProjConst.EMAIL%>: {
+			  	required: true,
+			 	email: true,
+			  },
+		  },
+		   
+		  messages: {
+			  <%=ProjConst.USER_NAME%>: {
+					 required: "Required",
+					 minlength: "You need to use at least 4 characters for your user name.",
+					 maxlength: "You need to use at most 10 characters for your user name.",
+					 uniqueUserName : "This user name already exists",
+				},
+				<%=ProjConst.NAME%>: {
+					 required: "Required",
+					 minlength: "You need to use at least 4 characters for your name.",
+					 maxlength: "You need to use at most 254 characters for your name.",
+				},
+				<%=ProjConst.PASSPORT_ID%>: {
+					 required: "Required",
+					 digits: "passport should be consisted of from digits only",
+					 minlength: "IL passport id should exactly 9 characters.",
+					 maxlength: "IL passport id should exactly 9 characters.",
+				},
+				<%=ProjConst.PASSWORD%>: {
+					required: "Required",
+					 minlength: "You need to use 4-16 characters for your password.",
+					 maxlength: "You need to use 4-16 characters for your password.",
+				 },
+				 <%=ProjConst.PHONE1%>: {
+					required: "Required",
+				 	phoneNumberValidator:"Phone number invalid",
+				},
+			 	<%=ProjConst.PHONE2%>: {
+				 	phoneNumberValidator:"Phone number invalid",
+				},
+			 	<%=ProjConst.EMAIL%>: {
+			 		required: "Required",
+			 		email: "Invalid email address",
+				}
+	  		},
+		  errorElement: "div",
+	        wrapper: "div",  // a wrapper around the error message
+	        errorPlacement: function(error, element) {
+	            offset = element.offset();
+	            error.insertBefore(element);
+	            error.addClass('message');  // add a class to the wrapper
+	            error.css('position', 'absolute');
+	            error.css('left', offset.left + element.outerWidth());
+	        }
 
-										});
-					});
+		});
+});
 </script>
-
 </head>
 
 <body>
@@ -162,7 +224,7 @@ div.error {
 	</div>
 	<div id="vn_mainbody">
 		<div class="formtable_wrapper">
-			<form id="UserAddForm" method="post" action="users">
+			<form id="userAddForm" method="post" action="users">
 				<input type="hidden" name="action" value="add" /> <!-- hidden input to pass action type -->
 				<table class="formtable" cellspacing="0" cellpadding="0" border="0">
 					<thead>
@@ -213,31 +275,35 @@ div.error {
 						</tr>
 						<tr>
 							<td class="labelcell required">
-								<label for=<%=ProjConst.PHONE2%>> Phone #2: <em>*</em> </label>
+								<label for=<%=ProjConst.PHONE2%>> Phone #2:</label>
 							</td>
 							<td class="inputcell">
 								<input id=<%=ProjConst.PHONE2%> type="text" value="" name=<%=ProjConst.PHONE2%>>
 								<div></div></td>
 						</tr>
 						<tr>
-							<td class="labelcell required"><label for=<%=ProjConst.COMPANY%>>
-									Company: <em>*</em>
-							</label></td>
-							<td class="inputcell"><select id=<%=ProjConst.COMPANY%>
-								class="type rdOnlyOnEdit" name=<%=ProjConst.COMPANY%>>
-
-									<%
-										List<Company> companies = CompanyDao.getInstance().getAllCompanies();
-
-										for (Company company : companies) {
-									%>
-									<option value="<%=company.getCompanyID()%>"
-										selected="selected"><%=company.getName()%></option>
-									<%
-										}
-									%>
-							</select>
-								<div></div></td>
+							<td class="labelcell required">
+								<label for=<%=ProjConst.COMPANY%>>
+										Company: <em>*</em>
+								</label>
+							</td>
+							<td class="inputcell">
+								<select id=<%=ProjConst.COMPANY%>
+									class="type rdOnlyOnEdit" name=<%=ProjConst.COMPANY%>>
+	
+										<%
+											List<Company> companies = CompanyDao.getInstance()
+													.getAllCompanies();
+	
+											for (Company company : companies) {
+										%>
+										<option value="<%=company.getCompanyID()%>"
+											selected="selected"><%=company.getName()%></option>
+										<%
+											}
+										%>
+								</select>
+							</td>
 						</tr>
 						<tr>
 							<td class="labelcell required">
@@ -247,14 +313,24 @@ div.error {
 								<input id=<%=ProjConst.PASSWORD%> type="text" value="" name=<%=ProjConst.PASSWORD%>>
 								<div></div></td>
 						</tr>
-						<tr>
-							<td class="labelcell required">
-								<label for=<%=ProjConst.IS_ADMIN%>> Admnin User: <em>*</em> </label>
-							</td>
-							<td class="inputcell">
-								<input id=<%=ProjConst.IS_ADMIN%> type="checkbox" value="true" name=<%=ProjConst.IS_ADMIN%>>
-								<div></div></td>
-						</tr>
+						<%
+							String userName = request.getParameter("userName");
+							if(userName != null){
+								User user = UserDao.getInstance().getUserByUserName(userName);
+								if (user != null && user.isAdmin()) {
+							%>
+									<tr>
+										<td class="labelcell required">
+											<label for=<%=ProjConst.IS_ADMIN%>> Admnin User: <em>*</em> </label>				
+										</td>
+										<td class="inputcell">
+											<input id=<%=ProjConst.IS_ADMIN%> type="checkbox" value="true" name=<%=ProjConst.IS_ADMIN%>><div></div>
+										</td>
+									</tr>
+							<%
+								}
+						}
+						%>
 						<tr>
 							<td></td>
 							<td class="inputcell">

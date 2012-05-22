@@ -3,7 +3,7 @@
   <display-name>conf4u</display-name>
   <welcome-file-list>
     <welcome-file>index.html</welcome-file>
-    <welcome-file>index.jsp</welcome-file>
+    <welcome-file>mainPage.jsp</welcome-file>
   </welcome-file-list>
   <servlet>
     <servlet-name>UsersServlet</servlet-name>
@@ -38,20 +38,20 @@
   	<url-pattern>/LoginServlet</url-pattern>
   </servlet-mapping>
   
-<!--   DO NO DELETE THE FILTER (ELAD!):-->
-    <!-- 
-    <filter> 
-    	<filter-name>SessionFilter</filter-name> 
-    	<filter-class> filters.SessionFilter</filter-class> 
-    	<init-param> 
-    		<param-name>avoid-urls</param-name> 
-    		<param-value>login.jsp</param-value> 
-    	</init-param> 
-   </filter> 
-   <filter-mapping> 
-   		<filter-name>SessionFilter</filter-name> 
-   		<url-pattern>/*</url-pattern> 
-    </filter-mapping> 
-    -->
+
+
+   <filter> 
+   	<filter-name>SessionFilter</filter-name> 
+   	<filter-class>filters.SessionFilter</filter-class> 
+   	<init-param> 
+   		<param-name>avoid-urls</param-name> 
+   		<param-value>/login.jsp,/LoginServlet</param-value> 
+   	</init-param> 
+  </filter> 
+  <filter-mapping> 
+  		<filter-name>SessionFilter</filter-name> 
+  		<url-pattern>*.jsp</url-pattern> 
+   </filter-mapping> 
+
 
 </web-app>

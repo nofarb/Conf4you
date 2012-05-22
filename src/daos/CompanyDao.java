@@ -1,11 +1,8 @@
 package daos;
 
 import java.util.List;
-
 import org.hibernate.Session;
-
 import db.HibernateUtil;
-
 import model.Company;
 import model.CompanyType;
 
@@ -93,6 +90,7 @@ public class CompanyDao {
 	 * @return
 	 */
 	public Company getCompanyById(long id){
+
 		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
 		session.beginTransaction();
 		Company comp = (Company)session.createQuery(
@@ -103,4 +101,36 @@ public class CompanyDao {
 		return comp;
 	}
 
+	public Boolean isCompanyNameExists(String name)
+	{
+		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
+		session.beginTransaction();
+		Boolean exists = session.createQuery(
+				"select comp from  Company comp where comp.name = :name")
+                .setString("name", name)
+                .uniqueResult() != null;
+		session.getTransaction().commit();
+		return exists;
+	}
+
+	public void deleteCompany(String name)
+	{
+		Company companyToDelete = getCompanyByName(name);
+		
+		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
+		session.beginTransaction();
+		session.update(companyToDelete.setActive(false));
+		session.getTransaction().commit();
+	}
+	
+	public Company getCompanyByName(String name){
+		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
+		session.beginTransaction();
+		Company comp = (Company)session.createQuery(
+				"select comp from  Company comp where comp.name = :name")
+                .setString("name", name)
+                .uniqueResult();
+		session.getTransaction().commit();
+		return comp;
+	}
 }

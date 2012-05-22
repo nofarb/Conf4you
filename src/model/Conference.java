@@ -94,8 +94,9 @@ public class Conference implements Serializable {
 		return active;
 	}
 
-	public void setActive(boolean active) {
+	public Conference setActive(boolean active) {
 		this.active = active;
+		return this;
 	}
 
 }

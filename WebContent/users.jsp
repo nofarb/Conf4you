@@ -31,8 +31,6 @@
 
 <body>
 
-	<p class="horizontal-line">Actions</p>
-
 	<p class="horizontal-line">Users</p>
 
 <a class="addButton" href="userAdd.jsp">Add User</a>
