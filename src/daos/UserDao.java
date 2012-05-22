@@ -259,5 +259,20 @@ public class UserDao {
 		
 	}
 	
+	private void deleteUser(String userName)
+	{
+		//TDOD - improve logic
+		if(isDeleteAllowed(userName)){
+			User user = getUserByUserName(userName);
+			if(user != null){
+				user.setActive(false);
+				updateUser(user);
+			}
+		}
+	}
+	
+	
+	
+	
 
 }

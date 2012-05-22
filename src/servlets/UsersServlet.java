@@ -14,7 +14,6 @@ import com.google.gson.JsonObject;
 import model.Company;
 import model.User;
 import daos.CompanyDao;
-import daos.ConferenceDao;
 import daos.UserDao;
 
 /**
