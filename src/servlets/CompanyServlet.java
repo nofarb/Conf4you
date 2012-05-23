@@ -6,21 +6,16 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-
 import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
 import model.Company;
 import model.CompanyType;
-
-
-
 import utils.ProjConst;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
-
 import daos.CompanyDao;
 
 
@@ -58,7 +53,7 @@ public class CompanyServlet extends HttpServlet {
 			deleteCompany(request, response);
 		}
 		else if (action.equals(EDIT_COMP)) {
-			//editUser(request, response);
+			editCompany(request, response);
 		}
 		else if (action.equals(COMP_NAME_VALIDATION)) {
 			companyNameValidation(request, response);
@@ -70,9 +65,8 @@ public class CompanyServlet extends HttpServlet {
     
     private void addCompany(HttpServletRequest request, HttpServletResponse response) throws IOException, ParseException
     {
-    	String companyName = request.getParameter(ProjConst.COMP_NAME);
+    	String compName = request.getParameter(ProjConst.COMP_NAME);
     	String compTypeStr = request.getParameter(ProjConst.COMP_TYPE);
-    	//String location = request.getParameter(ProjConst.CONF_LOCATION);
     	
 	    //DateFormat formatter = new SimpleDateFormat("MM/dd/yyyy");
     			  
@@ -88,8 +82,8 @@ public class CompanyServlet extends HttpServlet {
     	try 
     	{
     		//ConferenceDao.getInstance().addNewConference(new Conference(confName, locationInstance, desc, startDate, endDate));
-    		CompanyType companyType = CompanyType.valueOf(compTypeStr); 
-    		CompanyDao.getInstance().addCompany(new Company(companyName, companyType));
+    		CompanyType compType = CompanyType.valueOf(compTypeStr); 
+    		CompanyDao.getInstance().addCompany(new Company(compName,compType));
     		message = "Company successfully added";
     		resultSuccess = "true";
     		
@@ -105,8 +99,8 @@ public class CompanyServlet extends HttpServlet {
         try {
             Gson gson = new Gson();
            	String json;
-           	//if (ConferenceDao.getInstance().isConferenceNameExists(companyName))
-          	if(CompanyDao.getInstance().isCompanyNameExists(companyName))
+           	//if (ConferenceDao.getInstance().isConferenceNameExists(confName))
+           	if (CompanyDao.getInstance().isCompanyNameExists(compName))
            	{
            		jsonObject.addProperty("resultSuccess", resultSuccess);
            		jsonObject.addProperty("message", message);
@@ -126,24 +120,90 @@ public class CompanyServlet extends HttpServlet {
         }
     }
     
+    private void editCompany(HttpServletRequest request, HttpServletResponse response) throws IOException, ParseException
+    {
+    	String compNameBeforeEdit = request.getParameter(ProjConst.COMP_NAME_BEFORE_EDIT);
+    	//Conference origConf = ConferenceDao.getInstance().getConferenceByName(confNameBeforeEdit);
+    	Company origComp = CompanyDao.getInstance().getCompanyByName(compNameBeforeEdit);
+    	
+    	String compName = request.getParameter(ProjConst.COMP_NAME);
+    	String compTypeStr = request.getParameter(ProjConst.COMP_TYPE);
+    	
+	    //DateFormat formatter = new SimpleDateFormat("MM/dd/yyyy");
+    			  
+    	//Date startDate = (Date)formatter.parse(request.getParameter(ProjConst.CONF_START_DATE));
+    	//Date endDate = (Date)formatter.parse(request.getParameter(ProjConst.CONF_END_DATE));
+    	
+    	//Location locationInstance = LocationDao.getInstance().getLocationById(location);  	
+    	
+    	//origConf.setName(confName).setDescription(desc).setLocation(locationInstance).setStartDate(startDate).setEndDate(endDate);
+    	CompanyType compType = CompanyType.valueOf(compTypeStr); 
+    	origComp.setName(compName).setCompanyType(compType);
+    	
+    	JsonObject jsonObject = new JsonObject();
+    	
+    	String resultSuccess;
+    	String message;
+    	try 
+    	{
+    		
+    		//ConferenceDao.getInstance().updateConference(origConf);
+    		CompanyDao.getInstance().updateCompany(origComp);
+    		message = "Company successfully edited";
+    		resultSuccess = "true";
+    		
+    	}
+    	catch (Exception e)
+    	{
+    		message = "Found problem while editing company";
+    		resultSuccess = "false";
+    	}
+    	
+        response.setContentType("application/json;charset=UTF-8");
+        PrintWriter out = response.getWriter();
+        try {
+            Gson gson = new Gson();
+           	String json;
+           	//if (ConferenceDao.getInstance().isConferenceNameExists(confName))
+           	if (CompanyDao.getInstance().isCompanyNameExists(compName))
+           	{
+           		jsonObject.addProperty("resultSuccess", resultSuccess);
+           		jsonObject.addProperty("message", message);
+           		json = gson.toJson(jsonObject);
+           	}
+           	else
+           	{
+           		jsonObject.addProperty("resultSuccess", "false");
+           		jsonObject.addProperty("message", "Failed to edit company");
+           		json = gson.toJson(jsonObject);
+           	}
+           	out.write(json);
+            out.flush();
+        }
+         finally {
+            out.close();
+        }
+    }
+    
     private void deleteCompany(HttpServletRequest request, HttpServletResponse response) throws IOException
     {
     	JsonObject jsonObject = new JsonObject();
     	
-    	String companyName = request.getParameter(ProjConst.COMP_NAME);
+    	String compName = request.getParameter(ProjConst.COMP_NAME);
     	
       	String resultSuccess;
     	String message;
     	try 
     	{
-    		CompanyDao.getInstance().deleteCompany(companyName);
+    		//ConferenceDao.getInstance().deleteConference(confName);
+    		CompanyDao.getInstance().deleteCompany(compName);
     		message = "Company successfully deleted";
     		resultSuccess = "true";
     		
     	}
     	catch (Exception e)
     	{
-    		message = "Found problem while deleting company";
+    		message = "Found problem while deleting Company";
     		resultSuccess = "false";
     	}
     	
@@ -152,7 +212,8 @@ public class CompanyServlet extends HttpServlet {
         try {
             Gson gson = new Gson();
            	String json;
-           	if (CompanyDao.getInstance().isCompanyNameExists(companyName))
+           	//if (ConferenceDao.getInstance().isConferenceNameExists(confName))	
+           	if (CompanyDao.getInstance().isCompanyNameExists(compName))
            	{
            		jsonObject.addProperty("resultSuccess", resultSuccess);
            		jsonObject.addProperty("message", message);
@@ -179,11 +240,13 @@ public class CompanyServlet extends HttpServlet {
         try {
             Gson gson = new Gson();
             
-            String companyName = request.getParameter("data");
-            if (companyName != null)
+            String compName = request.getParameter("data");
+            //if (confName != null)
+            if (compName != null)
             {
  	           	String json;
- 	           	if (CompanyDao.getInstance().isCompanyNameExists(companyName))
+ 	           	//if (ConferenceDao.getInstance().isConferenceNameExists(confName))
+ 	           	if (CompanyDao.getInstance().isCompanyNameExists(compName))
  	           		json = gson.toJson("true");
  	           	else 
  	           		json = gson.toJson("false");

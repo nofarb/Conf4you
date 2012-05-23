@@ -1,13 +1,11 @@
-<%@page import="model.Conference"%>
-<%@page import="model.ConferenceFilters.ConferencePreDefinedFilter"%>
-<%@page import="daos.ConferenceDao"%>
-<%@page import="daos.UserDao"%>
 <%@page import="model.Company"%>
 <%@page import="daos.CompanyDao"%>
+<%@page import="daos.UserDao"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="ISO-8859-1"%>
 <%@ page import="java.util.List"%>
 <%@ page import="java.util.Date"%>
 <%@ page import="java.text.SimpleDateFormat"%>
+<%@ page import="model.User"%>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
@@ -18,7 +16,6 @@
 	rel="stylesheet" />
 <script type="text/javascript" src="js/jquery-1.7.1.min.js"></script>
 <script type="text/javascript" src="js/jquery-ui-1.8.18.custom.min.js"></script>
-<script type="text/javascript" src="js/jquery.floatingmessage.js"></script>
 
 <script type="text/javascript">	
 $(document).ready(function(){
@@ -64,19 +61,18 @@ $(document).ready(function(){
 <div class="titleMain ">Company details</div>
 <div style="clear:both;"></div>
 <div class="titleSeparator"></div>
-<div class="titleSub">View, modify, add/remove Company</div>
+<div class="titleSub">View, modify this Company</div>
 </div>
 <div id="detailsAndActions">
-	<% String compName = request.getParameter("companyName");
-		Company comp = CompanyDao.getInstance().getCompanyByName(compName);
-	   //Conference conf = ConferenceDao.getInstance().getConferenceByName(confName);
+<% String companyName = request.getParameter("companyName");
+	   Company comp = CompanyDao.getInstance().getCompanyByName(companyName);
 	%>
 	<div class="vn_detailsgeneraltitle">Actions </div>
 	<div class="vn_actionlistdiv yui-reset yui-base">
 		<div class="vn_actionlistcolumn">
 			<div class="vn_actionbuttondiv">
 				<div class="title">
-				<a title="Edit Company" href="companyAddEdit.jsp?action=edit&compName=<%=compName%>">
+				<a title="Edit Company" href="companyAddEdit.jsp?action=edit&compName=<%=companyName%>">
 					<img src="/conf4u/resources/imgs/vn_action_edit.png" alt=""> 
 					Edit
 				</a>
@@ -94,16 +90,17 @@ $(document).ready(function(){
 	</div>
 	<div class="vn_detailsgeneraltitle">Details </div>
 	
+	
 	<div class="groupedList" style="width: 800px;">
 	<table class="vn_envdetails" cellspacing="0" cellpadding="0" style="border-collapse: collapse;">
 		<tbody>
 			<tr>
 				<td>Name</td>
-				<td class="compName"><%=comp.getName()%></td>
+				<td><%=comp.getName()%></td>
 			</tr>
 			<tr>
 				<td>Type</td>
-				<td><%=comp.getCompanyType().toString()%></td>
+				<td><%=comp.getCompanyType()%></td>
 			</tr>
 		</tbody>
 	</table>

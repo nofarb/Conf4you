@@ -37,7 +37,7 @@
 
 	<p class="horizontal-line">Users</p>
 
-<a class="addButton" href="companyAdd.jsp">Add Company</a>
+<a class="addButton" href="companyAddEdit.jsp?action=add">Add Company</a>
 
 	<table cellpadding="0" cellspacing="0" border="0" id="table"
 		class="sortable">
@@ -63,7 +63,7 @@
 			<tr>
 				<td><%=company.getName()%></td>
 				<td><%=company.getCompanyType()%></td>
-				<td><a class="vn_boldtext"href="companyDetails.jsp?companyId=<%=company.getCompanyID()%>"> <img src="/conf4u/resources/imgs/vn_world.png" alt=""> Details </a> </td>
+				<td><a class="vn_boldtext"href="companyDetails.jsp?companyName=<%=company.getName()%>"> <img src="/conf4u/resources/imgs/vn_world.png" alt=""> Details </a> </td>
 			</tr>
 			<%	} %>
 		</tbody>

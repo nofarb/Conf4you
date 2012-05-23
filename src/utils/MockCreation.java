@@ -14,7 +14,7 @@ public class MockCreation {
 
 	private static List<User> users = new LinkedList<User>();
 	private static List<Conference> conferences = new LinkedList<Conference>();
-	private static List<Company> companies = new LinkedList<Company>();
+	//private static List<Company> companies = new LinkedList<Company>();
 	
 	public static List<User> createMockUsers(){
 		
@@ -23,8 +23,8 @@ public class MockCreation {
  		Company comp3 = new Company("comp3", CompanyType.C);
 
 
-		for(int i = 0 ; i < 15; i++){
-			
+		for(int i = 0 ; i < 15; i++)
+		{	
 			Company comp;
 			
 			if(i%3 == 0){
@@ -54,7 +54,7 @@ public class MockCreation {
 		return conferences;
 	}
 
-	public static List<Company> createMockCompanies(){
+	/*public static List<Company> createMockCompanies(){
 		
 		CompanyType type = CompanyType.A;
 
@@ -76,6 +76,6 @@ public class MockCreation {
 		}
 		
 		return companies;
-	}
+	}*/
 
 }

@@ -24,6 +24,7 @@ public final  class ProjConst {
 	
 	public static final String COMP_NAME = "compName";
 	public static final String COMP_TYPE = "compType";
+	public static final String COMP_NAME_BEFORE_EDIT = "compNameEdit";
 	
 	public static final String LOGIN_PAGE = "login.jsp";
 	public static final String MAIN_PAGE = "mainPage.jsp";

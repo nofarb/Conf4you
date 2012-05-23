@@ -39,7 +39,7 @@ public class LoginServlet extends HttpServlet {
     	try 
 		{
     		
-    		CompanyDao.getInstance().addCompany(MockCreation.createMockCompanies());
+    		//CompanyDao.getInstance().addCompany(MockCreation.createMockCompanies());
     		ConferenceDao.getInstance().addNewConference(MockCreation.createMockConferences());
     		UserDao.getInstance().addUsers(MockCreation.createMockUsers()); 
     		
