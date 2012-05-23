@@ -14,14 +14,6 @@
     <url-pattern>/users</url-pattern>
   </servlet-mapping>
   <servlet>
-    <servlet-name>MainServlet</servlet-name>
-    <servlet-class>servlets.MainServlet</servlet-class>
-  </servlet>
-  <servlet-mapping>
-    <servlet-name>MainServlet</servlet-name>
-    <url-pattern>/MainServlet</url-pattern>
-  </servlet-mapping>
-  <servlet>
     <servlet-name>ConferenceServlet</servlet-name>
     <servlet-class>servlets.ConferenceServlet</servlet-class>
   </servlet>
