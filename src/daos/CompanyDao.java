@@ -5,6 +5,7 @@ import org.hibernate.Session;
 import db.HibernateUtil;
 import model.Company;
 import model.CompanyType;
+import model.Conference;
 
 /**
  * This class is responsible of supplying services related to the Company entity which require database access.
@@ -30,7 +31,7 @@ public class CompanyDao {
 		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
 		session.beginTransaction();
 		@SuppressWarnings("unchecked")
-		List<Company> result = (List<Company>) session.createQuery("from Company").list();
+		List<Company> result = (List<Company>) session.createQuery("select comp from Company comp where comp.active = '1'").list();
 		session.getTransaction().commit();
 		return result;
 	}
@@ -63,14 +64,20 @@ public class CompanyDao {
 
 	}
 	
-	public Company addCompany(Company company) {
-
-		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
-		session.beginTransaction();
-		session.merge(company);
-		session.getTransaction().commit();
-
-		return company;
+	public Company addCompany(Company company)
+	{
+		if (isCompanyNameExists(company.getName()))
+		{
+			return null;
+		}
+		else
+		{
+			Session session = HibernateUtil.getSessionFactory().getCurrentSession();
+			session.beginTransaction();
+			session.merge(company);
+			session.getTransaction().commit();
+			return company;
+		}
 	}
 
 	/**

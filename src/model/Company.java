@@ -49,9 +49,11 @@ public class Company implements Serializable {
 	public long getCompanyID() {
 		return companyID;
 	}
+	
 	public void setCompanyID(long companyID) {
 		this.companyID = companyID;
 	}
+	
 	
 	@Enumerated(EnumType.STRING)
 	public CompanyType getCompanyType() {
@@ -77,7 +79,4 @@ public class Company implements Serializable {
 		this.active = active;
 		return this;
 	}
-	
-	
-	
 }
