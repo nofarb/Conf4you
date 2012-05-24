@@ -51,7 +51,7 @@
 		<div class="vn_actionlistcolumn">
 			<div class="vn_actionbuttondiv">
 				<div class="title">
-				<a title="Edit Conference" href="/userAdd.jsp?userName=<%=user.getUserName()%>">
+				<a title="Edit Conference" href="userAddEdit.jsp?action=edit&userName=<%=user.getUserName()%>">
 					<img src="/conf4u/resources/imgs/vn_action_edit.png" alt=""> 
 					Edit
 				</a>
@@ -59,7 +59,7 @@
 			</div>
 				<div class="vn_actionbuttondiv">
 				<div class="title">
-				<a title="Delete Conference" href="users?action=delete&userName=<%=user.getUserName()%>">
+				<a title="Delete User" href="users?action=delete&userName=<%=user.getUserName()%>">
 					<img src="/conf4u/resources/imgs/vn_action_delete.png" alt=""> 
 					Delete
 				</a>

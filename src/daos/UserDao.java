@@ -4,6 +4,8 @@ import java.security.NoSuchAlgorithmException;
 import java.sql.SQLException;
 import java.util.List;
 import org.hibernate.Session;
+
+import system.exceptions.ItemCanNotBeDeleted;
 import system.exceptions.ItemNotFoundException;
 import utils.OwaspAuthentication;
 import db.HibernateUtil;
@@ -259,7 +261,7 @@ public class UserDao {
 		
 	}
 	
-	private void deleteUser(String userName)
+	public void deleteUser(String userName) throws ItemCanNotBeDeleted
 	{
 		//TDOD - improve logic
 		if(isDeleteAllowed(userName)){
@@ -268,6 +270,8 @@ public class UserDao {
 				user.setActive(false);
 				updateUser(user);
 			}
+		}else{
+			throw new ItemCanNotBeDeleted("Can't delete user name");
 		}
 	}
 	

@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import system.exceptions.ItemCanNotBeDeleted;
 import utils.ProjConst;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
@@ -47,7 +48,7 @@ public class UsersServlet extends HttpServlet {
 
 		try {
 			if (action == null) {
-				throw new Exception("Critical error!!! Servlet path is NULL.");
+				throw new Exception("Critical error!!! action is NULL.");
 			}
 			else if (action.equals(DELETE_USER)) {
 				deleteUser(request, response);
@@ -110,18 +111,43 @@ public class UsersServlet extends HttpServlet {
 	private void deleteUser(HttpServletRequest request,	HttpServletResponse response) throws Exception {
 
 
-		String userName = request.getParameter("userName");
+		String userName = request.getParameter(ProjConst.USER_NAME);
 		if ( userName == null || userName.trim().isEmpty()) {
 			throw new Exception("Failed to get user name");
 		}
 		
-		//TODO - delete - add a mark for inactive user
+		response.setContentType("application/json;charset=UTF-8");
+        PrintWriter out = response.getWriter();
+       	String json;
+
+        try {
+            Gson gson = new Gson();
+            
+            if (userName != null)
+            {
+        		try {
+					UserDao.getInstance().deleteUser(userName);
+					json = gson.toJson("true");
+
+				} catch (ItemCanNotBeDeleted e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+					json = gson.toJson("false");
+				}
+ 	           		
+ 	           	out.write(json);
+            	}
+            out.flush();
+        }
+         finally {
+            out.close();
+        }
 	}
 	
 	private void editUser(HttpServletRequest request, HttpServletResponse response) throws Exception {
 
 
-		String userName = request.getParameter("userName");
+		String userName = request.getParameter(ProjConst.USER_NAME);
 		
 		if ( userName == null || userName.trim().isEmpty()) {
 			throw new Exception("Failed to get user name");

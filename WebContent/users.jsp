@@ -38,7 +38,7 @@
 <div id="content">
 <p class="horizontal-line">Users</p>
 
-<a class="addButton" href="userAdd.jsp">Add User</a>
+<a class="addButton" href="userAddEdit.jsp?action=add">Add User</a>
 
 	<table cellpadding="0" cellspacing="0" border="0" id="table"
 		class="sortable">
