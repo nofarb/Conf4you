@@ -6,6 +6,7 @@
 <%@ page import="java.util.Date"%>
 <%@ page import="java.text.SimpleDateFormat"%>
 <%@ page import="model.User"%>
+<%@page import="utils.*"%>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
@@ -32,7 +33,12 @@
 </head>
 
 <body>
+<div id="body_wrap">
 
+<%= UiHelpers.GetHeader().toString() %>
+<%= UiHelpers.GetTabs(SessionUtils.getUser(request), ProjConst.TAB_COMPANIES).toString() %>
+
+<div id="content">
 	<p class="horizontal-line">Actions</p>
 
 	<p class="horizontal-line">Users</p>
@@ -109,6 +115,7 @@
 		sorter.limitid = "pagelimit";
 		sorter.init("table", 1);
 	</script>
-
+</div>
+</div>
 </body>
 </html>

@@ -48,7 +48,7 @@ public class SessionFilter implements Filter {
 					navigateToLoginPage(response);
 					return;
 				} else {
-					String currUser = (String) session.getAttribute("currentSessionUser");
+					String currUser = (String) session.getAttribute(ProjConst.SESSION_USER_NAME);
 					if (currUser == null) {
 						navigateToLoginPage(response);
 						return;

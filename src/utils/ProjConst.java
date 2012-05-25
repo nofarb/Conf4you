@@ -27,8 +27,19 @@ public final  class ProjConst {
 	public static final String COMP_NAME_BEFORE_EDIT = "compNameEdit";
 	
 	public static final String LOGIN_PAGE = "login.jsp";
+	public static final String USER_PAGE = "users.jsp";
 	public static final String MAIN_PAGE = "mainPage.jsp";
 
 	public static final String ADD = "add";
 	public static final String EDIT = "edit";
+	
+	
+	public static final String TAB_HOME = "home";
+	public static final String TAB_USERS = "users";
+	public static final String TAB_CONFERENCES = "conferences";
+	public static final String TAB_COMPANIES = "copmanies";
+	public static final String TAB_LOCATIONS = "locations";
+	
+	public static final String SESSION_USER_NAME = "currentSessionUserName";
+	
 }

@@ -5466,7 +5466,7 @@ body {
 }
 
 #vn_header_tabs a {
-	background: url("/resources/imgs/vn_tableftC.gif") no-repeat scroll left
+	background: url("/conf4u/resources/imgs/vn_tableftC.gif") no-repeat scroll left
 		top transparent;
 	float: left;
 	margin: 0;
@@ -5475,7 +5475,7 @@ body {
 }
 
 #vn_header_tabs a span {
-	background: url("/resources/imgs/vn_tabrightC.gif") no-repeat scroll
+	background: url("/conf4u/resources/imgs/vn_tabrightC.gif") no-repeat scroll
 		right top transparent;
 	color: #FFFFFF;
 	display: block;

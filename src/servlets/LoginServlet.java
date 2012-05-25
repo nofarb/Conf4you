@@ -51,14 +51,13 @@ public class LoginServlet extends HttpServlet {
 			
 			if (user != null)
 			{
-				HttpSession session = request.getSession(true);
-				session.setAttribute("currentSessionUser", userName);
+				request.getSession(true).setAttribute(ProjConst.SESSION_USER_NAME, userName);
 								
 				//updating last login time:
 				user.setLastLogin(new Date());
 				UserDao.getInstance().updateUser(user);
 				
-				response.sendRedirect(ProjConst.MAIN_PAGE); //redirect to main page
+				response.sendRedirect(ProjConst.USER_PAGE); //redirect to main page
 			}
 			else{
 				response.sendRedirect(ProjConst.LOGIN_PAGE); // TODO - alert on error if authentication fails

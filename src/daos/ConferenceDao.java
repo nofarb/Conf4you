@@ -140,6 +140,31 @@ public class ConferenceDao {
 		 }
 	}
 	
+	public UserRole getUserHighestRole(User user){
+		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
+		session.beginTransaction();
+		List<ConferencesUsers> results = (List<ConferencesUsers>)session.createQuery(
+				"select cu from  ConferencesUsers cu where conf.user = :user")
+                .setEntity("user", user)
+                .list();
+		session.getTransaction().commit();
+		
+		UserRole ur = UserRole.NONE;
+		
+		if (results.size() == 0)
+			return ur;
+		
+		for (ConferencesUsers cu : results)
+		{
+			if (cu.getUserRole().getValue() < ur.getValue())
+			{
+				ur = cu.getUserRole();
+			}
+		}
+		
+		return ur;
+	}
+	
 	
 	/**
 	 * Add a new Conference to the database

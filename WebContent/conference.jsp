@@ -19,8 +19,11 @@
 <script type="text/javascript" src="js/jquery-ui-1.8.18.custom.min.js"></script>
 <body>
 <div id="body_wrap">
-<div id="content">
 
+<%= UiHelpers.GetHeader().toString() %>
+<%= UiHelpers.GetTabs(SessionUtils.getUser(request), ProjConst.TAB_CONFERENCES).toString() %>
+
+<div id="content">
 	<div class="pageTitle">
 	<div class="titleMain ">Conferences</div>
 	<br/>

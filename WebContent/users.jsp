@@ -4,14 +4,14 @@
 <%@ page import="java.util.Date"%>
 <%@ page import="java.text.SimpleDateFormat"%>
 <%@ page import="model.User"%>
+<%@page import="utils.*"%>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
 <link type="text/css" href="css/main.css" rel="stylesheet" />
 <link type="text/css" href="css/tables/tableList.css" rel="stylesheet" />
-<link type="text/css" href="css/cupertino/jquery-ui-1.8.18.custom.css"
-	rel="stylesheet" />
+<link type="text/css" href="css/cupertino/jquery-ui-1.8.18.custom.css" rel="stylesheet" />
 <script type="text/javascript" src="js/jquery-1.7.1.min.js"></script>
 <script type="text/javascript" src="js/jquery-ui-1.8.18.custom.min.js"></script>
 
@@ -30,8 +30,13 @@
 </head>
 
 <body>
+<div id="body_wrap">
 
-	<p class="horizontal-line">Users</p>
+<%= UiHelpers.GetHeader().toString() %>
+<%= UiHelpers.GetTabs(SessionUtils.getUser(request), ProjConst.TAB_USERS).toString() %>
+
+<div id="content">
+<p class="horizontal-line">Users</p>
 
 <a class="addButton" href="userAdd.jsp">Add User</a>
 
@@ -114,6 +119,7 @@
 		sorter.limitid = "pagelimit";
 		sorter.init("table", 1);
 	</script>
-
+</div>
+</div>
 </body>
 </html>
