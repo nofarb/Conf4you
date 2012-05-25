@@ -11,6 +11,7 @@
 <%@ page import="java.text.SimpleDateFormat"%>
 <%@ page import="model.User"%>
 <%@page import="utils.ProjConst"%>
+<%@page import="utils.*"%>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
@@ -210,6 +211,9 @@ $(document).ready(function(){
 </head>
 
 <body>
+<%= UiHelpers.GetHeader().toString() %>
+<%= UiHelpers.GetTabs(SessionUtils.getUser(request), ProjConst.TAB_CONFERENCES).toString() %>
+<div id="content">
 	<div class="pageTitle">
 		<% String action = request.getParameter("action");
 		   String confName = request.getParameter("confName");
@@ -347,6 +351,7 @@ $(document).ready(function(){
 			</form>
 		</div>
 		<div class="clearboth"></div>
+	</div>
 	</div>
 
 </body>

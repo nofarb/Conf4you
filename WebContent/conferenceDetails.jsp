@@ -6,6 +6,7 @@
 <%@ page import="java.util.List"%>
 <%@ page import="java.util.Date"%>
 <%@ page import="java.text.SimpleDateFormat"%>
+<%@page import="utils.*"%>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
@@ -20,43 +21,63 @@
 
 <script type="text/javascript">	
 $(document).ready(function(){
-	 $('.deleteConf').click(function () { 
-		$.ajax({
-	        url: "ConferenceServlet",
-	        dataType: 'json',
-	        async: false,
-	        type: 'POST',
-	            data: {
-	            	"action": "delete",
-	            	"confName": $(".confName").text()
-	            },
-	        success: function(data) {
-	            if (data != null){
-					if (data.resultSuccess == "true")
-					{
-					
-					 	    $.floatingMessage(data.message ,{  
-					 	    	height : 30
-						    }); 
-					 	    $(".ui-widget-content").addClass("successFeedback");
-					 	
+	
+		 $('.deleteConf').click(function () { 
+			 $('#dialog-confirm').dialog({
+				resizable: false,
+				height: 150,
+				width: 400,
+				modal: true,
+				hide: "fade", 
+	            show: "fade",
+				buttons: {
+					"Delete": function() {
+						$.ajax({
+					        url: "ConferenceServlet",
+					        dataType: 'json',
+					        async: false,
+					        type: 'POST',
+					            data: {
+					            	"action": "delete",
+					            	"confName": $(".confName").text()
+					            },
+					        success: function(data) {
+					            if (data != null){
+									if (data.resultSuccess == "true")
+									{
+								 	   	window.location = "conference.jsp";
+								 	    $.floatingMessage(data.message ,{  
+								 	    	height : 30
+									    }); 
+								 	    $(".ui-widget-content").addClass("successFeedback");
+									}
+									else
+									{
+										$.floatingMessage(data.message);
+										$(".ui-widget-content").addClass("errorFeedback");
+									}
+					            }
+					        }
+					    });
+					},
+					Cancel: function() {
+						$( this ).dialog( "close" );
 					}
-					else
-					{
-						$.floatingMessage(data.message);
-						$(".ui-widget-content").addClass("errorFeedback");
-					}
-	            }
-	        }
-	    });
+				}
+				});
+			});
 	});
-});
+	
+	
 </script>
 
 
 </head>
 
 <body>
+<%= UiHelpers.GetHeader().toString() %>
+<%= UiHelpers.GetTabs(SessionUtils.getUser(request), ProjConst.TAB_CONFERENCES).toString() %>
+
 <div id="content">
 <div class="pageTitle">
 <div class="titleMain ">Conference details</div>
@@ -113,6 +134,11 @@ $(document).ready(function(){
 		</tbody>
 	</table>
 	</div>
+	
+	<div id="dialog-confirm" title="Delete conference?" style="display:none;">
+		<p><span class="ui-icon ui-icon-alert" style="float:left; margin:0 7px 20px 0;"></span>Conference will be deleted. Are you sure?</p>
+	</div>
+	
 
 	<script type="text/javascript" src="js/tables/script.js"></script>
 	<script type="text/javascript">
