@@ -55,7 +55,7 @@ $(document).ready(function(){
             type: 'POST',
                 data: {
                 	"action": $(".operation").text(),
-                	<%=ProjConst.CONF_NAME%> : $(".operation").text() == "add" ? $("#confName").val() : $("#confName").text(),
+                	<%=ProjConst.CONF_NAME%> : $("#confName").val(),
                 	<%=ProjConst.CONF_NAME_BEFORE_EDIT%> : $(".confBeforeHidden").text(),
               	 	<%=ProjConst.CONF_DESC%> : $("#confDesc").val(),
               	 	<%=ProjConst.CONF_LOCATION%> : $("#locations").val(),
@@ -257,8 +257,8 @@ $(document).ready(function(){
 								for=<%=ProjConst.CONF_NAME%>"> Conference name: <em>*</em>
 							</label></td>
 							<% if (action.equals("edit")) {%>
-								<td class="inputcell">
-								<span id="<%=ProjConst.CONF_NAME%>"><%=conf.getName()%></span>
+								<td class="inputcell"><input id="<%=ProjConst.CONF_NAME%>"
+								type="text" name="<%=ProjConst.CONF_NAME%>" value="<%= conf.getName() %>">
 								<div></div></td>
 							<% } else {%>
 								<td class="inputcell"><input id="<%=ProjConst.CONF_NAME%>"

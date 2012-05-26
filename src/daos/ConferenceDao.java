@@ -170,6 +170,14 @@ public class ConferenceDao {
 	 * Add a new Conference to the database
 	 */
 	public Conference addNewConference(Conference conference){
+		
+		Conference conf = getConferenceByName(conference.getName());
+		if (conf != null)
+		{
+			//conference already exists
+			return conf;
+		}
+		
 		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
 		session.beginTransaction();
 		session.merge(conference);
@@ -254,13 +262,25 @@ public class ConferenceDao {
 		session.getTransaction().commit();
 	}
 	
-	private  ConferencesUsers getConferernceUser(Conference conference, User user)
+	private ConferencesUsers getConferernceUser(Conference conference, User user)
 	{
 		return (ConferencesUsers)HibernateUtil.getSessionFactory().getCurrentSession().createQuery(
 				"select confUsr from  ConferencesUsers confUsr where confUsr.conference = :conf and confUsr.user = :user")
                 .setEntity("conf", conference)
                 .setEntity("user", user)
                 .uniqueResult();
+	}
+	
+	public List<User> getAllConferenceParticipants(Conference conference){	
+		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
+		session.beginTransaction();
+		List<User> result = (List<User>)HibernateUtil.getSessionFactory().getCurrentSession().createQuery(
+				"select confPart.user from  ConferenceParticipantStatus confPart where confPart.conference = :conf")
+                .setEntity("conf", conference)
+                .list();
+		session.getTransaction().commit();
+		
+		return result;
 	}
 	
 	public void removeParticipantFromConference(Conference conference, User user){
@@ -275,11 +295,15 @@ public class ConferenceDao {
 	
 	private  ConferenceParticipantStatus getConferenceParticipant(Conference conference, User user)
 	{
-		return (ConferenceParticipantStatus)HibernateUtil.getSessionFactory().getCurrentSession().createQuery(
+		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
+		session.beginTransaction();
+		ConferenceParticipantStatus result =  (ConferenceParticipantStatus)HibernateUtil.getSessionFactory().getCurrentSession().createQuery(
 				"select confPart from  ConferenceParticipantStatus confPart where confPart.conference = :conf and confPart.user = :participant")
                 .setEntity("conf", conference)
                 .setEntity("user", user)
                 .uniqueResult();
+		session.getTransaction().commit();
+		return result;
 	}
 	
 	/**
@@ -287,7 +311,7 @@ public class ConferenceDao {
 	 * as long as they have never gotten such mail before about this conference
 	 * @param user
 	 */
-	public void sendConferenceAssignmentNotificationEmailToUsers(List<User> user){
+	public void sendConferenceAssignmentNotificationEmailToUsers(Conference conference, User user){
 		
 	}
 

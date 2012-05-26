@@ -1,4 +1,4 @@
-<%@page import="model.Conference"%>
+<%@page import="model.*"%>
 <%@page import="model.ConferenceFilters.ConferencePreDefinedFilter"%>
 <%@page import="daos.ConferenceDao"%>
 <%@page import="daos.UserDao"%>
@@ -7,6 +7,7 @@
 <%@ page import="java.util.List"%>
 <%@ page import="java.util.Date"%>
 <%@ page import="java.text.SimpleDateFormat"%>
+
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
@@ -17,6 +18,20 @@
 	rel="stylesheet" />
 <script type="text/javascript" src="js/jquery-1.7.1.min.js"></script>
 <script type="text/javascript" src="js/jquery-ui-1.8.18.custom.min.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){
+	 $('#filterSelect').change(function () {
+		 var selectedFilter = $("#filterSelect").val();
+		 window.location.href = "conference.jsp?filter=" + selectedFilter; 
+	 });
+	 
+	 var selectedFilter = $('.selectedFilter').text();
+	 if (selectedFilter != null && selectedFilter.length != 0)
+	 {
+		 $("#filterSelect option[value='" + selectedFilter + "']").attr('selected', 'selected');
+	 }
+});
+</script>
 <body>
 <div id="body_wrap">
 
@@ -33,14 +48,27 @@
 	</div>
 
 	<div id="vn_mainbody">
-	
-	<div class="buttons">
-		<a id="createNewConference" href="conferenceAddEdit.jsp?action=add">
-		<span></span>
-		<img src="/conf4u/resources/imgs/vn_action_add.png">
-		Add Conference
-		</a>
+	<div class="vn_tblheadzone buttons">
+		<div class="buttons">
+			<a id="createNewConference" href="conferenceAddEdit.jsp?action=add">
+			<span></span>
+			<img src="/conf4u/resources/imgs/vn_action_add.png">
+			Add Conference
+			</a>
+		</div>
+		
+		<div class="selectedFilter" style="display:none;"><%=request.getParameter("filter")%></div>
+		<span id="vn_mainbody_filter">
+			Show: 	
+			<select id="filterSelect">
+				<option value="LAST7DAYS">Last Week</option>
+				<option value="LAST30DAYS">Last Month</option>
+				<option value="LAST90DAYS">Last 3 Months</option>
+				<option value="ALL" selected="selected">Ever</option>
+			</select>
+		</span>
 	</div>
+	
 	
 	<div>
 	<div class="groupedList">
@@ -57,13 +85,25 @@
 		</thead>
 		<tbody>
 			<% 
-
-			List <Conference> conferences = ConferenceDao.getInstance().getConferences(ConferencePreDefinedFilter.ALL);
+			String filter = request.getParameter("filter");
+			ConferencePreDefinedFilter filterEnum = ConferencePreDefinedFilter.ALL;
+			if (filter != null)
+			{
+				try
+				{
+					filterEnum = ConferenceFilters.ConferencePreDefinedFilter.valueOf(filter);
+				}
+				catch (Exception e)
+				{
+					//PASS
+				}
+			}
+			List <Conference> conferences = ConferenceDao.getInstance().getConferences(filterEnum);
 		
 			// Print each application in a single row
 			for (Conference conference : conferences )
 			{
-		%>
+			%>
 			<tr class="gridRow">
 				<td><%=conference.getName()%></td>
 				<td><%=conference.getLocation().getName()%></td>

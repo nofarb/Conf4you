@@ -1,4 +1,4 @@
-<%@page import="model.Conference"%>
+<%@page import="model.*"%>
 <%@page import="model.ConferenceFilters.ConferencePreDefinedFilter"%>
 <%@page import="daos.ConferenceDao"%>
 <%@page import="daos.UserDao"%>
@@ -22,6 +22,42 @@
 <script type="text/javascript">	
 $(document).ready(function(){
 	
+	 	$('#sendInvitationToSelected').click(function () {
+	 		var checkedUserNames = $('input:checkbox[name=userNames]:checked').val();
+	 		var success= [];
+	 		var failed= [];
+	 		for (user in checkedUserNames)
+	 		{
+	 			$.ajax({
+			        url: "ConferenceServlet",
+			        dataType: 'json',
+			        async: false,
+			        type: 'POST',
+			            data: {
+			            	"action": "sendInvitation",
+			            	"confName": $(".confName").text(),
+			            	"userName": checkedUserNames
+			            },
+			        success: function(data) {
+			            if (data != null){
+							if (data.resultSuccess == "true")
+							{
+								success.push(user);
+							}
+							else
+							{
+								failed.push(user);
+							}
+			            }
+			        }
+			    });
+	 		}
+	 	});
+	 	
+		$('#deleteSelectedParticipants').click(function () {
+		 	//todo
+	 	});
+	 	
 		 $('.deleteConf').click(function () { 
 			 $('#dialog-confirm').dialog({
 				resizable: false,
@@ -66,9 +102,19 @@ $(document).ready(function(){
 				}
 				});
 			});
-	});
 	
-	
+		 $('.addParticipant').click(function () {
+			   $("#addParticipantDialog").dialog("open");
+			   $("#userAddFormIframe").attr("src","userAdd.jsp");
+		 });
+		 
+	   $("#addParticipantDialog").dialog({
+           autoOpen: false,
+           modal: true,
+           height: 800,
+           width: 800
+       });
+	});	
 </script>
 
 
@@ -135,10 +181,126 @@ $(document).ready(function(){
 	</table>
 	</div>
 	
+	<div style="clear:both"></div>
+	<h3> Invited participants</h3>
+	
+	<table class="groupedList" cellspacing="0" border="0" style="border-collapse:collapse;">
+		<thead>
+		<tr>
+			<th style="width: 22px;">
+				<input class="select_all" type="checkbox">
+			</th>
+			<th>User name</th>
+			<th>Name</th>
+			<th>Email</th>
+			<th>Passport ID</th>
+			<th>Participated</th>
+			<th>Logged in</th>
+			<th style="min-width: 50px;"></th>
+			<th style="min-width: 50px;"></th>
+		</tr>
+		</thead>
+		<tbody>
+			<% 
+			List<User> users =  ConferenceDao.getInstance().getAllConferenceParticipants(conf); 
+			for (User user : users) { %>
+			<tr class="gridRow">
+			<td>
+			<input class="select_one" type="checkbox" value="<%=user.getUserName()%>" name="userNames">
+			</td>
+			<td><%=user.getUserName()%></td>
+			<td><%=user.getName()%></td>
+			<td><%=user.getEmail()%></td>
+			<td><%=user.getPasportID()%></td>
+			<td align="center">
+				<span class="false_status_icon"></span>
+			</td>
+			<td align="center">
+				<span class="false_status_icon"></span>
+			</td>
+			<td>
+			<a class="editParticipant" href="javascript:;">
+			<img src="/conf4u/resources/imgs/vn_action_edit.png" alt="">
+			Edit
+			</a>
+			</td>
+			<td>
+			<a class="deleteParticipant"  href="javascript:;">
+			<img src="/conf4u/resources/imgs/vn_action_delete.png" alt="">
+			Delete
+			</a>
+			</td>
+			</tr>
+			<%} %>
+		</tbody>
+	</table>
+	
+	<% if (users.size() != 0) {%>
+	<div id="controls">
+		<div id="perpage">
+			<select onchange="sorter.size(this.value)">
+				<option value="5">5</option>
+				<option value="10" selected="selected">10</option>
+				<option value="20">20</option>
+				<option value="50">50</option>
+				<option value="100">100</option>
+			</select> <span>Entries Per Page</span>
+		</div>
+		<div id="navigation">
+			<img src="css/tables/images/first.gif" width="16" height="16"
+				alt="First Page" onclick="sorter.move(-1,true)" /> <img
+				src="css/tables/images/previous.gif" width="16" height="16"
+				alt="First Page" onclick="sorter.move(-1)" /> <img
+				src="css/tables/images/next.gif" width="16" height="16"
+				alt="First Page" onclick="sorter.move(1)" /> <img
+				src="css/tables/images/last.gif" width="16" height="16"
+				alt="Last Page" onclick="sorter.move(1,true)" />
+		</div>
+		<div id="text">
+			Displaying Page <span id="currentpage"></span> of <span
+				id="pagelimit"></span>
+		</div>
+	</div>
+	<script type="text/javascript" src="js/tables/script.js"></script>
+	<script type="text/javascript">
+		var sorter = new TINY.table.sorter("sorter");
+		sorter.head = "head";
+		sorter.asc = "asc";
+		sorter.desc = "desc";
+		sorter.even = "evenrow";
+		sorter.odd = "oddrow";
+		sorter.evensel = "evenselected";
+		sorter.oddsel = "oddselected";
+		sorter.paginate = true;
+		sorter.currentid = "currentpage";
+		sorter.limitid = "pagelimit";
+		sorter.init("table1", 1);
+	</script>
+	<%} else { %>
+		<div>No participants in the conference</div>
+	<% }%>
+	
+	<div style="padding: 6px 0;">
+		<button class="addParticipant" type="button">Add participant</button>
+		<button id="sendInvitationToSelected">
+		<img src="/conf4u/resources/imgs/vn_action_email.png" alt="" style="margin-bottom: -2px;">
+		&nbsp; Send invitation to selected
+		</button>
+		<button id="deleteSelectedParticipants" type="button">
+		<img src="/conf4u/resources/imgs/vn_action_delete.png" alt="" style="margin-bottom: -2px;">
+		&nbsp; Delete selected
+		</button>
+	</div>
+		
 	<div id="dialog-confirm" title="Delete conference?" style="display:none;">
 		<p><span class="ui-icon ui-icon-alert" style="float:left; margin:0 7px 20px 0;"></span>Conference will be deleted. Are you sure?</p>
 	</div>
 	
+	<div id="addParticipantDialog" title="Add participant" style="display:none;">
+	    <iframe id="userAddFormIframe" width="100%" height="100%"
+	    marginWidth="0" marginHeight="0" frameBorder="0" scrolling="auto"
+	    title="Dialog Title">Your browser does not supprt</iframe>
+	</div>
 
 	<script type="text/javascript" src="js/tables/script.js"></script>
 	<script type="text/javascript">

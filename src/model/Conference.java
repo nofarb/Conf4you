@@ -10,6 +10,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.GeneratedValue;
 
 import org.hibernate.annotations.GenericGenerator;
 
@@ -19,6 +20,7 @@ public class Conference implements Serializable {
 
 	private static final long serialVersionUID = -5770762179112826708L;
 
+	private long conferenceId; //auto incremented key
 	private Location location;
 	private String name;
 	private String description;
@@ -40,8 +42,19 @@ public class Conference implements Serializable {
 		this.setEndDate(endtDate);
 		this.active = true;
 	}
+	
 
 	@Id
+	@GeneratedValue(generator="increment")
+	@GenericGenerator(name="increment", strategy = "increment")
+	public long getConferenceId() {
+		return conferenceId;
+	}
+	
+	public void setConferenceId(long conferenceId) {
+		this.conferenceId = conferenceId;
+	}
+
 	public String getName() {
 		return name;
 	}

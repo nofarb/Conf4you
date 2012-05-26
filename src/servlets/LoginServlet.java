@@ -43,7 +43,6 @@ public class LoginServlet extends HttpServlet {
     		ConferenceDao.getInstance().addNewConference(MockCreation.createMockConferences());
     		UserDao.getInstance().addUsers(MockCreation.createMockUsers()); 
     		
-    		
 			String userName = request.getParameter("un");
 			String password = request.getParameter("pw"); 
 			
