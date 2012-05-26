@@ -1,46 +1,50 @@
+<%@page import="model.User"%>
+<%@page import="model.ConferenceFilters.ConferencePreDefinedFilter"%>
+<%@page import="daos.ConferenceDao"%>
 <%@page import="daos.UserDao"%>
+<%@page import="utils.*"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="ISO-8859-1"%>
 <%@ page import="java.util.List"%>
 <%@ page import="java.util.Date"%>
 <%@ page import="java.text.SimpleDateFormat"%>
-<%@ page import="model.User"%>
-<%@page import="utils.*"%>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
 <link type="text/css" href="css/main.css" rel="stylesheet" />
 <link type="text/css" href="css/tables/tableList.css" rel="stylesheet" />
-<link type="text/css" href="css/cupertino/jquery-ui-1.8.18.custom.css" rel="stylesheet" />
+<link type="text/css" href="css/cupertino/jquery-ui-1.8.18.custom.css"
+	rel="stylesheet" />
 <script type="text/javascript" src="js/jquery-1.7.1.min.js"></script>
 <script type="text/javascript" src="js/jquery-ui-1.8.18.custom.min.js"></script>
-
-<script>
-	$(function() {
-		$( ".addButton" ).button({
-            icons: {
-                primary: "ui-icon-plus"
-            }
-		});
-		
-	});
-	</script>
-
-
-</head>
-
 <body>
 <div id="body_wrap">
 
 <%= UiHelpers.GetHeader().toString() %>
-<%= UiHelpers.GetTabs(SessionUtils.getUser(request), ProjConst.TAB_USERS).toString() %>
+<%= UiHelpers.GetTabs(SessionUtils.getUser(request), ProjConst.TAB_CONFERENCES).toString() %>
 
 <div id="content">
-<p class="horizontal-line">Users</p>
+	<div class="pageTitle">
+	<div class="titleMain ">Users</div>
+	<br/>
+	<div style="clear:both;"></div>
+	<div class="titleSeparator"></div>
+	<div class="titleSub">manage, view details and add new users</div>
+	</div>
 
-<a class="addButton" href="userAddEdit.jsp?action=add">Add User</a>
-
-	<table cellpadding="0" cellspacing="0" border="0" id="table"
+	<div id="vn_mainbody">
+	
+	<div class="buttons">
+		<a id="createNewUser" href="userAddEdit.jsp?action=add">
+		<span></span>
+		<img src="/conf4u/resources/imgs/vn_action_add.png">
+		Add User
+		</a>
+	</div>
+	
+	<div>
+	<div class="groupedList">
+	<table cellpadding="0" cellspacing="0" border="0" id="table1"
 		class="sortable">
 		<thead>
 			<tr>
@@ -59,7 +63,7 @@
 
 			List <User> usersList = UserDao.getInstance().getUsers();
 			String newsDate;
-			// Print each application in a single row
+			
 			for (User user : usersList )
 			{
 				Date date = user.getLastLogin();
@@ -69,7 +73,7 @@
 					newsDate = "";
 				}
 		%>
-			<tr>
+			<tr class="gridRow">
 				<td><%=user.getUserName()%></td>
 				<td><%=user.getName()%></td>
 				<td><%=user.getPhone1()%></td>
@@ -121,8 +125,11 @@
 		sorter.paginate = true;
 		sorter.currentid = "currentpage";
 		sorter.limitid = "pagelimit";
-		sorter.init("table", 1);
+		sorter.init("table1", 1);
 	</script>
+</div>
+</div>
+</div>
 </div>
 </div>
 </body>
