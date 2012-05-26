@@ -21,7 +21,7 @@
 <div id="body_wrap">
 
 <%= UiHelpers.GetHeader().toString() %>
-<%= UiHelpers.GetTabs(SessionUtils.getUser(request), ProjConst.TAB_CONFERENCES).toString() %>
+<%= UiHelpers.GetTabs(SessionUtils.getUser(request), ProjConst.TAB_USERS).toString() %>
 
 <div id="content">
 	<div class="pageTitle">
