@@ -36,6 +36,14 @@
   	<servlet-name>CompanyServlet</servlet-name>
   	<url-pattern>/CompanyServlet</url-pattern>
   </servlet-mapping>
+  <servlet>
+  	<servlet-name>LocationServlet</servlet-name>
+  	<servlet-class>servlets.LocationServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+  	<servlet-name>LocationServlet</servlet-name>
+  	<url-pattern>/LocationServlet</url-pattern>
+  </servlet-mapping>
 
 
    <filter> 

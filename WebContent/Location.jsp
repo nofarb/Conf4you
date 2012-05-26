@@ -39,7 +39,7 @@
 	<div id="vn_mainbody">
 	
 	<div class="buttons">
-		<a id="createNewLocation" href="LocationAdd.jsp" >
+		<a id="createNewLocation" href="locationAddEdit.jsp?action=add">
 		<span></span>
 		<img src="/conf4u/resources/imgs/vn_action_add.png">
 		Add Location
@@ -78,7 +78,7 @@
 				<td><%=location.getPhone1()%></td>
 				<td><%=location.getPhone2()%></td>
 				
-				<td><a class="vn_boldtext" href="LocationDetails.jsp" >
+				<td><a class="vn_boldtext" href="LocationDetails.jsp?locName=<%=location.getName()%>">
 				<img src="/conf4u/resources/imgs/vn_world.png" alt="">
 				Details
 				</a>

@@ -4,6 +4,7 @@ public final  class ProjConst {
 	
 	private ProjConst() {}
 	
+	// user
 	public static final String USER = "user";
 	public static final String NAME = "name";
 	public static final String USER_NAME = "userName";
@@ -15,6 +16,7 @@ public final  class ProjConst {
 	public static final String COMPANY = "company";
 	public static final String IS_ADMIN = "isAdmin";
 	
+	// conference
 	public static final String CONF_NAME = "confName";
 	public static final String CONF_NAME_BEFORE_EDIT = "confNameEdit";
 	public static final String CONF_DESC = "confDesc";
@@ -22,10 +24,21 @@ public final  class ProjConst {
 	public static final String CONF_START_DATE = "startDate";
 	public static final String CONF_END_DATE = "endDate";
 	
+	// company
 	public static final String COMP_NAME = "compName";
 	public static final String COMP_TYPE = "compType";
 	public static final String COMP_NAME_BEFORE_EDIT = "compNameEdit";
 	
+	// location
+	public static final String LOC_NAME = "locName";
+	public static final String LOC_NAME_BEFORE_EDIT = "locNameEdit";
+	public static final String LOC_Address = "locAddress";
+	public static final String LOC_MaxCapacity = "locMaxCapacity";
+	public static final String LOC_ContactName = "locContact";
+	public static final String LOC_Phone = "locPhone";
+	public static final String LOC_Phone2 = "locPhone2";
+
+	//login
 	public static final String LOGIN_PAGE = "login.jsp";
 	public static final String USER_PAGE = "users.jsp";
 	public static final String MAIN_PAGE = "mainPage.jsp";
@@ -33,7 +46,7 @@ public final  class ProjConst {
 	public static final String ADD = "add";
 	public static final String EDIT = "edit";
 	
-	
+	// TABs
 	public static final String TAB_HOME = "home";
 	public static final String TAB_USERS = "users";
 	public static final String TAB_CONFERENCES = "conferences";

@@ -2,10 +2,11 @@ package daos;
 
 import java.util.List;
 
+import model.Company;
+import model.Conference;
+import model.ConferenceFilters;
 import model.Location;
-
 import org.hibernate.Session;
-
 import db.HibernateUtil;
 
 /**
@@ -28,12 +29,20 @@ public class LocationDao {
 	/**
 	 * Get a list of all the locations that are stored in the database
 	 */
-	public List<Location> getLocations(){
+	/*public List<Location> getLocations(){
 		
 		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
 		session.beginTransaction();
 		@SuppressWarnings("unchecked")
 		List<Location> result = (List<Location>) session.createQuery("from Location").list();
+		session.getTransaction().commit();
+		return result;
+	}*/
+	public List<Location> getLocations(){
+		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
+		session.beginTransaction();
+		@SuppressWarnings("unchecked")
+		List<Location> result = (List<Location>) session.createQuery("select loc from Location loc where loc.active = '1'").list();
 		session.getTransaction().commit();
 		return result;
 	}
@@ -58,13 +67,12 @@ public class LocationDao {
 	public Location getLocationByName(String name){
 		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
 		session.beginTransaction();
-		Location result = (Location)HibernateUtil.getSessionFactory().getCurrentSession().createQuery(
-				"select loc from Location loc where loc.name = :name")
-                .setEntity("name", name)
+		Location loc = (Location)session.createQuery(
+				"select loc from  Location loc where loc.name = :name")
+                .setString("name", name)
                 .uniqueResult();
 		session.getTransaction().commit();
-		return result;
-		
+		return loc;
 	}
 	
 	
@@ -98,5 +106,28 @@ public class LocationDao {
 		session.getTransaction().commit();
 		return location;
 		
+	}
+	
+	
+	public Boolean isLocationNameExists(String name)
+	{
+		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
+		session.beginTransaction();
+		Boolean exists = session.createQuery(
+				"select loc from  Location loc where loc.name = :name")
+                .setString("name", name)
+                .uniqueResult() != null;
+		session.getTransaction().commit();
+		return exists;
+	}
+	
+	public void deleteLocation(String name)
+	{
+		Location locationToDelete = getLocationByName(name);
+		
+		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
+		session.beginTransaction();
+		session.update(locationToDelete.setActive(false));
+		session.getTransaction().commit();
 	}
 }

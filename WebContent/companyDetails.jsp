@@ -23,37 +23,55 @@
 
 <script type="text/javascript">	
 $(document).ready(function(){
+	
 	 $('.deleteComp').click(function () { 
-		$.ajax({
-	        url: "CompanyServlet",
-	        dataType: 'json',
-	        async: false,
-	        type: 'POST',
-	            data: {
-	            	"action": "delete",
-	            	"compName": $(".compName").text()
-	            },
-	        success: function(data) {
-	            if (data != null){
-					if (data.resultSuccess == "true")
-					{
-					
-					 	    $.floatingMessage(data.message ,{  
-					 	    	height : 30
-						    }); 
-					 	    $(".ui-widget-content").addClass("successFeedback");
-					 	
-					}
-					else
-					{
-						$.floatingMessage(data.message);
-						$(".ui-widget-content").addClass("errorFeedback");
-					}
-	            }
-	        }
-	    });
-	});
+		 $('#dialog-confirm').dialog({
+			resizable: false,
+			height: 150,
+			width: 400,
+			modal: true,
+			hide: "fade", 
+           show: "fade",
+			buttons: {
+				"Delete": function() {
+					$.ajax({
+				        url: "CompanyServlet",
+				        dataType: 'json',
+				        async: false,
+				        type: 'POST',
+				            data: {
+				            	"action": "delete",
+				            	"compName": $(".compName").text()
+				            },
+				        success: function(data) {
+				            if (data != null){
+								if (data.resultSuccess == "true")
+								{
+							 	   	window.location = "companyList.jsp";
+							 	    $.floatingMessage(data.message ,{  
+							 	    	height : 30
+								    }); 
+							 	    $(".ui-widget-content").addClass("successFeedback");
+								}
+								else
+								{
+									$.floatingMessage(data.message);
+									$(".ui-widget-content").addClass("errorFeedback");
+								}
+				            }
+				        }
+				    });
+				},
+				Cancel: function() {
+					$( this ).dialog( "close" );
+				}
+			}
+			});
+		});
 });
+
+
+
 </script>
 
 
@@ -113,6 +131,10 @@ $(document).ready(function(){
 	</table>
 	</div>
 
+	<div id="dialog-confirm" title="Delete company?" style="display:none;">
+		<p><span class="ui-icon ui-icon-alert" style="float:left; margin:0 7px 20px 0;"></span>Company will be deleted. Are you sure?</p>
+	</div>
+	
 	<script type="text/javascript" src="js/tables/script.js"></script>
 	<script type="text/javascript">
 		var sorter = new TINY.table.sorter("sorter");

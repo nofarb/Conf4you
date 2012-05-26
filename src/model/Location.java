@@ -25,7 +25,7 @@ public class Location implements Serializable{
 	private boolean active;
 	
 		
-	Location() {} //not public on purpose
+	public Location() {} 
 
 	public Location(String name, String address, int maxCapacity, 
 			String contactName, String phone1, String phone2) {
@@ -39,6 +39,10 @@ public class Location implements Serializable{
 	}
 
 	@Id
+	public String getName() {
+		return name;
+	}
+	
 	@GeneratedValue(generator="increment")
 	@GenericGenerator(name="increment", strategy = "increment")
 	public long getLocationId() {
@@ -47,11 +51,10 @@ public class Location implements Serializable{
 	public void setLocationId(long locationId) {
 		this.locationId = locationId;
 	}
-	public String getName() {
-		return name;
-	}
-	public void setName(String name) {
+
+	public Location setName(String name) {
 		this.name = name;
+		return this;
 	}
 	public String getAddress() {
 		return address;
@@ -94,8 +97,9 @@ public class Location implements Serializable{
 		return active;
 	}
 
-	public void setActive(boolean active) {
+	public Location setActive(boolean active) {
 		this.active = active;
+		return this;
 	}
 	
 	

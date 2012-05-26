@@ -5,6 +5,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=windows-1255">
 <link type="text/css" href="css/login.css" rel="stylesheet" />
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/> 
 <title>Conf4U</title>
 </head>
 <body>
@@ -23,7 +24,7 @@
 		<div class="column_2wide">
 		<div class="loginform">
 		<div class="loginform_title">Login:</div>
-		<form name="loginform" method="post" action="LoginServlet?action=login">
+		<form name="loginform" method="post" action="LoginServlet?action=login" accept-charset="utf-8" >
 			<table cellspacing="0" cellpadding="6" style="border-collapse:collapse;">
 				<tbody>
 					<tr>

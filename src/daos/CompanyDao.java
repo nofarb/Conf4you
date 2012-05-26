@@ -1,11 +1,12 @@
 package daos;
 
 import java.util.List;
+
+import org.hibernate.Query;
 import org.hibernate.Session;
 import db.HibernateUtil;
 import model.Company;
 import model.CompanyType;
-import model.Conference;
 
 /**
  * This class is responsible of supplying services related to the Company entity which require database access.
@@ -59,7 +60,10 @@ public class CompanyDao {
 
 		 for (Company comp:companies)
 		 {
-			 addCompany(comp);
+			 if(!isCompanyNameExists(comp.getName()))
+			 {
+				 addCompany(comp);
+			 }
 		 }
 
 	}
@@ -79,7 +83,24 @@ public class CompanyDao {
 			return company;
 		}
 	}
-
+	/*public Company addCompany(Company company)
+	{
+		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
+		try
+		{
+			session.beginTransaction();
+			session.merge(company);			
+			session.getTransaction().commit();
+			return company;
+		}
+		catch (org.hibernate.exception.ConstraintViolationException  e)
+		{
+			e.printStackTrace();
+			return null;
+		}
+		
+	}*/
+	
 	/**
 	 * Update an existing company in the database
 	 */
@@ -108,6 +129,9 @@ public class CompanyDao {
 		return comp;
 	}
 
+	/**
+	 * Check if company in the database
+	 */
 	public Boolean isCompanyNameExists(String name)
 	{
 		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
@@ -120,6 +144,9 @@ public class CompanyDao {
 		return exists;
 	}
 
+	/**
+	 * Delete (set active=false) an existing company
+	 */
 	public void deleteCompany(String name)
 	{
 		Company companyToDelete = getCompanyByName(name);
@@ -130,6 +157,9 @@ public class CompanyDao {
 		session.getTransaction().commit();
 	}
 	
+	/**
+	 * Get a company
+	 */
 	public Company getCompanyByName(String name){
 		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
 		session.beginTransaction();
@@ -140,4 +170,18 @@ public class CompanyDao {
 		session.getTransaction().commit();
 		return comp;
 	}
+
+
+	public List<Company> getCompanyListByName(String name) {
+			Session session = HibernateUtil.getSessionFactory().getCurrentSession();
+			session.beginTransaction();
+			@SuppressWarnings("unchecked")
+			List<Company> compenies = (List<Company>)HibernateUtil.getSessionFactory().getCurrentSession().createQuery(
+					"from Company where name=:name")
+					.setString("name",name)
+					.list();
+			session.getTransaction().commit();
+			return compenies;
+}
+	
 }

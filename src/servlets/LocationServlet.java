@@ -2,26 +2,19 @@ package servlets;
 
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.text.DateFormat;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import model.Company;
-import model.CompanyType;
-
-
+import model.Location;
 
 import utils.ProjConst;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 
-import daos.CompanyDao;
 import daos.LocationDao;
 
 
@@ -71,12 +64,12 @@ public class LocationServlet extends HttpServlet {
     
     private void addLocation(HttpServletRequest request, HttpServletResponse response) throws IOException, ParseException
     {
-    	String locationName = request.getParameter(ProjConst.Loc_NAME);
-    	String locationAddress = request.getParameter(ProjConst.Loc_Address);
-    	String locationMaxCapacity = request.getParameter(ProjConst.Loc_MaxCapacity);
-    	String locationContactName = request.getParameter(ProjConst.Loc_ContactName);
-    	String locationPhone1 = request.getParameter(ProjConst.Loc_Phone1);
-    	String locationPhone2 = request.getParameter(ProjConst.Loc_Phone2);
+    	String locationName = request.getParameter(ProjConst.LOC_NAME);
+    	String locationAddress = request.getParameter(ProjConst.LOC_Address);
+    	String locationMaxCapacityStr = request.getParameter(ProjConst.LOC_MaxCapacity);
+    	String locationContactName = request.getParameter(ProjConst.LOC_ContactName);
+    	String locationPhone1 = request.getParameter(ProjConst.LOC_Phone);
+    	String locationPhone2 = request.getParameter(ProjConst.LOC_Phone2);
     	//String location = request.getParameter(ProjConst.CONF_LOCATION);
     	
 	    //DateFormat formatter = new SimpleDateFormat("MM/dd/yyyy");
@@ -90,11 +83,11 @@ public class LocationServlet extends HttpServlet {
     	
     	String resultSuccess = null;
     	String message = null;
-    	/*try 
+    	try 
     	{
     		//ConferenceDao.getInstance().addNewConference(new Conference(confName, locationInstance, desc, startDate, endDate));
-    		CompanyType companyType = CompanyType.valueOf(compTypeStr); 
-    		CompanyDao.getInstance().addCompany(new Company(companyName, companyType));
+    		int locationMaxCapacity = Integer.parseInt( locationMaxCapacityStr );
+    		LocationDao.getInstance().addLocation(new Location(locationName, locationAddress, locationMaxCapacity, locationContactName, locationPhone1, locationPhone2));
     		message = "Company successfully added";
     		resultSuccess = "true";
     		
@@ -103,7 +96,7 @@ public class LocationServlet extends HttpServlet {
     	{
     		message = "Found problem while adding company";
     		resultSuccess = "false";
-    	}*/
+    	}
     	
         response.setContentType("application/json;charset=UTF-8");
         PrintWriter out = response.getWriter();
@@ -120,7 +113,7 @@ public class LocationServlet extends HttpServlet {
            	else
            	{
            		jsonObject.addProperty("resultSuccess", "false");
-           		jsonObject.addProperty("message", "Failed to add company");
+           		jsonObject.addProperty("message", "Failed to add location");
            		json = gson.toJson(jsonObject);
            	}
            	out.write(json);
@@ -135,13 +128,13 @@ public class LocationServlet extends HttpServlet {
     {
     	JsonObject jsonObject = new JsonObject();
     	
-    	String locationName = request.getParameter(ProjConst.Loc_NAME);
+    	String locationName = request.getParameter(ProjConst.LOC_NAME);
     	
       	String resultSuccess;
     	String message;
     	try 
     	{
-    		LocationDao.getInstance().deleteCompany(locationName);
+    		LocationDao.getInstance().deleteLocation(locationName);
     		message = "Location successfully deleted";
     		resultSuccess = "true";
     		
