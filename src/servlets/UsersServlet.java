@@ -26,7 +26,7 @@ public class UsersServlet extends HttpServlet {
 	private static final String DELETE_USER = "delete";
 	private static final String EDIT_USER = "edit";
 	private static final String ADD_USER = "add";
-	private static final String VALIDATION = "validation";
+	private static final String VALIDATION_USER_NAME_UNIQUE = "validateUserNameUnique";
 
 
 
@@ -59,7 +59,7 @@ public class UsersServlet extends HttpServlet {
 			else if (action.equals(ADD_USER)) {
 				addUser(request, response);
 			}
-			else if (action.equals(VALIDATION)) {
+			else if (action.equals(VALIDATION_USER_NAME_UNIQUE)) {
 				validate(request, response);
 			}
 			else {
@@ -72,38 +72,30 @@ public class UsersServlet extends HttpServlet {
 		}
 	}
 
+	private void validate(HttpServletRequest request, HttpServletResponse response) throws Exception {
 
-	private void validate(HttpServletRequest request, HttpServletResponse response) throws Exception{
-
-		String userIdstr = request.getParameter(ProjConst.USER_ID);
-		
-		if ( userIdstr == null) {
-			throw new Exception("Failed to get user id");
+		String userName = request.getParameter(ProjConst.USER_NAME);
+		if (userName == null) {
+			throw new Exception("Failed to get user name");
 		}
-		
-		Long userId = new Long(userIdstr);
 
-        response.setContentType("application/json;charset=UTF-8");
-        PrintWriter out = response.getWriter();
-        try {
-            Gson gson = new Gson();
-            
-            if (userId != null)
-            {
-            	User user = UserDao.getInstance().getUserById(userId);
- 	           	String json;
- 	           	if (user != null)
- 	           		json = gson.toJson("true");
- 	           	else 
- 	           		json = gson.toJson("false");
- 	           	out.write(json);
-            	}
-            out.flush();
-        }
-         finally {
-            out.close();
-        }
-        
+		response.setContentType("application/json;charset=UTF-8");
+		PrintWriter out = response.getWriter();
+		
+		try {
+			Gson gson = new Gson();
+
+			User userByUserName = UserDao.getInstance().getUserByUserName(userName);
+			String json;
+			if (userByUserName != null)
+				json = gson.toJson("true");
+			else
+				json = gson.toJson("false");
+			out.write(json);
+			out.flush();
+		} finally {
+			out.close();
+		}
 	}
 
 	/**
@@ -187,6 +179,10 @@ public class UsersServlet extends HttpServlet {
     	String message;
     	try 
     	{
+    		if(phone2 == null){
+    			phone2 = "";
+    		}
+    		
     		User newUser = new User(userName, passportId, company, name, email, phone1, phone2, password, isAdmin);
     		UserDao.getInstance().addUser(newUser);
     		message = "User successfully added";

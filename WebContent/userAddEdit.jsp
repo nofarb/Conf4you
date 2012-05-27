@@ -47,7 +47,7 @@ div.error {
 
 $(document).ready(function(){
 	
-	$('.userAddEditForm').click(function() {
+	var addEditUserSubmit = function() {
 		$.ajax({
             url: "users",
             dataType: 'json',
@@ -90,7 +90,7 @@ $(document).ready(function(){
               async: false,
               type: 'POST',
                   data: {
-                	  "action": "validation",
+                	  "action": "validateUserName",
                 	  <%=ProjConst.USER_NAME%> : $("#userName").val(),
                   },
               success: function(data) {
@@ -127,7 +127,7 @@ $(document).ready(function(){
 		  submitHandler: function(form) {  
               if ($(form).valid())
               {
-                  form.submit(); 
+            	  addEditUserSubmit();
               }
               return false;
      		},
