@@ -281,7 +281,7 @@ $(document).ready(function(){
 											src="/conf4u/resources/imgs/table_save.png"> Save
 									</button>
 									<a id="cancelButton" href="#"
-										onClick="window.location.reload( true )"> <img
+										onClick="window.history.back()"> <img
 										class="img_png" width="16" height="16" alt=""
 										src="/conf4u/resources/imgs/cancel.png"> Cancel
 									</a>

@@ -1,6 +1,6 @@
 <%@page import="model.*"%>
-<%@page import="daos.LocationDao"%>
-<%@page import="model.Location"%>
+<%@page import="daos.CompanyDao"%>
+<%@page import="model.Company"%>
 <%@page import="model.ConferenceFilters.ConferencePreDefinedFilter"%>
 <%@page import="daos.ConferenceDao"%>
 <%@page import="daos.UserDao"%>
@@ -24,7 +24,7 @@
 $(document).ready(function(){
 	 $('#filterSelect').change(function () {
 		 var selectedFilter = $("#filterSelect").val();
-		 window.location.href = "location.jsp?filter=" + selectedFilter; 
+		 window.location.href = "company.jsp?filter=" + selectedFilter; 
 	 });
 	 
 	 var selectedFilter = $('.selectedFilter').text();
@@ -38,39 +38,46 @@ $(document).ready(function(){
 <div id="body_wrap">
 
 <%= UiHelpers.GetHeader().toString() %>
-<%= UiHelpers.GetTabs(SessionUtils.getUser(request), ProjConst.TAB_LOCATIONS).toString() %>
+<%= UiHelpers.GetTabs(SessionUtils.getUser(request), ProjConst.TAB_COMPANIES).toString() %>
 
 <div id="content">
 	<div class="pageTitle">
-	<div class="titleMain ">Locations</div>
+	<div class="titleMain ">Companies</div>
 	<br/>
 	<div style="clear:both;"></div>
 	<div class="titleSeparator"></div>
-	<div class="titleSub">manage, view details and add new locations</div>
+	<div class="titleSub">manage, view details and add new companies</div>
 	</div>
 
 	<div id="vn_mainbody">
 	<div class="vn_tblheadzone buttons">
 		<div class="buttons">
-			<a id="createNewLocation" href="locationAddEdit.jsp?action=add">
+			<a id="createNewCompany" href="companyAddEdit.jsp?action=add">
 			<span></span>
 			<img src="/conf4u/resources/imgs/vn_action_add.png">
-			Add Location
+			Add Company
 			</a>
 		</div>
-		<!-- 
+		
 		<div class="selectedFilter" style="display:none;"><%=request.getParameter("filter")%></div>
 		<span id="vn_mainbody_filter">
-			Show: 	
+			Show Type: 	
 			<select id="filterSelect">
-				<option value="LAST7DAYS">Last Week</option>
-				<option value="LAST30DAYS">Last Month</option>
-				<option value="LAST90DAYS">Last 3 Months</option>
-				<option value="ALL" selected="selected">Ever</option>
+			<%
+				//List<Location> locations = LocationDao.getInstance().getLocations();
+								
+				//for (Location location : locations) {
+				for (CompanyType companyType : CompanyType.values()) {%>
+					<option value="<%=companyType.toString()%>"><%=companyType.toString()%></option>
+				<%} %>
+				<!-- <option value="LAST7DAYS">Last Week</option> -->
+				<!-- <option value="LAST30DAYS">Last Month</option> -->
+				<!-- <option value="LAST90DAYS">Last 3 Months</option> -->
+				<option value="ALL" selected="selected">All Types</option>
 			</select>
 		</span>
 	</div>
-	 -->
+	
 	
 	<div>
 	<div class="groupedList">
@@ -79,44 +86,44 @@ $(document).ready(function(){
 		<thead>
 			<tr>
 				<th><h3>Name</h3></th>
-				<th><h3>Address</h3></th>
-				<th><h3>Max Capacity</h3></th>
-				<th><h3>Contact name</h3></th>
-				<th><h3>Phone 1</h3></th>
-				<th><h3>Phone 2</h3></th>
+				<th><h3>Type</h3></th>
 				<th class="nosort"><h3>Details</h3></th>
 			</tr>
 		</thead>
 		<tbody>
-			<%/* 
+			<% 
 			String filter = request.getParameter("filter");
-			ConferencePreDefinedFilter filterEnum = ConferencePreDefinedFilter.ALL;
-			if (filter != null)
+			//ConferencePreDefinedFilter filterEnum = ConferencePreDefinedFilter.ALL;
+			List <Company> companyList = null;
+			if (filter != null && !filter.equalsIgnoreCase("ALL"))
 			{
 				try
 				{
-					filterEnum = ConferenceFilters.ConferencePreDefinedFilter.valueOf(filter);
+					//filterEnum = ConferenceFilters.ConferencePreDefinedFilter.valueOf(filter);
+					CompanyType compType = CompanyType.valueOf(filter);
+					companyList =  CompanyDao.getInstance().getCompaniesOfType(compType);
+					
 				}
 				catch (Exception e)
 				{
 					//PASS
 				}
-			}*/
+			}
+			else
+			{
+				companyList = CompanyDao.getInstance().getAllCompanies();
+			}
+			//List <Conference> conferences = ConferenceDao.getInstance().getConferences(filterEnum);
 			
-			List <Location> locations = LocationDao.getInstance().getLocations();
 		
 			// Print each application in a single row
-			for (Location location : locations )
+			for (Company company : companyList )
 			{
 			%>
 			<tr class="gridRow">
-				<td><%=location.getName()%></td>
-				<td><%=location.getAddress()%></td>
-				<td><%=location.getMaxCapacity()%></td>
-				<td><%=location.getContactName()%></td>
-				<td><%=location.getPhone1()%></td>
-				<td><%=location.getPhone2()%></td>
-				<td><a class="vn_boldtext" href="LocationDetails.jsp?locName=<%=location.getName()%>">
+				<td><%=company.getName()%></td>
+				<td><%=company.getCompanyType()%></td>
+				<td><a class="vn_boldtext" href="companyDetails.jsp?companyName=<%=company.getName()%>">
 				<img src="/conf4u/resources/imgs/vn_world.png" alt="">
 				Details
 				</a>

@@ -52,7 +52,7 @@ public class LocationServlet extends HttpServlet {
 			deleteLocation(request, response);
 		}
 		else if (action.equals(EDIT_Loc)) {
-			//editUser(request, response);
+			editLocation(request, response);
 		}
 		else if (action.equals(Loc_NAME_VALIDATION)) {
 			locationNameValidation(request, response);
@@ -68,7 +68,7 @@ public class LocationServlet extends HttpServlet {
     	String locationAddress = request.getParameter(ProjConst.LOC_Address);
     	String locationMaxCapacityStr = request.getParameter(ProjConst.LOC_MaxCapacity);
     	String locationContactName = request.getParameter(ProjConst.LOC_ContactName);
-    	String locationPhone1 = request.getParameter(ProjConst.LOC_Phone);
+    	String locationPhone1 = request.getParameter(ProjConst.LOC_Phone1);
     	String locationPhone2 = request.getParameter(ProjConst.LOC_Phone2);
     	//String location = request.getParameter(ProjConst.CONF_LOCATION);
     	
@@ -88,13 +88,13 @@ public class LocationServlet extends HttpServlet {
     		//ConferenceDao.getInstance().addNewConference(new Conference(confName, locationInstance, desc, startDate, endDate));
     		int locationMaxCapacity = Integer.parseInt( locationMaxCapacityStr );
     		LocationDao.getInstance().addLocation(new Location(locationName, locationAddress, locationMaxCapacity, locationContactName, locationPhone1, locationPhone2));
-    		message = "Company successfully added";
+    		message = "Location successfully added";
     		resultSuccess = "true";
     		
     	}
     	catch (Exception e)
     	{
-    		message = "Found problem while adding company";
+    		message = "Found problem while adding location";
     		resultSuccess = "false";
     	}
     	
@@ -103,7 +103,6 @@ public class LocationServlet extends HttpServlet {
         try {
             Gson gson = new Gson();
            	String json;
-           	//if (ConferenceDao.getInstance().isConferenceNameExists(companyName))
           	if(LocationDao.getInstance().isLocationNameExists(locationName))
            	{
            		jsonObject.addProperty("resultSuccess", resultSuccess);
@@ -194,6 +193,65 @@ public class LocationServlet extends HttpServlet {
         }
     }
 
+    private void editLocation(HttpServletRequest request, HttpServletResponse response) throws IOException, ParseException
+    {
+    	String locNameBeforeEdit = request.getParameter(ProjConst.LOC_NAME_BEFORE_EDIT);
+    	Location origLoc = LocationDao.getInstance().getLocationByName(locNameBeforeEdit);
+    	
+    	String locationName = request.getParameter(ProjConst.LOC_NAME);
+    	String locationAddress = request.getParameter(ProjConst.LOC_Address);
+    	String locationMaxCapacityStr = request.getParameter(ProjConst.LOC_MaxCapacity);
+    	String locationContactName = request.getParameter(ProjConst.LOC_ContactName);
+    	String locationPhone1 = request.getParameter(ProjConst.LOC_Phone1);
+    	String locationPhone2 = request.getParameter(ProjConst.LOC_Phone2);
+    	int locationMaxCapacity = Integer.parseInt(locationMaxCapacityStr);
+    	
+    	origLoc.setName(locationName).setAddress(locationAddress).setContactName(locationContactName).setMaxCapacity(locationMaxCapacity);
+    	origLoc.setPhone1(locationPhone1).setPhone2(locationPhone2);
+    	
+    	JsonObject jsonObject = new JsonObject();
+    	
+    	String resultSuccess;
+    	String message;
+    	try 
+    	{
+    		LocationDao.getInstance().updateLocation(origLoc);
+    		message = "Location successfully edited";
+    		resultSuccess = "true";
+    		
+    	}
+    	catch (Exception e)
+    	{
+    		message = "Found problem while editing location";
+    		resultSuccess = "false";
+    	}
+    	
+        response.setContentType("application/json;charset=UTF-8");
+        PrintWriter out = response.getWriter();
+        try {
+            Gson gson = new Gson();
+           	String json;
+           	//if (ConferenceDao.getInstance().isConferenceNameExists(confName))
+           	if (LocationDao.getInstance().isLocationNameExists(locationName))
+           	{
+           		jsonObject.addProperty("resultSuccess", resultSuccess);
+           		jsonObject.addProperty("message", message);
+           		json = gson.toJson(jsonObject);
+           	}
+           	else
+           	{
+           		jsonObject.addProperty("resultSuccess", "false");
+           		jsonObject.addProperty("message", "Failed to edit location");
+           		json = gson.toJson(jsonObject);
+           	}
+           	out.write(json);
+            out.flush();
+        }
+         finally {
+            out.close();
+        }
+    }
+    
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */

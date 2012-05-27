@@ -77,7 +77,7 @@ public class UiHelpers {
 			//Companies tab
 			//--------------------------------------------------------------------
 			sb.append(String.format("<li%s>", ProjConst.TAB_COMPANIES == chosenTab ? " class=\"focuslink\"" : ""));
-			sb.append("<a href=\"companyList.jsp\">");
+			sb.append("<a href=\"company.jsp\">");
 			sb.append("<span>Companies</span>");
 			sb.append("</a>");
 			sb.append("</li>");
@@ -89,7 +89,7 @@ public class UiHelpers {
 			//Locations tab
 			//--------------------------------------------------------------------
 			sb.append(String.format("<li%s>", ProjConst.TAB_LOCATIONS == chosenTab ? " class=\"focuslink\"" : ""));
-			sb.append("<a href=\"Location.jsp\">");
+			sb.append("<a href=\"location.jsp\">");
 			sb.append("<span>Locations</span>");
 			sb.append("</a>");
 			sb.append("</li>");

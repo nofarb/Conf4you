@@ -47,7 +47,7 @@ $(document).ready(function(){
 				            if (data != null){
 								if (data.resultSuccess == "true")
 								{
-							 	   	window.location = "companyList.jsp";
+							 	   	window.location = "company.jsp";
 							 	    $.floatingMessage(data.message ,{  
 							 	    	height : 30
 								    }); 

@@ -44,7 +44,7 @@ $(document).ready(function(){
 					            if (data != null){
 									if (data.resultSuccess == "true")
 									{
-								 	   	window.location = "Location.jsp";
+								 	   	window.location = "location.jsp";
 								 	    $.floatingMessage(data.message ,{  
 								 	    	height : 30
 									    }); 

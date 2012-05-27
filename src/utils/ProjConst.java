@@ -35,7 +35,7 @@ public final  class ProjConst {
 	public static final String LOC_Address = "locAddress";
 	public static final String LOC_MaxCapacity = "locMaxCapacity";
 	public static final String LOC_ContactName = "locContact";
-	public static final String LOC_Phone = "locPhone";
+	public static final String LOC_Phone1 = "locPhone";
 	public static final String LOC_Phone2 = "locPhone2";
 
 	//login

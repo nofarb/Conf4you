@@ -59,38 +59,43 @@ public class Location implements Serializable{
 	public String getAddress() {
 		return address;
 	}
-	public void setAddress(String address) {
+	public Location setAddress(String address) {
 		this.address = address;
+		return this;
 	}
 	public int getMaxCapacity() {
 		return maxCapacity;
 	}
-	public void setMaxCapacity(int maxCapacity) {
+	public Location setMaxCapacity(int maxCapacity) {
 		this.maxCapacity = maxCapacity;
+		return this;
 	}
 
 	public String getContactName() {
 		return contactName;
 	}
 
-	public void setContactName(String contactName) {
+	public Location setContactName(String contactName) {
 		this.contactName = contactName;
+		return this;
 	}
 
 	public String getPhone1() {
 		return phone1;
 	}
 
-	public void setPhone1(String phone1) {
+	public Location setPhone1(String phone1) {
 		this.phone1 = phone1;
+		return this;
 	}
 
 	public String getPhone2() {
 		return phone2;
 	}
 
-	public void setPhone2(String phone2) {
+	public Location setPhone2(String phone2) {
 		this.phone2 = phone2;
+		return this;
 	}
 
 	public boolean isActive() {
