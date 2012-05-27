@@ -43,7 +43,7 @@ public class User implements Serializable{
 	private boolean active; 
 	private String salt;
 	
-	User() {} //not public on purpose!
+	public User() {}
 
 
 	public User(String userName, String pasportID, Company company,

@@ -10,7 +10,6 @@ import system.exceptions.ItemNotFoundException;
 import utils.OwaspAuthentication;
 import db.HibernateUtil;
 import model.CompanyType;
-import model.Location;
 import model.User;
 
 /**
