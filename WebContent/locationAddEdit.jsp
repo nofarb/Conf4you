@@ -122,12 +122,20 @@ $(document).ready(function(){
 	$("#locationAddEditForm").validate({
 		  onkeyup: false,
 		  onfocusout: false,
-		  submitHandler: function(form) {  
-			  if ($(form).valid())
-              {
-            	  alert("locationAddEditForm-valid");
-            	  addLocSubmit();
-              }
+		  submitHandler: function(form)
+		  {
+			  try
+			  {
+				  if ($(form).valid())
+	              {
+	            	  alert("locationAddEditForm-valid");
+	            	  addLocSubmit();
+	              }
+			  }
+			  catch(e)
+			  {
+				  // if exception do nothing
+			  }
               return false;
      		},
 		  rules: {
@@ -135,26 +143,23 @@ $(document).ready(function(){
 			    required: true,
 			    minlength: 4,
 			    maxlength: 30,
-			    uniqueLocationName: $(".operation").text() == "<%=ProjConst.ADD%>",
+			    uniqueLocationName: $(".operation").text() == "<%=ProjConst.ADD%>"
 			  },
 			  "<%=ProjConst.LOC_MaxCapacity%>": {
 				  	required: true,
 				  	maxlength: 254,
-				  	numberValidate: "Capacity must be a number bigger then 0",
+				  	numberValidate: "Capacity must be a number bigger then 0"
 			  },
 			  "<%=ProjConst.LOC_Address%>": {
 			  	required: true,
 			    minlength: 4,
-			    maxlength: 254,
+			    maxlength: 254
 			  },
 			  "<%=ProjConst.LOC_ContactName%>": {
-				  	required: true,
+				  	required: true
 			  },
-			  phone1: {
-				  requied: true,
-			  },
-			  phone2: {
-				  requied: true,
+			  "<%=ProjConst.LOC_Phone1%>": {
+				  required: true
 			  },
 		  },
 		  messages: {
@@ -162,26 +167,23 @@ $(document).ready(function(){
 					 required: "Required",
 					 minlength: "You need to use at least 4 characters for your location name.",
 					 maxlength: "You need to use at most 30 characters for your location name.",
-					 uniqueLocationeName : "This location name is already exists",
+					 uniqueLocationeName : "This location name is already exists"
 				},
 				"<%=ProjConst.LOC_MaxCapacity%>": {
 					required: "you mast enter location capacity.",
-					numberValidate: "Capacity must be a number bigger then 0",
+					numberValidate: "Capacity must be a number bigger then 0"
 				},
 				"<%=ProjConst.LOC_Address%>": {
 					 required: "Required",
 					 minlength: "You need to use at least 4 characters for your location address.",
-					 maxlength: "You need to use at most 254 characters for your location address.",
+					 maxlength: "You need to use at most 254 characters for your location address."
 				},
 				"<%=ProjConst.LOC_ContactName%>": {
-					required: "Required",
+					required: "Required"
 				},
-				phone1: {
-					required: "Required",
-				},
-				phone2: {
-					required: "Required",
-				},
+				"<%=ProjConst.LOC_Phone1%>": {
+					required: "Required"
+				}
 	  		},
 	  		errorElement: "div",
 	        wrapper: "div",  // a wrapper around the error message
@@ -192,7 +194,6 @@ $(document).ready(function(){
 	            error.css('position', 'absolute');
 	            error.css('left', offset.left + element.outerWidth());
 	        }
-
 		});
 });
 </script>
@@ -205,14 +206,14 @@ $(document).ready(function(){
 <div id="content">
 	<div class="pageTitle">
 		<%
-			String action = request.getParameter("action");
+			    String action = request.getParameter("action");
 				String locName = request.getParameter("locName");
 				Boolean isTrue = action.equals("edit");
 				Location location = new Location();
 				
 				   if (isTrue)
 				   {
-			   location = LocationDao.getInstance().getLocationByName(locName);
+			   			location = LocationDao.getInstance().getLocationByName(locName);
 				   }
 		%>
 		<div class="operation" style="display:none;"><%=request.getParameter("action")%></div>
@@ -290,7 +291,7 @@ $(document).ready(function(){
 							<%
 								} else {
 							%>
-								<td class="inputcell"><input type="text" id="<%=ProjConst.LOC_MaxCapacity%>" name="<%=ProjConst.LOC_MaxCapacity%>">
+								<td class="inputcell"><input type="text" id="<%=ProjConst.LOC_MaxCapacity%>" name="<%=ProjConst.LOC_MaxCapacity%>" />
 								<div></div></td>
 							<%
 								}
@@ -348,7 +349,7 @@ $(document).ready(function(){
 							<%
 								} else {
 							%>
-								<td class="inputcell"><input type="text" id="<%=ProjConst.LOC_Phone1%>" name="<%=ProjConst.LOC_Phone1%>">
+								<td class="inputcell"><input type="text" id="<%=ProjConst.LOC_Phone1%>" name="<%=ProjConst.LOC_Phone1%>" />
 								<div></div></td>
 							<%} %>
 						</tr>
