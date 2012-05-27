@@ -69,8 +69,9 @@ $(document).ready(function(){
 				<option value="ALL" selected="selected">Ever</option>
 			</select>
 		</span>
+		 -->
 	</div>
-	 -->
+	
 	
 	<div>
 	<div class="groupedList">
