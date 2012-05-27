@@ -2,20 +2,13 @@ package servlets;
 
 import java.io.IOException;
 import java.util.Date;
-
 import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-
 import utils.MockCreation;
 import utils.ProjConst;
-
 import model.User;
-
-import daos.CompanyDao;
 import daos.ConferenceDao;
 import daos.UserDao;
 
@@ -42,6 +35,7 @@ public class LoginServlet extends HttpServlet {
     		//CompanyDao.getInstance().addCompany(MockCreation.createMockCompanies());
     		ConferenceDao.getInstance().addNewConference(MockCreation.createMockConferences());
     		UserDao.getInstance().addUsers(MockCreation.createMockUsers()); 
+    	
     		
 			String userName = request.getParameter("un");
 			String password = request.getParameter("pw"); 
@@ -50,7 +44,7 @@ public class LoginServlet extends HttpServlet {
 			
 			if (user != null)
 			{
-				request.getSession(true).setAttribute(ProjConst.SESSION_USER_NAME, userName);
+				request.getSession(true).setAttribute(ProjConst.SESSION_USER_ID, user.getUserId());
 								
 				//updating last login time:
 				user.setLastLogin(new Date());
