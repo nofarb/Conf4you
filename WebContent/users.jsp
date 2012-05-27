@@ -81,7 +81,7 @@
 				<td><a style="color: blue;" href="mailto:<%=user.getEmail()%>"><%=user.getEmail()%></a></td>
 				<td><%=user.getCompany().getName()%></td>
 				<td><%=newsDate%></td>
-				<td><a class="vn_boldtext"href="userDetails.jsp?userName=<%=user.getUserName()%>"> <img src="/conf4u/resources/imgs/vn_world.png" alt=""> Details </a> </td>
+				<td><a class="vn_boldtext"href="userDetails.jsp?userId=<%=user.getUserId()%>"> <img src="/conf4u/resources/imgs/vn_world.png" alt=""> Details </a> </td>
 			</tr>
 			<%	} %>
 		</tbody>

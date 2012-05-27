@@ -48,8 +48,8 @@ public class SessionFilter implements Filter {
 					navigateToLoginPage(response);
 					return;
 				} else {
-					String currUser = (String) session.getAttribute(ProjConst.SESSION_USER_NAME);
-					if (currUser == null) {
+					Long currUserId = (Long) session.getAttribute(ProjConst.SESSION_USER_ID);
+					if (currUserId == null) {
 						navigateToLoginPage(response);
 						return;
 					}

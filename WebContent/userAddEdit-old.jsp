@@ -1,3 +1,6 @@
+<%@page import="utils.ProjConst"%>
+<%@page import="daos.CompanyDao"%>
+<%@page import="model.Company"%>
 <%@page import="model.Conference"%>
 <%@page import="model.Location"%>
 <%@page import="model.ConferenceFilters.ConferencePreDefinedFilter"%>
@@ -10,8 +13,7 @@
 <%@ page import="java.util.Date"%>
 <%@ page import="java.text.SimpleDateFormat"%>
 <%@ page import="model.User"%>
-<%@page import="utils.ProjConst"%>
-<%@page import="utils.*"%>
+<%@ page import="utils.*"%>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
@@ -23,7 +25,6 @@
 <script type="text/javascript" src="js/jquery-1.7.1.min.js"></script>
 <script type="text/javascript" src="js/jquery-ui-1.8.18.custom.min.js"></script>
 <script type="text/javascript" src="js/jquery.validate.js"></script>
-<script type="text/javascript" src="js/jquery.floatingmessage.js"></script>
 <style type="text/css">
 div.message {
 	background: transparent url(/conf4u/resources/imgs/msg_arrow.gif)
@@ -51,7 +52,7 @@ $(document).ready(function(){
             async: false,
             type: 'POST',
                 data: {
-                	"action": $(".operation").text(),
+                	"action": "add",
                 	<%=ProjConst.USER_NAME%> : $("#userName").val(),
               	 	<%=ProjConst.NAME%> : $("#name").val(),
               	 	<%=ProjConst.PASSPORT_ID%> : $("#passportId").val(),
@@ -133,8 +134,7 @@ $(document).ready(function(){
 			    required: true,
 			    minlength: 4,
 			    maxlength: 10,
-			    uniqueUserName: $(".operation").text() == "add",
-
+			    uniqueUserName: true,
 			  },
 			  <%=ProjConst.NAME%>: {
 			  	required: true,
@@ -214,137 +214,136 @@ $(document).ready(function(){
 		});
 });
 </script>
-
-
 </head>
 
 <body>
+
 <%= UiHelpers.GetHeader().toString() %>
-<%= UiHelpers.GetTabs(SessionUtils.getUser(request), ProjConst.TAB_CONFERENCES).toString() %>
+<%= UiHelpers.GetTabs(SessionUtils.getUser(request), ProjConst.TAB_USERS).toString() %>
+
 <div id="content">
 	<div class="pageTitle">
-		<% String action = request.getParameter("action");
-		   String userName = request.getParameter("userName");
-		   Boolean isEdit = action.equals("edit");
-		   User user; 
-		   if (isEdit)
-		   {
-			   user = UserDao.getInstance().getUserByUserName(userName);
-		   }
-		%>
-		<div class="operation" style="display:none;"><%=action%></div>
-		<div class="confBeforeHidden" style="display:none;"><%=userName%></div>
-		<% if (isEdit) {%>
-			<div class="titleMain ">Edit user</div>
-			<div style="clear: both;"></div>
-			<div class="titleSeparator"></div>
-			<div class="titleSub">Edit existing user</div>
-		<% } else {%>
-			<div class="titleMain ">Add user</div>
-			<div style="clear: both;"></div>
-			<div class="titleSeparator"></div>
-			<div class="titleSub">Add a new user</div>
-		<%} %>
+		<div class="titleMain ">Add User</div>
+		<div style="clear: both;"></div>
+		<div class="titleSeparator"></div>
+		<div class="titleSub">Add a new user</div>
 	</div>
 	<div id="vn_mainbody">
 		<div class="formtable_wrapper">
-			<form id="conferenceAddEditForm">
+			<form id="userAddForm" method="post" action="users">
+				<input type="hidden" name="action" value="add" /> <!-- hidden input to pass action type -->
 				<table class="formtable" cellspacing="0" cellpadding="0" border="0">
 					<thead>
 						<tr>
-							<% if (action.equals("edit")) {%>
-							<th class="header" colspan="2"><strong>Edit conference</strong> <br></th>
-							<% } else {%>
-							<th class="header" colspan="2"><strong>Create a new conference</strong> <br></th>
-							<%} %>
+							<th class="header" colspan="2"><strong>Create a new	user</strong> <br></th>
 						</tr>
 					</thead>
 					<tbody>
 						<tr>
-							<td class="labelcell required"><label
-								for=<%=ProjConst.CONF_NAME%>"> Conference name: <em>*</em>
-							</label></td>
-							<% if (action.equals("edit")) {%>
-								<td class="inputcell">
-								<span id="<%=ProjConst.CONF_NAME%>"><%=conf.getName()%></span>
-								<div></div></td>
-							<% } else {%>
-								<td class="inputcell"><input id="<%=ProjConst.CONF_NAME%>"
-								type="text" name="<%=ProjConst.CONF_NAME%>">
-								<div></div></td>
-							<%} %>
-						</tr>
-						<tr>
-							<td class="labelcell required"><label
-								for="<%=ProjConst.CONF_DESC%>"> Conference description:
-									<em>*</em>
-							</label></td>
-							<% if (action.equals("edit")) {%>
-								<td class="inputcell"><textarea
-								id="<%=ProjConst.CONF_DESC%>" name="<%=ProjConst.CONF_DESC%>"><%=conf.getDescription()%></textarea>
-								<div></div></td>
-							<% } else {%>
-								<td class="inputcell"><textarea
-								id="<%=ProjConst.CONF_DESC%>" name="<%=ProjConst.CONF_DESC%>"></textarea>
-								<div></div></td>
-							<%} %>
-						</tr>
-						<tr>
-							<td class="labelcell required"><label
-								for="<%=ProjConst.CONF_LOCATION%>"> Locations: <em>*</em>
-							</label></td>
+							<td class="labelcell required">
+								<label for=<%=ProjConst.USER_NAME%>> User Name: <em>*</em> </label>
+							</td>
 							<td class="inputcell">
-							<select id="<%=ProjConst.CONF_LOCATION%>" class="type rdOnlyOnEdit" name="<%=ProjConst.CONF_LOCATION%>">
-								<% List<Location> locations = LocationDao.getInstance().getLocations();
-								for (Location location : locations) { %>
-								
-								<option value="<%=location.getLocationId()%>" selected="selected"><%=location.getName()%></option>
-								
-									<option value="<%=location.getLocationId()%>" 
-									<% if (action.equals("edit") && conf.getLocation() == location) {%>
-									 	selected="selected"
-							 		<%} %>
-							 		><%=location.getName()%>
-							 		</option>
-				 				<%} %>
-									 	
-							</select>
-							<div></div></td>
-						</tr>
-						<tr>
-							<td class="labelcell required"><label
-								for="<%=ProjConst.CONF_START_DATE%>"> Start date: <em>*</em>
-							</label></td>
-							<td class="inputcell"><input
-								id="<%=ProjConst.CONF_START_DATE%>" class="datepicker"
-								type="text"
-								<% if (action.equals("edit")) {%>
-									value="<%=conf.getStartDate()%>"
-								<% } else {%>
-									value=""
-								<%} %>
-								 name="<%=ProjConst.CONF_START_DATE%>">
+								<input id=<%=ProjConst.USER_NAME%> type="text" value="" name=<%=ProjConst.USER_NAME%>>
 								<div></div></td>
 						</tr>
 						<tr>
-							<td class="labelcell required"><label
-								for="<%=ProjConst.CONF_END_DATE%>"> End date: <em>*</em>
-							</label></td>
-							<% if (action.equals("edit")) { %>
-								<td class="inputcell"><input id="<%=ProjConst.CONF_END_DATE%>" class="datepicker" type="text" value="<%=conf.getEndDate()%>" name="<%=ProjConst.CONF_END_DATE%>">
+							<td class="labelcell required">
+								<label for=<%=ProjConst.NAME%>> Name: <em>*</em> </label>
+							</td>
+							<td class="inputcell">
+								<input id=<%=ProjConst.NAME%> type="text" value="" name=<%=ProjConst.NAME%>>
 								<div></div></td>
-							<% } else { %>
-								<td class="inputcell"><input id="<%=ProjConst.CONF_END_DATE%>" class="datepicker" type="text" name="<%=ProjConst.CONF_END_DATE%>">
-								<div></div></td>
-							<% } %>
 						</tr>
+						<tr>
+							<td class="labelcell required">
+								<label for=<%=ProjConst.PASSPORT_ID%>> Passport #: <em>*</em> </label>
+							</td>
+							<td class="inputcell">
+								<input id=<%=ProjConst.PASSPORT_ID%> type="text" value="" name=<%=ProjConst.PASSPORT_ID%>>
+								<div></div></td>
+						</tr>
+						<tr>
+							<td class="labelcell required">
+								<label for=<%=ProjConst.EMAIL%>> Email: <em>*</em> </label>
+							</td>
+							<td class="inputcell">
+								<input id=<%=ProjConst.EMAIL%> type="text" value="" name=<%=ProjConst.EMAIL%>>
+								<div></div></td>
+						</tr>
+						<tr>
+							<td class="labelcell required">
+								<label for=<%=ProjConst.PHONE1%>> Phone #1: <em>*</em> </label>
+							</td>
+							<td class="inputcell">
+								<input id=<%=ProjConst.PHONE1%> type="text" value="" name=<%=ProjConst.PHONE1%>>
+								<div></div></td>
+						</tr>
+						<tr>
+							<td class="labelcell required">
+								<label for=<%=ProjConst.PHONE2%>> Phone #2:</label>
+							</td>
+							<td class="inputcell">
+								<input id=<%=ProjConst.PHONE2%> type="text" value="" name=<%=ProjConst.PHONE2%>>
+								<div></div></td>
+						</tr>
+						<tr>
+							<td class="labelcell required">
+								<label for=<%=ProjConst.COMPANY%>>
+										Company: <em>*</em>
+								</label>
+							</td>
+							<td class="inputcell">
+								<select id=<%=ProjConst.COMPANY%>
+									class="type rdOnlyOnEdit" name=<%=ProjConst.COMPANY%>>
+	
+										<%
+											List<Company> companies = CompanyDao.getInstance()
+													.getAllCompanies();
+	
+											for (Company company : companies) {
+										%>
+										<option value="<%=company.getCompanyID()%>"
+											selected="selected"><%=company.getName()%></option>
+										<%
+											}
+										%>
+								</select>
+							</td>
+						</tr>
+						<tr>
+							<td class="labelcell required">
+								<label for=<%=ProjConst.PASSWORD%>> Password: <em>*</em> </label>
+							</td>
+							<td class="inputcell">
+								<input id=<%=ProjConst.PASSWORD%> type="text" value="" name=<%=ProjConst.PASSWORD%>>
+								<div></div></td>
+						</tr>
+						<%
+							String userName = request.getParameter("userName");
+							if(userName != null){
+								User user = UserDao.getInstance().getUserByUserName(userName);
+								if (user != null && user.isAdmin()) {
+							%>
+									<tr>
+										<td class="labelcell required">
+											<label for=<%=ProjConst.IS_ADMIN%>> Admnin User: <em>*</em> </label>				
+										</td>
+										<td class="inputcell">
+											<input id=<%=ProjConst.IS_ADMIN%> type="checkbox" value="true" name=<%=ProjConst.IS_ADMIN%>><div></div>
+										</td>
+									</tr>
+							<%
+								}
+						}
+						%>
 						<tr>
 							<td></td>
 							<td class="inputcell">
 								<div class="buttons">
 									<button id="createButton" type="submit">
 										<img class="img_png" width="16" height="16" alt=""
-											src="/conf4u/resources/imgs/table_save.png"> Save
+											src="/conf4u/resources/imgs/table_save.png"> Create
 									</button>
 									<a id="cancelButton" href="#"
 										onClick="window.location.reload( true )"> <img
@@ -360,7 +359,6 @@ $(document).ready(function(){
 		</div>
 		<div class="clearboth"></div>
 	</div>
-	</div>
-
+</div>
 </body>
 </html>

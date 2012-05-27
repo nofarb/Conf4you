@@ -8,6 +8,7 @@ public final  class ProjConst {
 	public static final String USER = "user";
 	public static final String NAME = "name";
 	public static final String USER_NAME = "userName";
+	public static final String USER_ID = "userId";
 	public static final String PASSWORD = "password";
 	public static final String PHONE1 = "phone1";
 	public static final String PHONE2 = "phone2";
@@ -53,6 +54,6 @@ public final  class ProjConst {
 	public static final String TAB_COMPANIES = "copmanies";
 	public static final String TAB_LOCATIONS = "locations";
 	
-	public static final String SESSION_USER_NAME = "currentSessionUserName";
+	public static final String SESSION_USER_ID = "currentSessionUserId";
 	
 }

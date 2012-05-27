@@ -10,6 +10,7 @@ import system.exceptions.ItemNotFoundException;
 import utils.OwaspAuthentication;
 import db.HibernateUtil;
 import model.CompanyType;
+import model.Location;
 import model.User;
 
 /**
@@ -39,6 +40,29 @@ public class UserDao {
 		List<User> result = (List<User>) session.createQuery("from User").list();
 		session.getTransaction().commit();
 		return result;
+	}
+	
+	/**
+	 * Get a user by its database key ID
+	 * 
+	 * @param emailAddr
+	 * @return
+	 */
+	public User getUserById(long id) {
+/*		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
+		session.beginTransaction();
+		return (User)session.load(User.class, id);*/
+		
+		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
+		session.beginTransaction();
+		
+		User user = (User)HibernateUtil.getSessionFactory().getCurrentSession().createQuery(
+				"from User where userId=:userId")
+                .setLong("userId",id)
+                .uniqueResult();
+		session.getTransaction().commit();
+		return user;
+		
 	}
 
 	/**
@@ -253,7 +277,7 @@ public class UserDao {
 		//TODO
 	}
 	
-	private boolean isDeleteAllowed(String userName)
+	private boolean isDeleteAllowed(Long userId)
 	{
 		//TODO implement
 		
@@ -261,11 +285,11 @@ public class UserDao {
 		
 	}
 	
-	public void deleteUser(String userName) throws ItemCanNotBeDeleted
+	public void deleteUser(Long userId) throws ItemCanNotBeDeleted
 	{
 		//TDOD - improve logic
-		if(isDeleteAllowed(userName)){
-			User user = getUserByUserName(userName);
+		if(isDeleteAllowed(userId)){
+			User user = getUserById(userId);
 			if(user != null){
 				user.setActive(false);
 				updateUser(user);

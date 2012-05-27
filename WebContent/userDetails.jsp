@@ -40,8 +40,9 @@
 </div>
 
 
-	<% String userName = request.getParameter("userName");
-	   User user = UserDao.getInstance().getUserByUserName(userName);
+	<% String userId = request.getParameter("userId");
+	   Long id = new Long(userId);
+	   User user = UserDao.getInstance().getUserById(id);
 	%>
 	
 <div id="detailsAndActions">
@@ -51,7 +52,7 @@
 		<div class="vn_actionlistcolumn">
 			<div class="vn_actionbuttondiv">
 				<div class="title">
-				<a title="Edit Conference" href="userAddEdit.jsp?action=edit&userName=<%=user.getUserName()%>">
+				<a title="Edit Conference" href="userAddEdit.jsp?action=edit&userId=<%=user.getUserId()%>">
 					<img src="/conf4u/resources/imgs/vn_action_edit.png" alt=""> 
 					Edit
 				</a>
@@ -59,7 +60,7 @@
 			</div>
 				<div class="vn_actionbuttondiv">
 				<div class="title">
-				<a title="Delete User" href="users?action=delete&userName=<%=user.getUserName()%>">
+				<a title="Delete User" href="users?action=delete&userId=<%=user.getUserId()%>">
 					<img src="/conf4u/resources/imgs/vn_action_delete.png" alt=""> 
 					Delete
 				</a>

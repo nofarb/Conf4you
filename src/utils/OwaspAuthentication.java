@@ -66,7 +66,7 @@ import model.User;
    public static String getUserPassword(String login, String password, byte[] bSalt)
            throws Exception
    {
-       if (login!=null&&password!=null&&login.length()<=100){
+       if (login!=null && password!=null && login.length()<=100){
            byte[] bDigest = getHash(ITERATION_NUMBER, password, bSalt);
            String sDigest = byteToBase64(bDigest);
            return sDigest;

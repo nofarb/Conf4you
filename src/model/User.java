@@ -6,11 +6,14 @@ import java.sql.SQLException;
 import java.util.Date;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+
+import org.hibernate.annotations.GenericGenerator;
 
 import utils.OwaspAuthentication;
 import model.Company;
@@ -26,6 +29,7 @@ public class User implements Serializable{
 
 	private static final long serialVersionUID = -3550174731709532722L;
 
+	private long userId;
 	private String userName; 
 	private String pasportID;
 	private Company company; 
@@ -67,8 +71,18 @@ public class User implements Serializable{
 		}
 	}
 
-
 	@Id
+	@GeneratedValue(generator="increment")
+	@GenericGenerator(name="increment", strategy = "increment")
+	public long getUserId() {
+		return userId;
+	}
+
+
+	public void setUserId(long userId) {
+		this.userId = userId;
+	}
+
 	public String getUserName() {
 		return userName;
 	}
@@ -161,6 +175,6 @@ public class User implements Serializable{
 	public void setSalt(String salt) {
 		this.salt = salt;
 	}
-	
-	
+
+
 }

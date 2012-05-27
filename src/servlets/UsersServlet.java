@@ -75,16 +75,22 @@ public class UsersServlet extends HttpServlet {
 
 	private void validate(HttpServletRequest request, HttpServletResponse response) throws Exception{
 
-		String userName = request.getParameter(ProjConst.USER_NAME);
+		String userIdstr = request.getParameter(ProjConst.USER_ID);
+		
+		if ( userIdstr == null) {
+			throw new Exception("Failed to get user id");
+		}
+		
+		Long userId = new Long(userIdstr);
 
         response.setContentType("application/json;charset=UTF-8");
         PrintWriter out = response.getWriter();
         try {
             Gson gson = new Gson();
             
-            if (userName != null)
+            if (userId != null)
             {
-            	User user = UserDao.getInstance().getUserByUserName(userName);
+            	User user = UserDao.getInstance().getUserById(userId);
  	           	String json;
  	           	if (user != null)
  	           		json = gson.toJson("true");
@@ -111,11 +117,14 @@ public class UsersServlet extends HttpServlet {
 	private void deleteUser(HttpServletRequest request,	HttpServletResponse response) throws Exception {
 
 
-		String userName = request.getParameter(ProjConst.USER_NAME);
-		if ( userName == null || userName.trim().isEmpty()) {
-			throw new Exception("Failed to get user name");
+		String userIdstr = request.getParameter(ProjConst.USER_ID);
+		
+		if ( userIdstr == null) {
+			throw new Exception("Failed to get user id");
 		}
 		
+		Long userId = new Long(userIdstr);
+				
 		response.setContentType("application/json;charset=UTF-8");
         PrintWriter out = response.getWriter();
        	String json;
@@ -123,10 +132,10 @@ public class UsersServlet extends HttpServlet {
         try {
             Gson gson = new Gson();
             
-            if (userName != null)
+            if (userId != null)
             {
         		try {
-					UserDao.getInstance().deleteUser(userName);
+					UserDao.getInstance().deleteUser(userId);
 					json = gson.toJson("true");
 
 				} catch (ItemCanNotBeDeleted e) {
