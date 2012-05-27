@@ -4,6 +4,8 @@ import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 
+import daos.CompanyDao;
+
 import model.Company;
 import model.CompanyType;
 import model.Conference;
@@ -21,7 +23,9 @@ public class MockCreation {
  		Company comp1 = new Company("comp1", CompanyType.A);
  		Company comp2 = new Company("comp2", CompanyType.B);
  		Company comp3 = new Company("comp3", CompanyType.C);
-
+ 		CompanyDao.getInstance().addCompany(comp1);
+ 		CompanyDao.getInstance().addCompany(comp2);
+ 		CompanyDao.getInstance().addCompany(comp3);
 
 		for(int i = 0 ; i < 15; i++)
 		{	
@@ -35,12 +39,12 @@ public class MockCreation {
 				comp = comp3;
 			}
 			
-			User user = new User("userName"+i, "id"+i, comp, "name"+i, "email"+i, "num1 "+i, "num2 "+i, "pass"+i, true);
+			User user = new User("userName"+i, "id"+i, CompanyDao.getInstance().getCompanyByName(comp.getName()), "name"+i, "email"+i, "num1 "+i, "num2 "+i, "pass"+i, true);
 			user.setLastLogin(new Date());
 			users.add(user);
 		}
-		return users;
 		
+		return users;
 	}
 	
 	public static List<Conference> createMockConferences(){

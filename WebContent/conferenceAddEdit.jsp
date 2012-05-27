@@ -101,7 +101,7 @@ $(document).ready(function(){
                       if (data == "true")
                       {
                     	 $.validator.messages.uniqueConferenceName = value + " is already taken";
-                       	is_valid = false;
+                       	 is_valid = false;
                       }
                       else
                    	  {
@@ -217,9 +217,9 @@ $(document).ready(function(){
 	<div class="pageTitle">
 		<% String action = request.getParameter("action");
 		   String confName = request.getParameter("confName");
-		   Boolean isTrue = action.equals("edit");
+		   Boolean isEdit = action.equals("edit");
 		   Conference conf = new Conference(); 
-		   if (isTrue)//== ProjConst.EDIT)
+		   if (isEdit)//== ProjConst.EDIT)
 		   {
 			   conf = ConferenceDao.getInstance().getConferenceByName(confName);
 		   }
@@ -286,28 +286,27 @@ $(document).ready(function(){
 								for="<%=ProjConst.CONF_LOCATION%>"> Locations: <em>*</em>
 							</label></td>
 							<td class="inputcell">
-							<select id="<%=ProjConst.CONF_LOCATION%>" class="type rdOnlyOnEdit" name="<%=ProjConst.CONF_LOCATION%>">
+							<select id="<%=ProjConst.CONF_LOCATION%>" name="<%=ProjConst.CONF_LOCATION%>">
 								<% List<Location> locations = LocationDao.getInstance().getLocations();
 								for (Location location : locations) { %>
-								
-								<option value="<%=location.getLocationId()%>" selected="selected"><%=location.getName()%></option>
-								
 									<option value="<%=location.getLocationId()%>" 
-									<% if (action.equals("edit") && conf.getLocation() == location) {%>
+									<% if (isEdit && conf.getLocation() == location) {%>
 									 	selected="selected"
 							 		<%} %>
-							 		><%=location.getName()%>
-							 		</option>
+							 		><%=location.getName()%></option>
 				 				<%} %>
-									 	
 							</select>
 							<div></div></td>
 						</tr>
 						<%
 						SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
-						String startDateFormatted = sdf.format(conf.getStartDate());
-						String endDateFormatted = sdf.format(conf.getEndDate());
-						
+						String startDateFormatted = "";
+						String endDateFormatted = "";
+						if (isEdit)
+						{
+							startDateFormatted = sdf.format(conf.getStartDate());
+							endDateFormatted = sdf.format(conf.getEndDate());
+						}
 						%>
 						<tr>
 							<td class="labelcell required"><label

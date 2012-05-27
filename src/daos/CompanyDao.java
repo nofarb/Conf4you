@@ -7,6 +7,8 @@ import org.hibernate.Session;
 import db.HibernateUtil;
 import model.Company;
 import model.CompanyType;
+import model.Conference;
+import model.User;
 
 /**
  * This class is responsible of supplying services related to the Company entity which require database access.
@@ -70,10 +72,13 @@ public class CompanyDao {
 	
 	public Company addCompany(Company company)
 	{
-		if (isCompanyNameExists(company.getName()))
+		Company comp = getCompanyByName(company.getName());
+		if (comp != null)
 		{
-			return null;
+			//company already exists
+			return company;
 		}
+		
 		else
 		{
 			Session session = HibernateUtil.getSessionFactory().getCurrentSession();
@@ -121,9 +126,10 @@ public class CompanyDao {
 
 		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
 		session.beginTransaction();
-		Company comp = (Company)session.createQuery(
+		
+		Company comp = (Company)HibernateUtil.getSessionFactory().getCurrentSession().createQuery(
 				"select comp from  Company comp where comp.companyID = :compId")
-                .setLong("compId", id)
+                .setLong("compId",id)
                 .uniqueResult();
 		session.getTransaction().commit();
 		return comp;

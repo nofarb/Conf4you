@@ -43,7 +43,6 @@ public class Conference implements Serializable {
 		this.active = true;
 	}
 	
-
 	@Id
 	@GeneratedValue(generator="increment")
 	@GenericGenerator(name="increment", strategy = "increment")

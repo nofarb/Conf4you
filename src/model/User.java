@@ -99,6 +99,7 @@ public class User implements Serializable{
 	public void setCompany(Company company) {
 		this.company = company;
 	}
+	
 	public String getName() {
 		return name;
 	}

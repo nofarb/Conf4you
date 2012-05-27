@@ -26,7 +26,7 @@ public class UsersServlet extends HttpServlet {
 	private static final String DELETE_USER = "delete";
 	private static final String EDIT_USER = "edit";
 	private static final String ADD_USER = "add";
-	private static final String VALIDATION_USER_NAME_UNIQUE = "validateUserNameUnique";
+	private static final String VALIDATION_USER_NAME_UNIQUE = "validateUserName";
 
 
 

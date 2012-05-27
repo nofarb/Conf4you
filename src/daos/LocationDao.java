@@ -42,7 +42,7 @@ public class LocationDao {
 		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
 		session.beginTransaction();
 		@SuppressWarnings("unchecked")
-		List<Location> result = (List<Location>) session.createQuery("select loc from Location loc where loc.active = '1'").list();
+		List<Location> result = (List<Location>)HibernateUtil.getSessionFactory().getCurrentSession().createQuery("select loc from Location loc where loc.active = '1'").list();
 		session.getTransaction().commit();
 		return result;
 	}

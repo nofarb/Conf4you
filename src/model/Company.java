@@ -37,11 +37,11 @@ public class Company implements Serializable {
 		this.active = true;
 	}
 
-	@Id
 	public String getName() {
 		return name;
 	}
 	
+	@Id
 	@GeneratedValue(generator="increment")
 	@GenericGenerator(name="increment", strategy = "increment")
 	public long getCompanyID() {
@@ -62,8 +62,6 @@ public class Company implements Serializable {
 		this.companyType = companyType;
 		return this;
 	}
-	
-
 	
 	public Company setName(String name) {
 		this.name = name;

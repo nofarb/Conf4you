@@ -49,7 +49,7 @@ $(document).ready(function(){
 	
 	var addEditUserSubmit = function() {
 		$.ajax({
-            url: "users",
+            url: "UsersServlet",
             dataType: 'json',
             async: false,
             type: 'POST',
@@ -63,42 +63,44 @@ $(document).ready(function(){
               	 	<%=ProjConst.PHONE2%> : $("#phone2").val(), 	
               	 	<%=ProjConst.EMAIL%> : $("#email").val(), 	
               	 	<%=ProjConst.COMPANY%> : $("#company").val(), 	
-              	 	<%=ProjConst.IS_ADMIN%> : $("#isAdmin").val(), 	
-
+              	 	<%=ProjConst.IS_ADMIN%> : $("#isAdmin").val()
                 },
             success: function(data) {
                 if (data != null){
 					if (data.resultSuccess == "true")
 					{
-						$(".errorMessage").val(data.message);
+				 	    $.floatingMessage(data.message ,{  
+				 	    	height : 30
+					    }); 
+				 	    $(".ui-widget-content").addClass("successFeedback");
 					}
 					else
 					{
-						//TODO: redirect success
+						$.floatingMessage(data.message);
+						$(".ui-widget-content").addClass("errorFeedback");
 					}
                 }
             }
         });
-    });
+    };
 	
 	$.validator.addMethod("uniqueUserName", function(value, element) {
 		  var is_valid = false;
-		  	  
 		  $.ajax({
-              url: "users",
+              url: "UsersServlet",
               dataType: 'json',
               async: false,
               type: 'POST',
                   data: {
                 	  "action": "validateUserName",
-                	  <%=ProjConst.USER_NAME%> : $("#userName").val(),
+                	  <%=ProjConst.USER_NAME%> : $("#userName").val()
                   },
               success: function(data) {
                   if (data != null){
                       if (data == "true")
                       {
                     	 $.validator.messages.uniqueUserName = value + " is already taken";
-                       	is_valid = false;
+                       	 is_valid = false;
                       }
                       else
                    	  {
@@ -136,37 +138,36 @@ $(document).ready(function(){
 			    required: true,
 			    minlength: 4,
 			    maxlength: 10,
-			    uniqueUserName: $(".operation").text() == "add",
-
+			    uniqueUserName: $(".operation").text() == "add"
 			  },
 			  <%=ProjConst.NAME%>: {
 			  	required: true,
 			    minlength: 4,
-			    maxlength: 254,
+			    maxlength: 254
 			  },
 			  <%=ProjConst.PASSPORT_ID%>: {
 				  	required: true,
 				    minlength: 9,
 				    maxlength: 9,
-					digits: true,
+					digits: true
 			  },
 			  <%=ProjConst.PASSWORD%>: {
 				  	required: true,
 				    minlength: 4,
-				    maxlength: 16,
+				    maxlength: 16
 			  },
 			  <%=ProjConst.PHONE1%>: {
 			  	required: true,
-			  	phoneNumberValidator: true,
+			  	phoneNumberValidator: true
 			  },
 			  <%=ProjConst.PHONE2%>: {
 			  	required: false,
-			  	phoneNumberValidator: true,
+			  	phoneNumberValidator: true
 			  },
 			  <%=ProjConst.EMAIL%>: {
 			  	required: true,
-			 	email: true,
-			  },
+			 	email: true
+			  }
 		  },
 		   
 		  messages: {
@@ -227,7 +228,7 @@ $(document).ready(function(){
 <div id="content">
 	<div class="pageTitle">
 		<% String action = request.getParameter("action");
-		   boolean isEdit = action.equals("edit");
+		   Boolean isEdit = action != null && action.equals("edit");
 		   User user = new User();
 
 		   String userIdStr = request.getParameter("userId");
@@ -370,14 +371,12 @@ $(document).ready(function(){
 									List<Company> companies = CompanyDao.getInstance().getAllCompanies();
 									for (Company company : companies) { %>
 							
-									<option value="<%=company.getCompanyID()%> " 
+									<option value="<%=company.getCompanyID()%>" 
 										<% if (isEdit && user.getCompany().getCompanyID() == company.getCompanyID()) {%>
 										 	selected="selected"
 								 		<%} %>
-								 		><%=company.getName()%>
-								 	</option>
+								 		><%=company.getName()%></option>
 					 				<%} %>
-										 	
 								</select>
 							</td>
 						</tr>
