@@ -72,7 +72,7 @@
 				}else{
 					newsDate = "";
 				}
-		%>
+			%>
 			<tr class="gridRow">
 				<td><%=user.getUserName()%></td>
 				<td><%=user.getName()%></td>

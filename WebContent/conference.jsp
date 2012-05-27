@@ -103,12 +103,15 @@ $(document).ready(function(){
 			// Print each application in a single row
 			for (Conference conference : conferences )
 			{
+				SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
+				String startDateFormatted = sdf.format(conference.getStartDate());
+				String endDateFormatted = sdf.format(conference.getEndDate());
 			%>
 			<tr class="gridRow">
 				<td><%=conference.getName()%></td>
 				<td><%=conference.getLocation().getName()%></td>
-				<td><%=conference.getStartDate()%></td>
-				<td><%=conference.getEndDate()%></td>
+				<td><%= startDateFormatted %></td>
+				<td><%= endDateFormatted %></td>
 				<td><a class="vn_boldtext" href="conferenceDetails.jsp?conferenceName=<%=conference.getName()%>">
 				<img src="/conf4u/resources/imgs/vn_world.png" alt="">
 				Details

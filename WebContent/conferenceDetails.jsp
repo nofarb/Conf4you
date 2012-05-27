@@ -160,6 +160,11 @@ $(document).ready(function(){
 	
 	<div class="groupedList" style="width: 800px;">
 	<table class="vn_envdetails" cellspacing="0" cellpadding="0" style="border-collapse: collapse;">
+		<% 
+			SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
+			String startDateFormatted = sdf.format(conf.getStartDate());
+			String endDateFormatted = sdf.format(conf.getEndDate());
+		%>
 		<tbody>
 			<tr>
 				<td>Name</td>
@@ -171,11 +176,11 @@ $(document).ready(function(){
 			</tr>
 			<tr>
 				<td>Start Date</td>
-				<td><%=conf.getStartDate()%></td>
+				<td><%=startDateFormatted%></td>
 			</tr>
 			<tr>
 				<td>End Date</td>
-				<td><%=conf.getEndDate()%></td>
+				<td><%=endDateFormatted%></td>
 			</tr>
 		</tbody>
 	</table>

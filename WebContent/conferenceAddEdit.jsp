@@ -303,6 +303,12 @@ $(document).ready(function(){
 							</select>
 							<div></div></td>
 						</tr>
+						<%
+						SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
+						String startDateFormatted = sdf.format(conf.getStartDate());
+						String endDateFormatted = sdf.format(conf.getEndDate());
+						
+						%>
 						<tr>
 							<td class="labelcell required"><label
 								for="<%=ProjConst.CONF_START_DATE%>"> Start date: <em>*</em>
@@ -311,7 +317,7 @@ $(document).ready(function(){
 								id="<%=ProjConst.CONF_START_DATE%>" class="datepicker"
 								type="text"
 								<% if (action.equals("edit")) {%>
-									value="<%=conf.getStartDate()%>"
+									value="<%=startDateFormatted%>"
 								<% } else {%>
 									value=""
 								<%} %>
@@ -323,7 +329,7 @@ $(document).ready(function(){
 								for="<%=ProjConst.CONF_END_DATE%>"> End date: <em>*</em>
 							</label></td>
 							<% if (action.equals("edit")) { %>
-								<td class="inputcell"><input id="<%=ProjConst.CONF_END_DATE%>" class="datepicker" type="text" value="<%=conf.getEndDate()%>" name="<%=ProjConst.CONF_END_DATE%>">
+								<td class="inputcell"><input id="<%=ProjConst.CONF_END_DATE%>" class="datepicker" type="text" value="<%=endDateFormatted%>" name="<%=ProjConst.CONF_END_DATE%>">
 								<div></div></td>
 							<% } else { %>
 								<td class="inputcell"><input id="<%=ProjConst.CONF_END_DATE%>" class="datepicker" type="text" name="<%=ProjConst.CONF_END_DATE%>">
