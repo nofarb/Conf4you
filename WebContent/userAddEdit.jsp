@@ -429,7 +429,7 @@ $(document).ready(function(){
 							%>
 									<tr>
 										<td class="labelcell required">
-											<label for=<%=ProjConst.IS_ADMIN%>> Admnin User: <em>*</em> </label>				
+											<label for=<%=ProjConst.IS_ADMIN%>> Admin User: <em>*</em> </label>				
 										</td>
 										<% if (isEdit && user.isAdmin()) {%>
 										<td class="inputcell">
