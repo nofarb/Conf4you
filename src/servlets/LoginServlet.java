@@ -2,10 +2,15 @@ package servlets;
 
 import java.io.IOException;
 import java.util.Date;
+import java.util.LinkedList;
+import java.util.List;
+
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import utils.EmailUtils;
 import utils.MockCreation;
 import utils.ProjConst;
 import model.User;
@@ -36,6 +41,12 @@ public class LoginServlet extends HttpServlet {
     		ConferenceDao.getInstance().addNewConference(MockCreation.createMockConferences());
     		UserDao.getInstance().addUsers(MockCreation.createMockUsers()); 
     	
+    /*		List <String> emails = new LinkedList<String>();
+    		emails.add("nofarb@gmail.com");
+    		
+    		EmailUtils.sendEmail("smtp.gmail.com", "nofarb@gmail.com", "PASS", "587", "subj", emails, "yada", false);
+    		EmailUtils.sendEmail("smtp.gmail.com", "nofarb@gmail.com", "PASS", "587", "subj", emails, "<h1>This is actual message</h1>", true);*/
+
     		
 			String userName = request.getParameter("un");
 			String password = request.getParameter("pw"); 
