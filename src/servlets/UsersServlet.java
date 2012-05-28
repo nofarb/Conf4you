@@ -15,6 +15,7 @@ import com.google.gson.JsonObject;
 import model.Company;
 import model.User;
 import daos.CompanyDao;
+import daos.ConferenceDao;
 import daos.UserDao;
 
 /**
@@ -184,41 +185,61 @@ public class UsersServlet extends HttpServlet {
 	
 	private void editUser(HttpServletRequest request, HttpServletResponse response) throws Exception {
 
-
-		
 		String userIdStr = request.getParameter(ProjConst.USER_ID);
 		if ( userIdStr == null || userIdStr.trim().isEmpty()) {
 			throw new Exception("Failed to get user Id");
 		}
 	
 		Long userId = -1L;
-		
+    	JsonObject jsonObject = new JsonObject();
+    	
+    	String resultSuccess="";
+    	String message="";
+    	
 		try {
 			userId = Long.valueOf(userIdStr.trim());
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		if(userId != -1){
-			User userToEdit = UserDao.getInstance().getUserById(userId);
-	
-			userToEdit.setUserName(request.getParameter(ProjConst.USER_NAME));
-			userToEdit.setName(request.getParameter(ProjConst.NAME));
-			userToEdit.setPhone1(request.getParameter(ProjConst.PHONE1));
-			userToEdit.setPhone2(request.getParameter(ProjConst.PHONE2));
-			userToEdit.setEmail(request.getParameter(ProjConst.EMAIL));
-			userToEdit.setPasportID(request.getParameter(ProjConst.PASSPORT_ID));
-			String companyIdStr = request.getParameter(ProjConst.COMPANY);
-			long companyId = new Long(companyIdStr);
-			userToEdit.setCompany(CompanyDao.getInstance().getCompanyById(companyId));
-			userToEdit.setPassword(request.getParameter(ProjConst.PASSWORD)); // TODO should encrypt on client side
-			userToEdit.setAdmin(new Boolean(request.getParameter(ProjConst.IS_ADMIN))); 
-			
-			UserDao.getInstance().updateUser(userToEdit);
-		}
+
+			if(userId != -1){
+				User userToEdit = UserDao.getInstance().getUserById(userId);
 		
-		
+				userToEdit.setUserName(request.getParameter(ProjConst.USER_NAME));
+				userToEdit.setName(request.getParameter(ProjConst.NAME));
+				userToEdit.setPhone1(request.getParameter(ProjConst.PHONE1));
+				userToEdit.setPhone2(request.getParameter(ProjConst.PHONE2));
+				userToEdit.setEmail(request.getParameter(ProjConst.EMAIL));
+				userToEdit.setPasportID(request.getParameter(ProjConst.PASSPORT_ID));
+				String companyIdStr = request.getParameter(ProjConst.COMPANY);
+				long companyId = new Long(companyIdStr);
+				userToEdit.setCompany(CompanyDao.getInstance().getCompanyById(companyId));
+				userToEdit.setPassword(request.getParameter(ProjConst.PASSWORD)); 
+				userToEdit.setAdmin(new Boolean(request.getParameter(ProjConst.IS_ADMIN))); 
+				
+				UserDao.getInstance().updateUser(userToEdit);
+	    		message = "User successfully edited";
+	    		resultSuccess = "true";
+			}
+    	}
+		catch (Exception e) {
+			message = "Error ocurred while editing user";
+			resultSuccess = "false";
+		}
+		response.setContentType("application/json;charset=UTF-8");
+		PrintWriter out = response.getWriter();
+		try {
+			Gson gson = new Gson();
+			String json;
+
+			jsonObject.addProperty("resultSuccess", resultSuccess);
+			jsonObject.addProperty("message", message);
+			json = gson.toJson(jsonObject);
+
+			out.write(json);
+			out.flush();
+		} finally {
+			out.close();
+		}
 	}
+		
 	
 	private void addUser(HttpServletRequest request, HttpServletResponse response) throws Exception {
 
@@ -232,7 +253,7 @@ public class UsersServlet extends HttpServlet {
 		String companyIdStr = request.getParameter(ProjConst.COMPANY);
 		long companyId = new Long(companyIdStr);
 		Company company = CompanyDao.getInstance().getCompanyById(companyId);
-		String password = request.getParameter(ProjConst.PASSWORD); // TODO should encrypt on client side
+		String password = request.getParameter(ProjConst.PASSWORD); 
 		boolean isAdmin = new Boolean(request.getParameter(ProjConst.IS_ADMIN)); 
 		
 
