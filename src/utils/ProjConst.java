@@ -16,6 +16,8 @@ public final  class ProjConst {
 	public static final String PASSPORT_ID = "passportId";	
 	public static final String COMPANY = "company";
 	public static final String IS_ADMIN = "isAdmin";
+	public static final String OLD_USER_NAME = "oldUserName";
+	public static final String OPERATION = "operation";
 	
 	// conference
 	public static final String CONF_NAME = "confName";

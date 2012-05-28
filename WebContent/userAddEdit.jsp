@@ -55,6 +55,8 @@ $(document).ready(function(){
             type: 'POST',
                 data: {
                 	"action": $(".operation").text(),
+                	<%=ProjConst.OLD_USER_NAME%>: $(".oldUserName").text(),
+                	<%=ProjConst.USER_ID%>: $(".userId").text(),
                 	<%=ProjConst.USER_NAME%> : $("#userName").val(),
               	 	<%=ProjConst.NAME%> : $("#name").val(),
               	 	<%=ProjConst.PASSPORT_ID%> : $("#passportId").val(),
@@ -93,7 +95,9 @@ $(document).ready(function(){
               type: 'POST',
                   data: {
                 	  "action": "validateUserName",
-                	  <%=ProjConst.USER_NAME%> : $("#userName").val()
+                  	  <%=ProjConst.OLD_USER_NAME%>: $(".oldUserName").text(),
+                	  <%=ProjConst.USER_NAME%> : $("#userName").val(),
+                  	  <%=ProjConst.OPERATION%>: $(".operation").text()
                   },
               success: function(data) {
                   if (data != null){
@@ -138,7 +142,7 @@ $(document).ready(function(){
 			    required: true,
 			    minlength: 4,
 			    maxlength: 10,
-			    uniqueUserName: $(".operation").text() == "add"
+			    uniqueUserName: true
 			  },
 			  <%=ProjConst.NAME%>: {
 			  	required: true,
@@ -242,7 +246,29 @@ $(document).ready(function(){
 		   }
 
 		%>
-		<div class="operation" style="display:none;"><%=action%></div>
+		<div class="<%=ProjConst.OPERATION%>" style="display:none;"><%=action%></div>
+		
+		<%
+			String oldUserNameStr;
+			if(isEdit){
+				oldUserNameStr = user.getUserName();
+			}else{
+				oldUserNameStr = "-1";
+			}
+		%>
+		
+		<div class="<%=ProjConst.OLD_USER_NAME%>" style="display:none;"><%=oldUserNameStr%></div>
+		
+		<%
+			long userId;
+			if(isEdit){
+				userId = user.getUserId();
+			}else{
+				userId = -1L;
+			}
+		%>
+		<div class="<%=ProjConst.USER_ID%>" style="display:none;"> <%=userId%> </div>
+		
 		
 		<% if (isEdit) {%>
 			<div class="titleMain ">Edit user</div>
@@ -270,6 +296,7 @@ $(document).ready(function(){
 						</tr>
 					</thead>
 					<tbody>
+						
 						<tr>
 							<td class="labelcell required"><label
 								for=<%=ProjConst.USER_NAME%>> Unique User Name: <em>*</em>
@@ -385,7 +412,7 @@ $(document).ready(function(){
 							<td class="labelcell required"><label for=<%=ProjConst.PASSWORD%>> Password: </label></td>
 							<% if (isEdit) {%>
 								<td class="inputcell">
-									<input id="<%=ProjConst.PASSWORD%>" type="password" value="*****" name="<%=ProjConst.PASSWORD%>">
+									<input id="<%=ProjConst.PASSWORD%>" type="password" value="<%=user.getPassword()%>" name="<%=ProjConst.PASSWORD%>">
 								</td>
 								
 							<% } else {%>

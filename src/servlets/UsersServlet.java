@@ -74,6 +74,16 @@ public class UsersServlet extends HttpServlet {
 
 	private void validate(HttpServletRequest request, HttpServletResponse response) throws Exception {
 
+		String operation = request.getParameter(ProjConst.OPERATION);
+		if ( operation == null || operation.trim().isEmpty()) {
+			throw new Exception("Failed to get operation");
+		}
+		
+		String oldUserName = request.getParameter(ProjConst.OLD_USER_NAME);
+		if ( operation.equals(ProjConst.EDIT) && (oldUserName == null || oldUserName.trim().isEmpty())) {
+			throw new Exception("Failed to get old user name");
+		}
+				
 		String userName = request.getParameter(ProjConst.USER_NAME);
 		if (userName == null) {
 			throw new Exception("Failed to get user name");
@@ -83,14 +93,34 @@ public class UsersServlet extends HttpServlet {
 		PrintWriter out = response.getWriter();
 		
 		try {
-			Gson gson = new Gson();
 
-			User userByUserName = UserDao.getInstance().getUserByUserName(userName);
+			Gson gson = new Gson();
 			String json;
-			if (userByUserName != null)
-				json = gson.toJson("true");
-			else
-				json = gson.toJson("false");
+			User userByUserName = UserDao.getInstance().getUserByUserName(userName);
+
+			if (operation.equals(ProjConst.EDIT)) {
+
+				if (userByUserName == null) {
+					json = gson.toJson("false");
+				} else {
+
+					if (oldUserName.equalsIgnoreCase(userByUserName.getUserName())) {
+						json = gson.toJson("false");
+					} else {
+						json = gson.toJson("true");
+					}
+				}
+
+			} else { // add
+
+				if (userByUserName == null) {
+					json = gson.toJson("false");
+				} else {
+					json = gson.toJson("true");
+				}
+
+			}
+
 			out.write(json);
 			out.flush();
 		} finally {
@@ -115,7 +145,14 @@ public class UsersServlet extends HttpServlet {
 			throw new Exception("Failed to get user id");
 		}
 		
-		Long userId = new Long(userIdstr);
+		Long userId = -1L;
+		
+		try {
+			userId = Long.valueOf(userIdstr.trim());
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 				
 		response.setContentType("application/json;charset=UTF-8");
         PrintWriter out = response.getWriter();
@@ -148,13 +185,39 @@ public class UsersServlet extends HttpServlet {
 	private void editUser(HttpServletRequest request, HttpServletResponse response) throws Exception {
 
 
-		String userName = request.getParameter(ProjConst.USER_NAME);
 		
-		if ( userName == null || userName.trim().isEmpty()) {
-			throw new Exception("Failed to get user name");
+		String userIdStr = request.getParameter(ProjConst.USER_ID);
+		if ( userIdStr == null || userIdStr.trim().isEmpty()) {
+			throw new Exception("Failed to get user Id");
+		}
+	
+		Long userId = -1L;
+		
+		try {
+			userId = Long.valueOf(userIdStr.trim());
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		if(userId != -1){
+			User userToEdit = UserDao.getInstance().getUserById(userId);
+	
+			userToEdit.setUserName(request.getParameter(ProjConst.USER_NAME));
+			userToEdit.setName(request.getParameter(ProjConst.NAME));
+			userToEdit.setPhone1(request.getParameter(ProjConst.PHONE1));
+			userToEdit.setPhone2(request.getParameter(ProjConst.PHONE2));
+			userToEdit.setEmail(request.getParameter(ProjConst.EMAIL));
+			userToEdit.setPasportID(request.getParameter(ProjConst.PASSPORT_ID));
+			String companyIdStr = request.getParameter(ProjConst.COMPANY);
+			long companyId = new Long(companyIdStr);
+			userToEdit.setCompany(CompanyDao.getInstance().getCompanyById(companyId));
+			userToEdit.setPassword(request.getParameter(ProjConst.PASSWORD)); // TODO should encrypt on client side
+			userToEdit.setAdmin(new Boolean(request.getParameter(ProjConst.IS_ADMIN))); 
+			
+			UserDao.getInstance().updateUser(userToEdit);
 		}
 		
-		//TODO - edit/
+		
 	}
 	
 	private void addUser(HttpServletRequest request, HttpServletResponse response) throws Exception {
