@@ -56,6 +56,11 @@ public final  class ProjConst {
 	public static final String TAB_COMPANIES = "copmanies";
 	public static final String TAB_LOCATIONS = "locations";
 	
+	//Email
+	public static final String EMAIL_USER = "conf.for.you@gmail.com";
+	public static final String EMAIL_PASSWORD = "password";
+	public static final String EMAIL_PORT = "587";
+	
 	public static final String SESSION_USER_ID = "currentSessionUserId";
 	
 }

@@ -41,12 +41,12 @@ public class LoginServlet extends HttpServlet {
     		ConferenceDao.getInstance().addNewConference(MockCreation.createMockConferences());
     		UserDao.getInstance().addUsers(MockCreation.createMockUsers()); 
     	
-    /*		List <String> emails = new LinkedList<String>();
-    		emails.add("nofarb@gmail.com");
+    		List <String> emails = new LinkedList<String>();
+    		emails.add(ProjConst.EMAIL_USER);
     		
-    		EmailUtils.sendEmail("smtp.gmail.com", "nofarb@gmail.com", "PASS", "587", "subj", emails, "yada", false);
-    		EmailUtils.sendEmail("smtp.gmail.com", "nofarb@gmail.com", "PASS", "587", "subj", emails, "<h1>This is actual message</h1>", true);*/
-
+    		EmailUtils.sendEmail("smtp.gmail.com", ProjConst.EMAIL_USER, ProjConst.EMAIL_PASSWORD, ProjConst.EMAIL_PORT, "subj", emails, "yada", false);
+    		EmailUtils.sendEmail("smtp.gmail.com", ProjConst.EMAIL_USER, ProjConst.EMAIL_PASSWORD, ProjConst.EMAIL_PORT, "subj", emails, "<h1>This is actual message</h1>", true);
+    		
     		
 			String userName = request.getParameter("un");
 			String password = request.getParameter("pw"); 

@@ -2,13 +2,10 @@ package daos;
 
 import java.util.List;
 
-import org.hibernate.Query;
 import org.hibernate.Session;
 import db.HibernateUtil;
 import model.Company;
 import model.CompanyType;
-import model.Conference;
-import model.User;
 
 /**
  * This class is responsible of supplying services related to the Company entity which require database access.
