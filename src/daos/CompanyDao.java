@@ -75,7 +75,6 @@ public class CompanyDao {
 			//company already exists
 			return company;
 		}
-		
 		else
 		{
 			Session session = HibernateUtil.getSessionFactory().getCurrentSession();
@@ -85,23 +84,6 @@ public class CompanyDao {
 			return company;
 		}
 	}
-	/*public Company addCompany(Company company)
-	{
-		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
-		try
-		{
-			session.beginTransaction();
-			session.merge(company);			
-			session.getTransaction().commit();
-			return company;
-		}
-		catch (org.hibernate.exception.ConstraintViolationException  e)
-		{
-			e.printStackTrace();
-			return null;
-		}
-		
-	}*/
 	
 	/**
 	 * Update an existing company in the database

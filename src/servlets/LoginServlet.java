@@ -36,10 +36,8 @@ public class LoginServlet extends HttpServlet {
     protected void processLoginRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
     	try 
 		{
-    		
-    		//CompanyDao.getInstance().addCompany(MockCreation.createMockCompanies());
-    		ConferenceDao.getInstance().addNewConference(MockCreation.createMockConferences());
-    		UserDao.getInstance().addUsers(MockCreation.createMockUsers()); 
+    		MockCreation.createMockConferencesAndLocations();
+    		MockCreation.createMockUsersAndCompanies(); 
     	
     		List <String> emails = new LinkedList<String>();
     		emails.add(ProjConst.EMAIL_USER);

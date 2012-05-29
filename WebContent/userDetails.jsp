@@ -11,16 +11,28 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
-<link type="text/css" href="css/main.css" rel="stylesheet" />
-<link type="text/css" href="css/tables/tableList.css" rel="stylesheet" />
-<link type="text/css" href="css/cupertino/jquery-ui-1.8.18.custom.css"
-	rel="stylesheet" />
-<script type="text/javascript" src="js/jquery-1.7.1.min.js"></script>
-<script type="text/javascript" src="js/jquery-ui-1.8.18.custom.min.js"></script>
-
-	
+<%= UiHelpers.GetAllJsAndCss().toString() %>
 <script>
-
+$(document).ready(function(){
+	
+	var message = "<%=request.getParameter("messageNotification")%>";
+	if (message != "null")
+	{
+		var messageType = "<%=request.getParameter("messageNotificationType")%>";
+		if (messageType == "success")
+		{
+			jSuccess(message);
+		}
+		else if (messageType == "error")
+		{
+			jError(message);
+		}
+		else
+		{
+			alert("unknown message type");
+		}
+	}
+});
 </script>
 
 

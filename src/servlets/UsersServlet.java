@@ -13,6 +13,8 @@ import utils.ProjConst;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import model.Company;
+import model.Conference;
+import model.ConferenceParticipantStatus;
 import model.User;
 import daos.CompanyDao;
 import daos.ConferenceDao;
@@ -27,11 +29,9 @@ public class UsersServlet extends HttpServlet {
 	private static final String DELETE_USER = "delete";
 	private static final String EDIT_USER = "edit";
 	private static final String ADD_USER = "add";
+	private static final String ADD_PARTICIPANT = "addParticipant";
 	private static final String VALIDATION_USER_NAME_UNIQUE = "validateUserName";
-
-
-
-       
+      
     /**
      * @see HttpServlet#HttpServlet()
      */
@@ -62,6 +62,9 @@ public class UsersServlet extends HttpServlet {
 			}
 			else if (action.equals(VALIDATION_USER_NAME_UNIQUE)) {
 				validate(request, response);
+			}
+			else if (action.equals(ADD_PARTICIPANT)) {
+				addParticipant(request, response);
 			}
 			else {
 				throw new Exception("Unknown request");
@@ -243,7 +246,6 @@ public class UsersServlet extends HttpServlet {
 	
 	private void addUser(HttpServletRequest request, HttpServletResponse response) throws Exception {
 
-
 		String userName = request.getParameter(ProjConst.USER_NAME);
 		String name = request.getParameter(ProjConst.NAME);
 		String phone1 = request.getParameter(ProjConst.PHONE1);
@@ -276,6 +278,71 @@ public class UsersServlet extends HttpServlet {
     	catch (Exception e)
     	{
     		message = "Problem occurred while adding user";
+    		resultSuccess = "false";
+    	}
+    	
+        response.setContentType("application/json;charset=UTF-8");
+        PrintWriter out = response.getWriter();
+        
+        try {
+        	
+            Gson gson = new Gson();
+           	String json;
+
+       		jsonObject.addProperty("resultSuccess", resultSuccess);
+       		jsonObject.addProperty("message", message);
+       		json = gson.toJson(jsonObject);
+
+           	out.write(json);
+            out.flush();
+        }
+         finally {
+            out.close();
+        }
+		
+	}
+	
+	private void addParticipant(HttpServletRequest request, HttpServletResponse response) throws Exception {
+
+		String userName = request.getParameter(ProjConst.USER_NAME);
+		String name = request.getParameter(ProjConst.NAME);
+		String phone1 = request.getParameter(ProjConst.PHONE1);
+		String phone2 = request.getParameter(ProjConst.PHONE2);
+		String email = request.getParameter(ProjConst.EMAIL);
+		String passportId = request.getParameter(ProjConst.PASSPORT_ID);
+		String companyIdStr = request.getParameter(ProjConst.COMPANY);
+		long companyId = new Long(companyIdStr);
+		Company company = CompanyDao.getInstance().getCompanyById(companyId);
+		String password = "123456";
+		boolean isAdmin = false; 
+		
+    	String confName = request.getParameter(ProjConst.CONF_NAME);
+    	Conference conference = ConferenceDao.getInstance().getConferenceByName(confName);
+
+    	JsonObject jsonObject = new JsonObject();
+    	
+    	String resultSuccess;
+    	String message;
+    	try 
+    	{
+    		if(phone2 == null){
+    			phone2 = "";
+    		}
+    		
+    		//Add user
+    		UserDao.getInstance().addUser(new User(userName, passportId, company, name, email, phone1, phone2, password, isAdmin));
+    		
+    		//Assign to conference
+    		ConferenceDao.getInstance().assignParticipantsToConference(
+    				new ConferenceParticipantStatus(conference, UserDao.getInstance().getUserByUserName(userName), null, false));
+    		
+    		message = "Participant successfully added";
+    		resultSuccess = "true";
+    		
+    	}
+    	catch (Exception e)
+    	{
+    		message = "Problem occurred while adding participant";
     		resultSuccess = "false";
     	}
     	

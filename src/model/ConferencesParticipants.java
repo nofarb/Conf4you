@@ -57,6 +57,7 @@ public class ConferencesParticipants implements Serializable {
 		this.participant = user;
 	}
 
+	@Id
 	@Temporal(TemporalType.TIMESTAMP)
 	public Date getDate() {
 		return conferenceDateDay;

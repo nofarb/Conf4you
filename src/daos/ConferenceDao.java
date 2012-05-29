@@ -220,18 +220,15 @@ public class ConferenceDao {
 	 * @param conference
 	 * @return
 	 */
-	public void assignParticipantsToConference(Conference conference, List<User> users){
-				Session session = HibernateUtil.getSessionFactory().getCurrentSession();
+	
+	public void assignParticipantsToConference(ConferenceParticipantStatus cps){
+		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
 		session.beginTransaction();
-		
-		for (User user:users)
-		{
-			session.save(new ConferenceParticipantStatus(conference, user, null, false));
-		}
-		
+		session.saveOrUpdate(cps);
 		session.getTransaction().commit();
 	}
 	
+
 	/**
 	 * assign location to a conference
 	 * @param conference
@@ -271,11 +268,11 @@ public class ConferenceDao {
                 .uniqueResult();
 	}
 	
-	public List<User> getAllConferenceParticipants(Conference conference){	
+	public List<ConferenceParticipantStatus> getAllConferenceParticipants(Conference conference){	
 		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
 		session.beginTransaction();
-		List<User> result = (List<User>)HibernateUtil.getSessionFactory().getCurrentSession().createQuery(
-				"select confPart.user from  ConferenceParticipantStatus confPart where confPart.conference = :conf")
+		List<ConferenceParticipantStatus> result = (List<ConferenceParticipantStatus>)HibernateUtil.getSessionFactory().getCurrentSession().createQuery(
+				"select confPart from  ConferenceParticipantStatus confPart where confPart.conference = :conf")
                 .setEntity("conf", conference)
                 .list();
 		session.getTransaction().commit();

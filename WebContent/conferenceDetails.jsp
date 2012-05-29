@@ -11,17 +11,29 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
-<link type="text/css" href="css/main.css" rel="stylesheet" />
-<link type="text/css" href="css/tables/tableList.css" rel="stylesheet" />
-<link type="text/css" href="css/cupertino/jquery-ui-1.8.18.custom.css"
-	rel="stylesheet" />
-<script type="text/javascript" src="js/jquery-1.7.1.min.js"></script>
-<script type="text/javascript" src="js/jquery-ui-1.8.18.custom.min.js"></script>
-<script type="text/javascript" src="js/jquery.floatingmessage.js"></script>
+<%= UiHelpers.GetAllJsAndCss().toString() %>
 
 <script type="text/javascript">	
 $(document).ready(function(){
 	
+		var message = "<%=request.getParameter("messageNotification")%>";
+		if (message != "null")
+		{
+			var messageType = "<%=request.getParameter("messageNotificationType")%>";
+			if (messageType == "success")
+			{
+				jSuccess(message);
+			}
+			else if (messageType == "error")
+			{
+				jError(message);
+			}
+			else
+			{
+				alert("unknown message type");
+			}
+		}
+		
 	 	$('#sendInvitationToSelected').click(function () {
 	 		var checkedUserNames = $('input:checkbox[name=userNames]:checked').val();
 	 		var success= [];
@@ -81,16 +93,11 @@ $(document).ready(function(){
 					            if (data != null){
 									if (data.resultSuccess == "true")
 									{
-								 	   	window.location = "conference.jsp";
-								 	    $.floatingMessage(data.message ,{  
-								 	    	height : 30
-									    }); 
-								 	    $(".ui-widget-content").addClass("successFeedback");
+								 	   	window.location = "conference.jsp?messageNotification=" + data.message + "&messageNotificationType=success";
 									}
 									else
 									{
-										$.floatingMessage(data.message);
-										$(".ui-widget-content").addClass("errorFeedback");
+										jError(data.message);
 									}
 					            }
 					        }
@@ -104,16 +111,9 @@ $(document).ready(function(){
 			});
 	
 		 $('.addParticipant').click(function () {
-			   $("#addParticipantDialog").dialog("open");
-			   $("#userAddFormIframe").attr("src","userAdd.jsp");
+			   var confName = $(".confName").text();
+			   window.location.href = "userAddEdit.jsp?action=addParticipant&confName=" + confName;
 		 });
-		 
-	   $("#addParticipantDialog").dialog({
-           autoOpen: false,
-           modal: true,
-           height: 800,
-           width: 800
-       });
 	});	
 </script>
 
@@ -199,29 +199,50 @@ $(document).ready(function(){
 			<th>Name</th>
 			<th>Email</th>
 			<th>Passport ID</th>
-			<th>Participated</th>
-			<th>Logged in</th>
+			<th>Invitation sent</th>
+			<th>Invitation status</th>
 			<th style="min-width: 50px;"></th>
 			<th style="min-width: 50px;"></th>
 		</tr>
 		</thead>
 		<tbody>
 			<% 
-			List<User> users =  ConferenceDao.getInstance().getAllConferenceParticipants(conf); 
-			for (User user : users) { %>
+			List<ConferenceParticipantStatus> confPart =  ConferenceDao.getInstance().getAllConferenceParticipants(conf); 
+			for (ConferenceParticipantStatus confPartcipant : confPart) { %>
 			<tr class="gridRow">
 			<td>
-			<input class="select_one" type="checkbox" value="<%=user.getUserName()%>" name="userNames">
+			<input class="select_one" type="checkbox" value="<%=confPartcipant.getUser().getUserName()%>" name="userNames">
 			</td>
-			<td><%=user.getUserName()%></td>
-			<td><%=user.getName()%></td>
-			<td><%=user.getEmail()%></td>
-			<td><%=user.getPasportID()%></td>
+			<td><%=confPartcipant.getUser().getUserName()%></td>
+			<td><%=confPartcipant.getUser().getName()%></td>
+			<td><%=confPartcipant.getUser().getEmail()%></td>
+			<td><%=confPartcipant.getUser().getPasportID()%></td>
+			<%
+			String invitationSentClassName = "false_status_icon";
+			if (confPartcipant.isNotifiedByMail())
+			{
+				invitationSentClassName = "true_status_icon";
+			}
+			
+			%>
 			<td align="center">
-				<span class="false_status_icon"></span>
+				<span class="<%=invitationSentClassName%>"></span>
 			</td>
+			<%
+			UserAttendanceStatus status = confPartcipant.getAttendanceStatus();
+			String statusString = "No response";
+			if (status != null)
+			{
+				if (status == UserAttendanceStatus.APPROVED)
+					statusString = "Approved";
+				if (status ==  UserAttendanceStatus.DECLINED)
+					statusString = "Declined";
+				if (status == UserAttendanceStatus.MAYBE)
+					statusString = "Maybe";
+			}
+			%>
 			<td align="center">
-				<span class="false_status_icon"></span>
+				<span class="status"><%=statusString%></span>
 			</td>
 			<td>
 			<a class="editParticipant" href="javascript:;">
@@ -240,7 +261,7 @@ $(document).ready(function(){
 		</tbody>
 	</table>
 	
-	<% if (users.size() != 0) {%>
+	<% if (confPart.size() != 0) {%>
 	<div id="controls">
 		<div id="perpage">
 			<select onchange="sorter.size(this.value)">
@@ -299,12 +320,6 @@ $(document).ready(function(){
 		
 	<div id="dialog-confirm" title="Delete conference?" style="display:none;">
 		<p><span class="ui-icon ui-icon-alert" style="float:left; margin:0 7px 20px 0;"></span>Conference will be deleted. Are you sure?</p>
-	</div>
-	
-	<div id="addParticipantDialog" title="Add participant" style="display:none;">
-	    <iframe id="userAddFormIframe" width="100%" height="100%"
-	    marginWidth="0" marginHeight="0" frameBorder="0" scrolling="auto"
-	    title="Dialog Title">Your browser does not supprt</iframe>
 	</div>
 
 	<script type="text/javascript" src="js/tables/script.js"></script>

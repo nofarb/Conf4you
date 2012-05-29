@@ -1,15 +1,23 @@
+.true_status_icon {
+    background: url("/conf4u/resources/imgs/yes_green.png") repeat scroll 0 0 transparent;
+    display: block;
+    height: 13px;
+    position: relative;
+    width: 13px;
+}
+
+.false_status_icon {
+    background: url("/conf4u/resources/imgs/delete_red.png") repeat scroll 0 0 transparent;
+    display: block;
+    height: 13px;
+    position: relative;
+    width: 13px;
+}
+
 .ui-widget-content {
     background: none repeat scroll 0 0 #000000;
     font-size: 12px;
     font-style: bold;
-}
-
-.successFeedback{
-	color: green;
-}
-
-.errorFeedback{
-	color: red;
 }
 
 .message td {
