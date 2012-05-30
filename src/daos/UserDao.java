@@ -10,7 +10,9 @@ import system.exceptions.ItemNotFoundException;
 import utils.OwaspAuthentication;
 import db.HibernateUtil;
 import model.CompanyType;
+import model.Conference;
 import model.User;
+import model.UserRole;
 
 /**
  * This class is responsible of supplying services related to the User entity
@@ -33,6 +35,7 @@ public class UserDao {
 	/**
 	 * Get a list of all the users that are stored in the database
 	 */
+	@SuppressWarnings("unchecked")
 	public List<User> getUsers() {
 		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
 		session.beginTransaction();
@@ -47,15 +50,32 @@ public class UserDao {
 	 * @param emailAddr
 	 * @return
 	 */
-	public User getUserById(long id) {
-/*		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
-		session.beginTransaction();
-		return (User)session.load(User.class, id);*/
+	@SuppressWarnings("unchecked")
+	public List<User> getActiveUsers() {
 		
 		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
 		session.beginTransaction();
 		
-		User user = (User)HibernateUtil.getSessionFactory().getCurrentSession().createQuery(
+		List<User> reults = (List<User>)session.createQuery(
+				"from User where active=:active")
+                .setBoolean("active",true).list();
+		session.getTransaction().commit();
+		return reults;
+	}
+	
+	
+	/**
+	 * Get a user by its database key ID
+	 * 
+	 * @param emailAddr
+	 * @return
+	 */
+	public User getUserById(long id) {
+		
+		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
+		session.beginTransaction();
+		
+		User user = (User)session.createQuery(
 				"from User where userId=:userId")
                 .setLong("userId",id)
                 .uniqueResult();
@@ -76,7 +96,7 @@ public class UserDao {
 		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
 		session.beginTransaction();
 		
-		User user = (User)HibernateUtil.getSessionFactory().getCurrentSession().createQuery(
+		User user = (User)session.createQuery(
 				"from User where userName=:userName")
                 .setString("userName",userName)
                 .uniqueResult();
@@ -96,7 +116,7 @@ public class UserDao {
 		session.beginTransaction();
 		
 		@SuppressWarnings("unchecked")
-		List<User> users = (List<User>)HibernateUtil.getSessionFactory().getCurrentSession().createQuery(
+		List<User> users = (List<User>)session.createQuery(
 				"from User where email=:mail")
                 .setString("mail",emailAddr)
                 .list();
@@ -205,6 +225,7 @@ public class UserDao {
 
 		session.getTransaction().commit();
 	}
+	
 	
 	/**
 	 * get a list of all users that belong to a given company

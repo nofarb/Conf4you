@@ -38,12 +38,13 @@
 		<!-- Mapping files will go here.... -->
 
 		<mapping class="model.Company" />
+		<mapping class="model.User" />
 		<mapping class="model.Conference" />
 		<mapping class="model.ConferencesParticipants" />
 		<mapping class="model.ConferenceParticipantStatus" />
 		<mapping class="model.ConferencesUsers" />
 		<mapping class="model.Location" />
-		<mapping class="model.User" />
+
 
 	</session-factory>
 </hibernate-configuration>

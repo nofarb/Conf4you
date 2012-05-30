@@ -1,22 +1,30 @@
 package utils;
 
 import java.util.Date;
+import java.util.LinkedList;
+import java.util.List;
+
 import daos.CompanyDao;
 import daos.ConferenceDao;
+import daos.ConferencesUsersDao;
 import daos.LocationDao;
 import daos.UserDao;
 import model.Company;
 import model.CompanyType;
 import model.Conference;
+import model.ConferencesUsers;
 import model.Location;
 import model.User;
+import model.UserRole;
 
 public class MockCreation {
 	
-	public static void createMockUsersAndCompanies(){
+	public static List<User> createMockUsersAndCompanies(){
  		CompanyDao.getInstance().addCompany(new Company("comp1", CompanyType.A));
  		CompanyDao.getInstance().addCompany(new Company("comp2", CompanyType.B));
  		CompanyDao.getInstance().addCompany(new Company("comp3", CompanyType.C));
+ 		
+		List<User> newUsers = new LinkedList<User>();
 
 		for(int i = 0 ; i < 15; i++)
 		{	
@@ -30,18 +38,38 @@ public class MockCreation {
 				compName = "comp3";
 			}
 			
-			UserDao.getInstance().addUser(new User("userName"+i, "id"+i, CompanyDao.getInstance().getCompanyByName(compName), "name"+i, "email"+i, "num1 "+i, "num2 "+i, "pass"+i, true));
+			User newUser = new User("userName"+i, "id"+i, CompanyDao.getInstance().getCompanyByName(compName), "name"+i, "email"+i, "num1 "+i, "num2 "+i, "pass"+i, true);
+			newUsers.add(newUser);
+			
+			UserDao.getInstance().addUser(newUser);
 			UserDao.getInstance().getUserByUserName("userName"+i).setLastLogin(new Date());
+			
 		}	
+		return newUsers;
+
 	}
 	
-	public static void createMockConferencesAndLocations(){
+	public static List<Conference> createMockConferencesAndLocations(){
 		
 		Location location = new Location("locationNameBlah", "ydaa", 30, "moo", "56464654", "54564654");
 		LocationDao.getInstance().addLocation(location);
+		List<Conference> newConfs = new LinkedList<Conference>();
 		
 		for(int i = 0 ; i < 5; i++){
-			ConferenceDao.getInstance().addNewConference(new Conference("conf"+i, LocationDao.getInstance().getLocationByName("locationNameBlah"), "yada", new Date(), new Date()));
+			Conference conf = new Conference("conf"+i, LocationDao.getInstance().getLocationByName("locationNameBlah"), "yada", new Date(), new Date());
+			newConfs.add(conf);
+			ConferenceDao.getInstance().addNewConference(conf);
 		}
+		
+		return newConfs;
+		
 	}
+	
+	public static void createUserConfRoleConnection(Conference conference, User user, UserRole userRole){
+		
+		ConferencesUsers cu = new ConferencesUsers(conference, user, userRole);
+		ConferencesUsersDao.getInstance().addEntry(cu);
+
+	}
+	
 }
