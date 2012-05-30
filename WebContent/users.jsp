@@ -1,3 +1,4 @@
+<%@page import="model.UserRole"%>
 <%@page import="java.util.LinkedList"%>
 <%@page import="daos.ConferencesUsersDao"%>
 <%@page import="org.eclipse.jdt.internal.compiler.ast.CompilationUnitDeclaration"%>
@@ -50,13 +51,11 @@ $(document).ready(function(){
 		}else{ //fiter2
 			 
 			 var selectedRole = $("#role").val();
-			 var selectedConf = $("#conf").val();
-			 window.location.href = "users.jsp?filterNum=2&role=" + selectedRole+"&conf="+selectedConf; 
+			 var selectedConfId = $("#conf").val();
+			 window.location.href = "users.jsp?filterNum=2&role=" + selectedRole+"&confId="+selectedConfId; 
 		 
 		}
-		
-/* 		var checkedValue = myRadio.filter(':checked').val(); */	
- 	
+			
 	 });
 	 
 /* 	 var selectedFilter = $('.selectedFilter').text();
@@ -124,10 +123,10 @@ $(document).ready(function(){
 									</td>
 									<td> User Role:
 										<select id="role">
-												<option value="participant">Participant</option>
-												<option value="speaker">Speaker</option>
-												<option value="receptionist">Receptionist</option>
-												<option value="confMngr">Conference Manager</option>
+												<option value="PARTICIPANT">Participant</option>
+												<option value="SPEAKER">Speaker</option>
+												<option value="RECEPTIONIST">Receptionist</option>
+												<option value="CONF_MNGR">Conference Manager</option>
 										</select> 
 										in Conference:
 										<select id="conf">
@@ -205,7 +204,18 @@ $(document).ready(function(){
 					}
 
 				}else{ //it's 2
+					String confIdStr = request.getParameter("confId").trim();
+					String roleStr = request.getParameter("role").trim();
 					
+					if(confIdStr == null || roleStr == null){
+						usersList = UserDao.getInstance().getUsers();
+					}
+					else{
+						Long confId = Long.valueOf(confIdStr);
+						Conference conf = ConferenceDao.getInstance().getConferenceById(confId);
+						UserRole role = UserRole.valueOf(roleStr);
+						usersList = ConferencesUsersDao.getInstance().getUsersForRoleInCompanyInConference(conf, role);		
+					}
 				}
 				
 			}else{

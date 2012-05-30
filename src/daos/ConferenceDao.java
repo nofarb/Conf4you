@@ -3,15 +3,8 @@ package daos;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Date;
-import java.util.TimeZone;
-
 import org.hibernate.Session;
-import org.hibernate.Query;
-
-import sun.util.calendar.CalendarDate;
-
 import db.HibernateUtil;
-
 import model.Conference;
 import model.ConferenceFilters;
 import model.ConferenceParticipantStatus;
@@ -42,6 +35,7 @@ public class ConferenceDao {
 	/**
 	 * Get a list of all the Conferences that are stored in the database
 	 */
+	@SuppressWarnings("unchecked")
 	public List<Conference> getConferences(ConferenceFilters.ConferencePreDefinedFilter filter){
 		
 		Calendar filterDate = Calendar.getInstance();
@@ -74,6 +68,26 @@ public class ConferenceDao {
 				.list();
 		session.getTransaction().commit();
 		return result;
+	}
+	
+	/**
+	 * Get a conference by its database key ID
+	 * 
+	 * @param emailAddr
+	 * @return
+	 */
+	public Conference getConferenceById(long id) {
+		
+		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
+		session.beginTransaction();
+		
+		Conference conf = (Conference)session.createQuery(
+				"from Conference where conferenceId=:conferenceId")
+                .setLong("conferenceId",id)
+                .uniqueResult();
+		session.getTransaction().commit();
+		return conf;
+		
 	}
 	
 
