@@ -112,6 +112,18 @@ public class UiHelpers {
 			//--------------------------------------------------------------------
 		}
 
+		if (requstingUser.isAdmin() || ConferenceDao.getInstance().getUserHighestRole(requstingUser).getValue() >= 3)
+		{
+			//Reception tab
+			//--------------------------------------------------------------------
+			sb.append(String.format("<li%s>", ProjConst.TAB_RECEPTION == chosenTab ? " class=\"focuslink\"" : ""));
+			sb.append("<a href=\"reception.jsp\">");
+			sb.append("<span>Reception</span>");
+			sb.append("</a>");
+			sb.append("</li>");
+			//--------------------------------------------------------------------
+		}
+
 		sb.append("</ul>");
 		sb.append("</div>");
 		sb.append("</div>");
@@ -121,5 +133,38 @@ public class UiHelpers {
 		
 		sb.append("<div class=\"clearboth\"></div>");
 		return sb;
+	}
+
+	public static StringBuilder GetHeader(User requstingUser)
+	{
+		StringBuilder sb = new StringBuilder();
+		
+		//Header start
+		//--------------------------------------------------------------------
+		sb.append("<div id=\"vn_header_div\">");
+		
+		//Logo image
+		//--------------------------------------------------------------------
+		sb.append("<div id=\"vn_header_logo\">");
+		sb.append("<img  width=\"97\" height=\"56\" border=\"0\" alt=\"\" src=\"/conf4u/resources/imgs/conf4u_logo.png\">");
+		sb.append("</div>");
+		//--------------------------------------------------------------------
+		
+		//Top links
+		//--------------------------------------------------------------------
+		sb.append("<div id=\"vn_header_toprightlinks\">");
+		sb.append("<div class=\"vn_header_toprightlink\">");
+		sb.append("<a class=\"isnormal\"> connected as: " + requstingUser.getName() + "</a><br />");
+		sb.append("<a class=\"isbold\" href=\"LoginServlet?action=logout\">Log off</a>");
+		sb.append("</div>");
+		
+		sb.append("</div>");
+		//--------------------------------------------------------------------
+						
+		sb.append("</div>");
+		//--------------------------------------------------------------------
+		sb.append("<div class=\"clearboth\"></div>");
+		
+		return sb;	
 	}
 }
