@@ -7122,3 +7122,9 @@ UL.jqueryFileTree A:hover {
 	background: url("/resources/css/jqueryFileTree/images/zip.png")
 		no-repeat scroll left top transparent;
 }
+
+.filtersBox{
+	background-color: #C6D5E1;
+	margin-top: 10px;
+	padding: 3px;
+}

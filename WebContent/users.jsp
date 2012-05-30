@@ -102,7 +102,7 @@ $(document).ready(function(){
 	--------------------------------------->	
 		<tr>
 			<td>
-				<table border="1">
+				<table class="filtersBox">
 					<tr>
 						<td>
 							<table >
