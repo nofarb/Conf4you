@@ -38,7 +38,7 @@ public class User implements Serializable{
 	private String phone1;
 	private String phone2;
 	private String password; //may be null/empty , will be kept hashed
-	private boolean isAdmin;
+	private boolean admin;
 	private Date lastLogin;
 	private boolean active; 
 	private String salt;
@@ -56,7 +56,7 @@ public class User implements Serializable{
 		this.email = email;
 		this.phone1 = phone1;
 		this.phone2 = phone2;
-		this.isAdmin = isAdmin;
+		this.admin = isAdmin;
 		this.active = true;
 		
 		try
@@ -136,11 +136,11 @@ public class User implements Serializable{
 	}
 
 	public boolean isAdmin() {
-		return isAdmin;
+		return admin;
 	}
 
 	public void setAdmin(boolean isAdmin) {
-		this.isAdmin = isAdmin;
+		this.admin = isAdmin;
 	}
 
 	@Temporal(TemporalType.TIMESTAMP) 

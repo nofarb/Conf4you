@@ -72,7 +72,7 @@ $(document).ready(function(){
 			</div>
 				<div class="vn_actionbuttondiv">
 				<div class="title">
-				<a title="Delete User" href="users?action=delete&userId=<%=user.getUserId()%>">
+				<a title="Delete User" href="UsersServlet?action=delete&userId=<%=user.getUserId()%>">
 					<img src="/conf4u/resources/imgs/vn_action_delete.png" alt=""> 
 					Delete
 				</a>

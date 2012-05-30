@@ -262,12 +262,12 @@ div.error {
 										</td>
 										<% if (isEdit && user.isAdmin()) {%>
 										<td class="inputcell">
-											<input id=<%=ProjConst.IS_ADMIN%> type="checkbox" value="true"  checked="checked" name=<%=ProjConst.IS_ADMIN%>><div></div>
+											<input id=<%=ProjConst.IS_ADMIN%> type="checkbox" checked="checked" name=<%=ProjConst.IS_ADMIN%>><div></div>
 										</td>
 										
 										<% } else {%>
 										<td class="inputcell">
-											<input id=<%=ProjConst.IS_ADMIN%> type="checkbox" value="true" name=<%=ProjConst.IS_ADMIN%>><div></div>
+											<input id=<%=ProjConst.IS_ADMIN%> type="checkbox" name=<%=ProjConst.IS_ADMIN%>><div></div>
 										</td>
 										<%} %>
 									</tr>
@@ -331,8 +331,8 @@ $(document).ready(function(){
               	 	<%=ProjConst.PHONE1%> : $("#phone1").val(), 	
               	 	<%=ProjConst.PHONE2%> : $("#phone2").val(), 	
               	 	<%=ProjConst.EMAIL%> : $("#email").val(), 	
-              	 	<%=ProjConst.COMPANY%> : $("#company").val(), 	
-              	 	<%=ProjConst.IS_ADMIN%> : $("#isAdmin").val(),
+              	 	<%=ProjConst.COMPANY%> : $("#company").val(), 	 
+              	 	<%=ProjConst.IS_ADMIN%> : $("#isAdmin").is(':checked') ? "true" :  "false",
               	 	<%=ProjConst.CONF_NAME%> : $(".confName").text() 
                 },
             success: function(data) {

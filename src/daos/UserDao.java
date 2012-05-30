@@ -44,12 +44,7 @@ public class UserDao {
 		return result;
 	}
 	
-	/**
-	 * Get a user by its database key ID
-	 * 
-	 * @param emailAddr
-	 * @return
-	 */
+
 	@SuppressWarnings("unchecked")
 	public List<User> getActiveUsers() {
 		
@@ -59,6 +54,32 @@ public class UserDao {
 		List<User> reults = (List<User>)session.createQuery(
 				"from User where active=:active")
                 .setBoolean("active",true).list();
+		session.getTransaction().commit();
+		return reults;
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<User> getNonActiveUsers() {
+		
+		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
+		session.beginTransaction();
+		
+		List<User> reults = (List<User>)session.createQuery(
+				"from User where active=:active")
+                .setBoolean("active",false).list();
+		session.getTransaction().commit();
+		return reults;
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<User> getAdmineUsers() {
+		
+		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
+		session.beginTransaction();
+		
+		List<User> reults = (List<User>)session.createQuery(
+				"from User where admin=:admin")
+                .setBoolean("admin",true).list();
 		session.getTransaction().commit();
 		return reults;
 	}
