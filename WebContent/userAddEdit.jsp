@@ -392,16 +392,19 @@ $(document).ready(function(){
 	      return is_valid;
 	 }, "The user name already exists");
 	
+	
 	 $.validator.addMethod("phoneNumberValidator", function(value, element) {
 		 
 		 var phoneNumber = value;
+		 
+		 var isCellNum = /^05[2-9]-?[2-9]\d{6}$/.test(phoneNumber);
+		 var isHomeNum = /^0[23489]-?[2-9]\d{6}$/.test(phoneNumber);
 
-/*          if (myDate >= startDate)
-        	 return true;
-       	 else */
-       		return true;		 
-     }, "Start date should be greater than end date");
-
+			if(isCellNum == true || isHomeNum == true)
+       	 	return true;
+      	 	else 
+      			return false;		 
+    }, "");
 	
 	$("#userAddEditForm").validate({
 		  onkeyup: false,
