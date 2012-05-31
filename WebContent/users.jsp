@@ -20,6 +20,7 @@
 <script type="text/javascript">
 
 $(document).ready(function(){
+	
 	var message = "<%=request.getParameter("messageNotification")%>";
 	if (message != "null")
 	{
@@ -50,19 +51,50 @@ $(document).ready(function(){
 			
 		}else{ //fiter2
 			 
-			 var selectedRole = $("#role").val();
-			 var selectedConfId = $("#conf").val();
+			 var selectedRole = $("#roleFilter").val();
+			 var selectedConfId = $("#confFilter").val();
 			 window.location.href = "users.jsp?filterNum=2&role=" + selectedRole+"&confId="+selectedConfId; 
 		 
 		}
 			
 	 });
-	 
-/* 	 var selectedFilter = $('.selectedFilter').text();
-	 if (selectedFilter != null && selectedFilter.length != 0)
-	 {
-		 $("#filterSelect option[value='" + selectedFilter + "']").attr('selected', 'selected');
-	 } */
+	
+	
+	$('#filterTableRow1').click(function () {
+		
+		$('#filter1').prop('checked',true);
+			
+	 });
+	
+	$('#filterTableRow2').click(function () {
+		
+		$('#filter2').prop('checked',true);
+				
+	});
+
+	<%
+		String filterNum = request.getParameter("filterNum");
+		if(filterNum != null){
+			if(filterNum.trim().equals("1")){
+	%>
+				$('#filter1').prop('checked',true);
+				var filterBy = "<%=request.getParameter("filterBy")%>";
+				$("#userGeneralFilter option[value="+filterBy+"]").attr('selected', 'selected');
+	<%
+			}else{ // filter 2
+	%>
+				var role = "<%=request.getParameter("role")%>";
+				var confIdstr = "<%=request.getParameter("confId")%>";
+
+ 				$('#filter2').prop('checked',true);
+				$("#confFilter option[value="+confIdstr+"]").attr('selected', 'selected');
+				$("#roleFilter option[value="+role+"]").attr('selected', 'selected');
+	<%
+
+			}
+		}
+	%>
+
 	 
 });
 
@@ -101,13 +133,13 @@ $(document).ready(function(){
 	--------------------------------------->	
 		<tr>
 			<td>
-				<table class="filtersBox">
+				<table class="filtersAndApllyTable">
 					<tr>
 						<td>
-							<table >
-								<tr>
+							<table class="filtersTable" >
+								<tr id="filterTableRow1">
 									<td>
-										<input type="radio" name="usersFilter" value="fiter1" checked/> 
+										<input type="radio" id="filter1" name="usersFilter" value="fiter1" checked/> 
 									</td>
 									<td>
 										<select id="userGeneralFilter">
@@ -118,18 +150,18 @@ $(document).ready(function(){
 										</select>
 									</td>
 								</tr>
-								<tr>
-									<td><input type="radio" name="usersFilter" value="filter2" /> 
+								<tr id="filterTableRow2">
+									<td><input type="radio"  id="filter2" name="usersFilter" value="filter2" /> 
 									</td>
 									<td> User Role:
-										<select id="role">
+										<select id="roleFilter">
 												<option value="PARTICIPANT">Participant</option>
 												<option value="SPEAKER">Speaker</option>
 												<option value="RECEPTIONIST">Receptionist</option>
 												<option value="CONF_MNGR">Conference Manager</option>
 										</select> 
 										in Conference:
-										<select id="conf">
+										<select id="confFilter">
 										<%
 											List<Conference> confrences = ConferenceDao.getInstance().getConferences(ConferencePreDefinedFilter.ALL);
 											for(Conference conf : confrences){
@@ -146,7 +178,7 @@ $(document).ready(function(){
 						<td>
 							<div class="buttons">
 								<a id="apply"> 
-									<img src="/conf4u/resources/imgs/success.png"> Apply
+									<img src="/conf4u/resources/imgs/yes_green.png"> Apply
 								</a>
 							</div>
 						</td>
@@ -204,16 +236,16 @@ $(document).ready(function(){
 					}
 
 				}else{ //it's 2
-					String confIdStr = request.getParameter("confId").trim();
-					String roleStr = request.getParameter("role").trim();
+					String confIdStr = request.getParameter("confId");
+					String roleStr = request.getParameter("role");
 					
 					if(confIdStr == null || roleStr == null){
 						usersList = UserDao.getInstance().getUsers();
 					}
 					else{
-						Long confId = Long.valueOf(confIdStr);
+						Long confId = Long.valueOf(confIdStr.trim());
 						Conference conf = ConferenceDao.getInstance().getConferenceById(confId);
-						UserRole role = UserRole.valueOf(roleStr);
+						UserRole role = UserRole.valueOf(roleStr.trim());
 						usersList = ConferencesUsersDao.getInstance().getUsersForRoleInCompanyInConference(conf, role);		
 					}
 				}

@@ -6020,9 +6020,9 @@ label .required_star {
 	line-height: 1.5;
 }
 
-div.buttons {
+/* div.buttons {
 	min-width: 250px;
-}
+} */
 
 .buttons a,.buttons button {
 	background-color: #EFEFEF;
@@ -7123,8 +7123,13 @@ UL.jqueryFileTree A:hover {
 		no-repeat scroll left top transparent;
 }
 
-.filtersBox{
+.filtersAndApllyTable{
 	background-color: #C6D5E1;
-	margin-top: 10px;
-	padding: 3px;
+	 margin-top: 10px;
+	 padding: 3px; 
+}
+
+.filtersTable{
+	margin-right: 20px;
+	border-spacing: 5px;
 }
