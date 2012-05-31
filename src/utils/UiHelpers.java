@@ -105,7 +105,7 @@ public class UiHelpers {
 			//Locations tab
 			//--------------------------------------------------------------------
 			sb.append(String.format("<li%s>", ProjConst.TAB_LOCATIONS == chosenTab ? " class=\"focuslink\"" : ""));
-			sb.append("<a href=\"location.jsp\">");
+			sb.append("<a href=\"locations.jsp\">");
 			sb.append("<span>Locations</span>");
 			sb.append("</a>");
 			sb.append("</li>");

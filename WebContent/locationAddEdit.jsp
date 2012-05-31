@@ -365,7 +365,17 @@ $(document).ready(function(){
 								<td class="inputcell"><input type="text" id="<%=ProjConst.LOC_Phone2%>" name="<%=ProjConst.LOC_Phone2%>">
 								<div></div></td>
 							<%} %>
-						</tr>		
+						</tr>	
+						
+								<%
+								String redirectTo;
+								if(action.equals(ProjConst.EDIT))
+								{
+									redirectTo = "LocationDetails.jsp?locName="+location.getName();
+								}else{
+								 	redirectTo = "locations.jsp";
+								}
+							%>	
 						<tr>
 							<td></td>
 							<td class="inputcell">
@@ -374,8 +384,8 @@ $(document).ready(function(){
 										<img class="img_png" width="16" height="16" alt=""
 											src="/conf4u/resources/imgs/table_save.png"> Save
 									</button>
-									<a id="cancelButton" href="#"
-										onClick="window.history.back()"> <img
+									<a id="cancelButton" href="<%=redirectTo %>">
+										 <img
 										class="img_png" width="16" height="16" alt=""
 										src="/conf4u/resources/imgs/cancel.png"> Cancel
 									</a>
