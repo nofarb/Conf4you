@@ -122,9 +122,12 @@ $(document).ready(function(){
 				<td>Last Login</td>
 			<%
 				Date laseLogin = user.getLastLogin();
+				String newsDate;
 				if(laseLogin != null){
+					newsDate = new SimpleDateFormat("dd-MM-yyyy hh:mm:ss aaa").format(laseLogin);
+
 			%>
-				<td><%=user.getLastLogin()%></td>
+				<td><%=newsDate%></td>
 			<%		
 				}
 			%>
