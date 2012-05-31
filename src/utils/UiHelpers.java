@@ -154,7 +154,7 @@ public class UiHelpers {
 		//--------------------------------------------------------------------
 		sb.append("<div id=\"vn_header_toprightlinks\">");
 		sb.append("<div class=\"vn_header_toprightlink\">");
-		sb.append("<a class=\"isnormal\"> connected as: " + requstingUser.getName() + "</a><br />");
+		sb.append("<a class=\"isnormal\"> Welcome: " + requstingUser.getName() + " / </a>");
 		sb.append("<a class=\"isbold\" href=\"LoginServlet?action=logout\">Log off</a>");
 		sb.append("</div>");
 		

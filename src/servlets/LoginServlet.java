@@ -39,19 +39,19 @@ public class LoginServlet extends HttpServlet {
     	try 
 		{
     		
-    		List<Conference> confs = MockCreation.createMockConferencesAndLocations();
-    		List<User> users = MockCreation.createMockUsersAndCompanies(); 
+    		List<Conference> confs = (List<Conference>) MockCreation.createMockConferencesAndLocations();
+    		List<User> users = (List<User>) MockCreation.createMockUsersAndCompanies(); 
 //    		MockCreation.createUserConfRoleConnection(confs.get(2), users.get(1), UserRole.RECEPTIONIST);
 //    		MockCreation.createUserConfRoleConnection(confs.get(2), users.get(2), UserRole.SPEAKER);
 //    		MockCreation.createUserConfRoleConnection(confs.get(3), users.get(3), UserRole.CONF_MNGR);
 //    		MockCreation.createUserConfRoleConnection(confs.get(4), users.get(4), UserRole.PARTICIPANT);
     	
-    		List <String> emails = new LinkedList<String>();
+    		/*List <String> emails = new LinkedList<String>();
     		emails.add(ProjConst.EMAIL_USER);
     		
     		EmailUtils.sendEmail("smtp.gmail.com", ProjConst.EMAIL_USER, ProjConst.EMAIL_PASSWORD, ProjConst.EMAIL_PORT, "subj", emails, "yada", false);
     		EmailUtils.sendEmail("smtp.gmail.com", ProjConst.EMAIL_USER, ProjConst.EMAIL_PASSWORD, ProjConst.EMAIL_PORT, "subj", emails, "<h1>This is actual message</h1>", true);
-    		
+    		*/
     		
 			String userName = request.getParameter("un");
 			String password = request.getParameter("pw"); 

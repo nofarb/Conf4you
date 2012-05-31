@@ -1,5 +1,10 @@
-<%@page import="model.*"%>
+<%@page import="java.util.LinkedList"%>
+<%@page import="daos.ConferencesUsersDao"%>
+<%@page import="org.eclipse.jdt.internal.compiler.ast.CompilationUnitDeclaration"%>
 <%@page import="model.ConferenceFilters.ConferencePreDefinedFilter"%>
+<%@page import="model.Conference"%>
+<%@page import="model.ConferenceParticipantStatus"%>
+<%@page import="model.User"%>
 <%@page import="daos.ConferenceDao"%>
 <%@page import="daos.UserDao"%>
 <%@page import="utils.*"%>
@@ -8,15 +13,13 @@
 <%@ page import="java.util.Date"%>
 <%@ page import="java.text.SimpleDateFormat"%>
 
-
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
 <%= UiHelpers.GetAllJsAndCss().toString() %>
-
 <script type="text/javascript">
+
 $(document).ready(function(){
-	
 	var message = "<%=request.getParameter("messageNotification")%>";
 	if (message != "null")
 	{
@@ -35,17 +38,36 @@ $(document).ready(function(){
 		}
 	}
 	
-	 $('#filterSelect').change(function () {
-		 var selectedFilter = $("#filterSelect").val();
-		 window.location.href = "conference.jsp?filter=" + selectedFilter; 
+	$('#apply').click(function () {
+		
+		var filterRadio = $('input[name=usersFilter]');
+		var checkedValue = filterRadio.filter(':checked').val();
+		
+		if(checkedValue == "fiter1"){
+			
+			 var selectedFilterVal = $("#userGeneralFilter").val();
+			 window.location.href = "users.jsp?filterNum=1&filterBy=" + selectedFilterVal; 
+			
+		}else{ //fiter2
+			 
+			 var selectedRole = $("#role").val();
+			 var selectedConf = $("#conf").val();
+			 window.location.href = "users.jsp?filterNum=2&role=" + selectedRole+"&conf="+selectedConf; 
+		 
+		}
+		
+/* 		var checkedValue = myRadio.filter(':checked').val(); */	
+ 	
 	 });
 	 
-	 var selectedFilter = $('.selectedFilter').text();
+/* 	 var selectedFilter = $('.selectedFilter').text();
 	 if (selectedFilter != null && selectedFilter.length != 0)
 	 {
 		 $("#filterSelect option[value='" + selectedFilter + "']").attr('selected', 'selected');
-	 }
+	 } */
+	 
 });
+
 </script>
 <body>
 <div id="body_wrap">
@@ -55,34 +77,93 @@ $(document).ready(function(){
 
 <div id="content">
 	<div class="pageTitle">
-	<div class="titleMain ">Conferences</div>
+	<div class="titleMain ">Reception</div>
 	<br/>
 	<div style="clear:both;"></div>
 	<div class="titleSeparator"></div>
-	<div class="titleSub">manage, view details and add new conferences</div>
+	<div class="titleSub">Conference Reception</div>
 	</div>
 
 	<div id="vn_mainbody">
-	<div class="vn_tblheadzone buttons">
-		<div class="buttons">
-			<a id="createNewConference" href="conferenceAddEdit.jsp?action=add">
-			<span></span>
-			<img src="/conf4u/resources/imgs/vn_action_add.png">
-			Add Conference
-			</a>
-		</div>
+	
+	<table >
+		<tr>
+			<td>
+			<!-- 
+				<div class="buttons">
+					<a id="createNewUser" href="userAddEdit.jsp?action=add">
+					<span></span>
+					<img src="/conf4u/resources/imgs/vn_action_add.png">
+					Add User
+					</a>
+				</div>
+				 -->
+			</td>
+		</tr>
+	
+	<!-- Filter : 
+	--------------------------------------->	
+		<tr>
+			<td>
+				<table class="filtersBox">
+					<tr>
+						<td>
+							<table >
+								<tr>
+									<td>
+										<input type="radio" name="usersFilter" value="fiter1" checked/> 
+									</td>
+									<td>
+										<!-- <select id="userGeneralFilter">
+												<option selected="selected" value="all">All Users</option>
+												<option value="active">Active Users</option>
+												<option value="nonActive">Non Active Users</option>
+												<option value="admin">Admin Users</option>
+										</select> -->
+										<input type="text" size="30" maxlength="1000" value="" id="textBoxSearch" onkeyup="tableSearch.search(event);" />
+                    					<input type="button" value="Search" onclick="tableSearch.runSearch();" />
+									</td>
+								</tr>
+								<tr>
+									<td><input type="radio" name="usersFilter" value="filter2" /> 
+									</td>
+									<td> User Role:
+										<select id="role">
+												<option value="participant">Participant</option>
+												<option value="speaker">Speaker</option>
+												<option value="receptionist">Receptionist</option>
+												<option value="confMngr">Conference Manager</option>
+										</select> 
+										in Conference:
+										<select id="conf">
+										<%
+											List<Conference> confrences = ConferenceDao.getInstance().getConferences(ConferencePreDefinedFilter.ALL);
+											for(Conference conf : confrences){
+										%>
+											 	<option value="<%=conf.getConferenceId()%>" > <%=conf.getName()%> </option>
+										<%
+											}
+										%>
+										</select>
+									</td>
+								</tr>
+							</table>
+						</td>
+						<td>
+							<div class="buttons">
+								<a id="apply"> 
+									<img src="/conf4u/resources/imgs/success.png"> Apply
+								</a>
+							</div>
+						</td>
+					</tr>
+				</table>
+			</td>
+		</tr>
+	</table>
 		
-		<div class="selectedFilter" style="display:none;"><%=request.getParameter("filter")%></div>
-		<span id="vn_mainbody_filter">
-			Show: 	
-			<select id="filterSelect">
-				<option value="LAST7DAYS">Last Week</option>
-				<option value="LAST30DAYS">Last Month</option>
-				<option value="LAST90DAYS">Last 3 Months</option>
-				<option value="ALL" selected="selected">Ever</option>
-			</select>
-		</span>
-	</div>
+	<!-- Filter end 
+	--------------------------------------->	
 	
 	
 	<div>
@@ -91,47 +172,72 @@ $(document).ready(function(){
 		class="sortable">
 		<thead>
 			<tr>
+				<th  class="nosort"><h3>ID</h3></th>
 				<th><h3>Name</h3></th>
-				<th><h3>Location</h3></th>
-				<th><h3>Start date</h3></th>
-				<th><h3>End date</h3></th>
-				<th class="nosort"><h3>Details</h3></th>
+				<th><h3>Company</h3></th>
+				<th><h3>Company Type</h3></th>
+				<th><h3>Phone 1</h3></th>
+				<th><h3>Phone 2</h3></th>
+				<th class="nosort"><h3>Arrived</h3></th>
 			</tr>
 		</thead>
-		<tbody>
+		<tbody id="data">
 			<% 
-			String filter = request.getParameter("filter");
-			ConferencePreDefinedFilter filterEnum = ConferencePreDefinedFilter.ALL;
-			if (filter != null)
-			{
-				try
-				{
-					filterEnum = ConferenceFilters.ConferencePreDefinedFilter.valueOf(filter);
+			// !!! javascript table search http://heathesh.com/post/2010/05/06/Filtering-or-searching-an-HTML-table-using-JavaScript.aspx !!! //
+			List <User> usersList = new LinkedList <User>();
+			usersList = UserDao.getInstance().getUsers();
+			//List<ConferenceParticipantStatus> confParticipants = ConferenceDao.getInstance().getAllConferenceParticipants(conference);
+			
+			/*String filterNumber = request.getParameter("filterNum");
+			if(filterNumber != null){
+				if(filterNumber.trim().equals("1")){
+					String filterBy = request.getParameter("filterBy");
+					
+					if(filterBy != null){
+						if(filterBy.equals("all")){
+							usersList = UserDao.getInstance().getUsers();
+						}
+						else if(filterBy.equals("active")){
+							usersList = UserDao.getInstance().getActiveUsers();
+						}
+						else if(filterBy.equals("nonActive")){
+							usersList = UserDao.getInstance().getNonActiveUsers();
+						}else{ //admin
+							usersList = UserDao.getInstance().getAdmineUsers();
+						}
+						
+					}else{
+						usersList = UserDao.getInstance().getUsers();
+					}
+
+				}else{ //it's 2
+					
 				}
-				catch (Exception e)
-				{
-					//PASS
-				}
+				
+			}else{
+				usersList = UserDao.getInstance().getUsers();
 			}
-			List <Conference> conferences = ConferenceDao.getInstance().getConferences(filterEnum);
-		
-			// Print each application in a single row
-			for (Conference conference : conferences )
+			*/
+			String newsDate;
+			
+			for (User user : usersList )
 			{
-				SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
-				String startDateFormatted = sdf.format(conference.getStartDate());
-				String endDateFormatted = sdf.format(conference.getEndDate());
+				Date date = user.getLastLogin();
+				if(date != null){
+					newsDate = new SimpleDateFormat("dd-MM-yyyy hh:mm:ss aaa").format(date);
+				}else{
+					newsDate = "";
+				}
 			%>
 			<tr class="gridRow">
-				<td><%=conference.getName()%></td>
-				<td><%=conference.getLocation().getName()%></td>
-				<td><%= startDateFormatted %></td>
-				<td><%= endDateFormatted %></td>
-				<td><a class="vn_boldtext" href="conferenceDetails.jsp?conferenceName=<%=conference.getName()%>">
-				<img src="/conf4u/resources/imgs/vn_world.png" alt="">
-				Details
-				</a>
-				</td>
+				<!-- <td><%=user.getName()%></td>  -->
+				<td><%=user.getPasportID()%></td>
+				<td><a class="vn_boldtext"href="userDetails.jsp?userId=<%=user.getUserId()%>"> <%=user.getName()%> </a> </td>
+				<td><%=user.getCompany().getName()%></td>
+				<td><%=user.getCompany().getCompanyType().toString()%></td>
+				<td><%=user.getPhone1()%></td>
+				<td><%=user.getPhone2()%></td>
+				<td><a class="vn_boldtext"href="userDetails.jsp?userId=<%=user.getUserId()%>"> <img src="/conf4u/resources/imgs/vn_world.png" alt=""> Details </a> </td>
 			</tr>
 			<%	} %>
 		</tbody>
