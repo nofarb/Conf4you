@@ -21,17 +21,37 @@
 <script type="text/javascript" src="js/jquery-1.7.1.min.js"></script>
 <script type="text/javascript" src="js/jquery-ui-1.8.18.custom.min.js"></script>
 <script type="text/javascript">
-$(document).ready(function(){
-	 $('#filterSelect').change(function () {
-		 var selectedFilter = $("#filterSelect").val();
-		 window.location.href = "location.jsp?filter=" + selectedFilter; 
-	 });
-	 
-	 var selectedFilter = $('.selectedFilter').text();
-	 if (selectedFilter != null && selectedFilter.length != 0)
-	 {
+$(document).ready(function()
+{
+	var message = "<%=request.getParameter("messageNotification")%>";
+	if (message != "null")
+	{
+		var messageType = "<%=request.getParameter("messageNotificationType")%>";
+		if (messageType == "success")
+		{
+			jSuccess(message);
+		}
+		else if (messageType == "error")
+		{
+			jError(message);
+		}
+		else
+		{
+			alert("unknown message type");
+		}
+	}
+	
+	$('#filterSelect').change(function ()
+	{
+		var selectedFilter = $("#filterSelect").val();
+	 	window.location.href = "location.jsp?filter=" + selectedFilter; 
+	});
+	
+	var selectedFilter = $('.selectedFilter').text();
+	if (selectedFilter != null && selectedFilter.length != 0)
+	{
 		 $("#filterSelect option[value='" + selectedFilter + "']").attr('selected', 'selected');
-	 }
+	}
 });
 </script>
 <body>

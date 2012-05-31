@@ -67,13 +67,14 @@ $(document).ready(function(){
 					if (data.resultSuccess == "true")
 					{
 					
-					 	//window.location.reload();
+					 	window.location.reload();
 					 	    $.floatingMessage(data.message ,{  
 					 	    	height : 30
 						    }); 
 					 	    $(".ui-widget-content").addClass("successFeedback");
 					 	   //window.location.reload(true);
-					 	
+
+
 					}
 					else
 					{

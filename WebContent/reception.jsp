@@ -21,6 +21,7 @@
 
 $(document).ready(function(){
 	var message = "<%=request.getParameter("messageNotification")%>";
+	//$('#confStatusFilter :nth-child(2)').attr('selected', 'selected'); // To select via index
 	if (message != "null")
 	{
 		var messageType = "<%=request.getParameter("messageNotificationType")%>";
@@ -43,12 +44,13 @@ $(document).ready(function(){
 		var filterRadio = $('input[name=usersFilter]');
 		var checkedValue = filterRadio.filter(':checked').val();
 		
-		if(checkedValue == "fiter1"){
-			
+		if(checkedValue == "fiter1")
+		{
 			 var selectedFilterVal = $("#userGeneralFilter").val();
 			 window.location.href = "users.jsp?filterNum=1&filterBy=" + selectedFilterVal; 
-			
-		}else{ //fiter2
+		}
+		else //filter 2
+		{ 
 			 
 			 var selectedRole = $("#role").val();
 			 var selectedConf = $("#conf").val();
@@ -59,6 +61,26 @@ $(document).ready(function(){
 /* 		var checkedValue = myRadio.filter(':checked').val(); */	
  	
 	 });
+	
+	$('#search').click(function ()
+	{
+			
+		alert("Search");
+			 
+	 });
+	
+	$('#confStatusFilter').change(function()
+	{
+		var selectedConfStatusFilter = $("#confStatusFilter").val();
+		value = selectedConfStatusFilter;
+		key = selectedConfStatusFilter;
+		
+		$('#confNameFilter').empty().append($("<option></option>").attr("value",key).text(value)); 
+		
+
+		
+		
+	}) .change();
 	 
 /* 	 var selectedFilter = $('.selectedFilter').text();
 	 if (selectedFilter != null && selectedFilter.length != 0)
@@ -105,39 +127,25 @@ $(document).ready(function(){
 	--------------------------------------->	
 		<tr>
 			<td>
-				<table class="filtersBox">
+				<table class="filtersAndApllyTable">
 					<tr>
 						<td>
-							<table >
-								<tr>
+							<table class="filtersTable" >	
+								<tr id="filterTableRow1">
 									<td>
-										<input type="radio" name="usersFilter" value="fiter1" checked/> 
+									<!-- <input type="radio"  id="filter2" name="usersFilter" value="filter2" /> --> 
 									</td>
-									<td>
-										<!-- <select id="userGeneralFilter">
-												<option selected="selected" value="all">All Users</option>
-												<option value="active">Active Users</option>
-												<option value="nonActive">Non Active Users</option>
-												<option value="admin">Admin Users</option>
-										</select> -->
-										<input type="text" size="30" maxlength="1000" value="" id="textBoxSearch" onkeyup="tableSearch.search(event);" />
-                    					<input type="button" value="Search" onclick="tableSearch.runSearch();" />
-									</td>
-								</tr>
-								<tr>
-									<td><input type="radio" name="usersFilter" value="filter2" /> 
-									</td>
-									<td> User Role:
-										<select id="role">
-												<option value="participant">Participant</option>
-												<option value="speaker">Speaker</option>
-												<option value="receptionist">Receptionist</option>
-												<option value="confMngr">Conference Manager</option>
+									<td> Conference Status:
+										<select id="confStatusFilter">
+												<option value="ACTIVE">Active</option>
+												<option value="FUTURE">Future</option>
+												<option value="PAST">Past</option>
+												<option value="ALL">All</option>
 										</select> 
-										in Conference:
-										<select id="conf">
+										Conference Name:
+										<select id="confNameFilter">
 										<%
-											List<Conference> confrences = ConferenceDao.getInstance().getConferences(ConferencePreDefinedFilter.ALL);
+											List<Conference> confrences = ConferenceDao.getInstance().getConferences(ConferencePreDefinedFilter.ACTIVE);
 											for(Conference conf : confrences){
 										%>
 											 	<option value="<%=conf.getConferenceId()%>" > <%=conf.getName()%> </option>
@@ -146,16 +154,42 @@ $(document).ready(function(){
 										%>
 										</select>
 									</td>
+									<td>
+										<div class="buttons">
+											<a id="apply"> 
+											<img src="/conf4u/resources/imgs/yes_green.png"> Apply
+											</a>
+										</div>
+									</td>
+								</tr>
+								<tr id="filterTableRow2">
+									<td>
+										<!-- <input type="radio" id="filter1" name="usersFilter" value="fiter1" checked/> --> 
+									</td>
+									<td>
+									<!-- 
+										<select id="userGeneralFilter">
+												<option selected="selected" value="all">All Users</option>
+												<option value="active">Active Users</option>
+												<option value="nonActive">Non Active Users</option>
+												<option value="admin">Admin Users</option>
+										</select>
+									-->
+										Search:
+										<input type="text" size="39" maxlength="1000" value="" id="textBoxSearch" onkeyup="tableSearch.search(event);" />
+                    					<!-- <input type="button" value="Search" onclick="tableSearch.runSearch();" />  -->
+									</td>
+									<td>
+										<div class="buttons">
+											<a id="search"> 
+											<img src="/conf4u/resources/imgs/search.png"> Search
+											</a>
+										</div>
+									</td>
 								</tr>
 							</table>
 						</td>
-						<td>
-							<div class="buttons">
-								<a id="apply"> 
-									<img src="/conf4u/resources/imgs/success.png"> Apply
-								</a>
-							</div>
-						</td>
+						
 					</tr>
 				</table>
 			</td>
