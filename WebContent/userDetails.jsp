@@ -120,7 +120,15 @@ $(document).ready(function(){
 			</tr>
 			<tr>
 				<td>Last Login</td>
+			<%
+				Date laseLogin = user.getLastLogin();
+				if(laseLogin != null){
+			%>
 				<td><%=user.getLastLogin()%></td>
+			<%		
+				}
+			%>
+				
 			</tr>
 		</tbody>
 	</table>
