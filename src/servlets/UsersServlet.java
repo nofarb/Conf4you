@@ -214,7 +214,10 @@ public class UsersServlet extends HttpServlet {
 				String companyIdStr = request.getParameter(ProjConst.COMPANY);
 				long companyId = new Long(companyIdStr);
 				userToEdit.setCompany(CompanyDao.getInstance().getCompanyById(companyId));
-				userToEdit.setPassword(request.getParameter(ProjConst.PASSWORD)); 
+				String pass = request.getParameter(ProjConst.PASSWORD).trim();
+				if(!pass.equals("") && !pass.equals("*****")){
+					userToEdit.setPassword(pass);
+				}
 				userToEdit.setAdmin(new Boolean(request.getParameter(ProjConst.IS_ADMIN))); 
 				
 				UserDao.getInstance().updateUser(userToEdit);
@@ -255,7 +258,11 @@ public class UsersServlet extends HttpServlet {
 		String companyIdStr = request.getParameter(ProjConst.COMPANY);
 		long companyId = new Long(companyIdStr);
 		Company company = CompanyDao.getInstance().getCompanyById(companyId);
-		String password = request.getParameter(ProjConst.PASSWORD); 
+		String password="";
+		String pass = request.getParameter(ProjConst.PASSWORD).trim();
+		if(!pass.equals("") && !pass.equals("*****")){
+			password = pass;
+		}
 		boolean isAdmin = new Boolean(request.getParameter(ProjConst.IS_ADMIN)); 
 		
 
