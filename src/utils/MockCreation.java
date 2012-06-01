@@ -26,6 +26,10 @@ public class MockCreation {
  		
 		List<User> newUsers = new LinkedList<User>();
 
+		User adminUser = new User("admin", "123123123", CompanyDao.getInstance().getCompanyByName("comp1"), "admin", "admin@admin.com", "03-3333333", "03-3333331", "pass1", true);
+		newUsers.add(adminUser);
+		UserDao.getInstance().addUser(adminUser);
+		
 		for(int i = 0 ; i < 15; i++)
 		{	
 			String compName;
@@ -38,8 +42,10 @@ public class MockCreation {
 				compName = "comp3";
 			}
 			
-			User newUser = new User("userName"+i, "id"+i, CompanyDao.getInstance().getCompanyByName(compName), "name"+i, "email"+i, "num1 "+i, "num2 "+i, "pass"+i, true);
+			User newUser = new User("userName"+i, "id"+i, CompanyDao.getInstance().getCompanyByName(compName), "name"+i, "email"+i, "num1 "+i, "num2 "+i, "pass"+i, false);
+			
 			newUsers.add(newUser);
+			
 			
 			UserDao.getInstance().addUser(newUser);
 			UserDao.getInstance().getUserByUserName("userName"+i).setLastLogin(new Date());
@@ -67,8 +73,7 @@ public class MockCreation {
 	
 	public static void createUserConfRoleConnection(Conference conference, User user, UserRole userRole){
 		
-		ConferencesUsers cu = new ConferencesUsers(conference, user, userRole);
-		ConferencesUsersDao.getInstance().addEntry(cu);
+		ConferencesUsersDao.getInstance().assignUserToConference(new ConferencesUsers(conference, user, userRole.getValue()));
 
 	}
 	

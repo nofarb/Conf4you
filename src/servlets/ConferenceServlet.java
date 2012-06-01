@@ -13,14 +13,17 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import model.Conference;
+import model.ConferencesUsers;
 import model.Location;
 import model.User;
+import model.UserRole;
 
 import utils.ProjConst;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 
 import daos.ConferenceDao;
+import daos.ConferencesUsersDao;
 import daos.LocationDao;
 import daos.UserDao;
 
@@ -35,6 +38,7 @@ public class ConferenceServlet extends HttpServlet {
 	private static final String EDIT_CONF = "edit";
 	private static final String SEND_INVITATION_CONF = "sendInvitation";
 	private static final String REMOVE_USER = "removeUser";
+	private static final String ASSING_USER = "assignUser";
 	private static final String CONF_NAME_VALIDATION = "validation";
 	
     /**
@@ -67,6 +71,9 @@ public class ConferenceServlet extends HttpServlet {
 		}
 		else if (action.equals(SEND_INVITATION_CONF)) {
 			sendInvitationToUsers(request, response);
+		}
+		else if (action.equals(ASSING_USER)) {
+			assignUser(request, response);
 		}
 		else if (action.equals(REMOVE_USER)) {
 			removeUser(request, response);
@@ -207,7 +214,7 @@ public class ConferenceServlet extends HttpServlet {
     	String message;
     	try 
     	{
-    		ConferenceDao.getInstance().removeParticipantFromConference(conference, user);
+    		ConferencesUsersDao.getInstance().removeUserFromConference(conference, user);
     		resultSuccess = "true";
     		
     	}
@@ -240,6 +247,58 @@ public class ConferenceServlet extends HttpServlet {
         }
     }
     
+    private void assignUser(HttpServletRequest request, HttpServletResponse response) throws IOException, ParseException
+    {
+    	String confName = request.getParameter(ProjConst.CONF_NAME);
+    	Conference conference = ConferenceDao.getInstance().getConferenceByName(confName);
+    	
+    	String userName = request.getParameter("userName");
+    	User user = UserDao.getInstance().getUserByUserName(userName);
+    	
+    	String userRole = request.getParameter("userRole");
+    	
+    	JsonObject jsonObject = new JsonObject();
+    	
+    	String resultSuccess;
+    	String message;
+    	try 
+    	{
+    		ConferencesUsersDao.getInstance().assignUserToConference(new ConferencesUsers(conference, user, Integer.parseInt(userRole)));
+    		resultSuccess = "true";
+    		message = "User " + userName + " assigned to conference " + confName + " with role " + UserRole.resolveUserRole(Integer.parseInt(userRole)).toString().toLowerCase();
+    		
+    	}
+    	catch (Exception e)
+    	{
+    		resultSuccess = "false";
+    		message = "Failed to assign user";
+    	}
+    	
+        response.setContentType("application/json;charset=UTF-8");
+        PrintWriter out = response.getWriter();
+        try {
+            Gson gson = new Gson();
+           	String json;
+           	if (ConferenceDao.getInstance().isConferenceNameExists(confName))	
+           	{
+           		jsonObject.addProperty("resultSuccess", resultSuccess);
+           		jsonObject.addProperty("message", message);
+           		json = gson.toJson(jsonObject);
+           	}
+           	else
+           	{
+           		jsonObject.addProperty("resultSuccess", "false");
+           		jsonObject.addProperty("message", "Failed to assign user");
+           		json = gson.toJson(jsonObject);
+           	}
+           	out.write(json);
+            out.flush();
+        }
+         finally {
+            out.close();
+        }
+    }
+    
     private void sendInvitationToUsers(HttpServletRequest request, HttpServletResponse response) throws IOException, ParseException
     {
     	String conf = request.getParameter(ProjConst.CONF_NAME);
@@ -254,7 +313,7 @@ public class ConferenceServlet extends HttpServlet {
     	String message;
     	try 
     	{
-    		ConferenceDao.getInstance().sendConferenceAssignmentNotificationEmailToUsers(conference, user);
+    		ConferencesUsersDao.getInstance().sendConferenceAssignmentNotificationEmailToUsers(conference, user);
     		message = "Conference successfully edited";
     		resultSuccess = "true";
     		

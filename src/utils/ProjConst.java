@@ -27,6 +27,8 @@ public final  class ProjConst {
 	public static final String CONF_START_DATE = "startDate";
 	public static final String CONF_END_DATE = "endDate";
 	
+	public static final String USER_ROLE = "userRole";
+	
 	// company
 	public static final String COMP_NAME = "compName";
 	public static final String COMP_TYPE = "compType";

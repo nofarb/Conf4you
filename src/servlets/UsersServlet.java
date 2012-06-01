@@ -14,10 +14,12 @@ import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import model.Company;
 import model.Conference;
-import model.ConferenceParticipantStatus;
+import model.ConferencesUsers;
 import model.User;
+import model.UserRole;
 import daos.CompanyDao;
 import daos.ConferenceDao;
+import daos.ConferencesUsersDao;
 import daos.UserDao;
 
 /**
@@ -340,8 +342,8 @@ public class UsersServlet extends HttpServlet {
     		UserDao.getInstance().addUser(new User(userName, passportId, company, name, email, phone1, phone2, password, isAdmin));
     		
     		//Assign to conference
-    		ConferenceDao.getInstance().assignParticipantsToConference(
-    				new ConferenceParticipantStatus(conference, UserDao.getInstance().getUserByUserName(userName), null, false));
+    		ConferencesUsersDao.getInstance().assignUserToConference(
+    				new ConferencesUsers(conference, UserDao.getInstance().getUserByUserName(userName), UserRole.PARTICIPANT.getValue(), null, false));
     		
     		message = "Participant successfully added";
     		resultSuccess = "true";

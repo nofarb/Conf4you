@@ -1,8 +1,11 @@
 package model;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * This class states the user types is our system
- * @author nofar
+ * @author Alon
  *
  */
 
@@ -16,4 +19,40 @@ public enum UserRole {
     }
     
     public int getValue() { return value; }
+    
+    public static UserRole resolveUserRole(int intValue)
+    {
+    	switch (intValue) {
+		case 0:
+			return NONE; 
+		case 1:
+			return PARTICIPANT; 
+		case 2:
+			return SPEAKER; 
+		case 3:
+			return RECEPTIONIST; 
+		case 4:
+			return CONF_MNGR;
+		case 5:
+			return ADMIN;
+		default:
+			return NONE; 
+		}
+    }
+    
+	/**
+	 * Get the roles that user can see (scope)
+	 * @param conference
+	 * @return
+	 */
+	public static Map<Integer, String> getAllRoles(){
+		
+		Map<Integer,String> map = new HashMap<Integer,String>();
+		map.put(1, "Participant");
+		map.put(2, "Speaker");
+		map.put(3, "Receptionist");
+		map.put(4, "Conference Manager");
+
+		return map;
+	}
 };  

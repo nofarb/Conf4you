@@ -1,7 +1,6 @@
 <%@page import="model.*"%>
 <%@page import="model.ConferenceFilters.ConferencePreDefinedFilter"%>
-<%@page import="daos.ConferenceDao"%>
-<%@page import="daos.UserDao"%>
+<%@page import="daos.*"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="ISO-8859-1"%>
 <%@ page import="java.util.List"%>
 <%@ page import="java.util.Date"%>
@@ -114,6 +113,11 @@ $(document).ready(function(){
 			   var confName = $(".confName").text();
 			   window.location.href = "userAddEdit.jsp?action=addParticipant&confName=" + confName;
 		 });
+		 
+		 $('.assignUser').click(function () {
+			   var confName = $(".confName").text();
+			   window.location.href = "assignConferenceUser.jsp?confName=" + confName;
+		 });
 	});	
 </script>
 
@@ -207,8 +211,8 @@ $(document).ready(function(){
 		</thead>
 		<tbody>
 			<% 
-			List<ConferenceParticipantStatus> confPart =  ConferenceDao.getInstance().getAllConferenceParticipants(conf); 
-			for (ConferenceParticipantStatus confPartcipant : confPart) { %>
+			List<ConferencesUsers> confParticipants =  ConferencesUsersDao.getInstance().getConderenceUsersByType(conf, UserRole.PARTICIPANT); 
+			for (ConferencesUsers confPartcipant : confParticipants) { %>
 			<tr class="gridRow">
 			<td>
 			<input class="select_one" type="checkbox" value="<%=confPartcipant.getUser().getUserName()%>" name="userNames">
@@ -261,7 +265,7 @@ $(document).ready(function(){
 		</tbody>
 	</table>
 	
-	<% if (confPart.size() != 0) {%>
+	<% if (confParticipants.size() != 0) {%>
 	<div id="controls">
 		<div id="perpage">
 			<select onchange="sorter.size(this.value)">
@@ -308,6 +312,7 @@ $(document).ready(function(){
 	
 	<div style="padding: 6px 0;">
 		<button class="addParticipant" type="button">Add participant</button>
+		<button class="assignUser" type="button">Assign user</button>
 		<button id="sendInvitationToSelected">
 		<img src="/conf4u/resources/imgs/vn_action_email.png" alt="" style="margin-bottom: -2px;">
 		&nbsp; Send invitation to selected

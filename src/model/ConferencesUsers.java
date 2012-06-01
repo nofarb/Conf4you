@@ -11,6 +11,8 @@ import javax.persistence.Id;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
+import com.sun.istack.internal.Nullable;
+
 
 /**
  * This class is an entity class that represents the connection between conferences and their participants in 
@@ -26,15 +28,28 @@ public class ConferencesUsers implements Serializable{
 	
 	private Conference conference;
 	private User user; 
-	private UserRole userRole;
+	private int userRole;
+	private UserAttendanceStatus attendanceStatus;
+	private boolean notifiedByMail;
 	
 	ConferencesUsers() {}  //not public on purpose!
 	
-	public ConferencesUsers(Conference conf, User user, UserRole userRole) 
+	public ConferencesUsers(Conference conf, User user, int userRole) 
 	{
 		this.conference = conf;
 		this.user = user;
 		this.userRole = userRole;
+		this.attendanceStatus = null;
+		this.notifiedByMail = false;
+	}
+	
+	public ConferencesUsers(Conference conf, User user, int userRole, UserAttendanceStatus attendanceStatus, boolean notifiedByMail) 
+	{
+		this.conference = conf;
+		this.user = user;
+		this.userRole = userRole;
+		this.attendanceStatus = attendanceStatus;
+		this.notifiedByMail = notifiedByMail;
 	}
 	
 	@Id
@@ -57,11 +72,26 @@ public class ConferencesUsers implements Serializable{
 	}
 	
 	@Enumerated(EnumType.STRING)
-	public UserRole getUserRole() {
+	public int getUserRole() {
 		return userRole;
 	}
-	public void setUserRole(UserRole userRole) {
+	public void setUserRole(int userRole) {
 		this.userRole = userRole;
 	}
 
+	@Nullable
+	public boolean isNotifiedByMail() {
+		return notifiedByMail;
+	}
+	public void setNotifiedByMail(boolean notifiedByMail) {
+		this.notifiedByMail = notifiedByMail;
+	}
+	
+	public UserAttendanceStatus getAttendanceStatus() {
+		return attendanceStatus;
+	}
+	public ConferencesUsers setAttendanceStatus(UserAttendanceStatus attendanceStatus) {
+		this.attendanceStatus = attendanceStatus;
+		return this;
+	}
 }

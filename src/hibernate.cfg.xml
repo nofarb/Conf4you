@@ -41,7 +41,6 @@
 		<mapping class="model.User" />
 		<mapping class="model.Conference" />
 		<mapping class="model.ConferencesParticipants" />
-		<mapping class="model.ConferenceParticipantStatus" />
 		<mapping class="model.ConferencesUsers" />
 		<mapping class="model.Location" />
 

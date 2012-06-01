@@ -1,6 +1,6 @@
 package utils;
 
-import daos.ConferenceDao;
+import daos.ConferencesUsersDao;
 import model.User;
 
 public class UiHelpers {
@@ -64,7 +64,7 @@ public class UiHelpers {
 		sb.append("<div id=\"vn_header_tabs\">");
 		sb.append("<ul>");
 		
-		if (requstingUser.isAdmin() || ConferenceDao.getInstance().getUserHighestRole(requstingUser).getValue() >= 3)
+		if (requstingUser.isAdmin() || ConferencesUsersDao.getInstance().getUserHighestRole(requstingUser).getValue() >= 4)
 		{
 			//Users tab
 			//--------------------------------------------------------------------
@@ -76,7 +76,7 @@ public class UiHelpers {
 			//--------------------------------------------------------------------
 		}
 		
-		if (requstingUser.isAdmin() || ConferenceDao.getInstance().getUserHighestRole(requstingUser).getValue() >= 3)
+		if (requstingUser.isAdmin() || ConferencesUsersDao.getInstance().getUserHighestRole(requstingUser).getValue() >= 4)
 		{
 			//Conferences tab
 			//--------------------------------------------------------------------
@@ -88,7 +88,7 @@ public class UiHelpers {
 			//--------------------------------------------------------------------
 		}
 		
-		if (requstingUser.isAdmin() || ConferenceDao.getInstance().getUserHighestRole(requstingUser).getValue() >= 3)
+		if (requstingUser.isAdmin() || ConferencesUsersDao.getInstance().getUserHighestRole(requstingUser).getValue() >= 4)
 		{
 			//Companies tab
 			//--------------------------------------------------------------------
@@ -100,7 +100,7 @@ public class UiHelpers {
 			//--------------------------------------------------------------------
 		}
 		
-		if (requstingUser.isAdmin() || ConferenceDao.getInstance().getUserHighestRole(requstingUser).getValue() >= 3)
+		if (requstingUser.isAdmin() || ConferencesUsersDao.getInstance().getUserHighestRole(requstingUser).getValue() >= 4)
 		{
 			//Locations tab
 			//--------------------------------------------------------------------
@@ -112,7 +112,7 @@ public class UiHelpers {
 			//--------------------------------------------------------------------
 		}
 
-		if (requstingUser.isAdmin() || ConferenceDao.getInstance().getUserHighestRole(requstingUser).getValue() >= 3)
+		if (requstingUser.isAdmin() || ConferencesUsersDao.getInstance().getUserHighestRole(requstingUser).getValue() >= 4)
 		{
 			//Reception tab
 			//--------------------------------------------------------------------
