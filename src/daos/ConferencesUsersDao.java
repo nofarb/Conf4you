@@ -1,11 +1,11 @@
 package daos;
 
-import java.util.Dictionary;
-import java.util.HashMap;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
 import model.Conference;
+import model.ConferenceFilters;
 import model.ConferencesUsers;
 import model.User;
 import model.UserAttendanceStatus;
@@ -36,9 +36,10 @@ public class ConferencesUsersDao {
 	 */
 	
 	public void assignUserToConference(ConferencesUsers cu){
+		HibernateUtil.closeSession();
 		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
 		session.beginTransaction();
-		session.saveOrUpdate(cu);
+		session.merge(cu);
 		session.getTransaction().commit();
 	}
 	
@@ -150,6 +151,78 @@ public class ConferencesUsersDao {
 		}
 		
 		return ur;
+	}
+	
+	public List<String> getScopedConferenceByDate(User user, String filter)
+	{
+		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
+		session.beginTransaction();
+		
+		List<String> confList;
+		
+		StringBuilder query = new StringBuilder();
+		String filterQuery = "";
+		
+		Date current = new Date();
+		
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		String startDateFormatted = sdf.format(current);
+		
+
+		
+		
+		
+		ConferenceFilters.ConferenceTimeFilter enumFilter = ConferenceFilters.ConferenceTimeFilter.valueOf(filter); 
+		
+		if (enumFilter == ConferenceFilters.ConferenceTimeFilter.ALL)
+		{
+			filterQuery = "";
+		}
+		else if (enumFilter == ConferenceFilters.ConferenceTimeFilter.CURRENT)
+		{
+			filterQuery = "where '"+ startDateFormatted + "' between DATE_FORMAT(c.startDate, '%Y-%m-%d') and DATE_FORMAT(c.endDate, '%Y-%m-%d')";
+		}
+		else if (enumFilter == ConferenceFilters.ConferenceTimeFilter.FUTURE)
+		{
+			filterQuery = "where DATE_FORMAT(c.startDate,'%Y-%m-%d') > " + startDateFormatted + ")";
+		}
+		else if (enumFilter == ConferenceFilters.ConferenceTimeFilter.PAST)
+		{
+			filterQuery = "where DATE_FORMAT(c.endDate,'%Y-%m-%d') < " + startDateFormatted + ")";
+		}
+		else
+		{
+			//TODO: EXCEPTION
+		}
+
+		if (user.isAdmin())
+		{
+			query.append("select c.name from Conference c ");
+			query.append(filterQuery);
+			confList = (List<String>)session.createQuery(
+					query.toString())
+	                .list();
+		}
+		else
+		{
+			query.append("select c.name from Conference c ");
+			query.append(filterQuery);
+			if (enumFilter == ConferenceFilters.ConferenceTimeFilter.ALL)
+				query.append(" where exists (select 1 from ConferencesUsers cu where cu.user = :user and cu.conference = c)");
+			else
+				query.append(" and exists (select 1 from ConferencesUsers cu where cu.user = :user and cu.conference = c)");
+			
+			
+			confList = (List<String>)session.createQuery(
+					query.toString())
+	                .setEntity("user", user)
+	                .list();
+		}
+				
+		session.getTransaction().commit();
+		
+		return confList;	
+		
 	}
 	
 	public List<User> getUsersForRoleInCompanyInConference(Conference conference, UserRole userRole) {

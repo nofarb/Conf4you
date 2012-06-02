@@ -21,43 +21,47 @@
     <url-pattern>/ConferenceServlet</url-pattern>
   </servlet-mapping>
   <servlet>
-  	<servlet-name>LoginServlet</servlet-name>
-  	<servlet-class>servlets.LoginServlet</servlet-class>
+    <servlet-name>LoginServlet</servlet-name>
+    <servlet-class>servlets.LoginServlet</servlet-class>
   </servlet>
   <servlet-mapping>
-  	<servlet-name>LoginServlet</servlet-name>
-  	<url-pattern>/LoginServlet</url-pattern>
+    <servlet-name>LoginServlet</servlet-name>
+    <url-pattern>/LoginServlet</url-pattern>
   </servlet-mapping>
   <servlet>
-  	<servlet-name>CompanyServlet</servlet-name>
-  	<servlet-class>servlets.CompanyServlet</servlet-class>
+    <servlet-name>CompanyServlet</servlet-name>
+    <servlet-class>servlets.CompanyServlet</servlet-class>
   </servlet>
   <servlet-mapping>
-  	<servlet-name>CompanyServlet</servlet-name>
-  	<url-pattern>/CompanyServlet</url-pattern>
+    <servlet-name>CompanyServlet</servlet-name>
+    <url-pattern>/CompanyServlet</url-pattern>
   </servlet-mapping>
   <servlet>
-  	<servlet-name>LocationServlet</servlet-name>
-  	<servlet-class>servlets.LocationServlet</servlet-class>
+    <servlet-name>LocationServlet</servlet-name>
+    <servlet-class>servlets.LocationServlet</servlet-class>
   </servlet>
   <servlet-mapping>
-  	<servlet-name>LocationServlet</servlet-name>
-  	<url-pattern>/LocationServlet</url-pattern>
+    <servlet-name>LocationServlet</servlet-name>
+    <url-pattern>/LocationServlet</url-pattern>
   </servlet-mapping>
-
-
-   <filter> 
-   	<filter-name>SessionFilter</filter-name> 
-   	<filter-class>filters.SessionFilter</filter-class> 
-   	<init-param> 
-   		<param-name>avoid-urls</param-name> 
-   		<param-value>/login.jsp,/LoginServlet</param-value> 
-   	</init-param> 
-  </filter> 
-  <filter-mapping> 
-  		<filter-name>SessionFilter</filter-name> 
-  		<url-pattern>*.jsp</url-pattern> 
-   </filter-mapping> 
-
-
+  <servlet>
+    <servlet-name>ReceptionServlet</servlet-name>
+    <servlet-class>servlets.ReceptionServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>ReceptionServlet</servlet-name>
+    <url-pattern>/ReceptionServlet</url-pattern>
+  </servlet-mapping>
+  <filter>
+    <filter-name>SessionFilter</filter-name>
+    <filter-class>filters.SessionFilter</filter-class>
+    <init-param>
+      <param-name>avoid-urls</param-name>
+      <param-value>/login.jsp,/LoginServlet</param-value>
+    </init-param>
+  </filter>
+  <filter-mapping>
+    <filter-name>SessionFilter</filter-name>
+    <url-pattern>*.jsp</url-pattern>
+  </filter-mapping>
 </web-app>

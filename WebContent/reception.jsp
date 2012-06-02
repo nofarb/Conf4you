@@ -1,13 +1,17 @@
+<%@page import="model.ConferencesUsers"%>
+<%@page import="model.ConferenceFilters"%>
 <%@page import="java.util.LinkedList"%>
 <%@page import="daos.ConferencesUsersDao"%>
-<%@page import="org.eclipse.jdt.internal.compiler.ast.CompilationUnitDeclaration"%>
+<%@page
+	import="org.eclipse.jdt.internal.compiler.ast.CompilationUnitDeclaration"%>
 <%@page import="model.ConferenceFilters.ConferencePreDefinedFilter"%>
 <%@page import="model.Conference"%>
 <%@page import="model.User"%>
 <%@page import="daos.ConferenceDao"%>
 <%@page import="daos.UserDao"%>
 <%@page import="utils.*"%>
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="ISO-8859-1"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+	pageEncoding="ISO-8859-1"%>
 <%@ page import="java.util.List"%>
 <%@ page import="java.util.Date"%>
 <%@ page import="java.text.SimpleDateFormat"%>
@@ -16,11 +20,10 @@
 <html>
 <head>
 <%= UiHelpers.GetAllJsAndCss().toString() %>
-<script type="text/javascript">
 
+<script type="text/javascript">
 $(document).ready(function(){
 	var message = "<%=request.getParameter("messageNotification")%>";
-	//$('#confStatusFilter :nth-child(2)').attr('selected', 'selected'); // To select via index
 	if (message != "null")
 	{
 		var messageType = "<%=request.getParameter("messageNotificationType")%>";
@@ -38,27 +41,15 @@ $(document).ready(function(){
 		}
 	}
 	
-	$('#apply').click(function () {
-		
-		var filterRadio = $('input[name=usersFilter]');
-		var checkedValue = filterRadio.filter(':checked').val();
-		
-		if(checkedValue == "fiter1")
+	$('.apply').click(function () {
+		var status = $("#confStatusFilter").val();
+		var confName = $("#confNameFilter").val();
+		if (status == null || confName == null)
 		{
-			 var selectedFilterVal = $("#userGeneralFilter").val();
-			 window.location.href = "users.jsp?filterNum=1&filterBy=" + selectedFilterVal; 
+			jError("Some filter input is not correct");
+			return;
 		}
-		else //filter 2
-		{ 
-			 
-			 var selectedRole = $("#role").val();
-			 var selectedConf = $("#conf").val();
-			 window.location.href = "users.jsp?filterNum=2&role=" + selectedRole+"&conf="+selectedConf; 
-		 
-		}
-		
-/* 		var checkedValue = myRadio.filter(':checked').val(); */	
- 	
+		window.location = "reception.jsp?filterStatus="+status +"&filterConfName=" + confName;
 	 });
 	
 	$('#search').click(function ()
@@ -68,49 +59,91 @@ $(document).ready(function(){
 			 
 	 });
 	
-	$('#confStatusFilter').change(function()
+	var getConferenceList = function() {
+		var statusFilter = $("#confStatusFilter");
+		var nameFilter = $("#confNameFilter");
+		$(nameFilter).empty();
+		$.ajax({
+            url: "ReceptionServlet",
+            dataType: 'json',
+            async: false,
+            type: 'POST',
+                data: {
+                	"action": "filterChange",
+                	"filter": $(statusFilter).val(),
+                	"<%=ProjConst.USER_ID%>" : "<%= SessionUtils.getUser(request).getUserId()%>"
+                },
+            success: function(data) {
+                if (data != null)
+                {
+                	 $.each(data, function(i, item){
+                         $(nameFilter).append($("<option></option>").attr("value",item).text(item)); 
+                     });
+                	
+                }
+                else
+               	{
+               		jError("Failed to get conferences name");
+               	}
+            }
+        });
+    };
+    
+    $('#confStatusFilter').change(function()
 	{
-		var selectedConfStatusFilter = $("#confStatusFilter").val();
-		value = selectedConfStatusFilter;
-		key = selectedConfStatusFilter;
+		getConferenceList();
+	}).change();
+    
+	var updateUsersListAndFilters = function(){
+		var filterStatus =  <%=request.getParameter("filterStatus")%>;
+		var filterConfName = <%=request.getParameter("filterConfName")%>;
 		
-		$('#confNameFilter').empty().append($("<option></option>").attr("value",key).text(value)); 
+		if (filterStatus == null)
+		{
+			window.location = "reception.jsp?filterStatus=CURRENT";
+		}
+		if (filterStatus != null && filterConfName == null)
+		{
+			getConferenceList();
+			var confName = $("#confNameFilter").val();
+			if (confName != null)
+			{
+				window.location = "reception.jsp?filterStatus=CURRENT&filterConfName=" + confName;
+			}
+		}
+		if (filterStatus != null && filterConfName != null)
+		{
+			$("#confStatusFilter option[value='" + filterStatus + "']").attr('selected', 'selected');
+			$("#confNameFilter option[value='" + filterConfName + "']").attr('selected', 'selected');
+		}  	
+	};
 		
-
-		
-		
-	}) .change();
-	 
-/* 	 var selectedFilter = $('.selectedFilter').text();
-	 if (selectedFilter != null && selectedFilter.length != 0)
-	 {
-		 $("#filterSelect option[value='" + selectedFilter + "']").attr('selected', 'selected');
-	 } */
-	 
+	updateUsersListAndFilters();
 });
-
 </script>
+
 <body>
-<div id="body_wrap">
+	<div id="body_wrap">
+		<% User sessionUser = UserDao.getInstance().getUserById((Long)session.getAttribute(ProjConst.SESSION_USER_ID));%>
+		<%= UiHelpers.GetHeader(SessionUtils.getUser(request)).toString()%>
+		<%= UiHelpers.GetTabs(SessionUtils.getUser(request), ProjConst.TAB_RECEPTION).toString() %>
 
-<%= UiHelpers.GetHeader(SessionUtils.getUser(request)).toString() %>
-<%= UiHelpers.GetTabs(SessionUtils.getUser(request), ProjConst.TAB_RECEPTION).toString() %>
+		<div id="content">
+			<div class="pageTitle">
+				<div class="titleMain ">Reception</div>
+				<br />
+				<div style="clear: both;"></div>
+				<div class="titleSeparator"></div>
+				<div class="titleSub">Conference Reception</div>
+			</div>
+			<div class="filterStatusHidden" style="display: none;"><%=request.getParameter("filterStatus")%></div>
+			<div class="filterConfNameHidden" style="display: none;"><%=request.getParameter("filterConfName")%></div>
+			<div id="vn_mainbody">
 
-<div id="content">
-	<div class="pageTitle">
-	<div class="titleMain ">Reception</div>
-	<br/>
-	<div style="clear:both;"></div>
-	<div class="titleSeparator"></div>
-	<div class="titleSub">Conference Reception</div>
-	</div>
-
-	<div id="vn_mainbody">
-	
-	<table >
-		<tr>
-			<td>
-			<!-- 
+				<table>
+					<tr>
+						<td>
+							<!-- 
 				<div class="buttons">
 					<a id="createNewUser" href="userAddEdit.jsp?action=add">
 					<span></span>
@@ -119,142 +152,107 @@ $(document).ready(function(){
 					</a>
 				</div>
 				 -->
-			</td>
-		</tr>
-	
-	<!-- Filter : 
-	--------------------------------------->	
-		<tr>
-			<td>
-				<table class="filtersAndApllyTable">
+						</td>
+					</tr>
+
+					<!-- Filter : 
+	--------------------------------------->
 					<tr>
 						<td>
-							<table class="filtersTable" >	
-								<tr id="filterTableRow1">
+							<table class="filtersAndApllyTable">
+								<tr>
 									<td>
-									<!-- <input type="radio"  id="filter2" name="usersFilter" value="filter2" /> --> 
-									</td>
-									<td> Conference Status:
-										<select id="confStatusFilter">
-												<option value="ACTIVE">Active</option>
-												<option value="FUTURE">Future</option>
-												<option value="PAST">Past</option>
-												<option value="ALL">All</option>
-										</select> 
-										Conference Name:
-										<select id="confNameFilter">
-										<%
-											List<Conference> confrences = ConferenceDao.getInstance().getConferences(ConferencePreDefinedFilter.ACTIVE);
-											for(Conference conf : confrences){
-										%>
-											 	<option value="<%=conf.getConferenceId()%>" > <%=conf.getName()%> </option>
-										<%
-											}
-										%>
-										</select>
-									</td>
-									<td>
-										<div class="buttons">
-											<a id="apply"> 
-											<img src="/conf4u/resources/imgs/yes_green.png"> Apply
-											</a>
-										</div>
-									</td>
-								</tr>
-								<tr id="filterTableRow2">
-									<td>
-										<!-- <input type="radio" id="filter1" name="usersFilter" value="fiter1" checked/> --> 
-									</td>
-									<td>
-									<!-- 
+										<table class="filtersTable">
+											<tr id="filterTableRow1">
+												<td>
+													<!-- <input type="radio"  id="filter2" name="usersFilter" value="filter2" /> -->
+												</td>
+												<td>Conference Status: <select id="confStatusFilter">
+														<option
+															value="<%=ConferenceFilters.ConferenceTimeFilter.CURRENT%>"
+															selected="selected">Current</option>
+														<option
+															value="<%=ConferenceFilters.ConferenceTimeFilter.FUTURE%>">Future</option>
+														<option
+															value="<%=ConferenceFilters.ConferenceTimeFilter.PAST%>">Past</option>
+														<option
+															value="<%=ConferenceFilters.ConferenceTimeFilter.ALL%>">All</option>
+												</select> 
+												Conference Name: <select id="confNameFilter"></select>
+												</td>
+												<td>
+													<div class="buttons">
+														<a class="apply" href="javascript:;"> 
+															<img src="/conf4u/resources/imgs/yes_green.png"> 
+															Apply
+														</a>
+													</div>
+												</td>
+											</tr>
+											<tr id="filterTableRow2">
+												<td>
+													<!-- <input type="radio" id="filter1" name="usersFilter" value="fiter1" checked/> -->
+												</td>
+												<td>
+													<!-- 
 										<select id="userGeneralFilter">
 												<option selected="selected" value="all">All Users</option>
 												<option value="active">Active Users</option>
 												<option value="nonActive">Non Active Users</option>
 												<option value="admin">Admin Users</option>
 										</select>
-									-->
-										Search:
-										<input type="text" size="39" maxlength="1000" value="" id="textBoxSearch" onkeyup="tableSearch.search(event);" />
-                    					<!-- <input type="button" value="Search" onclick="tableSearch.runSearch();" />  -->
+									--> Search: <input type="text" size="39" maxlength="1000"
+													value="" id="textBoxSearch"
+													onkeyup="tableSearch.search(event);" /> <!-- <input type="button" value="Search" onclick="tableSearch.runSearch();" />  -->
+												</td>
+												<td>
+													<div class="buttons">
+														<a id="search"> <img
+															src="/conf4u/resources/imgs/search.png"> Search
+														</a>
+													</div>
+												</td>
+											</tr>
+										</table>
 									</td>
-									<td>
-										<div class="buttons">
-											<a id="search"> 
-											<img src="/conf4u/resources/imgs/search.png"> Search
-											</a>
-										</div>
-									</td>
+
 								</tr>
 							</table>
 						</td>
-						
 					</tr>
 				</table>
-			</td>
-		</tr>
-	</table>
-		
-	<!-- Filter end 
-	--------------------------------------->	
-	
-	
-	<div>
-	<div class="groupedList">
-	<table cellpadding="0" cellspacing="0" border="0" id="table1"
-		class="sortable">
-		<thead>
-			<tr>
-				<th  class="nosort"><h3>ID</h3></th>
-				<th><h3>Name</h3></th>
-				<th><h3>Company</h3></th>
-				<th><h3>Company Type</h3></th>
-				<th><h3>Phone 1</h3></th>
-				<th><h3>Phone 2</h3></th>
-				<th class="nosort"><h3>Arrived</h3></th>
-			</tr>
-		</thead>
-		<tbody id="data">
-			<% 
-			// !!! javascript table search http://heathesh.com/post/2010/05/06/Filtering-or-searching-an-HTML-table-using-JavaScript.aspx !!! //
-			List <User> usersList = new LinkedList <User>();
-			usersList = UserDao.getInstance().getUsers();
-			//List<ConferenceParticipantStatus> confParticipants = ConferenceDao.getInstance().getAllConferenceParticipants(conference);
-			
-			/*String filterNumber = request.getParameter("filterNum");
-			if(filterNumber != null){
-				if(filterNumber.trim().equals("1")){
-					String filterBy = request.getParameter("filterBy");
-					
-					if(filterBy != null){
-						if(filterBy.equals("all")){
-							usersList = UserDao.getInstance().getUsers();
-						}
-						else if(filterBy.equals("active")){
-							usersList = UserDao.getInstance().getActiveUsers();
-						}
-						else if(filterBy.equals("nonActive")){
-							usersList = UserDao.getInstance().getNonActiveUsers();
-						}else{ //admin
-							usersList = UserDao.getInstance().getAdmineUsers();
-						}
-						
-					}else{
-						usersList = UserDao.getInstance().getUsers();
-					}
 
-				}else{ //it's 2
-					
-				}
-				
-			}else{
-				usersList = UserDao.getInstance().getUsers();
-			}
-			*/
+				<!-- Filter end 
+	--------------------------------------->
+								<% 
+			String confName = request.getParameter("filterConfName");								
+			if (confName != null && confName != "null") {
+			Conference conference = ConferenceDao.getInstance().getConferenceByName(confName);								
+			List<ConferencesUsers> conferenceUsersList = ConferencesUsersDao.getInstance().getAllConferenceUsers(conference);
+			if (conferenceUsersList.size() > 0) { %>
+
+		<div>
+			<div class="groupedList">
+				<table cellpadding="0" cellspacing="0" border="0" id="table1"
+					class="sortable">
+					<thead>
+						<tr>
+							<th class="nosort"><h3>ID</h3></th>
+							<th><h3>Name</h3></th>
+							<th><h3>Company</h3></th>
+							<th><h3>Company Type</h3></th>
+							<th><h3>Phone 1</h3></th>
+							<th><h3>Phone 2</h3></th>
+							<th class="nosort"><h3>Arrived</h3></th>
+						</tr>
+					</thead>
+					<tbody id="data">
+						<% 
 			String newsDate;
 			
-			for (User user : usersList )
+			for (ConferencesUsers cu : conferenceUsersList)
 			{
+				User user = cu.getUser(); 
 				Date date = user.getLastLogin();
 				if(date != null){
 					newsDate = new SimpleDateFormat("dd-MM-yyyy hh:mm:ss aaa").format(date);
@@ -262,47 +260,53 @@ $(document).ready(function(){
 					newsDate = "";
 				}
 			%>
-			<tr class="gridRow">
-				<!-- <td><%=user.getName()%></td>  -->
-				<td><%=user.getPasportID()%></td>
-				<td><a class="vn_boldtext"href="userDetails.jsp?userId=<%=user.getUserId()%>"> <%=user.getName()%> </a> </td>
-				<td><%=user.getCompany().getName()%></td>
-				<td><%=user.getCompany().getCompanyType().toString()%></td>
-				<td><%=user.getPhone1()%></td>
-				<td><%=user.getPhone2()%></td>
-				<td><a class="vn_boldtext"href="userDetails.jsp?userId=<%=user.getUserId()%>"> <img src="/conf4u/resources/imgs/vn_world.png" alt=""> Details </a> </td>
-			</tr>
-			<%	} %>
-		</tbody>
-	</table>
-	<div id="controls">
-		<div id="perpage">
-			<select onchange="sorter.size(this.value)">
-				<option value="5">5</option>
-				<option value="10" selected="selected">10</option>
-				<option value="20">20</option>
-				<option value="50">50</option>
-				<option value="100">100</option>
-			</select> <span>Entries Per Page</span>
-		</div>
-		<div id="navigation">
-			<img src="css/tables/images/first.gif" width="16" height="16"
-				alt="First Page" onclick="sorter.move(-1,true)" /> <img
-				src="css/tables/images/previous.gif" width="16" height="16"
-				alt="First Page" onclick="sorter.move(-1)" /> <img
-				src="css/tables/images/next.gif" width="16" height="16"
-				alt="First Page" onclick="sorter.move(1)" /> <img
-				src="css/tables/images/last.gif" width="16" height="16"
-				alt="Last Page" onclick="sorter.move(1,true)" />
-		</div>
-		<div id="text">
-			Displaying Page <span id="currentpage"></span> of <span
-				id="pagelimit"></span>
-		</div>
-	</div>
+								<tr class="gridRow">
+									<!-- <td><%=user.getName()%></td>  -->
+									<td><%=user.getPasportID()%></td>
+									<td><a class="vn_boldtext"
+										href="userDetails.jsp?userId=<%=user.getUserId()%>"> <%=user.getName()%>
+									</a></td>
+									<td><%=user.getCompany().getName()%></td>
+									<td><%=user.getCompany().getCompanyType().toString()%></td>
+									<td><%=user.getPhone1()%></td>
+									<td><%=user.getPhone2()%></td>
+									<td><a class="vn_boldtext"
+										href="userDetails.jsp?userId=<%=user.getUserId()%>"> <img
+											src="/conf4u/resources/imgs/vn_world.png" alt="">
+											Details
+									</a></td>
+								</tr>
+								<%	} %>
+							</tbody>
+						</table>
+						<div id="controls">
+							<div id="perpage">
+								<select onchange="sorter.size(this.value)">
+									<option value="5">5</option>
+									<option value="10" selected="selected">10</option>
+									<option value="20">20</option>
+									<option value="50">50</option>
+									<option value="100">100</option>
+								</select> <span>Entries Per Page</span>
+							</div>
+							<div id="navigation">
+								<img src="css/tables/images/first.gif" width="16" height="16"
+									alt="First Page" onclick="sorter.move(-1,true)" /> <img
+									src="css/tables/images/previous.gif" width="16" height="16"
+									alt="First Page" onclick="sorter.move(-1)" /> <img
+									src="css/tables/images/next.gif" width="16" height="16"
+									alt="First Page" onclick="sorter.move(1)" /> <img
+									src="css/tables/images/last.gif" width="16" height="16"
+									alt="Last Page" onclick="sorter.move(1,true)" />
+							</div>
+							<div id="text">
+								Displaying Page <span id="currentpage"></span> of <span
+									id="pagelimit"></span>
+							</div>
+						</div>
 
-	<script type="text/javascript" src="js/tables/script.js"></script>
-	<script type="text/javascript">
+						<script type="text/javascript" src="js/tables/script.js"></script>
+						<script type="text/javascript">
 		var sorter = new TINY.table.sorter("sorter");
 		sorter.head = "head";
 		sorter.asc = "asc";
@@ -316,10 +320,16 @@ $(document).ready(function(){
 		sorter.limitid = "pagelimit";
 		sorter.init("table1", 1);
 	</script>
-</div>
-</div>
-</div>
-</div>
-</div>
+
+
+					</div>
+				</div>
+				<% } else { %>
+					<div>No participants in conference</div>
+				<% } %>
+			<% } %>
+			</div>
+		</div>
+	</div>
 </body>
 </html>

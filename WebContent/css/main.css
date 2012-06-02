@@ -5169,10 +5169,6 @@ div.groupedList,div.actions {
 	vertical-align: top;
 }
 
-.groupedList tr:last-child td {
-	border-bottom: 0 none;
-}
-
 .groupedListEmpty td {
 	border-bottom: 0 none;
 }

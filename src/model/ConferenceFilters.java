@@ -16,7 +16,12 @@ public class ConferenceFilters {
 	 */
 	public enum ConferencePreDefinedFilter {
 
-		ALL, LAST7DAYS, LAST30DAYS, LAST90DAYS, ACTIVE
+		ALL, LAST7DAYS, LAST30DAYS, LAST90DAYS
+	}
+	
+	public enum ConferenceTimeFilter {
+
+		ALL, CURRENT, PAST, FUTURE
 	}
 	
 	

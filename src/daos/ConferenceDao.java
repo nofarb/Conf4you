@@ -54,13 +54,7 @@ public class ConferenceDao {
 				break;
 			case LAST90DAYS:
 				filterDate.add(Calendar.DATE, -90);
-				break;
-			case ACTIVE:
-				filterDate.add(Calendar.YEAR, -40);
-				//start >= date
-				//end <= date
-				break;
-				
+				break;				
 		}
 		
 		dateToFilter.setTime(filterDate.getTimeInMillis());
