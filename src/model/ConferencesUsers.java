@@ -8,6 +8,7 @@ import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
@@ -53,7 +54,7 @@ public class ConferencesUsers implements Serializable{
 	}
 	
 	@Id
-	@OneToOne(cascade = CascadeType.ALL)
+	@ManyToOne(cascade = CascadeType.ALL)
 	public Conference getConference() {
 		return conference;
 	}
@@ -62,7 +63,7 @@ public class ConferencesUsers implements Serializable{
 	}
 	
 	@Id
-	@OneToOne(cascade = CascadeType.ALL)
+	@ManyToOne(cascade = CascadeType.ALL)
 	public User getUser() {
 		return user;
 	}

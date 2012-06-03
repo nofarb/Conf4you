@@ -122,11 +122,10 @@ public class LocationDao {
 	}
 	
 	public void deleteLocation(String name)
-	{
-		Location locationToDelete = getLocationByName(name);
-		
+	{	
 		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
 		session.beginTransaction();
+		Location locationToDelete = getLocationByName(name);
 		session.update(locationToDelete.setActive(false));
 		session.getTransaction().commit();
 	}

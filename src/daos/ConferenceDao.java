@@ -194,9 +194,9 @@ public class ConferenceDao {
 	 * @return
 	 */
 	public Conference assignLocationToConference(Conference conference, Location location){
-		Conference conf = getConferenceByName(conference.getName());
 		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
 		session.beginTransaction();
+		Conference conf = getConferenceByName(conference.getName());
 		session.update(conf.setLocation(location));
 		session.getTransaction().commit();
 		

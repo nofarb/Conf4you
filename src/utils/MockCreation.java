@@ -70,11 +70,4 @@ public class MockCreation {
 		return newConfs;
 		
 	}
-	
-	public static void createUserConfRoleConnection(Conference conference, User user, UserRole userRole){
-		
-		ConferencesUsersDao.getInstance().assignUserToConference(new ConferencesUsers(conference, user, userRole.getValue()));
-
-	}
-	
 }

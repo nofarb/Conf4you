@@ -133,11 +133,10 @@ public class CompanyDao {
 	 * Delete (set active=false) an existing company
 	 */
 	public void deleteCompany(String name)
-	{
-		Company companyToDelete = getCompanyByName(name);
-		
+	{	
 		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
 		session.beginTransaction();
+		Company companyToDelete = getCompanyByName(name);
 		session.update(companyToDelete.setActive(false));
 		session.getTransaction().commit();
 	}
@@ -167,6 +166,6 @@ public class CompanyDao {
 					.list();
 			session.getTransaction().commit();
 			return compenies;
-}
+	}
 	
 }

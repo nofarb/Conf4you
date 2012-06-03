@@ -6,6 +6,7 @@ import java.util.Date;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
@@ -40,7 +41,7 @@ public class ConferencesParticipants implements Serializable {
 	
 	
 	@Id
-	@OneToOne(cascade = CascadeType.ALL)
+	@ManyToOne(cascade = CascadeType.ALL)
 	public Conference getConference() {
 		return conference;
 	}
@@ -49,7 +50,7 @@ public class ConferencesParticipants implements Serializable {
 	}
 	
 	@Id
-	@OneToOne(cascade = CascadeType.ALL)
+	@ManyToOne(cascade = CascadeType.ALL)
 	public User getUser() {
 		return participant;
 	}

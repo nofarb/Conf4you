@@ -231,7 +231,7 @@ public class ReceptionServlet extends HttpServlet {
     	String message;
     	try 
     	{
-    		ConferencesUsersDao.getInstance().assignUserToConference(new ConferencesUsers(conference, user, Integer.parseInt(userRole)));
+    		ConferencesUsersDao.getInstance().assignUserToConference(conference, user, Integer.parseInt(userRole));
     		resultSuccess = "true";
     		message = "User " + userName + " assigned to conference " + confName + " with role " + UserRole.resolveUserRole(Integer.parseInt(userRole)).toString().toLowerCase();
     		

@@ -35,11 +35,13 @@ public class ConferencesUsersDao {
 	 * @return
 	 */
 	
-	public void assignUserToConference(ConferencesUsers cu){
-		HibernateUtil.closeSession();
+	public void assignUserToConference(Conference conference, User user, int role){
 		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
 		session.beginTransaction();
-		session.merge(cu);
+		
+		ConferencesUsers cu = new ConferencesUsers(conference, user, role);
+		
+		session.save(cu);
 		session.getTransaction().commit();
 	}
 	

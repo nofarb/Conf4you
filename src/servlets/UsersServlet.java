@@ -342,8 +342,7 @@ public class UsersServlet extends HttpServlet {
     		UserDao.getInstance().addUser(new User(userName, passportId, company, name, email, phone1, phone2, password, isAdmin));
     		
     		//Assign to conference
-    		ConferencesUsersDao.getInstance().assignUserToConference(
-    				new ConferencesUsers(conference, UserDao.getInstance().getUserByUserName(userName), UserRole.PARTICIPANT.getValue(), null, false));
+    		ConferencesUsersDao.getInstance().assignUserToConference(conference, UserDao.getInstance().getUserByUserName(userName), UserRole.PARTICIPANT.getValue());
     		
     		message = "Participant successfully added";
     		resultSuccess = "true";

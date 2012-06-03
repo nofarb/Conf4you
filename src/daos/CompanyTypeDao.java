@@ -34,7 +34,6 @@ public class CompanyTypeDao {
 		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
 		session.beginTransaction();
 		@SuppressWarnings("unchecked")
-		//List<Location> result = (List<Location>) session.createQuery("from Location").list();
 		List <CompanyType> result = session.createQuery("from CompanyType").list();
 		session.getTransaction().commit();
 		return result;
