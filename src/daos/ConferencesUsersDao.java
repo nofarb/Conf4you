@@ -43,6 +43,7 @@ public class ConferencesUsersDao {
 		session.getTransaction().commit();
 	}
 	
+	@SuppressWarnings("unchecked")
 	public List<ConferencesUsers> getAllConferenceUsers(Conference conference){	
 		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
 		session.beginTransaction();
@@ -55,6 +56,7 @@ public class ConferencesUsersDao {
 		return result;
 	}
 	
+	@SuppressWarnings("unchecked")
 	public List<ConferencesUsers> getConderenceUsersByType(Conference conference, UserRole ur ){	
 		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
 		session.beginTransaction();
@@ -81,6 +83,7 @@ public class ConferencesUsersDao {
 		return result;
 	}
 	
+	@SuppressWarnings("unchecked")
 	public List<User> getUsersThatNotBelongsToConference(Conference conference){	
 		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
 		session.beginTransaction();
@@ -128,6 +131,7 @@ public class ConferencesUsersDao {
 		
 	}
 	
+	@SuppressWarnings("unchecked")
 	public UserRole getUserHighestRole(User user){
 		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
 		session.beginTransaction();
@@ -153,6 +157,7 @@ public class ConferencesUsersDao {
 		return ur;
 	}
 	
+	@SuppressWarnings("unchecked")
 	public List<String> getScopedConferenceByDate(User user, String filter)
 	{
 		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
@@ -225,31 +230,17 @@ public class ConferencesUsersDao {
 		
 	}
 	
-	public List<User> getUsersForRoleInCompanyInConference(Conference conference, UserRole userRole) {
+	@SuppressWarnings("unchecked")
+	public List<User> getUsersForRoleInConference(Conference conference, UserRole ur ){	
+		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
+		session.beginTransaction();
+		List<User> result = (List<User>)HibernateUtil.getSessionFactory().getCurrentSession().createQuery(
+				"select cu from  ConferencesUsers cu where cu.conference = :conf and cu.userRole = :userRole")
+                .setEntity("conf", conference)
+                .setInteger("userRole", ur.getValue())
+                .list();
+		session.getTransaction().commit();
 		
-		/**
-		 * this is mock data, the code in the comment below might be working, was unable to test it
-		 */
-		List<User> users = new LinkedList<User>();
-
-		switch (userRole) {
-		case PARTICIPANT:
-			users.add(UserDao.getInstance().getUserById(1L));
-			break;
-		case CONF_MNGR:
-			users.add(UserDao.getInstance().getUserById(2L));
-			break;
-		case RECEPTIONIST:
-			users.add(UserDao.getInstance().getUserById(3L));
-			break;
-		case SPEAKER:
-			users.add(UserDao.getInstance().getUserById(4L));
-			break;
-
-		default:
-			users.add(UserDao.getInstance().getUserById(5L));
-	    } 
-		
-		return users;
+		return result;
 	}
 }

@@ -246,7 +246,7 @@ $(document).ready(function(){
 						Long confId = Long.valueOf(confIdStr.trim());
 						Conference conf = ConferenceDao.getInstance().getConferenceById(confId);
 						UserRole role = UserRole.valueOf(roleStr.trim());
-						usersList = ConferencesUsersDao.getInstance().getUsersForRoleInCompanyInConference(conf, role);		
+						usersList = ConferencesUsersDao.getInstance().getUsersForRoleInConference(conf, role);		
 					}
 				}
 				
