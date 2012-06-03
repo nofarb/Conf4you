@@ -64,6 +64,8 @@ public final  class ProjConst {
 	public static final String EMAIL_PASSWORD = "password";
 	public static final String EMAIL_PORT = "587";
 	
+	//Cookie
+	public static final int SESSION_COOKIE_MAX_AGE = 86400 * 10; //number of second in a day * num of days
 	public static final String SESSION_USER_ID = "currentSessionUserId";
 	
 }

@@ -6,6 +6,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 import javax.servlet.ServletException;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -61,6 +62,11 @@ public class LoginServlet extends HttpServlet {
 			if (user != null)
 			{
 				request.getSession(true).setAttribute(ProjConst.SESSION_USER_ID, user.getUserId());
+
+				// Update Cookie
+				Cookie userCookie = new Cookie(ProjConst.SESSION_USER_ID, String.valueOf(user.getUserId()));
+				userCookie.setMaxAge(ProjConst.SESSION_COOKIE_MAX_AGE);
+				response.addCookie(userCookie);
 								
 				//updating last login time:
 				user.setLastLogin(new Date());

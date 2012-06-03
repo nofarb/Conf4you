@@ -227,7 +227,8 @@ $(document).ready(function(){
 			if (confName != null && confName != "null") {
 			Conference conference = ConferenceDao.getInstance().getConferenceByName(confName);								
 			List<ConferencesUsers> conferenceUsersList = ConferencesUsersDao.getInstance().getAllConferenceUsers(conference);
-			if (conferenceUsersList.size() > 0) { %>
+			if (conferenceUsersList.size() > 0) { 
+			%>
 
 		<div>
 			<div class="groupedList">
