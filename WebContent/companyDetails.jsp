@@ -146,7 +146,7 @@ $(document).ready(function(){
 	<div id="dialog-confirm" title="Delete company?" style="display:none;">
 		<p><span class="ui-icon ui-icon-alert" style="float:left; margin:0 7px 20px 0;"></span>Company will be deleted. Are you sure?</p>
 	</div>
-	
+	<!-- 
 	<script type="text/javascript" src="js/tables/script.js"></script>
 	<script type="text/javascript">
 		var sorter = new TINY.table.sorter("sorter");
@@ -162,6 +162,7 @@ $(document).ready(function(){
 		sorter.limitid = "pagelimit";
 		sorter.init("table", 1);
 	</script>
+	-->
 	</div>
 </div>
 </body>

@@ -54,8 +54,9 @@ $(document).ready(function(){
 	
 	$('#search').click(function ()
 	{
-			
-		alert("Search");
+		//   http://heathesh.com/post/2010/05/06/Filtering-or-searching-an-HTML-table-using-JavaScript.aspx
+		//alert("Search");
+		//tableSearch.runSearch();
 			 
 	 });
 	
@@ -95,23 +96,23 @@ $(document).ready(function(){
 	}).change();
     
 	var updateUsersListAndFilters = function(){
-		var filterStatus =  <%=request.getParameter("filterStatus")%>;
-		var filterConfName = <%=request.getParameter("filterConfName")%>;
+		var filterStatus = "<%=request.getParameter("filterStatus")%>";
+		var filterConfName = "<%=request.getParameter("filterConfName")%>";
 		
-		if (filterStatus == null)
+		if (filterStatus == "null")
 		{
 			window.location = "reception.jsp?filterStatus=CURRENT";
 		}
-		if (filterStatus != null && filterConfName == null)
+		if (filterStatus != "null" && filterConfName == "null")
 		{
 			getConferenceList();
 			var confName = $("#confNameFilter").val();
-			if (confName != null)
+			if (confName != "null")
 			{
 				window.location = "reception.jsp?filterStatus=CURRENT&filterConfName=" + confName;
 			}
 		}
-		if (filterStatus != null && filterConfName != null)
+		if (filterStatus != "null" && filterConfName != "null")
 		{
 			$("#confStatusFilter option[value='" + filterStatus + "']").attr('selected', 'selected');
 			$("#confNameFilter option[value='" + filterConfName + "']").attr('selected', 'selected');
@@ -119,6 +120,8 @@ $(document).ready(function(){
 	};
 		
 	updateUsersListAndFilters();
+	
+	tableSearch.init();
 });
 </script>
 
@@ -168,15 +171,10 @@ $(document).ready(function(){
 													<!-- <input type="radio"  id="filter2" name="usersFilter" value="filter2" /> -->
 												</td>
 												<td>Conference Status: <select id="confStatusFilter">
-														<option
-															value="<%=ConferenceFilters.ConferenceTimeFilter.CURRENT%>"
-															selected="selected">Current</option>
-														<option
-															value="<%=ConferenceFilters.ConferenceTimeFilter.FUTURE%>">Future</option>
-														<option
-															value="<%=ConferenceFilters.ConferenceTimeFilter.PAST%>">Past</option>
-														<option
-															value="<%=ConferenceFilters.ConferenceTimeFilter.ALL%>">All</option>
+														<option value="<%=ConferenceFilters.ConferenceTimeFilter.CURRENT%>">Current</option>
+														<option value="<%=ConferenceFilters.ConferenceTimeFilter.FUTURE%>">Future</option>
+														<option value="<%=ConferenceFilters.ConferenceTimeFilter.PAST%>">Past</option>
+														<option value="<%=ConferenceFilters.ConferenceTimeFilter.ALL%>">All</option>
 												</select> 
 												Conference Name: <select id="confNameFilter"></select>
 												</td>
@@ -246,7 +244,7 @@ $(document).ready(function(){
 							<th class="nosort"><h3>Arrived</h3></th>
 						</tr>
 					</thead>
-					<tbody id="data">
+					<tbody id="tabelData">
 						<% 
 			String newsDate;
 			
@@ -331,5 +329,55 @@ $(document).ready(function(){
 			</div>
 		</div>
 	</div>
+	<script type="text/javascript">
+		//define the table search object, which can implement both functions and properties
+    	window.tableSearch = {};
+
+    	//initialize the search, setup the current object
+	    tableSearch.init = function()
+		{
+	        //define the properties I want on the tableSearch object
+	        this.Rows = document.getElementById('tabelData').getElementsByTagName('TR');
+	        this.RowsLength = tableSearch.Rows.length;
+	        this.RowsText = [];
+	       
+	        //loop through the table and add the data to the table search object
+	        for (var i = 0; i < tableSearch.RowsLength; i++) {
+	            this.RowsText[i] = (tableSearch.Rows[i].innerText) ? tableSearch.Rows[i].innerText.toUpperCase() : tableSearch.Rows[i].textContent.toUpperCase();
+	        }
+	    };
+	    //onlys shows the relevant rows as determined by the search string
+        tableSearch.runSearch = function() {
+			//get the search term
+            this.Term = document.getElementById('textBoxSearch').value.toUpperCase();
+           
+            //loop through the rows and hide rows that do not match the search query
+            for (var i = 0, row; row = this.Rows[i], rowText = this.RowsText[i]; i++)
+            {
+                row.style.display = ((rowText.indexOf(this.Term) != -1) || this.Term === '') ? '' : 'none';
+            }
+        };
+		
+        //handles the enter key being pressed
+        tableSearch.search = function(e) 
+        {
+			//checks if the user pressed the enter key, and if they did then run the search
+            var keycode;
+            if (window.event)
+            {
+            	keycode = window.event.keyCode; 
+            }
+            else if (e)
+            {
+            	keycode = e.which;
+            }
+            else { return false; }
+            if (keycode == 13) 
+            {
+                tableSearch.runSearch();
+            }
+            else { return false; }
+        };
+	</script>
 </body>
 </html>

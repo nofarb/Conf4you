@@ -11,12 +11,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
-<link type="text/css" href="css/main.css" rel="stylesheet" />
-<link type="text/css" href="css/tables/tableList.css" rel="stylesheet" />
-<link type="text/css" href="css/cupertino/jquery-ui-1.8.18.custom.css"
-	rel="stylesheet" />
-<script type="text/javascript" src="js/jquery-1.7.1.min.js"></script>
-<script type="text/javascript" src="js/jquery-ui-1.8.18.custom.min.js"></script>
+<%= UiHelpers.GetAllJsAndCss().toString() %>
 
 <script type="text/javascript">	
 $(document).ready(function(){
@@ -147,7 +142,7 @@ $(document).ready(function(){
 		<p><span class="ui-icon ui-icon-alert" style="float:left; margin:0 7px 20px 0;"></span>Location will be deleted. Are you sure?</p>
 	</div>
 	
-
+	<!-- 
 	<script type="text/javascript" src="js/tables/script.js"></script>
 	<script type="text/javascript">
 		var sorter = new TINY.table.sorter("sorter");
@@ -163,6 +158,7 @@ $(document).ready(function(){
 		sorter.limitid = "pagelimit";
 		sorter.init("table", 1);
 	</script>
+	 -->
 	</div>
 </div>
 </body>
