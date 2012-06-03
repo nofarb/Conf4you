@@ -393,7 +393,7 @@ $(document).ready(function(){
 	 }, "The user name already exists");
 	
 	
-	 $.validator.addMethod("phoneNumberValidator", function(value, element) {
+	 $.validator.addMethod("phone1Validator", function(value, element) {
 		 
 		 var phoneNumber = value;
 		 
@@ -404,7 +404,24 @@ $(document).ready(function(){
        	 	return true;
       	 	else 
       			return false;		 
-    }, "");
+    }, "Phone number is invalid");
+	 
+$.validator.addMethod("phone2Validator", function(value, element) {
+		 
+		 var phoneNumber =  $.trim(value);
+		 
+		 if(phoneNumber == ""){
+			 return true;
+		 }
+		 
+		 var isCellNum = /^05[2-9]-?[2-9]\d{6}$/.test(phoneNumber);
+		 var isHomeNum = /^0[23489]-?[2-9]\d{6}$/.test(phoneNumber);
+
+			if(isCellNum == true || isHomeNum == true)
+       	 	return true;
+      	 	else 
+      			return false;		 
+    }, "Phone number is invalid");
 	
 	$("#userAddEditForm").validate({
 		  onkeyup: false,
@@ -441,11 +458,11 @@ $(document).ready(function(){
 			  },
 			  <%=ProjConst.PHONE1%>: {
 			  	required: true,
-			  	phoneNumberValidator: true
+			  	phone1Validator: true
 			  },
 			  <%=ProjConst.PHONE2%>: {
 			  	required: false,
-			  	phoneNumberValidator: true
+			  	phone2Validator: true
 			  },
 			  <%=ProjConst.EMAIL%>: {
 			  	required: true,
