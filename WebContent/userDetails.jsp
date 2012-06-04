@@ -1,4 +1,5 @@
-<%@page import="model.User"%>
+<%@page import="daos.ConferencesUsersDao"%>
+<%@page import="model.*"%>
 <%@page import="model.ConferenceFilters.ConferencePreDefinedFilter"%>
 <%@page import="daos.ConferenceDao"%>
 <%@page import="daos.UserDao"%>
@@ -78,6 +79,17 @@ $(document).ready(function(){
 				</a>
 				</div>
 			</div>
+			<% List<ConferencesUsers> confUsers = ConferencesUsersDao.getInstance().getAllConferenceUsersByUser(user); 
+			if (confUsers !=null && ConferencesUsersDao.getInstance().getAllConferenceUsersByUser(user).size() != 0) { %>
+			<div class="vn_actionbuttondiv">
+				<div class="title">
+				<a title="Remove from conference" href="removeFromConference.jsp?userId=<%=userId%>">
+					<img src="/conf4u/resources/imgs/vn_action_edit.png" alt=""> 
+					Remove from conference
+				</a>
+				</div>
+			</div>
+			<% } %>
 		</div>
 	</div>
 	<div class="vn_detailsgeneraltitle">Details </div>
@@ -120,6 +132,7 @@ $(document).ready(function(){
 			</tr>
 			<tr>
 				<td>Last Login</td>
+				<td>
 			<%
 				Date laseLogin = user.getLastLogin();
 				String newsDate;
@@ -127,11 +140,28 @@ $(document).ready(function(){
 					newsDate = new SimpleDateFormat("dd-MM-yyyy hh:mm:ss aaa").format(laseLogin);
 
 			%>
-				<td><%=newsDate%></td>
+				<%=newsDate%>
 			<%		
 				}
 			%>
-				
+			</td>
+			</tr>
+			<tr>
+				<td>Conferences</td>
+				<td>
+				<% 
+				if (confUsers != null)
+				{
+					for (ConferencesUsers cu : confUsers) {
+						String url = UiHelpers.GetConferenceDetailsUrl(cu.getConference().getName());
+						String role = UserRole.resolveUserRoleToFriendlyName(cu.getUserRole());
+					%>
+					<div><a href="<%=url%>"><%=cu.getConference().getName()%></a> with role <%=role%></div>
+				<% } %>
+				<% }else{ %>
+					No assigned conferences
+				<% } %>
+				</td>
 			</tr>
 		</tbody>
 	</table>

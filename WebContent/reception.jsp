@@ -222,13 +222,13 @@ $(document).ready(function(){
 
 				<!-- Filter end 
 	--------------------------------------->
-								<% 
-			String confName = request.getParameter("filterConfName");								
-			if (confName != null && confName != "null") {
-			Conference conference = ConferenceDao.getInstance().getConferenceByName(confName);								
-			List<ConferencesUsers> conferenceUsersList = ConferencesUsersDao.getInstance().getAllConferenceUsers(conference);
-			if (conferenceUsersList.size() > 0) { 
-			%>
+								<%
+									String confName = request.getParameter("filterConfName");								
+									if (confName != null && confName != "null") {
+									Conference conference = ConferenceDao.getInstance().getConferenceByName(confName);								
+									List<ConferencesUsers> conferenceUsersList = ConferencesUsersDao.getInstance().getAllConferenceUsersByConference(conference);
+									if (conferenceUsersList.size() > 0) {
+								%>
 
 		<div>
 			<div class="groupedList">

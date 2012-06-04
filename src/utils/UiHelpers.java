@@ -167,4 +167,15 @@ public class UiHelpers {
 		
 		return sb;	
 	}
+	
+	public static String GetConferenceDetailsUrl(String confName)
+	{
+		return "conferenceDetails.jsp?conferenceName=" + confName;
+	}
+	
+	public static String GetUserDetailsUrl(String userId)
+	{
+		return "userDetails.jsp?userId=" + userId;
+	}
+	
 }

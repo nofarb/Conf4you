@@ -303,7 +303,6 @@ $(document).ready(function(){
 				id="pagelimit"></span>
 		</div>
 	</div>
-
 	<script type="text/javascript" src="js/tables/script.js"></script>
 	<script type="text/javascript">
 		var sorter = new TINY.table.sorter("sorter");

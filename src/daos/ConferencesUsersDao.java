@@ -53,7 +53,7 @@ public class ConferencesUsersDao {
 	}
 	
 	@SuppressWarnings("unchecked")
-	public List<ConferencesUsers> getAllConferenceUsers(Conference conference){
+	public List<ConferencesUsers> getAllConferenceUsersByConference(Conference conference){
 		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
 		List<ConferencesUsers> result = null;
 		try {
@@ -61,6 +61,25 @@ public class ConferencesUsersDao {
 			result = (List<ConferencesUsers>)HibernateUtil.getSessionFactory().getCurrentSession().createQuery(
 					"select cu from  ConferencesUsers cu where cu.conference = :conf")
 	                .setEntity("conf", conference)
+	                .list();
+			session.getTransaction().commit();
+		}
+		catch (Exception e) {
+			session.getTransaction().rollback();
+		}		
+	
+		return result;
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<ConferencesUsers> getAllConferenceUsersByUser(User user){
+		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
+		List<ConferencesUsers> result = null;
+		try {
+			session.beginTransaction();
+			result = (List<ConferencesUsers>)HibernateUtil.getSessionFactory().getCurrentSession().createQuery(
+					"select cu from  ConferencesUsers cu where cu.user = :user")
+	                .setEntity("user", user)
 	                .list();
 			session.getTransaction().commit();
 		}

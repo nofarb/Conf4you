@@ -65,7 +65,6 @@ $(document).ready(function(){
 	 		}
 	 	});
 	 	
-
 		 $('.removePart').click(function () { 
 			 var $removeParticipant = $(this);
 			 var confName = "<%=request.getParameter("conferenceName")%>";
@@ -86,7 +85,7 @@ $(document).ready(function(){
 					            data: {
 					            	"action": "removeUser",
 					            	"confName": confName,
-					            	"userName": $removeParticipant.closest('tr').find('td.userNameTd').text()
+					            	"userName": $removeParticipant.closest('tr').find('td#userNameTd').text()
 					            },
 					        success: function(data) {
 					            if (data != null){
@@ -137,6 +136,7 @@ $(document).ready(function(){
 									}
 									else
 									{
+										$( this ).dialog( "close" );
 										jError(data.message);
 									}
 					            }
@@ -166,6 +166,8 @@ $(document).ready(function(){
 </head>
 
 <body>
+<%User user = UserDao.getInstance().getUserById((Long)session.getAttribute(ProjConst.SESSION_USER_ID));%>
+
 <%= UiHelpers.GetHeader().toString() %>
 <%= UiHelpers.GetTabs(SessionUtils.getUser(request), ProjConst.TAB_CONFERENCES).toString() %>
 
@@ -227,27 +229,44 @@ $(document).ready(function(){
 				<td>End Date</td>
 				<td><%=endDateFormatted%></td>
 			</tr>
+			<tr>
+				<td>Users</td>
+				<td>
+				<% List<ConferencesUsers> confUsers = ConferencesUsersDao.getInstance().getAllConferenceUsersByConference(conf); 
+				if (confUsers != null)
+				{
+					for (ConferencesUsers cu : confUsers) {
+						String url = UiHelpers.GetUserDetailsUrl(String.valueOf(cu.getUser().getUserId()));
+						String role = UserRole.resolveUserRoleToFriendlyName(cu.getUserRole());
+					%>
+					<div><a href="<%=url%>"><%=cu.getUser().getUserName()%></a> with role <%=role%></div>
+					<% } %>
+				<% }else{ %>
+					<div>No assigned users</div>
+				<% } %>
+				</td>
+			</tr>
 		</tbody>
 	</table>
 	</div>
-	
 	<div style="clear:both"></div>
-	<h3> Invited participants</h3>
+	<div style="margin-top: 10px;"><h3>Invited participants</h3></div>
 	
-	<table class="groupedList" cellspacing="0" border="0" style="border-collapse:collapse;">
+	<div>
+	<div class="groupedList" style="width: 1000px;">
+	<table class="sortable" id="table2" cellspacing="0" border="0">
 		<thead>
 		<tr>
-			<th style="width: 22px;">
+			<th class="nosort">
 				<input class="select_all" type="checkbox">
 			</th>
 			<th>User name</th>
 			<th>Name</th>
 			<th>Email</th>
 			<th>Passport ID</th>
-			<th>Invitation sent</th>
+			<th class="nosort">Invitation sent</th>
 			<th>Invitation status</th>
-			<th style="min-width: 50px;"></th>
-			<th style="min-width: 50px;"></th>
+			<th class="nosort"></th>
 		</tr>
 		</thead>
 		<tbody>
@@ -256,9 +275,9 @@ $(document).ready(function(){
 			for (ConferencesUsers confPartcipant : confParticipants) { %>
 			<tr class="gridRow">
 			<td>
-				<input class="select_one" type="checkbox" value="<%=confPartcipant.getUser().getUserName()%>" name="userNames">
+				<input id="select_one" type="checkbox" value="<%=confPartcipant.getUser().getUserName()%>" name="userNames">
 			</td>
-			<td class="userNameTd"><%=confPartcipant.getUser().getUserName()%></td>
+			<td id="userNameTd"><%=confPartcipant.getUser().getUserName()%></td>
 			<td><%=confPartcipant.getUser().getName()%></td>
 			<td><%=confPartcipant.getUser().getEmail()%></td>
 			<td><%=confPartcipant.getUser().getPasportID()%></td>
@@ -290,12 +309,6 @@ $(document).ready(function(){
 				<span class="status"><%=statusString%></span>
 			</td>
 			<td>
-			<a class="editParticipant" href="javascript:;">
-			<img src="/conf4u/resources/imgs/vn_action_edit.png" alt="">
-			Edit
-			</a>
-			</td>
-			<td>
 			<a class="removePart"  href="javascript:;">
 			<img src="/conf4u/resources/imgs/vn_action_delete.png" alt="">
 			Delete
@@ -305,7 +318,6 @@ $(document).ready(function(){
 			<%} %>
 		</tbody>
 	</table>
-	
 	<% if (confParticipants.size() != 0) {%>
 	<div id="controls">
 		<div id="perpage">
@@ -345,13 +357,13 @@ $(document).ready(function(){
 		sorter.paginate = true;
 		sorter.currentid = "currentpage";
 		sorter.limitid = "pagelimit";
-		sorter.init("table1", 1);
+		sorter.init("table2", 2);
 	</script>
 	<%} else { %>
 		<div>No participants in the conference</div>
 	<% }%>
-	
-	<div style="padding: 6px 0;">
+	</div>
+	<div style="padding: 10px 0;">
 		<button class="addParticipant" type="button">Add participant</button>
 		<button class="assignUser" type="button">Assign user</button>
 		<button id="sendInvitationToSelected">
@@ -368,7 +380,7 @@ $(document).ready(function(){
 		<p><span class="ui-icon ui-icon-alert" style="float:left; margin:0 7px 20px 0;"></span>Conference will be deleted. Are you sure?</p>
 	</div>
 	
-		<div id="dialogConfirmRemoveParticipant" title="Remove participant from conference?" style="display:none;">
+	<div id="dialogConfirmRemoveParticipant" title="Remove participant from conference?" style="display:none;">
 		<p><span class="ui-icon ui-icon-alert" style="float:left; margin:0 7px 20px 0;"></span>Participant will be removed. Are you sure?</p>
 	</div>
 
@@ -385,8 +397,9 @@ $(document).ready(function(){
 		sorter.paginate = true;
 		sorter.currentid = "currentpage";
 		sorter.limitid = "pagelimit";
-		sorter.init("table", 1);
+		sorter.init("table2", 1);
 	</script>
+	</div>
 	</div>
 </div>
 </body>

@@ -40,6 +40,26 @@ public enum UserRole {
 		}
     }
     
+    public static String resolveUserRoleToFriendlyName(int intValue)
+    {
+    	switch (intValue) {
+		case 0:
+			return "None"; 
+		case 1:
+			return "Participant"; 
+		case 2:
+			return "Speaker"; 
+		case 3:
+			return "Receptionist"; 
+		case 4:
+			return "Conference Manager";
+		case 5:
+			return "Admin";
+		default:
+			return "None";
+		}
+    }
+    
 	/**
 	 * Get the roles that user can see (scope)
 	 * @param conference

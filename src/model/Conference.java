@@ -92,16 +92,6 @@ public class Conference implements Serializable {
 		return this;
 	}
 
-	@Temporal(TemporalType.TIMESTAMP)
-	public Date getEndDate() {
-		return endDate;
-	}
-
-	public Conference setEndDate(Date endDate) {
-		this.endDate = endDate;
-		return this;
-	}
-
 	public boolean isActive() {
 		return active;
 	}
@@ -111,4 +101,13 @@ public class Conference implements Serializable {
 		return this;
 	}
 
+	@Temporal(TemporalType.TIMESTAMP)
+	public Date getEndDate() {
+		return endDate;
+	}
+
+	public Conference setEndDate(Date endDate) {
+		this.endDate = endDate;
+		return this;
+	}
 }
