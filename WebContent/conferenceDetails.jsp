@@ -65,12 +65,53 @@ $(document).ready(function(){
 	 		}
 	 	});
 	 	
-		$('#deleteSelectedParticipants').click(function () {
-		 	//todo
-	 	});
+
+		 $('.removePart').click(function () { 
+			 var $removeParticipant = $(this);
+			 var confName = "<%=request.getParameter("conferenceName")%>";
+			 $('#dialogConfirmRemoveParticipant').dialog({
+				resizable: false,
+				height: 150,
+				width: 400,
+				modal: true,
+				hide: "fade", 
+	            show: "fade",
+				buttons: {
+					"Delete": function() {
+						$.ajax({
+					        url: "ConferenceServlet",
+					        dataType: 'json',
+					        async: false,
+					        type: 'POST',
+					            data: {
+					            	"action": "removeUser",
+					            	"confName": confName,
+					            	"userName": $removeParticipant.closest('tr').find('td.userNameTd').text()
+					            },
+					        success: function(data) {
+					            if (data != null){
+									if (data.resultSuccess == "true")
+									{
+								 	   	window.location = "conferenceDetails.jsp?conferenceName=" + confName + "&messageNotification=" + data.message + "&messageNotificationType=success";
+									}
+									else
+									{
+										$( this ).dialog( "close" );
+										jError(data.message);
+									}
+					            }
+					        }
+					    });
+					},
+					Cancel: function() {
+						$( this ).dialog( "close" );
+					}
+				}
+			});
+		});
 	 	
 		 $('.deleteConf').click(function () { 
-			 $('#dialog-confirm').dialog({
+			 $('#dialogConfirmDeleteConf').dialog({
 				resizable: false,
 				height: 150,
 				width: 400,
@@ -215,9 +256,9 @@ $(document).ready(function(){
 			for (ConferencesUsers confPartcipant : confParticipants) { %>
 			<tr class="gridRow">
 			<td>
-			<input class="select_one" type="checkbox" value="<%=confPartcipant.getUser().getUserName()%>" name="userNames">
+				<input class="select_one" type="checkbox" value="<%=confPartcipant.getUser().getUserName()%>" name="userNames">
 			</td>
-			<td><%=confPartcipant.getUser().getUserName()%></td>
+			<td class="userNameTd"><%=confPartcipant.getUser().getUserName()%></td>
 			<td><%=confPartcipant.getUser().getName()%></td>
 			<td><%=confPartcipant.getUser().getEmail()%></td>
 			<td><%=confPartcipant.getUser().getPasportID()%></td>
@@ -255,7 +296,7 @@ $(document).ready(function(){
 			</a>
 			</td>
 			<td>
-			<a class="deleteParticipant"  href="javascript:;">
+			<a class="removePart"  href="javascript:;">
 			<img src="/conf4u/resources/imgs/vn_action_delete.png" alt="">
 			Delete
 			</a>
@@ -323,8 +364,12 @@ $(document).ready(function(){
 		</button>
 	</div>
 		
-	<div id="dialog-confirm" title="Delete conference?" style="display:none;">
+	<div id="dialogConfirmDeleteConf" title="Delete conference?" style="display:none;">
 		<p><span class="ui-icon ui-icon-alert" style="float:left; margin:0 7px 20px 0;"></span>Conference will be deleted. Are you sure?</p>
+	</div>
+	
+		<div id="dialogConfirmRemoveParticipant" title="Remove participant from conference?" style="display:none;">
+		<p><span class="ui-icon ui-icon-alert" style="float:left; margin:0 7px 20px 0;"></span>Participant will be removed. Are you sure?</p>
 	</div>
 
 	<script type="text/javascript" src="js/tables/script.js"></script>

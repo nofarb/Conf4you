@@ -29,10 +29,17 @@ public class CompanyDao {
 	 */
 	public List<Company> getAllCompanies() {
 		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
-		session.beginTransaction();
-		@SuppressWarnings("unchecked")
-		List<Company> result = (List<Company>) session.createQuery("select comp from Company comp where comp.active = '1'").list();
-		session.getTransaction().commit();
+		List<Company> result = null;
+		
+		try {
+			session.beginTransaction();
+			result = (List<Company>) session.createQuery("select comp from Company comp where comp.active = '1'").list();
+			session.getTransaction().commit();
+		}
+		catch (Exception e) {
+			session.getTransaction().rollback();
+		}
+
 		return result;
 	}
 
@@ -41,15 +48,21 @@ public class CompanyDao {
 	 */
 	public List<Company> getCompaniesOfType(CompanyType companyType) {
 		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
-		session.beginTransaction();
+		List<Company> results = null;
 		
-		@SuppressWarnings("unchecked")
-		List<Company> companies = (List<Company>)HibernateUtil.getSessionFactory().getCurrentSession().createQuery(
-				"from Company where companyType=:companyType")
-                .setString("companyType",  companyType.toString())
-                .list();
-		session.getTransaction().commit();
-		return companies;
+		try {
+			session.beginTransaction();
+			results = (List<Company>)HibernateUtil.getSessionFactory().getCurrentSession().createQuery(
+					"from Company where companyType=:companyType")
+	                .setString("companyType",  companyType.toString())
+	                .list();
+			session.getTransaction().commit();
+		}
+		catch (Exception e) {
+			session.getTransaction().rollback();
+		}
+
+		return results;
 	}
 
 	/**
@@ -78,11 +91,16 @@ public class CompanyDao {
 		else
 		{
 			Session session = HibernateUtil.getSessionFactory().getCurrentSession();
-			session.beginTransaction();
-			session.merge(company);
-			session.getTransaction().commit();
-			return company;
+			try {
+				session.beginTransaction();
+				session.merge(company);
+				session.getTransaction().commit();
+			}
+			catch (Exception e) {
+				session.getTransaction().rollback();
+			}
 		}
+		return company;
 	}
 	
 	/**
@@ -90,9 +108,14 @@ public class CompanyDao {
 	 */
 	public Company updateCompany(Company company) {
 		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
-		session.beginTransaction();
-		session.update(company); 
-		session.getTransaction().commit();
+		try {
+			session.beginTransaction();
+			session.update(company); 
+			session.getTransaction().commit();
+		}
+		catch (Exception e) {
+			session.getTransaction().rollback();
+		}
 		return company;
 	}
 	
@@ -102,16 +125,23 @@ public class CompanyDao {
 	 * @return
 	 */
 	public Company getCompanyById(long id){
-
 		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
-		session.beginTransaction();
+		Company result = null;
 		
-		Company comp = (Company)HibernateUtil.getSessionFactory().getCurrentSession().createQuery(
-				"select comp from  Company comp where comp.companyID = :compId")
-                .setLong("compId",id)
-                .uniqueResult();
-		session.getTransaction().commit();
-		return comp;
+		try {
+			session.beginTransaction();
+			
+			result = (Company)HibernateUtil.getSessionFactory().getCurrentSession().createQuery(
+					"select comp from  Company comp where comp.companyID = :compId")
+	                .setLong("compId",id)
+	                .uniqueResult();
+			session.getTransaction().commit();
+		}
+		catch (Exception e) {
+			session.getTransaction().rollback();
+		}
+
+		return result;
 	}
 
 	/**
@@ -120,13 +150,21 @@ public class CompanyDao {
 	public Boolean isCompanyNameExists(String name)
 	{
 		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
-		session.beginTransaction();
-		Boolean exists = session.createQuery(
-				"select comp from  Company comp where comp.name = :name")
-                .setString("name", name)
-                .uniqueResult() != null;
-		session.getTransaction().commit();
-		return exists;
+		Boolean result = null;
+		
+		try {
+			session.beginTransaction();
+			result = session.createQuery(
+					"select comp from  Company comp where comp.name = :name")
+	                .setString("name", name)
+	                .uniqueResult() != null;
+			session.getTransaction().commit();
+		}
+		catch (Exception e) {
+			session.getTransaction().rollback();
+		}
+
+		return result;
 	}
 
 	/**
@@ -135,37 +173,60 @@ public class CompanyDao {
 	public void deleteCompany(String name)
 	{	
 		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
-		session.beginTransaction();
-		Company companyToDelete = getCompanyByName(name);
-		session.update(companyToDelete.setActive(false));
-		session.getTransaction().commit();
+		
+		try {
+			session.beginTransaction();
+			Company companyToDelete = getCompanyByName(name);
+			session.update(companyToDelete.setActive(false));
+			session.getTransaction().commit();
+		}
+		catch (Exception e) {
+			session.getTransaction().rollback();
+		}
 	}
 	
 	/**
 	 * Get a company
 	 */
 	public Company getCompanyByName(String name){
+		
 		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
-		session.beginTransaction();
-		Company comp = (Company)session.createQuery(
-				"select comp from  Company comp where comp.name = :name")
-                .setString("name", name)
-                .uniqueResult();
-		session.getTransaction().commit();
-		return comp;
+		Company result = null;
+		
+		try {
+			session.beginTransaction();
+			result = (Company)session.createQuery(
+					"select comp from  Company comp where comp.name = :name")
+	                .setString("name", name)
+	                .uniqueResult();
+			session.getTransaction().commit();
+		}
+		catch (Exception e) {
+			session.getTransaction().rollback();
+		}
+
+		return result;
 	}
 
 
 	public List<Company> getCompanyListByName(String name) {
-			Session session = HibernateUtil.getSessionFactory().getCurrentSession();
+		
+		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
+		List<Company> compenies = null;
+		
+		try {
 			session.beginTransaction();
-			@SuppressWarnings("unchecked")
-			List<Company> compenies = (List<Company>)HibernateUtil.getSessionFactory().getCurrentSession().createQuery(
+			compenies = (List<Company>)HibernateUtil.getSessionFactory().getCurrentSession().createQuery(
 					"from Company where name=:name")
 					.setString("name",name)
 					.list();
 			session.getTransaction().commit();
-			return compenies;
+		}
+		catch (Exception e) {
+			session.getTransaction().rollback();
+		}
+
+		return compenies;
 	}
 	
 }

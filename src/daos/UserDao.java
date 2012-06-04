@@ -38,50 +38,76 @@ public class UserDao {
 	@SuppressWarnings("unchecked")
 	public List<User> getUsers() {
 		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
-		session.beginTransaction();
-		List<User> result = (List<User>) session.createQuery("from User").list();
-		session.getTransaction().commit();
+		
+		List<User> result = null;
+		try {
+			session.beginTransaction();
+			result = (List<User>) session.createQuery("from User").list();
+			session.getTransaction().commit();
+		}
+		catch (Exception e) {
+			session.getTransaction().rollback();
+		}
+		
 		return result;
 	}
 	
 
 	@SuppressWarnings("unchecked")
 	public List<User> getActiveUsers() {
-		
 		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
-		session.beginTransaction();
 		
-		List<User> reults = (List<User>)session.createQuery(
-				"from User where active=:active")
-                .setBoolean("active",true).list();
-		session.getTransaction().commit();
-		return reults;
+		List<User> result = null;
+		try {
+			session.beginTransaction();
+			result = (List<User>)session.createQuery(
+					"from User where active=:active")
+	                .setBoolean("active",true).list();
+			session.getTransaction().commit();
+		}
+		catch (Exception e) {
+			session.getTransaction().rollback();
+		}
+		
+		return result;
 	}
 	
 	@SuppressWarnings("unchecked")
 	public List<User> getNonActiveUsers() {
-		
 		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
-		session.beginTransaction();
 		
-		List<User> reults = (List<User>)session.createQuery(
-				"from User where active=:active")
-                .setBoolean("active",false).list();
-		session.getTransaction().commit();
-		return reults;
+		List<User> result = null;
+		try {
+			session.beginTransaction();
+			result = (List<User>)session.createQuery(
+					"from User where active=:active")
+	                .setBoolean("active",false).list();
+			session.getTransaction().commit();
+		}
+		catch (Exception e) {
+			session.getTransaction().rollback();
+		}
+		
+		return result;
 	}
 	
 	@SuppressWarnings("unchecked")
-	public List<User> getAdmineUsers() {
-		
+	public List<User> getAdmineUsers() {		
 		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
-		session.beginTransaction();
 		
-		List<User> reults = (List<User>)session.createQuery(
-				"from User where admin=:admin")
-                .setBoolean("admin",true).list();
-		session.getTransaction().commit();
-		return reults;
+		List<User> result = null;
+		try {
+			session.beginTransaction();
+			result = (List<User>)session.createQuery(
+					"from User where admin=:admin")
+	                .setBoolean("admin",true).list();
+			session.getTransaction().commit();
+		}
+		catch (Exception e) {
+			session.getTransaction().rollback();
+		}
+		
+		return result;
 	}
 	
 	
@@ -92,17 +118,22 @@ public class UserDao {
 	 * @return
 	 */
 	public User getUserById(long id) {
-		
 		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
-		session.beginTransaction();
 		
-		User user = (User)session.createQuery(
-				"from User where userId=:userId")
-                .setLong("userId",id)
-                .uniqueResult();
-		session.getTransaction().commit();
-		return user;
+		User result = null;
+		try {
+			session.beginTransaction();
+			result = (User)session.createQuery(
+					"from User where userId=:userId")
+	                .setLong("userId",id)
+	                .uniqueResult();
+			session.getTransaction().commit();
+		}
+		catch (Exception e) {
+			session.getTransaction().rollback();
+		}
 		
+		return result;	
 	}
 
 	/**
@@ -112,17 +143,24 @@ public class UserDao {
 	 * @return
 	 * @throws ItemNotFoundException 
 	 */
+	@SuppressWarnings("unchecked")
 	public User getUserByUserName(String userName) {
-		
 		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
-		session.beginTransaction();
 		
-		User user = (User)session.createQuery(
-				"from User where userName=:userName")
-                .setString("userName",userName)
-                .uniqueResult();
-		session.getTransaction().commit();
-		return user;
+		User result = null;
+		try {
+			session.beginTransaction();
+			result = (User)session.createQuery(
+					"from User where userName=:userName")
+	                .setString("userName",userName)
+	                .uniqueResult();
+			session.getTransaction().commit();
+		}
+		catch (Exception e) {
+			session.getTransaction().rollback();
+		}
+		
+		return result;	
 	}
 
 	/**
@@ -131,18 +169,24 @@ public class UserDao {
 	 * @param emailAddr
 	 * @return
 	 */
+	@SuppressWarnings("unchecked")
 	public List<User> getUserByEmail(String emailAddr) {
-		
 		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
-		session.beginTransaction();
 		
-		@SuppressWarnings("unchecked")
-		List<User> users = (List<User>)session.createQuery(
-				"from User where email=:mail")
-                .setString("mail",emailAddr)
-                .list();
-		session.getTransaction().commit();
-		return users;
+		List<User> result = null;
+		try {
+			session.beginTransaction();
+			result = (List<User>)session.createQuery(
+					"from User where email=:mail")
+	                .setString("mail",emailAddr)
+	                .list();
+			session.getTransaction().commit();
+		}
+		catch (Exception e) {
+			session.getTransaction().rollback();
+		}
+		
+		return result;	
 	}
 
 	/**
@@ -153,9 +197,15 @@ public class UserDao {
 	 */
 	public void addUser(User user) {
 		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
-		session.beginTransaction();
-		session.merge(user);
-		session.getTransaction().commit();
+
+		try {
+			session.beginTransaction();
+			session.merge(user);
+			session.getTransaction().commit();
+		}
+		catch (Exception e) {
+			session.getTransaction().rollback();
+		}
 	}
 
 	/**
@@ -238,13 +288,16 @@ public class UserDao {
 	 * @param user
 	 */
 	public void updateUser(User user) {
-
 		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
-		session.beginTransaction();
 
-		session.update(user); 
-
-		session.getTransaction().commit();
+		try {
+			session.beginTransaction();
+			session.update(user); 
+			session.getTransaction().commit();
+		}
+		catch (Exception e) {
+			session.getTransaction().rollback();
+		}
 	}
 	
 	
@@ -254,18 +307,24 @@ public class UserDao {
 	 * @param company
 	 * @return
 	 */
+	@SuppressWarnings("unchecked")
 	public List<User> getUsersInCompany(long companyId) {
-		
 		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
-		session.beginTransaction();
 		
-		@SuppressWarnings("unchecked")
-		List<User> users = (List<User>)HibernateUtil.getSessionFactory().getCurrentSession().createQuery(
-				"select u from User u left outer join u.company where u.company.companyID=:companyId")
-                .setLong("companyId",  companyId)
-                .list();
-		session.getTransaction().commit();
-		return users;
+		List<User> result = null;
+		try {
+			session.beginTransaction();
+			result = (List<User>)HibernateUtil.getSessionFactory().getCurrentSession().createQuery(
+					"select u from User u left outer join u.company where u.company.companyID=:companyId")
+	                .setLong("companyId",  companyId)
+	                .list();
+			session.getTransaction().commit();
+		}
+		catch (Exception e) {
+			session.getTransaction().rollback();
+		}
+		
+		return result;	
 	}
 	
 	/**
@@ -274,18 +333,24 @@ public class UserDao {
 	 * @param company
 	 * @return
 	 */
+	@SuppressWarnings("unchecked")
 	public List<User> getUsersInCompany(String companyName) {
-
 		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
-		session.beginTransaction();
 		
-		@SuppressWarnings("unchecked")
-		List<User> users = (List<User>)HibernateUtil.getSessionFactory().getCurrentSession().createQuery(
-				"select u from User u left outer join u.company where u.company.name=:companyName")
-                .setString("companyName",  companyName)
-                .list();
-		session.getTransaction().commit();
-		return users;
+		List<User> result = null;
+		try {
+			session.beginTransaction();
+			result = (List<User>)HibernateUtil.getSessionFactory().getCurrentSession().createQuery(
+					"select u from User u left outer join u.company where u.company.name=:companyName")
+	                .setString("companyName",  companyName)
+	                .list();
+			session.getTransaction().commit();
+		}
+		catch (Exception e) {
+			session.getTransaction().rollback();
+		}
+		
+		return result;	
 	}
 
 	/**
@@ -294,18 +359,24 @@ public class UserDao {
 	 * @param companyType
 	 * @return
 	 */
+	@SuppressWarnings("unchecked")
 	public List<User> getUsersInCompanyOfType(CompanyType companyType) {
-		
 		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
-		session.beginTransaction();
 		
-		@SuppressWarnings("unchecked")
-		List<User> users = (List<User>)HibernateUtil.getSessionFactory().getCurrentSession().createQuery(
-				"select u from User u left outer join u.company where u.company.companyType=:companyType")
-                .setString("companyType",  companyType.toString())
-                .list();
-		session.getTransaction().commit();
-		return users;
+		List<User> result = null;
+		try {
+			session.beginTransaction();
+			result = (List<User>)HibernateUtil.getSessionFactory().getCurrentSession().createQuery(
+					"select u from User u left outer join u.company where u.company.companyType=:companyType")
+	                .setString("companyType",  companyType.toString())
+	                .list();
+			session.getTransaction().commit();
+		}
+		catch (Exception e) {
+			session.getTransaction().rollback();
+		}
+		
+		return result;	
 	}
 
 	/**

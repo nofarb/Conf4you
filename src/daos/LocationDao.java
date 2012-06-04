@@ -29,21 +29,19 @@ public class LocationDao {
 	/**
 	 * Get a list of all the locations that are stored in the database
 	 */
-	/*public List<Location> getLocations(){
-		
-		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
-		session.beginTransaction();
-		@SuppressWarnings("unchecked")
-		List<Location> result = (List<Location>) session.createQuery("from Location").list();
-		session.getTransaction().commit();
-		return result;
-	}*/
 	public List<Location> getLocations(){
 		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
-		session.beginTransaction();
-		@SuppressWarnings("unchecked")
-		List<Location> result = (List<Location>)HibernateUtil.getSessionFactory().getCurrentSession().createQuery("select loc from Location loc where loc.active = '1'").list();
-		session.getTransaction().commit();
+		List<Location> result = null;
+		
+		try {
+			session.beginTransaction();
+			result = (List<Location>)HibernateUtil.getSessionFactory().getCurrentSession().createQuery("select loc from Location loc where loc.active = '1'").list();
+			session.getTransaction().commit();
+		}
+		catch (Exception e) {
+			session.getTransaction().rollback();
+		}
+
 		return result;
 	}
 	
@@ -55,24 +53,40 @@ public class LocationDao {
 	 */
 	public Location getLocationById(String id){
 		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
-		session.beginTransaction();
-		Location result = (Location)HibernateUtil.getSessionFactory().getCurrentSession().createQuery(
-				"select location from  Location location where location.locationId = :id")
-                .setString("id", id)
-                .uniqueResult();
-		session.getTransaction().commit();
+		Location result = null;
+		
+		try {
+			session.beginTransaction();
+			result = (Location)HibernateUtil.getSessionFactory().getCurrentSession().createQuery(
+					"select location from  Location location where location.locationId = :id")
+	                .setString("id", id)
+	                .uniqueResult();
+			session.getTransaction().commit();
+		}
+		catch (Exception e) {
+			session.getTransaction().rollback();
+		}
+
 		return result;
 	}
 	
-	public Location getLocationByName(String name){
+	public Location getLocationByName(String name){	
 		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
-		session.beginTransaction();
-		Location loc = (Location)session.createQuery(
-				"select loc from  Location loc where loc.name = :name")
-                .setString("name", name)
-                .uniqueResult();
-		session.getTransaction().commit();
-		return loc;
+		Location result = null;
+		
+		try {
+			session.beginTransaction();
+			result = (Location)session.createQuery(
+					"select loc from  Location loc where loc.name = :name")
+	                .setString("name", name)
+	                .uniqueResult();
+			session.getTransaction().commit();
+		}
+		catch (Exception e) {
+			session.getTransaction().rollback();
+		}
+
+		return result;
 	}
 	
 	
@@ -83,14 +97,17 @@ public class LocationDao {
 	 * @return
 	 */
 	public Location addLocation(Location location){
-	Location loc = new Location(location.getName(), location.getAddress(), location.getMaxCapacity(), location.getContactName(), location.getPhone1(), location.getPhone2());
-		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
-		session.beginTransaction();
-		session.merge(loc);
-		session.getTransaction().commit();
+		Session session = HibernateUtil.getSessionFactory().getCurrentSession();	
+		try {
+			session.beginTransaction();
+			session.merge(location);
+			session.getTransaction().commit();
+		}
+		catch (Exception e) {
+			session.getTransaction().rollback();
+		}
 
-		return loc;
-		
+		return location;	
 	}
 	
 	/**
@@ -100,33 +117,52 @@ public class LocationDao {
 	 */
 	public Location updateLocation(Location location){
 		
-		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
-		session.beginTransaction();
-		session.update(location); 
-		session.getTransaction().commit();
-		return location;
-		
+		Session session = HibernateUtil.getSessionFactory().getCurrentSession();	
+		try {
+			session.beginTransaction();
+			session.update(location); 
+			session.getTransaction().commit();
+		}
+		catch (Exception e) {
+			session.getTransaction().rollback();
+		}
+
+		return location;	
 	}
 	
 	
 	public Boolean isLocationNameExists(String name)
 	{
 		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
-		session.beginTransaction();
-		Boolean exists = session.createQuery(
-				"select loc from  Location loc where loc.name = :name")
-                .setString("name", name)
-                .uniqueResult() != null;
-		session.getTransaction().commit();
+		Boolean exists = null;
+		try {
+			session.beginTransaction();
+			exists = session.createQuery(
+					"select loc from  Location loc where loc.name = :name")
+	                .setString("name", name)
+	                .uniqueResult() != null;
+			session.getTransaction().commit();
+		}
+		catch (Exception e) {
+			session.getTransaction().rollback();
+		}
+		
 		return exists;
 	}
 	
 	public void deleteLocation(String name)
 	{	
-		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
-		session.beginTransaction();
 		Location locationToDelete = getLocationByName(name);
-		session.update(locationToDelete.setActive(false));
-		session.getTransaction().commit();
+		
+		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
+		Boolean exists = null;
+		try {
+			session.beginTransaction();
+			session.update(locationToDelete.setActive(false));
+			session.getTransaction().commit();
+		}
+		catch (Exception e) {
+			session.getTransaction().rollback();
+		}
 	}
 }

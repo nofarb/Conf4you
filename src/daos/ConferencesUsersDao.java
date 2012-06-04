@@ -37,76 +37,116 @@ public class ConferencesUsersDao {
 	
 	public void assignUserToConference(Conference conference, User user, int role){
 		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
-		session.beginTransaction();
-		
-		ConferencesUsers cu = new ConferencesUsers(conference, user, role);
-		
-		session.save(cu);
-		session.getTransaction().commit();
+
+		try {
+			session.beginTransaction();
+			
+			ConferencesUsers cu = new ConferencesUsers(conference, user, role);
+			
+			session.save(cu);
+			session.getTransaction().commit();
+		}
+		catch (RuntimeException e) {
+			session.getTransaction().rollback();
+		    throw e;
+		}	
 	}
 	
 	@SuppressWarnings("unchecked")
-	public List<ConferencesUsers> getAllConferenceUsers(Conference conference){	
+	public List<ConferencesUsers> getAllConferenceUsers(Conference conference){
 		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
-		session.beginTransaction();
-		List<ConferencesUsers> result = (List<ConferencesUsers>)HibernateUtil.getSessionFactory().getCurrentSession().createQuery(
-				"select cu from  ConferencesUsers cu where cu.conference = :conf")
-                .setEntity("conf", conference)
-                .list();
-		session.getTransaction().commit();
-		
+		List<ConferencesUsers> result = null;
+		try {
+			session.beginTransaction();
+			result = (List<ConferencesUsers>)HibernateUtil.getSessionFactory().getCurrentSession().createQuery(
+					"select cu from  ConferencesUsers cu where cu.conference = :conf")
+	                .setEntity("conf", conference)
+	                .list();
+			session.getTransaction().commit();
+		}
+		catch (Exception e) {
+			session.getTransaction().rollback();
+		}		
+	
 		return result;
 	}
 	
 	@SuppressWarnings("unchecked")
 	public List<ConferencesUsers> getConderenceUsersByType(Conference conference, UserRole ur ){	
 		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
-		session.beginTransaction();
-		List<ConferencesUsers> result = (List<ConferencesUsers>)HibernateUtil.getSessionFactory().getCurrentSession().createQuery(
-				"select cu from  ConferencesUsers cu where cu.conference = :conf and cu.userRole = :userRole")
-                .setEntity("conf", conference)
-                .setInteger("userRole", ur.getValue())
-                .list();
-		session.getTransaction().commit();
+		List<ConferencesUsers> result = null;
+		try {
+			session.beginTransaction();
+			result = (List<ConferencesUsers>)HibernateUtil.getSessionFactory().getCurrentSession().createQuery(
+					"select cu from  ConferencesUsers cu where cu.conference = :conf and cu.userRole = :userRole")
+	                .setEntity("conf", conference)
+	                .setInteger("userRole", ur.getValue())
+	                .list();
+			session.getTransaction().commit();
+		}
+		catch (Exception e) {
+			session.getTransaction().rollback();
+		}
 		
 		return result;
 	}
 	
 	public ConferencesUsers getConferenceUser(Conference conference, User user ){	
 		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
-		session.beginTransaction();
-		ConferencesUsers result = (ConferencesUsers)HibernateUtil.getSessionFactory().getCurrentSession().createQuery(
-				"select cu from  ConferencesUsers cu where cu.conference = :conf and cu.user = :user")
-                .setEntity("conf", conference)
-                .setEntity("user", user)
-                .uniqueResult();
-		session.getTransaction().commit();
 		
+		ConferencesUsers result = null;
+		try {
+			session.beginTransaction();
+			result = (ConferencesUsers)HibernateUtil.getSessionFactory().getCurrentSession().createQuery(
+					"select cu from  ConferencesUsers cu where cu.conference = :conf and cu.user = :user")
+	                .setEntity("conf", conference)
+	                .setEntity("user", user)
+	                .uniqueResult();
+			session.getTransaction().commit();
+		}
+		catch (Exception e) {
+			session.getTransaction().rollback();
+		}
+	
 		return result;
 	}
 	
 	@SuppressWarnings("unchecked")
 	public List<User> getUsersThatNotBelongsToConference(Conference conference){	
 		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
-		session.beginTransaction();
-		List<User> result = (List<User>)HibernateUtil.getSessionFactory().getCurrentSession().createQuery(
-				"select u from User u where u.admin != 1 and not exists (select 1 from ConferencesUsers cu where cu.user = u and cu.conference = :conf)")
-                .setEntity("conf", conference)
-                .list();
-		session.getTransaction().commit();
+		List<User> result = null;
+		
+		try {
+			session.beginTransaction();
+			result = (List<User>)HibernateUtil.getSessionFactory().getCurrentSession().createQuery(
+					"select u from User u where u.admin != 1 and not exists (select 1 from ConferencesUsers cu where cu.user = u and cu.conference = :conf)")
+	                .setEntity("conf", conference)
+	                .list();
+			session.getTransaction().commit();
+			
+		}
+		catch (Exception e) {
+			session.getTransaction().rollback();
+		}
 		
 		return result;
 	}
 	
 	
-	public void removeUserFromConference(Conference conference, User user){
-		
+	public void removeUserFromConference(Conference conference, User user) throws Exception{
 		ConferencesUsers conferenceUser = getConferenceUser(conference, user);
 		
 		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
-		session.beginTransaction();
-		session.delete(conferenceUser);
-		session.getTransaction().commit();
+		
+		try {
+			session.beginTransaction();
+			session.delete(conferenceUser);
+			session.getTransaction().commit();
+		}
+		catch (Exception e) {
+			session.getTransaction().rollback();
+			throw e;
+		}
 	}
 	
 	/**
@@ -119,10 +159,15 @@ public class ConferencesUsersDao {
 		ConferencesUsers confPart = getConferenceUser(conference, user);
 		
 		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
-		session.beginTransaction();
-		session.update(confPart.setAttendanceStatus(status));
-		session.getTransaction().commit();
 		
+		try {
+			session.beginTransaction();
+			session.update(confPart.setAttendanceStatus(status));
+			session.getTransaction().commit();
+		}
+		catch (Exception e) {
+			session.getTransaction().rollback();
+		}	
 	}
 	/**
 	 * This function sends a predefined invitation to a conference email to users, 
@@ -135,13 +180,21 @@ public class ConferencesUsersDao {
 	
 	@SuppressWarnings("unchecked")
 	public UserRole getUserHighestRole(User user){
+		
+		List<ConferencesUsers> results = null;
+		
 		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
-		session.beginTransaction();
-		List<ConferencesUsers> results = (List<ConferencesUsers>)session.createQuery(
-				"select cu from  ConferencesUsers cu where cu.user = :user")
-                .setEntity("user", user)
-                .list();
-		session.getTransaction().commit();
+		try {
+			session.beginTransaction();
+			results = (List<ConferencesUsers>)session.createQuery(
+					"select cu from  ConferencesUsers cu where cu.user = :user")
+	                .setEntity("user", user)
+	                .list();
+			session.getTransaction().commit();
+		}
+		catch (Exception e) {
+			session.getTransaction().rollback();
+		}
 		
 		UserRole ur = UserRole.NONE;
 		
@@ -174,11 +227,7 @@ public class ConferencesUsersDao {
 		
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 		String startDateFormatted = sdf.format(current);
-		
 
-		
-		
-		
 		ConferenceFilters.ConferenceTimeFilter enumFilter = ConferenceFilters.ConferenceTimeFilter.valueOf(filter); 
 		
 		if (enumFilter == ConferenceFilters.ConferenceTimeFilter.ALL)
@@ -234,14 +283,21 @@ public class ConferencesUsersDao {
 	
 	@SuppressWarnings("unchecked")
 	public List<User> getUsersForRoleInConference(Conference conference, UserRole ur ){	
+		
+		List<User> result = null;
+		
 		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
-		session.beginTransaction();
-		List<User> result = (List<User>)HibernateUtil.getSessionFactory().getCurrentSession().createQuery(
-				"select cu from  ConferencesUsers cu where cu.conference = :conf and cu.userRole = :userRole")
-                .setEntity("conf", conference)
-                .setInteger("userRole", ur.getValue())
-                .list();
-		session.getTransaction().commit();
+		try {
+			result = (List<User>)HibernateUtil.getSessionFactory().getCurrentSession().createQuery(
+					"select cu from  ConferencesUsers cu where cu.conference = :conf and cu.userRole = :userRole")
+	                .setEntity("conf", conference)
+	                .setInteger("userRole", ur.getValue())
+	                .list();
+			session.getTransaction().commit();
+		}
+		catch (Exception e) {
+			session.getTransaction().rollback();
+		}
 		
 		return result;
 	}

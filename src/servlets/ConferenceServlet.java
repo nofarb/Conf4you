@@ -216,11 +216,13 @@ public class ConferenceServlet extends HttpServlet {
     	{
     		ConferencesUsersDao.getInstance().removeUserFromConference(conference, user);
     		resultSuccess = "true";
+    		message = "Successfully removed user " + userName + " from conference " + confName;
     		
     	}
     	catch (Exception e)
     	{
     		resultSuccess = "false";
+    		message = "Failed to remove user";
     	}
     	
         response.setContentType("application/json;charset=UTF-8");
@@ -228,17 +230,9 @@ public class ConferenceServlet extends HttpServlet {
         try {
             Gson gson = new Gson();
            	String json;
-           	if (ConferenceDao.getInstance().isConferenceNameExists(confName))	
-           	{
-           		jsonObject.addProperty("resultSuccess", resultSuccess);
-           		json = gson.toJson(jsonObject);
-           	}
-           	else
-           	{
-           		jsonObject.addProperty("resultSuccess", "false");
-           		jsonObject.addProperty("message", "Failed to edit conference");
-           		json = gson.toJson(jsonObject);
-           	}
+       		jsonObject.addProperty("resultSuccess", resultSuccess);
+       		jsonObject.addProperty("message", message);
+       		json = gson.toJson(jsonObject);
            	out.write(json);
             out.flush();
         }
