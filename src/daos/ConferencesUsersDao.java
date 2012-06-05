@@ -58,7 +58,7 @@ public class ConferencesUsersDao {
 		List<ConferencesUsers> result = null;
 		try {
 			session.beginTransaction();
-			result = (List<ConferencesUsers>)HibernateUtil.getSessionFactory().getCurrentSession().createQuery(
+			result = (List<ConferencesUsers>)session.createQuery(
 					"select cu from  ConferencesUsers cu where cu.conference = :conf")
 	                .setEntity("conf", conference)
 	                .list();
@@ -77,7 +77,7 @@ public class ConferencesUsersDao {
 		List<ConferencesUsers> result = null;
 		try {
 			session.beginTransaction();
-			result = (List<ConferencesUsers>)HibernateUtil.getSessionFactory().getCurrentSession().createQuery(
+			result = (List<ConferencesUsers>)session.createQuery(
 					"select cu from  ConferencesUsers cu where cu.user = :user")
 	                .setEntity("user", user)
 	                .list();
@@ -96,7 +96,7 @@ public class ConferencesUsersDao {
 		List<ConferencesUsers> result = null;
 		try {
 			session.beginTransaction();
-			result = (List<ConferencesUsers>)HibernateUtil.getSessionFactory().getCurrentSession().createQuery(
+			result = (List<ConferencesUsers>)session.createQuery(
 					"select cu from  ConferencesUsers cu where cu.conference = :conf and cu.userRole = :userRole")
 	                .setEntity("conf", conference)
 	                .setInteger("userRole", ur.getValue())
@@ -116,7 +116,7 @@ public class ConferencesUsersDao {
 		ConferencesUsers result = null;
 		try {
 			session.beginTransaction();
-			result = (ConferencesUsers)HibernateUtil.getSessionFactory().getCurrentSession().createQuery(
+			result = (ConferencesUsers)session.createQuery(
 					"select cu from  ConferencesUsers cu where cu.conference = :conf and cu.user = :user")
 	                .setEntity("conf", conference)
 	                .setEntity("user", user)
@@ -137,7 +137,7 @@ public class ConferencesUsersDao {
 		
 		try {
 			session.beginTransaction();
-			result = (List<User>)HibernateUtil.getSessionFactory().getCurrentSession().createQuery(
+			result = (List<User>)session.createQuery(
 					"select u from User u where u.admin != 1 and not exists (select 1 from ConferencesUsers cu where cu.user = u and cu.conference = :conf)")
 	                .setEntity("conf", conference)
 	                .list();
