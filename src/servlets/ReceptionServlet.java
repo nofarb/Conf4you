@@ -56,9 +56,6 @@ public class ReceptionServlet extends HttpServlet {
 		else if (action.equals(FILTER_CHANGE)) {
 			getConferences(request, response);
 		}
-		else if (action.equals(UPDATE_USER_ARRIVAL)) {
-			deleteConference(request, response);
-		}
 		else {
 			//throw new Exception("Unknown request");
 		}	
@@ -257,95 +254,6 @@ public class ReceptionServlet extends HttpServlet {
            	{
            		jsonObject.addProperty("resultSuccess", "false");
            		jsonObject.addProperty("message", "Failed to assign user");
-           		json = gson.toJson(jsonObject);
-           	}
-           	out.write(json);
-            out.flush();
-        }
-         finally {
-            out.close();
-        }
-    }
-    
-    private void sendInvitationToUsers(HttpServletRequest request, HttpServletResponse response) throws IOException, ParseException
-    {
-    	String conf = request.getParameter(ProjConst.CONF_NAME);
-    	Conference conference = ConferenceDao.getInstance().getConferenceByName(conf);
-    	
-    	String userName = request.getParameter("userName");
-    	User user = UserDao.getInstance().getUserByUserName(userName);
-    	
-    	JsonObject jsonObject = new JsonObject();
-    	
-    	String resultSuccess;
-    	String message;
-    	try 
-    	{
-    		ConferencesUsersDao.getInstance().sendConferenceAssignmentNotificationEmailToUsers(conference, user);
-    		message = "Conference successfully edited";
-    		resultSuccess = "true";
-    		
-    	}
-    	catch (Exception e)
-    	{
-    		message = "Found problem while editing conference";
-    		resultSuccess = "false";
-    	}
-    	
-        response.setContentType("application/json;charset=UTF-8");
-        PrintWriter out = response.getWriter();
-        try {
-            Gson gson = new Gson();
-           	String json;
-
-       		jsonObject.addProperty("resultSuccess", resultSuccess);
-       		jsonObject.addProperty("message", message);
-       		json = gson.toJson(jsonObject);
-
-           	out.write(json);
-            out.flush();
-        }
-         finally {
-            out.close();
-        }
-    }
-    
-    private void deleteConference(HttpServletRequest request, HttpServletResponse response) throws IOException
-    {
-    	JsonObject jsonObject = new JsonObject();
-    	
-    	String confName = request.getParameter(ProjConst.CONF_NAME);
-    	
-      	String resultSuccess;
-    	String message;
-    	try 
-    	{
-    		ConferenceDao.getInstance().deleteConference(confName);
-    		message = "Conference successfully deleted";
-    		resultSuccess = "true";
-    		
-    	}
-    	catch (Exception e)
-    	{
-    		message = "Found problem while deleting conference";
-    		resultSuccess = "false";
-    	}
-    	
-    	response.setContentType("application/json;charset=UTF-8");
-        PrintWriter out = response.getWriter();
-        try {
-            Gson gson = new Gson();
-           	String json;
-           	if (ConferenceDao.getInstance().isConferenceNameExists(confName))	
-           	{
-           		jsonObject.addProperty("resultSuccess", resultSuccess);
-           		jsonObject.addProperty("message", message);
-           		json = gson.toJson(jsonObject);
-           	}
-           	else
-           	{
-           		jsonObject.addProperty("resultSuccess", "false");
-           		jsonObject.addProperty("message", "Failed to delete conference");
            		json = gson.toJson(jsonObject);
            	}
            	out.write(json);

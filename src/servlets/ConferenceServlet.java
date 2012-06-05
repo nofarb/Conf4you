@@ -6,6 +6,9 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -20,6 +23,7 @@ import model.UserRole;
 
 import utils.ProjConst;
 import com.google.gson.Gson;
+import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 
 import daos.ConferenceDao;
@@ -205,24 +209,40 @@ public class ConferenceServlet extends HttpServlet {
     	String confName = request.getParameter(ProjConst.CONF_NAME);
     	Conference conference = ConferenceDao.getInstance().getConferenceByName(confName);
     	
-    	String userName = request.getParameter("userName");
-    	User user = UserDao.getInstance().getUserByUserName(userName);
+    	String userName = request.getParameter("userNames");
+    	String[] userNames = userName.split(",");
+    	
+    	
+    	List<User> users = new LinkedList<User>();
+    	
+    	for (String user : userNames)
+    	{
+    		if (user != null)
+    			users.add(UserDao.getInstance().getUserByUserName(user));
+    	}
     	
     	JsonObject jsonObject = new JsonObject();
     	
-    	String resultSuccess;
-    	String message;
-    	try 
+    	String resultSuccess = null;
+    	String message = null;
+    	
+    	for (User user : users)
     	{
-    		ConferencesUsersDao.getInstance().removeUserFromConference(conference, user);
-    		resultSuccess = "true";
-    		message = "Successfully removed user " + userName + " from conference " + confName;
-    		
+    		try
+        	{
+        		ConferencesUsersDao.getInstance().removeUserFromConference(conference, user);
+        	}
+        	catch (Exception e)
+        	{
+        		message = "Some users were not deleted";
+        		resultSuccess = "false";
+        	}
     	}
-    	catch (Exception e)
+    	
+    	if (resultSuccess == null)
     	{
-    		resultSuccess = "false";
-    		message = "Failed to remove user";
+    		message = "Users successfully deleted";
+    		resultSuccess = "true";
     	}
     	
         response.setContentType("application/json;charset=UTF-8");
@@ -297,25 +317,41 @@ public class ConferenceServlet extends HttpServlet {
     {
     	String conf = request.getParameter(ProjConst.CONF_NAME);
     	Conference conference = ConferenceDao.getInstance().getConferenceByName(conf);
+
+    	String userName = request.getParameter("userNames");
+    	String[] userNames = userName.split(",");
     	
-    	String userName = request.getParameter("userName");
-    	User user = UserDao.getInstance().getUserByUserName(userName);
     	
+    	List<User> users = new LinkedList<User>();
+    	
+    	for (String user : userNames)
+    	{
+    		if (user != null)
+    			users.add(UserDao.getInstance().getUserByUserName(user));
+    	}
+      	
     	JsonObject jsonObject = new JsonObject();
     	
-    	String resultSuccess;
-    	String message;
-    	try 
+    	String resultSuccess = null;
+    	String message = null;
+    	
+    	for (User user : users)
     	{
-    		ConferencesUsersDao.getInstance().sendConferenceAssignmentNotificationEmailToUsers(conference, user);
-    		message = "Conference successfully edited";
-    		resultSuccess = "true";
-    		
+    		try
+        	{
+        		ConferencesUsersDao.getInstance().sendConferenceAssignmentNotificationEmailToUsers(conference, user);
+        	}
+        	catch (Exception e)
+        	{
+        		message = "Some invitation were not sent";
+        		resultSuccess = "false";
+        	}
     	}
-    	catch (Exception e)
+    	
+    	if (resultSuccess == null)
     	{
-    		message = "Found problem while editing conference";
-    		resultSuccess = "false";
+    		message = "Initation/s sent successfully";
+    		resultSuccess = "true";
     	}
     	
         response.setContentType("application/json;charset=UTF-8");

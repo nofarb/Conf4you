@@ -111,7 +111,7 @@ div.error {
 										<img class="img_png" width="16" height="16" alt=""
 											src="/conf4u/resources/imgs/table_save.png"> Assign
 									</button>
-									<a id="cancelButton" href="conferenceDetails.jsp?conferenceName=<%=request.getAttribute("confName")%>">
+									<a id="cancelButton" href="conferenceDetails.jsp?conferenceName=<%=conf.getName()%>">
 									 <img class="img_png" width="16" height="16" alt="" src="/conf4u/resources/imgs/cancel.png"> Cancel
 									</a>
 								</div>

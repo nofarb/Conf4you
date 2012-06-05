@@ -13,6 +13,10 @@ import model.UserRole;
 import org.apache.log4j.Logger;
 import org.hibernate.Session;
 
+import utils.EmailContent;
+import utils.EmailTemplate;
+import utils.EmailUtils;
+import utils.UniqueUuid;
 import db.HibernateUtil;
 
 public class ConferencesUsersDao {
@@ -203,11 +207,52 @@ public class ConferencesUsersDao {
 	 * This function sends a predefined invitation to a conference email to users, 
 	 * as long as they have never gotten such mail before about this conference
 	 * @param user
+	 * @throws Exception 
 	 */
-	public void sendConferenceAssignmentNotificationEmailToUsers(Conference conference, User user){
+	public void sendConferenceAssignmentNotificationEmailToUsers(Conference conference, User user) throws Exception{
+		ConferencesUsers cu = getConferenceUser(conference, user);
+		cu.setUniqueIdForEmailNotification(UniqueUuid.GenarateUniqueId());
 		
+		EmailTemplate email = new EmailTemplate(EmailContent.AssignToConferenceEmail.from, EmailContent.AssignToConferenceEmail.subject, EmailContent.AssignToConferenceEmail.body);
+		email.setSubject(String.format(email.getSubject(), cu.getUser().getName()));
+		SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
+		String startDateFormatted = sdf.format(conference.getStartDate());
+		String endDateFormatted = sdf.format(conference.getEndDate());
+		email.setBody(String.format(email.getBody(), 
+				cu.getUser().getName(), 
+				cu.getConference().getName(), 
+				startDateFormatted, 
+				endDateFormatted, 
+				"http://127.0.0.1/acceptAttendence.jsp?id=" + cu.getUniqueIdForEmailNotification()));
+		
+		try
+		{
+			EmailUtils.sendEmail(email, user.getEmail(), true);
+		}
+		catch (Exception e) {
+			// TODO: handle exception
+			return;
+		}
+		cu.setNotifiedByMail(true);
+		updateConferenceUser(cu);
 	}
 	
+	private void updateConferenceUser(ConferencesUsers cu) throws Exception {
+		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
+		
+		try {
+			session.beginTransaction();
+			session.update(cu);
+			session.getTransaction().commit();
+		}
+		catch (Exception e) {
+			logger.error(e.getMessage(), e);
+			session.getTransaction().rollback();
+			throw e;
+		}
+		
+	}
+
 	@SuppressWarnings("unchecked")
 	public UserRole getUserHighestRole(User user){
 		

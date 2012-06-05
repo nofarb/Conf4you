@@ -91,7 +91,7 @@ div.error {
 									<img class="img_png" width="16" height="16" alt=""
 										src="/conf4u/resources/imgs/table_save.png"> Remove
 								</button>
-								<a id="cancelButton" href="userDetails.jsp?usedId=<%=request.getAttribute("userId")%>">
+								<a id="cancelButton" href="userDetails.jsp?usedId=<%=user.getUserId()%>">
 								 <img class="img_png" width="16" height="16" alt="" src="/conf4u/resources/imgs/cancel.png"> Cancel
 								</a>
 							</div>

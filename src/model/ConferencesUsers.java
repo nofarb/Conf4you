@@ -32,6 +32,7 @@ public class ConferencesUsers implements Serializable{
 	private int userRole;
 	private UserAttendanceStatus attendanceStatus;
 	private boolean notifiedByMail;
+	private String uniqueIdForEmailNotification;
 	
 	ConferencesUsers() {}  //not public on purpose!
 	
@@ -94,5 +95,15 @@ public class ConferencesUsers implements Serializable{
 	public ConferencesUsers setAttendanceStatus(UserAttendanceStatus attendanceStatus) {
 		this.attendanceStatus = attendanceStatus;
 		return this;
+	}
+	
+	@Nullable
+	public String getUniqueIdForEmailNotification() {
+		return uniqueIdForEmailNotification;
+	}
+
+	public void setUniqueIdForEmailNotification(
+			String uniqueIdForEmailNotification) {
+		this.uniqueIdForEmailNotification = uniqueIdForEmailNotification;
 	}
 }

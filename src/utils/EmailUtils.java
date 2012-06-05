@@ -1,5 +1,6 @@
 package utils;
 
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Properties;
 import javax.mail.Message;
@@ -11,8 +12,12 @@ import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 
-
 public class EmailUtils {
+	
+	private static final String host = "smtp.gmail.com";
+	private static final String port = "587";
+	private static final String user = "conf.for.you@gmail.com";
+	private static final String password = "nofaralonelad";
 	
 	/**
 	 * 
@@ -24,22 +29,30 @@ public class EmailUtils {
 	 * @param content
 	 * @param isHtml true for html, false for text
 	 */
-	public static void sendEmail(String host, String from, String password, String port, String subject, List<String> to, String content, boolean isHtml){
+	public static void sendEmail(EmailTemplate email, List<String> to, boolean isHtml){
+		sendEmail(host, user, password, port, email, to, isHtml);
+	}
 	
-
-
+	public static void sendEmail(EmailTemplate email, String to, boolean isHtml){
+		List<String> emailsList = new LinkedList<String>();
+		emailsList.add(to);
+		sendEmail(host, user, password, port, email, emailsList, isHtml);
+	}
+	
+	public static void sendEmail(String host, String user, String password, String port, EmailTemplate email, List<String> to, boolean isHtml){
+		
 			try {
 				Properties props = System.getProperties();
 				props.put("mail.smtp.starttls.enable", "true"); 
 				props.put("mail.smtp.host", host);
-				props.put("mail.smtp.user", from);
+				props.put("mail.smtp.user", user);
 				props.put("mail.smtp.password", password);
 				props.put("mail.smtp.port", port);
 				props.put("mail.smtp.auth", "true");
 
 				Session session = Session.getDefaultInstance(props);
 				MimeMessage message = new MimeMessage(session);
-				message.setFrom(new InternetAddress(from));
+				message.setFrom(new InternetAddress(email.getFrom()));
 
 				for(String addr : to){
 					
@@ -58,16 +71,16 @@ public class EmailUtils {
 				}
 
 				
-				message.setSubject(subject);
+				message.setSubject(email.getSubject());
 				
 				if(isHtml){
-					message.setContent(content, "text/html");
+					message.setContent(email.getBody(), "text/html");
 				}else{
-					message.setText(content);
+					message.setText(email.getBody());
 				}
 				
 				Transport transport = session.getTransport("smtp");
-				transport.connect(host, from, password);
+				transport.connect(host, email.getFrom(), password);
 				transport.sendMessage(message, message.getAllRecipients());
 				transport.close();
 				

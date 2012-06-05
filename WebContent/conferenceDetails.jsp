@@ -34,35 +34,94 @@ $(document).ready(function(){
 		}
 		
 	 	$('#sendInvitationToSelected').click(function () {
-	 		var checkedUserNames = $('input:checkbox[name=userNames]:checked').val();
-	 		var success= [];
-	 		var failed= [];
-	 		for (user in checkedUserNames)
-	 		{
-	 			$.ajax({
-			        url: "ConferenceServlet",
-			        dataType: 'json',
-			        async: false,
-			        type: 'POST',
-			            data: {
-			            	"action": "sendInvitation",
-			            	"confName": $(".confName").text(),
-			            	"userName": checkedUserNames
-			            },
-			        success: function(data) {
-			            if (data != null){
-							if (data.resultSuccess == "true")
-							{
-								success.push(user);
-							}
-							else
-							{
-								failed.push(user);
-							}
-			            }
-			        }
-			    });
-	 		}
+	 		 var allVals = "";
+	 		 var $checked = $('input:checkbox[name=userNames]:checked');
+	 		 if ($checked.length == 0)
+ 			 {
+	 			jNotify("No user is selected");
+	 			return;
+ 			 }
+	 		$checked.each(function() {
+	 	    	allVals += $(this).val() + ",";
+	 	     });
+	 		
+ 			$.ajax({
+		        url: "ConferenceServlet",
+		        dataType: 'json',
+		        async: false,
+		        type: 'POST',
+		            data: {
+		            	"action": "sendInvitation",
+		            	"confName": $(".confName").text(),
+		            	"userNames": allVals
+		            },
+		        success: function(data) {
+		            if (data != null){
+						if (data.resultSuccess == "true")
+						{
+							jSuccess(data.message);
+						}
+						else
+						{
+							jError(data.message);
+						}
+		            }
+		        }
+		    });
+	 	});
+	 	
+	 	$('#deleteSelectedParticipants').click(function () {
+	 		 var allVals = "";
+	 		 var $checked = $('input:checkbox[name=userNames]:checked');
+	 		 if ($checked.length == 0)
+			 {
+	 			jNotify("No user is selected");
+	 			return;
+			 }
+	 		$checked.each(function() {
+	 	    	allVals += $(this).val() + ",";
+	 	     });
+	 		
+	 		var confName = "<%=request.getParameter("conferenceName")%>";
+	 		$('#dialogConfirmRemoveSelectedParticipant').dialog({
+				resizable: false,
+				height: 150,
+				width: 400,
+				modal: true,
+				hide: "fade", 
+	            show: "fade",
+				buttons: {
+					"Delete selected users": function() {
+							$.ajax({
+						        url: "ConferenceServlet",
+						        dataType: 'json',
+						        async: false,
+						        type: 'POST',
+						            data: {
+						            	"action": "removeUser",
+						            	"confName": confName,
+						            	"userNames": allVals
+						            },
+						        success: function(data) {
+						            if (data != null){
+						            	if (data.resultSuccess == "true")
+										{
+									 	   	window.location = "conferenceDetails.jsp?conferenceName=" +confName + "&messageNotification=" + data.message + "&messageNotificationType=success";
+										}
+										else
+										{
+											$( this ).dialog( "close" );
+											jError(data.message);
+										}
+						            }
+						        }
+						    });
+					},
+					Cancel: function() {
+						$( this ).dialog( "close" );
+					}
+				}
+			});
 	 	});
 	 	
 		 $('.removePart').click(function () { 
@@ -85,7 +144,7 @@ $(document).ready(function(){
 					            data: {
 					            	"action": "removeUser",
 					            	"confName": confName,
-					            	"userName": $removeParticipant.closest('tr').find('td#userNameTd').text()
+					            	"userNames": $removeParticipant.closest('tr').find('td#userNameTd').text()
 					            },
 					        success: function(data) {
 					            if (data != null){
@@ -158,6 +217,21 @@ $(document).ready(function(){
 		 $('.assignUser').click(function () {
 			   var confName = $(".confName").text();
 			   window.location.href = "assignConferenceUser.jsp?confName=" + confName;
+		 });
+		 
+		 $('.select_all').click(function(){
+			 if (this.checked)
+			 {
+				 $('input:checkbox[name=userNames]:not(:checked)').each(function() {
+			 	    	$(this).prop("checked", true);
+			 	     });
+			 }
+			 else
+			 {
+				 $('input:checkbox[name=userNames]:checked').each(function() {
+			 	    	$(this).prop("checked", false);
+			 	     });
+			 }
 		 });
 	});	
 </script>
@@ -238,8 +312,10 @@ $(document).ready(function(){
 					for (ConferencesUsers cu : confUsers) {
 						String url = UiHelpers.GetUserDetailsUrl(String.valueOf(cu.getUser().getUserId()));
 						String role = UserRole.resolveUserRoleToFriendlyName(cu.getUserRole());
-					%>
-					<div><a href="<%=url%>"><%=cu.getUser().getUserName()%></a> with role <%=role%></div>
+						if (cu.getUserRole() != UserRole.PARTICIPANT.getValue()) {
+						%>
+							<div><a href="<%=url%>"><%=cu.getUser().getUserName()%></a> with role <%=role%></div>
+						<% } %>
 					<% } %>
 				<% }else{ %>
 					<div>No assigned users</div>
@@ -275,7 +351,7 @@ $(document).ready(function(){
 			for (ConferencesUsers confPartcipant : confParticipants) { %>
 			<tr class="gridRow">
 			<td>
-				<input id="select_one" type="checkbox" value="<%=confPartcipant.getUser().getUserName()%>" name="userNames">
+				<input class="checkboxUserName" id="select_one" type="checkbox" value="<%=confPartcipant.getUser().getUserName()%>" name="userNames">
 			</td>
 			<td id="userNameTd"><%=confPartcipant.getUser().getUserName()%></td>
 			<td><%=confPartcipant.getUser().getName()%></td>
@@ -384,6 +460,10 @@ $(document).ready(function(){
 		<p><span class="ui-icon ui-icon-alert" style="float:left; margin:0 7px 20px 0;"></span>Participant will be removed. Are you sure?</p>
 	</div>
 
+	<div id="dialogConfirmRemoveSelectedParticipant" title="Remove selected participant from conference?" style="display:none;">
+		<p><span class="ui-icon ui-icon-alert" style="float:left; margin:0 7px 20px 0;"></span>Selected participant will be removed. Are you sure?</p>
+	</div>
+	
 	<script type="text/javascript" src="js/tables/script.js"></script>
 	<script type="text/javascript">
 		var sorter = new TINY.table.sorter("sorter");
