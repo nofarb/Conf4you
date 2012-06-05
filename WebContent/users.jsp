@@ -143,10 +143,10 @@ $(document).ready(function(){
 									</td>
 									<td>
 										<select id="userGeneralFilter">
-												<option selected="selected" value="all">All Users</option>
-												<option value="active">Active Users</option>
+												<option selected="selected" value="active">Active Users</option>
 												<option value="nonActive">Non Active Users</option>
 												<option value="admin">Admin Users</option>
+												<option value="all">All Users</option>
 										</select>
 									</td>
 								</tr>
@@ -232,7 +232,7 @@ $(document).ready(function(){
 						}
 						
 					}else{
-						usersList = UserDao.getInstance().getUsers();
+						usersList = UserDao.getInstance().getActiveUsers();
 					}
 
 				}else{ //it's 2
@@ -240,7 +240,7 @@ $(document).ready(function(){
 					String roleStr = request.getParameter("role");
 					
 					if(confIdStr == null || roleStr == null){
-						usersList = UserDao.getInstance().getUsers();
+						usersList = UserDao.getInstance().getActiveUsers();
 					}
 					else{
 						Long confId = Long.valueOf(confIdStr.trim());
@@ -251,7 +251,7 @@ $(document).ready(function(){
 				}
 				
 			}else{
-				usersList = UserDao.getInstance().getUsers();
+				usersList = UserDao.getInstance().getActiveUsers();
 			}
 			
 			String newsDate;

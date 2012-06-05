@@ -33,7 +33,51 @@ $(document).ready(function(){
 			alert("unknown message type");
 		}
 	}
+	
+	 $('.deleteUser').click(function () { 
+		 $('#dialogConfirmDeleteUser').dialog({
+			resizable: false,
+			height: 150,
+			width: 400,
+			modal: true,
+			hide: "fade", 
+            show: "fade",
+			buttons: {
+				"Delete": function() {
+					$.ajax({
+				        url: "UsersServlet",
+				        dataType: 'json',
+				        async: false,
+				        type: 'POST',
+				            data: {
+				            	"action": "delete",
+				            	"userId": $(".userId").text()
+				            },
+				        success: function(data) {
+				            if (data != null){
+								if (data.resultSuccess == "true")
+								{
+							 	   	window.location = "users.jsp?messageNotification=" + data.message + "&messageNotificationType=success";
+								}
+								else
+								{
+									$( this ).dialog( "close" );
+									jError(data.message);
+								}
+				            }
+				        }
+				    });
+				},
+				Cancel: function() {
+					$( this ).dialog( "close" );
+				}
+			}
+			});
+		});
+	
 });
+
+
 </script>
 
 
@@ -73,10 +117,11 @@ $(document).ready(function(){
 			</div>
 				<div class="vn_actionbuttondiv">
 				<div class="title">
-				<a title="Delete User" href="UsersServlet?action=delete&userId=<%=user.getUserId()%>">
+				<a class="deleteUser" title="Delete User">
 					<img src="/conf4u/resources/imgs/vn_action_delete.png" alt=""> 
 					Delete
 				</a>
+				
 				</div>
 			</div>
 			<% List<ConferencesUsers> confUsers = ConferencesUsersDao.getInstance().getAllConferenceUsersByUser(user); 
@@ -94,6 +139,13 @@ $(document).ready(function(){
 	</div>
 	<div class="vn_detailsgeneraltitle">Details </div>
 	
+	
+	<div id="dialogConfirmDeleteUser" title="Delete User?" style="display:none;">
+		<p><span class="ui-icon ui-icon-alert" style="float:left; margin:0 7px 20px 0;"></span>User will be deleted. Are you sure?</p>
+	</div>
+	
+	<div class="<%=ProjConst.USER_ID%>" style="display:none;"><%=user.getUserId()%></div>
+
 
 	<div class="groupedList" style="width: 800px;">
 	<table class="vn_envdetails" cellspacing="0" cellpadding="0" style="border-collapse: collapse;">

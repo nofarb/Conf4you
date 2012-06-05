@@ -144,43 +144,53 @@ public class UsersServlet extends HttpServlet {
 	
 	private void deleteUser(HttpServletRequest request,	HttpServletResponse response) throws Exception {
 
+    	JsonObject jsonObject = new JsonObject();
 
 		String userIdstr = request.getParameter(ProjConst.USER_ID);
+		Long userId;
+		boolean success;
 		
 		if ( userIdstr == null) {
 			throw new Exception("Failed to get user id");
-		}
-		
-		Long userId = -1L;
-		
-		try {
+		}else{
 			userId = Long.valueOf(userIdstr.trim());
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
 		}
-				
-		response.setContentType("application/json;charset=UTF-8");
+		
+		String resultSuccess;
+    	String message;
+    	try 
+    	{
+    		UserDao.getInstance().deleteUser(userId);
+    		message = "User successfully deleted";
+    		resultSuccess = "true";
+    		success = true;
+    		
+    	}
+    	catch (Exception e)
+    	{
+    		message = "Found problem while deleting user";
+    		resultSuccess = "false";
+    		success = false;
+    	}
+    	
+    	response.setContentType("application/json;charset=UTF-8");
         PrintWriter out = response.getWriter();
-       	String json;
-
         try {
             Gson gson = new Gson();
-            
-            if (userId != null)
-            {
-        		try {
-					UserDao.getInstance().deleteUser(userId);
-					json = gson.toJson("true");
-
-				} catch (ItemCanNotBeDeleted e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-					json = gson.toJson("false");
-				}
- 	           		
- 	           	out.write(json);
-            	}
+           	String json;
+           	if (success)	
+           	{
+           		jsonObject.addProperty("resultSuccess", resultSuccess);
+           		jsonObject.addProperty("message", message);
+           		json = gson.toJson(jsonObject);
+           	}
+           	else
+           	{
+           		jsonObject.addProperty("resultSuccess", "false");
+           		jsonObject.addProperty("message", "Failed to delete user");
+           		json = gson.toJson(jsonObject);
+           	}
+           	out.write(json);
             out.flush();
         }
          finally {
