@@ -2,7 +2,6 @@ package daos;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.LinkedList;
 import java.util.List;
 import model.Conference;
 import model.ConferenceFilters;
@@ -11,6 +10,7 @@ import model.User;
 import model.UserAttendanceStatus;
 import model.UserRole;
 
+import org.apache.log4j.Logger;
 import org.hibernate.Session;
 
 import db.HibernateUtil;
@@ -18,6 +18,8 @@ import db.HibernateUtil;
 public class ConferencesUsersDao {
 
 	private static ConferencesUsersDao instance = null;
+	static Logger logger = Logger.getLogger(ConferencesUsersDao.class);
+
 
 	private ConferencesUsersDao() {
 	}
@@ -47,6 +49,7 @@ public class ConferencesUsersDao {
 			session.getTransaction().commit();
 		}
 		catch (RuntimeException e) {
+			logger.error(e.getMessage(), e);
 			session.getTransaction().rollback();
 		    throw e;
 		}	
@@ -65,6 +68,7 @@ public class ConferencesUsersDao {
 			session.getTransaction().commit();
 		}
 		catch (Exception e) {
+			logger.error(e.getMessage(), e);
 			session.getTransaction().rollback();
 		}		
 	
@@ -84,6 +88,7 @@ public class ConferencesUsersDao {
 			session.getTransaction().commit();
 		}
 		catch (Exception e) {
+			logger.error(e.getMessage(), e);
 			session.getTransaction().rollback();
 		}		
 	
@@ -104,6 +109,7 @@ public class ConferencesUsersDao {
 			session.getTransaction().commit();
 		}
 		catch (Exception e) {
+			logger.error(e.getMessage(), e);
 			session.getTransaction().rollback();
 		}
 		
@@ -124,6 +130,7 @@ public class ConferencesUsersDao {
 			session.getTransaction().commit();
 		}
 		catch (Exception e) {
+			logger.error(e.getMessage(), e);
 			session.getTransaction().rollback();
 		}
 	
@@ -132,6 +139,7 @@ public class ConferencesUsersDao {
 	
 	@SuppressWarnings("unchecked")
 	public List<User> getUsersThatNotBelongsToConference(Conference conference){	
+		
 		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
 		List<User> result = null;
 		
@@ -145,6 +153,7 @@ public class ConferencesUsersDao {
 			
 		}
 		catch (Exception e) {
+			logger.error(e.getMessage(), e);
 			session.getTransaction().rollback();
 		}
 		
@@ -163,6 +172,7 @@ public class ConferencesUsersDao {
 			session.getTransaction().commit();
 		}
 		catch (Exception e) {
+			logger.error(e.getMessage(), e);
 			session.getTransaction().rollback();
 			throw e;
 		}
@@ -185,6 +195,7 @@ public class ConferencesUsersDao {
 			session.getTransaction().commit();
 		}
 		catch (Exception e) {
+			logger.error(e.getMessage(), e);
 			session.getTransaction().rollback();
 		}	
 	}
@@ -212,6 +223,7 @@ public class ConferencesUsersDao {
 			session.getTransaction().commit();
 		}
 		catch (Exception e) {
+			logger.error(e.getMessage(), e);
 			session.getTransaction().rollback();
 		}
 		
@@ -307,14 +319,16 @@ public class ConferencesUsersDao {
 		
 		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
 		try {
+			session.beginTransaction();
 			result = (List<User>)HibernateUtil.getSessionFactory().getCurrentSession().createQuery(
-					"select cu from  ConferencesUsers cu where cu.conference = :conf and cu.userRole = :userRole")
+					"select cu.user from  ConferencesUsers cu where cu.conference = :conf and cu.userRole = :userRole")
 	                .setEntity("conf", conference)
 	                .setInteger("userRole", ur.getValue())
 	                .list();
 			session.getTransaction().commit();
 		}
 		catch (Exception e) {
+			logger.error(e.getMessage(), e);
 			session.getTransaction().rollback();
 		}
 		
