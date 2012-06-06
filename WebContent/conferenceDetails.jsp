@@ -440,7 +440,10 @@ $(document).ready(function(){
 	<% }%>
 	</div>
 	<div style="padding: 10px 0;">
-		<button class="addParticipant" type="button">Add participant</button>
+		<button class="addParticipant" type="button">
+		<img src="/conf4u/resources/imgs/vn_action_add.png" alt="" style="margin-bottom: -2px;">
+		Add participant
+		</button>
 		<button class="assignUser" type="button">Assign user</button>
 		<button id="sendInvitationToSelected">
 		<img src="/conf4u/resources/imgs/vn_action_email.png" alt="" style="margin-bottom: -2px;">
