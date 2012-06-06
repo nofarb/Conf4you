@@ -379,4 +379,26 @@ public class ConferencesUsersDao {
 		
 		return result;
 	}
+	
+	@SuppressWarnings("unchecked")
+	public ConferencesUsers getConferenceUsersByUUID(String uuid){
+		
+		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
+		ConferencesUsers result = null;
+		
+		try {
+			session.beginTransaction();
+			result = (ConferencesUsers)session.createQuery(
+					"from ConferencesUsers where uniqueIdForEmailNotification = :uuid")
+	                .setString("uuid", uuid)
+	                .uniqueResult();
+			session.getTransaction().commit();
+		}
+		catch (Exception e) {
+			logger.error(e.getMessage(), e);
+			session.getTransaction().rollback();
+		}		
+	
+		return result;
+	}
 }

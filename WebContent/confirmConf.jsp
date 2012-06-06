@@ -1,3 +1,5 @@
+<%@page import="model.ConferencesUsers"%>
+<%@page import="daos.ConferencesUsersDao"%>
 <%@page import="model.Conference"%>
 <%@page import="model.Location"%>
 <%@page import="model.ConferenceFilters.ConferencePreDefinedFilter"%>
@@ -41,10 +43,11 @@ div.error {
 	<div class="pageTitle">
 	
 		<% 
-			String userId = request.getParameter("userId");
-		   	String confName = request.getParameter("confName");
-		   	Conference conf = ConferenceDao.getInstance().getConferenceByName(confName);
-		   	
+			String uuid = request.getParameter("id");
+			ConferencesUsers cu = ConferencesUsersDao.getInstance().getConferenceUsersByUUID(uuid);
+			Conference conf = cu.getConference();
+			Long userId = cu.getUser().getUserId();
+		   	String confName = cu.getConference().getName();
 		%>
 
 		<div id="<%=ProjConst.OPERATION%>" style="display:none;">confirmArrival</div>
