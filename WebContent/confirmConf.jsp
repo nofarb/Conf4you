@@ -50,7 +50,7 @@ div.error {
 	<div id="vn_mainbody">
 		<div class="formtable_wrapper">
 			<form id="conferenceAddEditForm">
-				<table class="formtable" cellspacing="0" cellpadding="0" border="0">
+				<table class="formtable confirmTable" cellspacing="0" cellpadding="0" border="0">
 					<thead>
 						<tr>
 							<th class="header" colspan="2"><strong>Confirm Participation</strong> <br></th>
@@ -58,29 +58,29 @@ div.error {
 					</thead>
 					<tbody>
 						<tr>
-							<td>
-								<label>Conference name: </label> 
+							<td class="labelDescColumn">
+								<label class="descLabel">Name: </label> 
 							</td>
-							<td>
-								<label> <%=conf.getName()%> </label> 
+							<td class="valueColumn">
+								<label class="labelValue"> <%=conf.getName()%> </label> 
 							</td>
 						</tr>
 						
 						<tr>
-							<td>
-								<label>Conference description: </label> 
+							<td class="labelDescColumn">
+								<label class="descLabel">Description: </label> 
 							</td>
-							<td>
-								<label> <%=conf.getDescription()%> </label> 
+							<td class="valueColumn">
+								<label class="labelValue"> <%=conf.getDescription()%> </label> 
 							</td>
 						</tr>
 			
 						<tr>
-							<td>
-								<label> Location: </label> 
+							<td class="labelDescColumn">
+								<label class="descLabel"> Location: </label> 
 							</td>
-							<td>
-								<label> <%=conf.getLocation().getName() %> </label> 
+							<td class="valueColumn">
+								<label class="labelValue"> <%=conf.getLocation().getName()%>, <%=conf.getLocation().getAddress()%> </label> 
 							</td>
 						</tr>
 						
@@ -93,34 +93,40 @@ div.error {
 						%>
 
 						<tr>
-							<td>
-								<label> Start Date: </label> 
+							<td class="labelDescColumn">
+								<label class="descLabel"> Start Date: </label> 
 							</td>
-							<td>
-								<label> <%= formattedStart %> </label> 
-							</td>
-						</tr>
-						
-						<tr>
-							<td>
-								<label> End Date: </label> 
-							</td>
-							<td>
-								<label> <%= formattedEnd %> </label> 
+							<td class="valueColumn">
+								<label class="labelValue"> <%= formattedStart %> </label> 
 							</td>
 						</tr>
 						
 						<tr>
-							<td></td>
-							<td class="inputcell">
-								<div class="buttons">
-									<button id="createButton" type="submit">
-										<img class="img_png" width="16" height="16" alt=""
-											src="/conf4u/resources/imgs/table_save.png"> Save
-									</button>
-									<a id="cancelButton" href="">
+							<td class="labelDescColumn">
+								<label class="descLabel"> End Date: </label> 
+							</td>
+							<td class="valueColumn">
+								<label class="labelValue"> <%= formattedEnd %> </label> 
+							</td>
+						</tr>
+						
+						<tr valign="middle">
+							<td valign="middle">
+								<label class="descLabel goingLabel"> Going? </label> 
+							</td>
+							<td >
+								<div>
+									<a  class="confirmConfButton" id="cancelButton" href="">
 									<img class="img_png" width="16" height="16" alt=""
-										src="/conf4u/resources/imgs/cancel.png"> Cancel
+										src="/conf4u/resources/imgs/success.png"> YES
+									</a>
+									<a  class="confirmConfButton" id="cancelButton" href="">
+									<img class="img_png" width="16" height="16" alt=""
+										src="/conf4u/resources/imgs/qm.png"> MAYBE
+									</a>
+									<a  class="confirmConfButton" id="cancelButton" href="">
+									<img class="img_png" width="16" height="16" alt=""
+										src="/conf4u/resources/imgs/cancel.png"> NO
 									</a>
 								</div>
 							</td>
