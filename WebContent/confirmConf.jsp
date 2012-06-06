@@ -121,15 +121,15 @@ div.error {
 							</td>
 							<td >
 								<div>
-									<a  class="confirmConfButton" id="YES" href="">
+									<a  class="confirmConfButton" id="YES" href="javascript:;">
 									<img class="img_png" width="16" height="16" alt=""
 										src="/conf4u/resources/imgs/success.png"> APPROVED
 									</a>
-									<a  class="confirmConfButton" id="MAYBE" href="">
+									<a  class="confirmConfButton" id="MAYBE" href="javascript:;">
 									<img class="img_png" width="16" height="16" alt=""
 										src="/conf4u/resources/imgs/qm.png"> MAYBE
 									</a>
-									<a  class="confirmConfButton" id="NO" href="">
+									<a  class="confirmConfButton" id="NO" href="javascript:;">
 									<img class="img_png" width="16" height="16" alt=""
 										src="/conf4u/resources/imgs/cancel.png"> DECLINED
 									</a>
@@ -144,12 +144,11 @@ div.error {
 	</div>
 	</div>
 
-	<script type="text/javascript">	
-	
+	<script type="text/javascript">		
 	$(document).ready(function(){
-		
-		$('.confirmConfButton').click(function () {
-			
+	 	$('.confirmConfButton').click(function () {
+	 		var id = this.id;
+	 		
 			$.ajax({
 	            url: "UsersServlet",
 	            dataType: 'json',
@@ -158,37 +157,23 @@ div.error {
 	                data: {
 	                	"action": $("#operation").text(),
 	                	<%=ProjConst.CONF_NAME%> : $("#confName").text(),
-	                	<%=ProjConst.CONF_NAME%> : $("#confId").text(),
-	                	"answer": this.id
-	                },
-	            success: function(data)  {
-	                if (data != null){
+	                	<%=ProjConst.USER_ID%> : $("#userId").text(),
+	                	"answer": id
+		            },
+		        success: function(data) {
+		            if (data != null){
 						if (data.resultSuccess == "true")
 						{
-							<%-- var params;
-							var returnUrl;
-							
-							<%if (redirectTo.contains("?")) {%>
-								params = "&messageNotification=" + data.message + "&messageNotificationType=success";
-							<% } else {%>
-								params = "?messageNotification=" + data.message + "&messageNotificationType=success";						
-							<% } %>
-							
-							returnUrl = "<%=redirectTo%>";
-							returnUrl += params;
-					 	    window.location.href = returnUrl; --%>
+							jSuccess(data.message);
 						}
 						else
 						{
-							$.floatingMessage(data.message);
-							$(".ui-widget-content").addClass("errorFeedback");
+							jError(data.message);
 						}
-	                }
-	            }
-	        });
-				
-		 });
-		
+		            }
+		        }
+		    });
+	 	});
 	});
 	</script>
 

@@ -91,8 +91,8 @@ public class UsersServlet extends HttpServlet {
 		JsonObject jsonObject = new JsonObject();
 
 		String userIdstr = request.getParameter(ProjConst.USER_ID);
-		String confName = request.getParameter(ProjConst.COMP_NAME);
-		String answer =  request.getParameter(ProjConst.COMP_NAME);
+		String confName = request.getParameter(ProjConst.CONF_NAME);
+		String answer =  request.getParameter("answer");
 
 
 		Long userId;
