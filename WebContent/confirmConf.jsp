@@ -121,7 +121,7 @@ div.error {
 							</td>
 							<td >
 								<div>
-									<a  class="confirmConfButton" id="YES" href="javascript:;">
+									<a  class="confirmConfButton" id="APPROVED" href="javascript:;">
 									<img class="img_png" width="16" height="16" alt=""
 										src="/conf4u/resources/imgs/success.png"> APPROVED
 									</a>
@@ -129,7 +129,7 @@ div.error {
 									<img class="img_png" width="16" height="16" alt=""
 										src="/conf4u/resources/imgs/qm.png"> MAYBE
 									</a>
-									<a  class="confirmConfButton" id="NO" href="javascript:;">
+									<a  class="confirmConfButton" id="DECLINED" href="javascript:;">
 									<img class="img_png" width="16" height="16" alt=""
 										src="/conf4u/resources/imgs/cancel.png"> DECLINED
 									</a>
