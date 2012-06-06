@@ -16,6 +16,7 @@ import model.Company;
 import model.Conference;
 import model.ConferencesUsers;
 import model.User;
+import model.UserAttendanceStatus;
 import model.UserRole;
 import daos.CompanyDao;
 import daos.ConferenceDao;
@@ -33,6 +34,10 @@ public class UsersServlet extends HttpServlet {
 	private static final String ADD_USER = "add";
 	private static final String ADD_PARTICIPANT = "addParticipant";
 	private static final String VALIDATION_USER_NAME_UNIQUE = "validateUserName";
+	private static final String CONFIRM_CONF_PARTICIPATION = "confirmArrival";
+
+	
+	
       
     /**
      * @see HttpServlet#HttpServlet()
@@ -67,6 +72,9 @@ public class UsersServlet extends HttpServlet {
 			}
 			else if (action.equals(ADD_PARTICIPANT)) {
 				addParticipant(request, response);
+				
+			}else if (action.equals(CONFIRM_CONF_PARTICIPATION)) {
+				confirmArrivalToConf(request, response);
 			}
 			else {
 				throw new Exception("Unknown request");
@@ -76,6 +84,75 @@ public class UsersServlet extends HttpServlet {
 		catch (Exception e) {
 //			sendErrorPage(request, response, e.getMessage());
 		}
+	}
+
+	private void confirmArrivalToConf(HttpServletRequest request, HttpServletResponse response) throws Exception {
+		
+		JsonObject jsonObject = new JsonObject();
+
+		String userIdstr = request.getParameter(ProjConst.USER_ID);
+		String confName = request.getParameter(ProjConst.COMP_NAME);
+		String answer =  request.getParameter(ProjConst.COMP_NAME);
+
+
+		Long userId;
+		boolean success;
+		
+		if ( userIdstr == null) {
+			throw new Exception("Failed to get user id");
+		}else{
+			userId = Long.valueOf(userIdstr.trim());
+		}
+		
+		if ( confName == null) {
+			throw new Exception("Failed to get conference name");
+		}
+		
+		if ( answer == null) {
+			throw new Exception("Failed to get user's answer");
+		}
+		
+    	String message;
+    	try 
+    	{
+    		User user = UserDao.getInstance().getUserById(userId);
+    		Conference conf = ConferenceDao.getInstance().getConferenceByName(confName);
+    		ConferencesUsersDao.getInstance().updateUserAttendanceApproval(conf, user, UserAttendanceStatus.valueOf(answer));
+
+    		message = "response successfully updated";
+    		success = true;
+    		
+    	}
+    	catch (Exception e)
+    	{
+    		message = "Error occurred, unable to update response";
+    		success = false;
+    	}
+    	
+    	response.setContentType("application/json;charset=UTF-8");
+        PrintWriter out = response.getWriter();
+        try {
+            Gson gson = new Gson();
+           	String json;
+           	if (success)	
+           	{
+           		jsonObject.addProperty("resultSuccess", "true");
+           		jsonObject.addProperty("message", message);
+           		json = gson.toJson(jsonObject);
+           	}
+           	else
+           	{
+           		jsonObject.addProperty("resultSuccess", "false");
+           		jsonObject.addProperty("message", message);
+           		json = gson.toJson(jsonObject);
+           	}
+           	out.write(json);
+            out.flush();
+        }
+         finally {
+            out.close();
+        }
+		
 	}
 
 	private void validate(HttpServletRequest request, HttpServletResponse response) throws Exception {

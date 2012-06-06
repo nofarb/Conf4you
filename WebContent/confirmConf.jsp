@@ -44,8 +44,13 @@ div.error {
 			String userId = request.getParameter("userId");
 		   	String confName = request.getParameter("confName");
 		   	Conference conf = ConferenceDao.getInstance().getConferenceByName(confName);
+		   	
 		%>
 
+		<div id="<%=ProjConst.OPERATION%>" style="display:none;">confirmArrival</div>
+		<div id="<%=ProjConst.USER_ID%>" style="display:none;"><%=userId%></div>
+		<div id="<%=ProjConst.CONF_NAME%>" style="display:none;"><%=confName%></div>
+		
 	</div>
 	<div id="vn_mainbody">
 		<div class="formtable_wrapper">
@@ -116,17 +121,17 @@ div.error {
 							</td>
 							<td >
 								<div>
-									<a  class="confirmConfButton" id="cancelButton" href="">
+									<a  class="confirmConfButton" id="YES" href="">
 									<img class="img_png" width="16" height="16" alt=""
-										src="/conf4u/resources/imgs/success.png"> YES
+										src="/conf4u/resources/imgs/success.png"> APPROVED
 									</a>
-									<a  class="confirmConfButton" id="cancelButton" href="">
+									<a  class="confirmConfButton" id="MAYBE" href="">
 									<img class="img_png" width="16" height="16" alt=""
 										src="/conf4u/resources/imgs/qm.png"> MAYBE
 									</a>
-									<a  class="confirmConfButton" id="cancelButton" href="">
+									<a  class="confirmConfButton" id="NO" href="">
 									<img class="img_png" width="16" height="16" alt=""
-										src="/conf4u/resources/imgs/cancel.png"> NO
+										src="/conf4u/resources/imgs/cancel.png"> DECLINED
 									</a>
 								</div>
 							</td>
@@ -143,46 +148,46 @@ div.error {
 	
 	$(document).ready(function(){
 		
-		var sendResponse = function() {
+		$('.confirmConfButton').click(function () {
+			
 			$.ajax({
-	            url: "ConferenceServlet",
+	            url: "UsersServlet",
 	            dataType: 'json',
 	            async: false,
 	            type: 'POST',
 	                data: {
-	                	"action": $(".operation").text(),
-	                	<%=ProjConst.CONF_NAME%> : $("#confName").val(),
-	                	<%=ProjConst.CONF_NAME_BEFORE_EDIT%> : $(".confBeforeHidden").text(),
-	              	 	<%=ProjConst.CONF_DESC%> : $("#confDesc").val(),
-	              	 	<%=ProjConst.CONF_LOCATION%> : $("#locations").val(),
-	              	 	<%=ProjConst.CONF_START_DATE%> : $("#startDate").val(),
-	              	 	<%=ProjConst.CONF_END_DATE%> : $("#endDate").val()	
+	                	"action": $("#operation").text(),
+	                	<%=ProjConst.CONF_NAME%> : $("#confName").text(),
+	                	<%=ProjConst.CONF_NAME%> : $("#confId").text(),
+	                	"answer": this.id
 	                },
-	            success: function(data) {
+	            success: function(data)  {
 	                if (data != null){
 						if (data.resultSuccess == "true")
-						{	    
-							var params;
+						{
+							<%-- var params;
 							var returnUrl;
-	<%-- 						
-							<%if (isEdit) {%>
-								params = "?conferenceName=" +$("#confName").val() + "&messageNotification=" + data.message + "&messageNotificationType=success";
+							
+							<%if (redirectTo.contains("?")) {%>
+								params = "&messageNotification=" + data.message + "&messageNotificationType=success";
 							<% } else {%>
 								params = "?messageNotification=" + data.message + "&messageNotificationType=success";						
 							<% } %>
-							 --%>
-							returnUrl = "";
+							
+							returnUrl = "<%=redirectTo%>";
 							returnUrl += params;
-					 	    window.location.href = returnUrl;
+					 	    window.location.href = returnUrl; --%>
 						}
 						else
 						{
-							jError(data.message);
+							$.floatingMessage(data.message);
+							$(".ui-widget-content").addClass("errorFeedback");
 						}
 	                }
 	            }
 	        });
-	    };
+				
+		 });
 		
 	});
 	</script>
