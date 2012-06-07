@@ -34,7 +34,9 @@ public class UsersServlet extends HttpServlet {
 	private static final String ADD_USER = "add";
 	private static final String ADD_PARTICIPANT = "addParticipant";
 	private static final String VALIDATION_USER_NAME_UNIQUE = "validateUserName";
-	private static final String CONFIRM_CONF_PARTICIPATION = "confirmArrival";
+	private static final String CONFIRM_CONF_PARTICIPATION = "confirmArrival";	
+	private static final String CHANGE_PASSWORD = "changePassword";
+
 
 	
 	
@@ -75,6 +77,9 @@ public class UsersServlet extends HttpServlet {
 				
 			}else if (action.equals(CONFIRM_CONF_PARTICIPATION)) {
 				confirmArrivalToConf(request, response);
+				
+			}else if (action.equals(CHANGE_PASSWORD)) {
+				changePassword(request, response);
 			}
 			else {
 				throw new Exception("Unknown request");
@@ -84,6 +89,71 @@ public class UsersServlet extends HttpServlet {
 		catch (Exception e) {
 //			sendErrorPage(request, response, e.getMessage());
 		}
+	}
+
+	private void changePassword(HttpServletRequest request,
+			HttpServletResponse response) throws Exception {
+		JsonObject jsonObject = new JsonObject();
+
+		String userIdstr = request.getParameter(ProjConst.USER_ID);
+		String password = request.getParameter(ProjConst.PASSWORD);
+
+		Long userId;
+		boolean success;
+		
+		if ( password == null) {
+			throw new Exception("Failed to get password");
+		}
+		
+		if ( userIdstr == null) {
+			throw new Exception("Failed to get user id");
+		}else{
+			userId = Long.valueOf(userIdstr.trim());
+		}
+		
+		String resultSuccess;
+    	String message;
+    	try 
+    	{
+    		User user = UserDao.getInstance().getUserById(userId);
+    		user.setPassword(password);
+    		UserDao.getInstance().updateUser(user);
+    		message = "Password successfully updated";
+    		resultSuccess = "true";
+    		success = true;
+    		
+    	}
+    	catch (Exception e)
+    	{
+    		message = "Found problem while updating password";
+    		resultSuccess = "false";
+    		success = false;
+    	}
+    	
+    	response.setContentType("application/json;charset=UTF-8");
+        PrintWriter out = response.getWriter();
+        try {
+            Gson gson = new Gson();
+           	String json;
+           	if (success)	
+           	{
+           		jsonObject.addProperty("resultSuccess", resultSuccess);
+           		jsonObject.addProperty("message", message);
+           		json = gson.toJson(jsonObject);
+           	}
+           	else
+           	{
+           		jsonObject.addProperty("resultSuccess", "false");
+           		jsonObject.addProperty("message", "Failed to delete user");
+           		json = gson.toJson(jsonObject);
+           	}
+           	out.write(json);
+            out.flush();
+        }
+         finally {
+            out.close();
+        }
+		
 	}
 
 	private void confirmArrivalToConf(HttpServletRequest request, HttpServletResponse response) throws Exception {
@@ -303,12 +373,7 @@ public class UsersServlet extends HttpServlet {
 				String companyIdStr = request.getParameter(ProjConst.COMPANY);
 				long companyId = new Long(companyIdStr);
 				userToEdit.setCompany(CompanyDao.getInstance().getCompanyById(companyId));
-				String pass = request.getParameter(ProjConst.PASSWORD).trim();
-				if(!pass.equals("") && !pass.equals("*****")){
-					userToEdit.setPassword(pass);
-				}
 				userToEdit.setAdmin(new Boolean(request.getParameter(ProjConst.IS_ADMIN))); 
-				
 				UserDao.getInstance().updateUser(userToEdit);
 	    		message = "User successfully edited";
 	    		resultSuccess = "true";

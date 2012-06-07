@@ -115,15 +115,24 @@ $(document).ready(function(){
 				</a>
 				</div>
 			</div>
-				<div class="vn_actionbuttondiv">
+			<div class="vn_actionbuttondiv">
+				<div class="title">
+				<a title="Change Password" href="changePassword.jsp?userId=<%=user.getUserId()%>">
+					<img src="/conf4u/resources/imgs/icon_encrypted.png" alt=""> 
+					Change Password
+				</a>
+				
+				</div>
+			</div>
+			<div class="vn_actionbuttondiv">
 				<div class="title">
 				<a class="deleteUser" title="Delete User">
 					<img src="/conf4u/resources/imgs/vn_action_delete.png" alt=""> 
 					Delete
 				</a>
-				
 				</div>
 			</div>
+
 			<% List<ConferencesUsers> confUsers = ConferencesUsersDao.getInstance().getAllConferenceUsersByUser(user); 
 			if (confUsers !=null && ConferencesUsersDao.getInstance().getAllConferenceUsersByUser(user).size() != 0) { %>
 			<div class="vn_actionbuttondiv">

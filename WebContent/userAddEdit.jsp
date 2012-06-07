@@ -235,20 +235,16 @@ div.error {
 								</select>
 							</td>
 						</tr>
-						<% if (!isAddParticipant) {%>
+						<% if (!isAddParticipant) {
+							if(!isEdit){
+						%>
 						<tr>
 							<td class="labelcell required"><label for=<%=ProjConst.PASSWORD%>> Password: </label></td>
-							<% if (isEdit) {%>
-								<td class="inputcell">
-									<input id="<%=ProjConst.PASSWORD%>" type="password" value="*****" name="<%=ProjConst.PASSWORD%>"> 
-								</td>
-								
-							<% } else {%>
-								<td class="inputcell">
-									<input id="<%=ProjConst.PASSWORD%>" type="password"  value="" name="<%=ProjConst.PASSWORD%>">
-								</td>
-							<%} %>
+							<td class="inputcell">
+								<input id="<%=ProjConst.PASSWORD%>" type="password"  value="" name="<%=ProjConst.PASSWORD%>">
+							</td>
 						</tr>
+									<%} %>
 						<%} %>
 
 

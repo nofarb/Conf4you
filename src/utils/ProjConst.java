@@ -18,6 +18,8 @@ public final  class ProjConst {
 	public static final String IS_ADMIN = "isAdmin";
 	public static final String OLD_USER_NAME = "oldUserName";
 	public static final String OPERATION = "operation";
+	public static final String CHANGE_PASSWORD = "changePasword";
+
 	
 	// conference
 	public static final String CONF_NAME = "confName";
