@@ -58,6 +58,8 @@ public final  class ProjConst {
 	public static final String TAB_COMPANIES = "copmanies";
 	public static final String TAB_LOCATIONS = "locations";
 	public static final String TAB_RECEPTION = "reception";
+	public static final String TAB_REPORTS = "reports";
+
 	
 	//Email
 	public static final String EMAIL_USER = "conf.for.you@gmail.com";

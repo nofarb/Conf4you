@@ -123,7 +123,17 @@ public class UiHelpers {
 			sb.append("</li>");
 			//--------------------------------------------------------------------
 		}
-
+		if (requstingUser.isAdmin() || ConferencesUsersDao.getInstance().getUserHighestRole(requstingUser).getValue() >= 4)
+		{
+			//reports tab
+			//--------------------------------------------------------------------
+			sb.append(String.format("<li%s>", ProjConst.TAB_REPORTS == chosenTab ? " class=\"focuslink\"" : ""));
+			sb.append("<a href=\"reports.jsp\">");
+			sb.append("<span>Reports</span>");
+			sb.append("</a>");
+			sb.append("</li>");
+			//--------------------------------------------------------------------
+		}
 		sb.append("</ul>");
 		sb.append("</div>");
 		sb.append("</div>");
