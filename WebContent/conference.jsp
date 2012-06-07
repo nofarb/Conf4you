@@ -79,7 +79,7 @@ $(document).ready(function(){
 				<option value="LAST7DAYS">Last Week</option>
 				<option value="LAST30DAYS">Last Month</option>
 				<option value="LAST90DAYS">Last 3 Months</option>
-				<option value="ALL" selected="selected">Ever</option>
+				<option value="ALL" selected="selected">All</option>
 			</select>
 		</span>
 	</div>

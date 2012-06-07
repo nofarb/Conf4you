@@ -1,7 +1,6 @@
 <%@page import="model.UserRole"%>
 <%@page import="java.util.LinkedList"%>
 <%@page import="daos.ConferencesUsersDao"%>
-<%@page import="org.eclipse.jdt.internal.compiler.ast.CompilationUnitDeclaration"%>
 <%@page import="model.ConferenceFilters.ConferencePreDefinedFilter"%>
 <%@page import="model.Conference"%>
 <%@page import="model.User"%>
