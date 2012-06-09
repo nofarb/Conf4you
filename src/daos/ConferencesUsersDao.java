@@ -11,18 +11,18 @@ import model.UserAttendanceStatus;
 import model.UserRole;
 
 import org.hibernate.Session;
+import org.apache.log4j.Logger;
 
 import utils.EmailContent;
 import utils.EmailTemplate;
 import utils.EmailUtils;
-import utils.Log;
 import utils.UniqueUuid;
 import db.HibernateUtil;
 
 public class ConferencesUsersDao {
 
 	private static ConferencesUsersDao instance = null;
-	static String className = "ConferencesUsersDao";
+	static Logger logger = Logger.getLogger(ConferencesUsersDao.class);
 
 
 	private ConferencesUsersDao() {
@@ -53,7 +53,7 @@ public class ConferencesUsersDao {
 			session.getTransaction().commit();
 		}
 		catch (RuntimeException e) {
-			Log.error(className, e);
+			logger.error(e.getMessage(), e);
 			session.getTransaction().rollback();
 		}	
 	}
@@ -71,7 +71,7 @@ public class ConferencesUsersDao {
 			session.getTransaction().commit();
 		}
 		catch (Exception e) {
-			Log.error(className, e);
+			logger.error(e.getMessage(), e);
 			session.getTransaction().rollback();
 		}		
 	
@@ -91,7 +91,7 @@ public class ConferencesUsersDao {
 			session.getTransaction().commit();
 		}
 		catch (Exception e) {
-			Log.error(className, e);
+			logger.error(e.getMessage(), e);
 			session.getTransaction().rollback();
 		}		
 	
@@ -112,7 +112,7 @@ public class ConferencesUsersDao {
 			session.getTransaction().commit();
 		}
 		catch (Exception e) {
-			Log.error(className, e);
+			logger.error(e.getMessage(), e);
 			session.getTransaction().rollback();
 		}
 		
@@ -133,7 +133,7 @@ public class ConferencesUsersDao {
 			session.getTransaction().commit();
 		}
 		catch (Exception e) {
-			Log.error(className, e);
+			logger.error(e.getMessage(), e);
 			session.getTransaction().rollback();
 		}
 	
@@ -156,7 +156,7 @@ public class ConferencesUsersDao {
 			
 		}
 		catch (Exception e) {
-			Log.error(className, e);
+			logger.error(e.getMessage(), e);
 			session.getTransaction().rollback();
 		}
 		
@@ -175,7 +175,7 @@ public class ConferencesUsersDao {
 			session.getTransaction().commit();
 		}
 		catch (Exception e) {
-			Log.error(className, e);
+			logger.error(e.getMessage(), e);
 			session.getTransaction().rollback();
 		}
 	}
@@ -197,7 +197,7 @@ public class ConferencesUsersDao {
 			session.getTransaction().commit();
 		}
 		catch (Exception e) {
-			Log.error(className, e);
+			logger.error(e.getMessage(), e);
 			session.getTransaction().rollback();
 		}	
 	}
@@ -228,7 +228,7 @@ public class ConferencesUsersDao {
 			EmailUtils.sendEmail(email, user.getEmail(), true);
 		}
 		catch (Exception e) {
-			Log.error(className, e);
+			logger.error(e.getMessage(), e);
 			return;
 		}
 		cu.setNotifiedByMail(true);
@@ -244,7 +244,7 @@ public class ConferencesUsersDao {
 			session.getTransaction().commit();
 		}
 		catch (Exception e) {
-			Log.error(className, e);
+			logger.error(e.getMessage(), e);
 			session.getTransaction().rollback();
 		}
 		
@@ -265,7 +265,7 @@ public class ConferencesUsersDao {
 			session.getTransaction().commit();
 		}
 		catch (Exception e) {
-			Log.error(className, e);
+			logger.error(e.getMessage(), e);
 			session.getTransaction().rollback();
 		}
 		
@@ -276,7 +276,7 @@ public class ConferencesUsersDao {
 		
 		for (ConferencesUsers cu : results)
 		{
-			if (cu.getUserRole() < ur.getValue())
+			if (cu.getUserRole() >= ur.getValue())
 			{
 				ur =  UserRole.resolveUserRole(cu.getUserRole());
 			}
@@ -352,7 +352,7 @@ public class ConferencesUsersDao {
 			session.getTransaction().commit();
 		}
 		catch (Exception e) {
-			Log.error(className, e);
+			logger.error(e.getMessage(), e);
 			session.getTransaction().rollback();
 		}
 		return confList;	
@@ -374,7 +374,7 @@ public class ConferencesUsersDao {
 			session.getTransaction().commit();
 		}
 		catch (Exception e) {
-			Log.error(className, e);
+			logger.error(e.getMessage(), e);
 			session.getTransaction().rollback();
 		}
 		
@@ -396,7 +396,7 @@ public class ConferencesUsersDao {
 			session.getTransaction().commit();
 		}
 		catch (Exception e) {
-			Log.error(className, e);
+			logger.error(e.getMessage(), e);
 			session.getTransaction().rollback();
 		}		
 	

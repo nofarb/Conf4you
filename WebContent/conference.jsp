@@ -35,6 +35,8 @@ $(document).ready(function(){
 		}
 	}
 	
+	 $('input#search').quicksearch('table tbody tr');
+	 
 	 $('#filterSelect').change(function () {
 		 var selectedFilter = $("#filterSelect").val();
 		 window.location.href = "conference.jsp?filter=" + selectedFilter; 
@@ -74,6 +76,8 @@ $(document).ready(function(){
 		
 		<div class="selectedFilter" style="display:none;"><%=request.getParameter("filter")%></div>
 		<span id="vn_mainbody_filter">
+			Search:
+   			<input type="text" id="search">
 			Show: 	
 			<select id="filterSelect">
 				<option value="LAST7DAYS">Last Week</option>
@@ -82,6 +86,7 @@ $(document).ready(function(){
 				<option value="ALL" selected="selected">All</option>
 			</select>
 		</span>
+
 	</div>
 	
 	

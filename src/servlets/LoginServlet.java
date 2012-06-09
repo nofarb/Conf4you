@@ -11,8 +11,9 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.log4j.Logger;
+
 import utils.EmailUtils;
-import utils.Log;
 import utils.MockCreation;
 import utils.ProjConst;
 import model.Conference;
@@ -29,7 +30,7 @@ import daos.UserDao;
  */
 public class LoginServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-       
+	static Logger logger = Logger.getLogger(LoginServlet.class);
     /**
      * @see HttpServlet#HttpServlet()
      */
@@ -49,17 +50,6 @@ public class LoginServlet extends HttpServlet {
     			List<Conference> confs = (List<Conference>) MockCreation.createMockConferencesAndLocations();
     			List<User> users = (List<User>) MockCreation.createMockUsersAndCompanies(); 
     		}
-//    		MockCreation.createUserConfRoleConnection(confs.get(2), users.get(1), UserRole.RECEPTIONIST);
-//    		MockCreation.createUserConfRoleConnection(confs.get(2), users.get(2), UserRole.SPEAKER);
-//    		MockCreation.createUserConfRoleConnection(confs.get(3), users.get(3), UserRole.CONF_MNGR);
-//    		MockCreation.createUserConfRoleConnection(confs.get(4), users.get(4), UserRole.PARTICIPANT);
-    	
-    		/*List <String> emails = new LinkedList<String>();
-    		emails.add(ProjConst.EMAIL_USER);
-    		
-    		EmailUtils.sendEmail("smtp.gmail.com", ProjConst.EMAIL_USER, ProjConst.EMAIL_PASSWORD, ProjConst.EMAIL_PORT, "subj", emails, "yada", false);
-    		EmailUtils.sendEmail("smtp.gmail.com", ProjConst.EMAIL_USER, ProjConst.EMAIL_PASSWORD, ProjConst.EMAIL_PORT, "subj", emails, "<h1>This is actual message</h1>", true);
-    		*/
     		
 			String userName = request.getParameter("un");
 			String password = request.getParameter("pw"); 
@@ -89,7 +79,7 @@ public class LoginServlet extends HttpServlet {
 				
 				if (userRole.getValue() <= 2)
 				{
-					Log.info(this.getServletName(), "User with lower permitions tried to login, user id: " + user.getUserId());
+					logger.info("User with lower permitions tried to login, user id: " + user.getUserId());
 					response.sendRedirect(ProjConst.LOGIN_PAGE + "?messageNotificationType=error&messageNotification=You have insufficient permissions to login");
 					return;
 				}
@@ -102,7 +92,7 @@ public class LoginServlet extends HttpServlet {
 				response.sendRedirect(ProjConst.USER_PAGE); //redirect to main page
 			}
 			else{
-				Log.info(this.getServletName(), "User with no permitions tried to login, user name: " + userName);
+				logger.info("User with no permitions tried to login, user name: " + userName);
 				response.sendRedirect(ProjConst.LOGIN_PAGE + "?messageNotificationType=error&messageNotification=Wrong user name or password");
 			}
 		}
@@ -137,7 +127,7 @@ public class LoginServlet extends HttpServlet {
 		}else if(action.equals("logout")){
 			processLogoutRequest(request, response);
 		}else{
-			//TODO - unknown request
+			logger.error("Unknown doHet request");
 		}
 	}
 

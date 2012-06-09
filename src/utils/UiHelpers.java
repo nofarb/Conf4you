@@ -18,6 +18,7 @@ public class UiHelpers {
 		sb.append("<script type=\"text/javascript\" src=\"js/jquery-ui-1.8.18.custom.min.js\"></script>");
 		sb.append("<script type=\"text/javascript\" src=\"js/jquery.validate.js\"></script>");
 		sb.append("<script type=\"text/javascript\" src=\"js/jNotify.jquery.js\"></script>");
+		sb.append("<script type=\"text/javascript\" src=\"js/jquery.quicksearch.js\"></script>");
 		return sb;
 	}
 	
