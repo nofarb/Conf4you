@@ -273,9 +273,14 @@ div.error {
 		 }, "Conference name is already exists");
 		
 		 $.validator.addMethod("endDateValidate", function(value, element) {
-			 var startDateVal = $("#startDate").val();
-	         var startDate = $.date(startDateVal, "MM/dd/yyyy");
-	         var myDate = $.date(value, "MM/dd/yyyy");
+			 var startDate = new Date($("#startDate").val());
+			 if (startDate == null)
+				 return false;
+			 startDate.setHours(0,0,0,0);
+	         
+			 var myDate = new Date(value);
+	         myDate.setHours(0,0,0,0);
+	         
 	         if (myDate >= startDate)
 	        	 return true;
 	       	 else
@@ -283,8 +288,12 @@ div.error {
 	     }, "Start date should be greater than end date");
 		 
 		 $.validator.addMethod("startDateGreaterThanNow", function(value, element) {
-	         var now = $.date();
-	         var myDate = $.date(value, "MM/dd/yyyy");
+	         var now = new Date();
+	         now.setHours(0,0,0,0);
+
+	         var myDate = new Date(value);
+	         myDate.setHours(0,0,0,0);
+	         
 	         if (myDate >= now)
 	        	 return true;
 	         else
@@ -319,12 +328,12 @@ div.error {
 				  startDate: {
 				  	required: true,
 					date: true,
-					//startDateGreaterThanNow: true,
+					startDateGreaterThanNow: true,
 				  },
 				  endDate: {
 				  	required: true,
 				 	date: true,
-				 	//endDateValidate:true,
+				 	endDateValidate:true,
 				  },
 			  },
 			  messages: {
@@ -364,7 +373,7 @@ div.error {
 		        }
 	
 			});
-	});
+	})(jQuery);
 	</script>
 
 </body>
