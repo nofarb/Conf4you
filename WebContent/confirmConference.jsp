@@ -62,60 +62,94 @@ div.error {
 	<div id="vn_mainbody" style="width: 1000px;">
 	
 	
-	<div class="general_block_blue">
-		<div class="general_block_maintitle">Please confirm your participation :</div>
-		<div id="invitationInfo" class="general_block_content" style="font-size: 13px;">
-			<ul>
-				<li>
-				<strong>Name:</strong>
-				<span><%=conf.getName()%></span>
-				</li>
-				<li>
-				<strong>Description:</strong>
-				<span><%=conf.getName()%></span>
-				</li>
-				<li>
-				<strong>Location:</strong>
-				<span><%=conf.getLocation().getName()%>, <%=conf.getLocation().getAddress()%></span>
-				</li>
-				<%
-					Date start = conf.getStartDate();
-					Date end = conf.getEndDate();
-					String formattedStart = new SimpleDateFormat("dd-MM-yyyy").format(start);
-					String formattedEnd = new SimpleDateFormat("dd-MM-yyyy").format(end);
-				%>
-				<li>
-				<strong>Start Date:</strong>
-				<span><%=formattedStart%></span>
-				</li>
-				<li>
-				<strong>End Date:</strong>
-				<span><%=formattedEnd%></span>
-				</li>
-				<li>
-				<span class="confirmPartButtons">
-					<button  class="confirmConfButton vn_iconbutton" id="APPROVED" href="javascript:;">
-					<img class="img_png" width="16" height="16" alt=""
-						src="/conf4u/resources/imgs/success.png"> Approve
-					</button>
-					<button  class="confirmConfButton vn_iconbutton" id="MAYBE" href="javascript:;">
-					<img class="img_png" width="16" height="16" alt=""
-						src="/conf4u/resources/imgs/qm.png"> Maybe
-					</button>
-					<button  class="confirmConfButton vn_iconbutton" id="DECLINED" href="javascript:;">
-					<img class="img_png" width="16" height="16" alt=""
-						src="/conf4u/resources/imgs/cancel.png"> Decline
-					</button>
-				</span>
-				</li>
-		</ul>
-		<div class="corner_tl_6px"></div>
-		<div class="corner_tr_6px"></div>
-		<div class="corner_bl_6px"></div>
-		<div class="corner_br_6px"></div>
-		</div>
 	
-	</div>
+		<table class="confirmTable" cellspacing="0" cellpadding="0" border="0">
+					<thead>
+						<tr>
+							<th class="header" colspan="2">
+								<div class="headerPadd">Please confirm your participation :</div>
+							</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td class="labelDescColumn">
+								<label class="descLabel">Name: </label> 
+							</td>
+							<td class="valueColumn">
+								<label class="labelValue"> <%=conf.getName()%> </label> 
+							</td>
+						</tr>
+
+						<tr>
+							<td class="labelDescColumn">
+								<label class="descLabel">Description: </label> 
+							</td>
+							<td class="valueColumn">
+								<label class="labelValue"> <%=conf.getDescription()%> </label> 
+							</td>
+						</tr>
+
+						<tr>
+							<td class="labelDescColumn">
+								<label class="descLabel"> Location: </label> 
+							</td>
+							<td class="valueColumn">
+								<label class="labelValue"> <%=conf.getLocation().getName()%>, <%=conf.getLocation().getAddress()%> </label> 
+							</td>
+						</tr>
+
+						<%
+							Date start = conf.getStartDate();
+							Date end = conf.getEndDate();
+							String formattedStart = new SimpleDateFormat("dd-MM-yyyy hh:mm:ss aaa").format(start);
+							String formattedEnd = new SimpleDateFormat("dd-MM-yyyy hh:mm:ss aaa").format(end);
+						%>
+
+						<tr>
+							<td class="labelDescColumn">
+								<label class="descLabel"> Start Date: </label> 
+							</td>
+							<td class="valueColumn">
+								<label class="labelValue"> <%= formattedStart %> </label> 
+							</td>
+						</tr>
+
+						<tr>
+							<td class="labelDescColumn">
+								<label class="descLabel"> End Date: </label> 
+							</td>
+							<td class="valueColumn">
+								<label class="labelValue"> <%= formattedEnd %> </label> 
+							</td>
+						</tr>
+
+						<tr valign="middle">
+							<td valign="middle">
+								<label class="descLabel goingLabel"> Going? </label> 
+							</td>
+							<td align="center">
+								<div>
+									<span class="confirmPartButtons">
+										<button  class="confirmConfButton vn_iconbutton" id="APPROVED">
+										<img class="img_png" width="16" height="16" alt=""
+											src="/conf4u/resources/imgs/success.png"> Approve
+										</button>
+										<button  class="confirmConfButton vn_iconbutton" id="MAYBE" >
+										<img class="img_png" width="16" height="16" alt=""
+											src="/conf4u/resources/imgs/qm.png"> Maybe
+										</button>
+										<button  class="confirmConfButton vn_iconbutton" id="DECLINED" >
+										<img class="img_png" width="16" height="16" alt=""
+											src="/conf4u/resources/imgs/cancel.png"> Decline
+										</button>
+									</span>
+								</div>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+	
 	</div>
 	</div>
 

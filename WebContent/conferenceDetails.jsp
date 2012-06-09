@@ -242,7 +242,7 @@ $(document).ready(function(){
 <body>
 <%User user = UserDao.getInstance().getUserById((Long)session.getAttribute(ProjConst.SESSION_USER_ID));%>
 
-<%= UiHelpers.GetHeader().toString() %>
+<%= UiHelpers.GetHeader(SessionUtils.getUser(request)).toString() %>
 <%= UiHelpers.GetTabs(SessionUtils.getUser(request), ProjConst.TAB_CONFERENCES).toString() %>
 
 <div id="content">

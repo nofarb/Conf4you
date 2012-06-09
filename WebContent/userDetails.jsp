@@ -81,7 +81,7 @@ $(document).ready(function(){
 
 <body>
 
-<%= UiHelpers.GetHeader().toString() %>
+<%= UiHelpers.GetHeader(SessionUtils.getUser(request)).toString() %>
 <%= UiHelpers.GetTabs(SessionUtils.getUser(request), ProjConst.TAB_USERS).toString() %>
 
 <div id="content">
