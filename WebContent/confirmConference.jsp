@@ -125,9 +125,7 @@ div.error {
 						</tr>
 
 						<tr valign="middle">
-							<td valign="middle">
-								<label class="descLabel goingLabel"> Going? </label> 
-							</td>
+							<td > </td>
 							<td align="center">
 								<div>
 									<span class="confirmPartButtons">
