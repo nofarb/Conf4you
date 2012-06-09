@@ -223,7 +223,7 @@ public class ConferencesUsersDao {
 				cu.getConference().getName(), 
 				startDateFormatted, 
 				endDateFormatted, 
-				"http://127.0.0.1/acceptAttendence.jsp?id=" + cu.getUniqueIdForEmailNotification()));
+				"http://localhost:8080/conf4u/confirmConference.jsp?id=" + cu.getUniqueIdForEmailNotification()));
 		
 		try
 		{
