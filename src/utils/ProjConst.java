@@ -48,6 +48,7 @@ public final  class ProjConst {
 	//login
 	public static final String LOGIN_PAGE = "login.jsp";
 	public static final String USER_PAGE = "users.jsp";
+	public static final String RECEPTION_PAGE = "reception.jsp";
 	public static final String MAIN_PAGE = "mainPage.jsp";
 
 	public static final String ADD = "add";

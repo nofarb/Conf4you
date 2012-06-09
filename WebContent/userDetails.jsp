@@ -76,11 +76,7 @@ $(document).ready(function(){
 		});
 	
 });
-
-
 </script>
-
-
 </head>
 
 <body>
@@ -138,7 +134,7 @@ $(document).ready(function(){
 			<div class="vn_actionbuttondiv">
 				<div class="title">
 				<a title="Remove from conference" href="removeFromConference.jsp?userId=<%=userId%>">
-					<img src="/conf4u/resources/imgs/vn_action_edit.png" alt=""> 
+					<img src="/conf4u/resources/imgs/user_delete.png" alt=""> 
 					Remove from conference
 				</a>
 				</div>

@@ -10,19 +10,19 @@ import model.User;
 import model.UserAttendanceStatus;
 import model.UserRole;
 
-import org.apache.log4j.Logger;
 import org.hibernate.Session;
 
 import utils.EmailContent;
 import utils.EmailTemplate;
 import utils.EmailUtils;
+import utils.Log;
 import utils.UniqueUuid;
 import db.HibernateUtil;
 
 public class ConferencesUsersDao {
 
 	private static ConferencesUsersDao instance = null;
-	static Logger logger = Logger.getLogger(ConferencesUsersDao.class);
+	static String className = "ConferencesUsersDao";
 
 
 	private ConferencesUsersDao() {
@@ -53,9 +53,8 @@ public class ConferencesUsersDao {
 			session.getTransaction().commit();
 		}
 		catch (RuntimeException e) {
-			logger.error(e.getMessage(), e);
+			Log.error(className, e);
 			session.getTransaction().rollback();
-		    throw e;
 		}	
 	}
 	
@@ -72,7 +71,7 @@ public class ConferencesUsersDao {
 			session.getTransaction().commit();
 		}
 		catch (Exception e) {
-			logger.error(e.getMessage(), e);
+			Log.error(className, e);
 			session.getTransaction().rollback();
 		}		
 	
@@ -92,7 +91,7 @@ public class ConferencesUsersDao {
 			session.getTransaction().commit();
 		}
 		catch (Exception e) {
-			logger.error(e.getMessage(), e);
+			Log.error(className, e);
 			session.getTransaction().rollback();
 		}		
 	
@@ -113,7 +112,7 @@ public class ConferencesUsersDao {
 			session.getTransaction().commit();
 		}
 		catch (Exception e) {
-			logger.error(e.getMessage(), e);
+			Log.error(className, e);
 			session.getTransaction().rollback();
 		}
 		
@@ -134,7 +133,7 @@ public class ConferencesUsersDao {
 			session.getTransaction().commit();
 		}
 		catch (Exception e) {
-			logger.error(e.getMessage(), e);
+			Log.error(className, e);
 			session.getTransaction().rollback();
 		}
 	
@@ -157,7 +156,7 @@ public class ConferencesUsersDao {
 			
 		}
 		catch (Exception e) {
-			logger.error(e.getMessage(), e);
+			Log.error(className, e);
 			session.getTransaction().rollback();
 		}
 		
@@ -176,9 +175,8 @@ public class ConferencesUsersDao {
 			session.getTransaction().commit();
 		}
 		catch (Exception e) {
-			logger.error(e.getMessage(), e);
+			Log.error(className, e);
 			session.getTransaction().rollback();
-			throw e;
 		}
 	}
 	
@@ -199,7 +197,7 @@ public class ConferencesUsersDao {
 			session.getTransaction().commit();
 		}
 		catch (Exception e) {
-			logger.error(e.getMessage(), e);
+			Log.error(className, e);
 			session.getTransaction().rollback();
 		}	
 	}
@@ -230,7 +228,7 @@ public class ConferencesUsersDao {
 			EmailUtils.sendEmail(email, user.getEmail(), true);
 		}
 		catch (Exception e) {
-			// TODO: handle exception
+			Log.error(className, e);
 			return;
 		}
 		cu.setNotifiedByMail(true);
@@ -246,9 +244,8 @@ public class ConferencesUsersDao {
 			session.getTransaction().commit();
 		}
 		catch (Exception e) {
-			logger.error(e.getMessage(), e);
+			Log.error(className, e);
 			session.getTransaction().rollback();
-			throw e;
 		}
 		
 	}
@@ -268,7 +265,7 @@ public class ConferencesUsersDao {
 			session.getTransaction().commit();
 		}
 		catch (Exception e) {
-			logger.error(e.getMessage(), e);
+			Log.error(className, e);
 			session.getTransaction().rollback();
 		}
 		
@@ -292,69 +289,73 @@ public class ConferencesUsersDao {
 	public List<String> getScopedConferenceByDate(User user, String filter)
 	{
 		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
-		session.beginTransaction();
+		List<String> confList = null;
 		
-		List<String> confList;
-		
-		StringBuilder query = new StringBuilder();
-		String filterQuery = "";
-		
-		Date current = new Date();
-		
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-		String startDateFormatted = sdf.format(current);
-
-		ConferenceFilters.ConferenceTimeFilter enumFilter = ConferenceFilters.ConferenceTimeFilter.valueOf(filter); 
-		
-		if (enumFilter == ConferenceFilters.ConferenceTimeFilter.ALL)
-		{
-			filterQuery = "";
-		}
-		else if (enumFilter == ConferenceFilters.ConferenceTimeFilter.CURRENT)
-		{
-			filterQuery = "where '"+ startDateFormatted + "' between DATE_FORMAT(c.startDate, '%Y-%m-%d') and DATE_FORMAT(c.endDate, '%Y-%m-%d')";
-		}
-		else if (enumFilter == ConferenceFilters.ConferenceTimeFilter.FUTURE)
-		{
-			filterQuery = "where DATE_FORMAT(c.startDate,'%Y-%m-%d') > " + startDateFormatted + ")";
-		}
-		else if (enumFilter == ConferenceFilters.ConferenceTimeFilter.PAST)
-		{
-			filterQuery = "where DATE_FORMAT(c.endDate,'%Y-%m-%d') < " + startDateFormatted + ")";
-		}
-		else
-		{
-			//TODO: EXCEPTION
-		}
-
-		if (user.isAdmin())
-		{
-			query.append("select c.name from Conference c ");
-			query.append(filterQuery);
-			confList = (List<String>)session.createQuery(
-					query.toString())
-	                .list();
-		}
-		else
-		{
-			query.append("select c.name from Conference c ");
-			query.append(filterQuery);
+		try {
+			session.beginTransaction();
+			
+			StringBuilder query = new StringBuilder();
+			String filterQuery = "";
+			
+			Date current = new Date();
+			
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+			String startDateFormatted = sdf.format(current);
+	
+			ConferenceFilters.ConferenceTimeFilter enumFilter = ConferenceFilters.ConferenceTimeFilter.valueOf(filter); 
+			
 			if (enumFilter == ConferenceFilters.ConferenceTimeFilter.ALL)
-				query.append(" where exists (select 1 from ConferencesUsers cu where cu.user = :user and cu.conference = c)");
+			{
+				filterQuery = "";
+			}
+			else if (enumFilter == ConferenceFilters.ConferenceTimeFilter.CURRENT)
+			{
+				filterQuery = "where '"+ startDateFormatted + "' between DATE_FORMAT(c.startDate, '%Y-%m-%d') and DATE_FORMAT(c.endDate, '%Y-%m-%d')";
+			}
+			else if (enumFilter == ConferenceFilters.ConferenceTimeFilter.FUTURE)
+			{
+				filterQuery = "where DATE_FORMAT(c.startDate,'%Y-%m-%d') > " + startDateFormatted + ")";
+			}
+			else if (enumFilter == ConferenceFilters.ConferenceTimeFilter.PAST)
+			{
+				filterQuery = "where DATE_FORMAT(c.endDate,'%Y-%m-%d') < " + startDateFormatted + ")";
+			}
 			else
-				query.append(" and exists (select 1 from ConferencesUsers cu where cu.user = :user and cu.conference = c)");
-			
-			
-			confList = (List<String>)session.createQuery(
-					query.toString())
-	                .setEntity("user", user)
-	                .list();
-		}
+			{
+				//TODO: EXCEPTION
+			}
+	
+			if (user.isAdmin())
+			{
+				query.append("select c.name from Conference c ");
+				query.append(filterQuery);
+				confList = (List<String>)session.createQuery(
+						query.toString())
+		                .list();
+			}
+			else
+			{
+				query.append("select c.name from Conference c ");
+				query.append(filterQuery);
+				if (enumFilter == ConferenceFilters.ConferenceTimeFilter.ALL)
+					query.append(" where exists (select 1 from ConferencesUsers cu where cu.user = :user and cu.conference = c)");
+				else
+					query.append(" and exists (select 1 from ConferencesUsers cu where cu.user = :user and cu.conference = c)");
 				
-		session.getTransaction().commit();
-		
+				
+				confList = (List<String>)session.createQuery(
+						query.toString())
+		                .setEntity("user", user)
+		                .list();
+			}
+					
+			session.getTransaction().commit();
+		}
+		catch (Exception e) {
+			Log.error(className, e);
+			session.getTransaction().rollback();
+		}
 		return confList;	
-		
 	}
 	
 	@SuppressWarnings("unchecked")
@@ -373,7 +374,7 @@ public class ConferencesUsersDao {
 			session.getTransaction().commit();
 		}
 		catch (Exception e) {
-			logger.error(e.getMessage(), e);
+			Log.error(className, e);
 			session.getTransaction().rollback();
 		}
 		
@@ -395,7 +396,7 @@ public class ConferencesUsersDao {
 			session.getTransaction().commit();
 		}
 		catch (Exception e) {
-			logger.error(e.getMessage(), e);
+			Log.error(className, e);
 			session.getTransaction().rollback();
 		}		
 	

@@ -12,12 +12,14 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import utils.EmailUtils;
+import utils.Log;
 import utils.MockCreation;
 import utils.ProjConst;
 import model.Conference;
 import model.User;
 import model.UserRole;
 import daos.ConferenceDao;
+import daos.ConferencesUsersDao;
 import daos.UserDao;
 
 
@@ -40,8 +42,13 @@ public class LoginServlet extends HttpServlet {
     	try 
 		{
     		
-    		List<Conference> confs = (List<Conference>) MockCreation.createMockConferencesAndLocations();
-    		List<User> users = (List<User>) MockCreation.createMockUsersAndCompanies(); 
+    		User adminUser = UserDao.getInstance().getUserByUserName("admin");
+    		
+    		if (adminUser == null)
+    		{
+    			List<Conference> confs = (List<Conference>) MockCreation.createMockConferencesAndLocations();
+    			List<User> users = (List<User>) MockCreation.createMockUsersAndCompanies(); 
+    		}
 //    		MockCreation.createUserConfRoleConnection(confs.get(2), users.get(1), UserRole.RECEPTIONIST);
 //    		MockCreation.createUserConfRoleConnection(confs.get(2), users.get(2), UserRole.SPEAKER);
 //    		MockCreation.createUserConfRoleConnection(confs.get(3), users.get(3), UserRole.CONF_MNGR);
@@ -72,10 +79,31 @@ public class LoginServlet extends HttpServlet {
 				user.setLastLogin(new Date());
 				UserDao.getInstance().updateUser(user);
 				
+				if (user.isAdmin())
+				{
+					response.sendRedirect(ProjConst.USER_PAGE);
+					return;
+				}
+				
+				UserRole userRole = ConferencesUsersDao.getInstance().getUserHighestRole(user);
+				
+				if (userRole.getValue() <= 2)
+				{
+					Log.info(this.getServletName(), "User with lower permitions tried to login, user id: " + user.getUserId());
+					response.sendRedirect(ProjConst.LOGIN_PAGE + "?messageNotificationType=error&messageNotification=You have insufficient permissions to login");
+					return;
+				}
+				
+				if (userRole.getValue() == 3)
+				{
+					response.sendRedirect(ProjConst.RECEPTION_PAGE);
+					return;
+				}
 				response.sendRedirect(ProjConst.USER_PAGE); //redirect to main page
 			}
 			else{
-				response.sendRedirect(ProjConst.LOGIN_PAGE); // TODO - alert on error if authentication fails
+				Log.info(this.getServletName(), "User with no permitions tried to login, user name: " + userName);
+				response.sendRedirect(ProjConst.LOGIN_PAGE + "?messageNotificationType=error&messageNotification=Wrong user name or password");
 			}
 		}
 		catch (Throwable theException)

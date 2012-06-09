@@ -1,12 +1,32 @@
-<%@ page language="java" contentType="text/html; charset=windows-1255"
-    pageEncoding="windows-1255"%>
+<%@page import="utils.*"%>
+
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=windows-1255">
+<%= UiHelpers.GetAllJsAndCss().toString() %>
 <link type="text/css" href="css/login.css" rel="stylesheet" />
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/> 
 <title>Conf4U</title>
+<script type="text/javascript">
+$(document).ready(function(){
+	var message = "<%=request.getParameter("messageNotification")%>";
+	if (message != "null")
+	{
+		var messageType = "<%=request.getParameter("messageNotificationType")%>";
+		if (messageType == "success")
+		{
+			jSuccess(message);
+		}
+		else if (messageType == "error")
+		{
+			jError(message);
+		}
+		else
+		{
+			alert("unknown message type");
+		}
+	}
+});
+</script>
 </head>
 <body>
 <div id="pagewrap">
