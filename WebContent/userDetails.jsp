@@ -129,8 +129,8 @@ $(document).ready(function(){
 				</div>
 			</div>
 
-			<% List<ConferencesUsers> confUsers = ConferencesUsersDao.getInstance().getAllConferenceUsersByUser(user); 
-			if (confUsers !=null && ConferencesUsersDao.getInstance().getAllConferenceUsersByUser(user).size() != 0) { %>
+			<% List<ConferencesUsers> confUsers = ConferencesUsersDao.getInstance().getAllConferenceUsersByUser(user, true); 
+			if (confUsers !=null && confUsers.size() != 0) { %>
 			<div class="vn_actionbuttondiv">
 				<div class="title">
 				<a title="Remove from conference" href="removeFromConference.jsp?userId=<%=userId%>">

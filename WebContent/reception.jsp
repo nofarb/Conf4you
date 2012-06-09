@@ -107,7 +107,7 @@ $(document).ready(function(){
 		{
 			getConferenceList();
 			var confName = $("#confNameFilter").val();
-			if (confName != "null")
+			if (confName != null)
 			{
 				window.location = "reception.jsp?filterStatus=CURRENT&filterConfName=" + confName;
 			}

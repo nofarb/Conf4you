@@ -91,7 +91,7 @@ div.error {
 									<img class="img_png" width="16" height="16" alt=""
 										src="/conf4u/resources/imgs/table_save.png"> Remove
 								</button>
-								<a id="cancelButton" href="userDetails.jsp?usedId=<%=user.getUserId()%>">
+								<a id="cancelButton" href="userDetails.jsp?userId=<%=user.getUserId()%>">
 								 <img class="img_png" width="16" height="16" alt="" src="/conf4u/resources/imgs/cancel.png"> Cancel
 								</a>
 							</div>
@@ -129,12 +129,13 @@ $(document).ready(function(){
 				            data: {
 				            	"action": "removeUser",
 				            	"confName": $("#confName").val(),
-				            	"userName": "<%=user.getUserName()%>"
+				            	"userNames": "<%=user.getUserName()%>"
 				            },
 				        success: function(data) {
 				            if (data != null){
 								if (data.resultSuccess == "true")
 								{
+									$( this ).dialog( "close" );
 							 	   	window.location = "userDetails.jsp?userId=" + <%=user.getUserId()%> + "&messageNotification=" + data.message + "&messageNotificationType=success";
 								}
 								else

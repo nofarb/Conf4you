@@ -77,7 +77,6 @@ public class ReceptionServlet extends HttpServlet {
     	
     	try 
     	{
-    		//ConferenceDao.getInstance().addNewConference(new Conference(confName, locationInstance, desc, startDate, endDate));
     		confList = ConferencesUsersDao.getInstance().getScopedConferenceByDate(user, filter);
     		message = "Conference successfully added";
     		resultSuccess = "true";

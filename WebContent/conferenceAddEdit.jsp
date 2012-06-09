@@ -315,12 +315,12 @@ div.error {
 				    required: true,
 				    minlength: 4,
 				    maxlength: 30,
-				    uniqueConferenceName: $(".operation").text() == "add",
+				    uniqueConferenceName: $(".operation").text() == "add"
 				  },
 				  confDesc: {
 				  	required: true,
 				    minlength: 4,
-				    maxlength: 254,
+				    maxlength: 254
 				  },
 				  locations: {
 				  	required: true,
@@ -328,12 +328,12 @@ div.error {
 				  startDate: {
 				  	required: true,
 					date: true,
-					startDateGreaterThanNow: true,
+					startDateGreaterThanNow: true
 				  },
 				  endDate: {
 				  	required: true,
 				 	date: true,
-				 	endDateValidate:true,
+				 	endDateValidate:true
 				  },
 			  },
 			  messages: {
@@ -341,20 +341,20 @@ div.error {
 						 required: "Required",
 						 minlength: "You need to use at least 4 characters for your conference name.",
 						 maxlength: "You need to use at most 30 characters for your conference name.",
-						 uniqueConferenceName : "This conference name is already exists",
+						 uniqueConferenceName : "This conference name is already exists"
 					},
 					confDesc: {
 						 required: "Required",
 						 minlength: "You need to use at least 4 characters for your conference description.",
-						 maxlength: "You need to use at most 254 characters for your conference description.",
+						 maxlength: "You need to use at most 254 characters for your conference description."
 					},
 					locations: {
-						required: "Stand up for your comments or go home.",
+						required: "Stand up for your comments or go home."
 					},
 					startDate: {
 						required: "Required",
 						date: "Date format required",
-						startDateGreaterThanNow: "Start date must be in the future",
+						startDateGreaterThanNow: "Start date must be in the future"
 					 },
 					endDate: {
 						required: "Required",

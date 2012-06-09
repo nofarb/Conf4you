@@ -78,16 +78,41 @@ public class ConferencesUsersDao {
 		return result;
 	}
 	
-	@SuppressWarnings("unchecked")
 	public List<ConferencesUsers> getAllConferenceUsersByUser(User user){
+		return getAllConferenceUsersByUser(user, false);
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<ConferencesUsers> getAllConferenceUsersByUser(User user, Boolean onlyActiveConferences){
 		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
 		List<ConferencesUsers> result = null;
+		
+		Date date = new Date();
+		
+		String query;
+		if (onlyActiveConferences)
+			query = "select cu from ConferencesUsers cu left join fetch cu.conference conf where cu.user = :user and conf.endDate >= :now";
+		else
+			query = "select cu from  ConferencesUsers cu where cu.user = :user";
+		
 		try {
 			session.beginTransaction();
-			result = (List<ConferencesUsers>)session.createQuery(
-					"select cu from  ConferencesUsers cu where cu.user = :user")
-	                .setEntity("user", user)
-	                .list();
+			
+			if (onlyActiveConferences)
+			{
+				result = (List<ConferencesUsers>)session.createQuery(
+						query)
+		                .setEntity("user", user)
+		                .setDate("now", date)
+		                .list();
+			}
+			else
+			{
+				result = (List<ConferencesUsers>)session.createQuery(
+						query)
+		                .setEntity("user", user)
+		                .list();
+			}
 			session.getTransaction().commit();
 		}
 		catch (Exception e) {
@@ -338,9 +363,9 @@ public class ConferencesUsersDao {
 				query.append("select c.name from Conference c ");
 				query.append(filterQuery);
 				if (enumFilter == ConferenceFilters.ConferenceTimeFilter.ALL)
-					query.append(" where exists (select 1 from ConferencesUsers cu where cu.user = :user and cu.conference = c)");
+					query.append(" where exists (select 1 from ConferencesUsers cu where cu.user = :user and cu.userRole = 1 and cu.conference = c)");
 				else
-					query.append(" and exists (select 1 from ConferencesUsers cu where cu.user = :user and cu.conference = c)");
+					query.append(" and exists (select 1 from ConferencesUsers cu where cu.user = :user and cu.userRole = 1 and cu.conference = c)");
 				
 				
 				confList = (List<String>)session.createQuery(
