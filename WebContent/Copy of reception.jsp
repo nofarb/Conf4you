@@ -1,4 +1,3 @@
-<%@page import="daos.ConferencesParticipantsDao"%>
 <%@page import="model.ConferencesUsers"%>
 <%@page import="model.ConferenceFilters"%>
 <%@page import="java.util.LinkedList"%>
@@ -53,6 +52,13 @@ $(document).ready(function(){
 		window.location = "reception.jsp?filterStatus="+status +"&filterConfName=" + confName;
 	 });
 	
+	$('#search').click(function ()
+	{
+		//   http://heathesh.com/post/2010/05/06/Filtering-or-searching-an-HTML-table-using-JavaScript.aspx
+		//alert("Search");
+		//tableSearch.runSearch();
+			 
+	 });
 	
 	var getConferenceList = function() {
 		var statusFilter = $("#confStatusFilter");
@@ -78,7 +84,7 @@ $(document).ready(function(){
                 }
                 else
                	{
-               		jError("No conference found in this status" );
+               		jError("Failed to get conferences name");
                	}
             }
         });
@@ -115,9 +121,7 @@ $(document).ready(function(){
 		
 	updateUsersListAndFilters();
 	
-	$('input#search').quicksearch('table#table1 tbody tr');
-	
-			 
+	tableSearch.init();
 });
 </script>
 
@@ -142,7 +146,18 @@ $(document).ready(function(){
 				<table>
 					<tr>
 						<td>
-						
+							<!-- 
+				<div class="buttons">
+					<a id="createNewUser" href="userAddEdit.jsp?action=add">
+					<span></span>
+					<img src="/conf4u/resources/imgs/vn_action_add.png">
+					Add User
+					</a>
+				</div>
+				 -->
+						</td>
+					</tr>
+
 					<!-- Filter : 
 	--------------------------------------->
 					<tr>
@@ -152,7 +167,9 @@ $(document).ready(function(){
 									<td>
 										<table class="filtersTable">
 											<tr id="filterTableRow1">
-												
+												<td>
+													<!-- <input type="radio"  id="filter2" name="usersFilter" value="filter2" /> -->
+												</td>
 												<td>Conference Status: <select id="confStatusFilter">
 														<option value="<%=ConferenceFilters.ConferenceTimeFilter.CURRENT%>">Current</option>
 														<option value="<%=ConferenceFilters.ConferenceTimeFilter.FUTURE%>">Future</option>
@@ -166,6 +183,30 @@ $(document).ready(function(){
 														<a class="apply" href="javascript:;"> 
 															<img src="/conf4u/resources/imgs/yes_green.png"> 
 															Apply
+														</a>
+													</div>
+												</td>
+											</tr>
+											<tr id="filterTableRow2">
+												<td>
+													<!-- <input type="radio" id="filter1" name="usersFilter" value="fiter1" checked/> -->
+												</td>
+												<td>
+													<!-- 
+										<select id="userGeneralFilter">
+												<option selected="selected" value="all">All Users</option>
+												<option value="active">Active Users</option>
+												<option value="nonActive">Non Active Users</option>
+												<option value="admin">Admin Users</option>
+										</select>
+									--> Search: <input type="text" size="39" maxlength="1000"
+													value="" id="textBoxSearch"
+													onkeyup="tableSearch.search(event);" /> <!-- <input type="button" value="Search" onclick="tableSearch.runSearch();" />  -->
+												</td>
+												<td>
+													<div class="buttons">
+														<a id="search"> <img
+															src="/conf4u/resources/imgs/search.png"> Search
 														</a>
 													</div>
 												</td>
@@ -188,21 +229,7 @@ $(document).ready(function(){
 									List<ConferencesUsers> conferenceUsersList = ConferencesUsersDao.getInstance().getAllConferenceUsersByConference(conference);
 									if (conferenceUsersList.size() > 0) {
 								%>
-		
-		<div class="selectedFilter" style="display:none;"><%=request.getParameter("filter")%></div>
-		<span id="vn_mainbody_filter">
-			Search:
-   			<input type="text" id="search">
-			Show: 	
-			<select id="filterSelect">
-				<option value="LAST7DAYS">Not Arrived</option>
-				<option value="LAST30DAYS">Arrived</option>
-				<option value="ALL" selected="selected">All</option>
-			</select>
-			
-		</span>
 
-		</div>
 		<div>
 			<div class="groupedList">
 				<table cellpadding="0" cellspacing="0" border="0" id="table1"
@@ -214,7 +241,7 @@ $(document).ready(function(){
 							<th><h3>Company</h3></th>
 							<th><h3>Company Type</h3></th>
 							<th><h3>Phone 1</h3></th>
-							<th><h3>Phone 2</h3></th>				
+							<th><h3>Phone 2</h3></th>
 							<th class="nosort"><h3>Arrived</h3></th>
 						</tr>
 					</thead>
@@ -233,30 +260,20 @@ $(document).ready(function(){
 				}
 			%>
 								<tr class="gridRow">
-									
+									<!-- <td><%=user.getName()%></td>  -->
 									<td><%=user.getPasportID()%></td>
-									<td><a class="vn_boldtext" href="userDetails.jsp?userId=<%=user.getUserId()%>"> <%=user.getName()%> </a></td>
+									<td><a class="vn_boldtext"
+										href="userDetails.jsp?userId=<%=user.getUserId()%>"> <%=user.getName()%>
+									</a></td>
 									<td><%=user.getCompany().getName()%></td>
-									<td width="10%"><%=user.getCompany().getCompanyType().toString()%></td>
+									<td><%=user.getCompany().getCompanyType().toString()%></td>
 									<td><%=user.getPhone1()%></td>
 									<td><%=user.getPhone2()%></td>
-									<td width="5%" align="center">
-									<%
-									boolean isUserArrivedToday = ConferencesParticipantsDao.getInstance().isUserArrivedToday(conference, user);
-									if (isUserArrivedToday)
-									{
-									%>
-										<a href="javascript:void(0)" onclick="updateUserArrival(<%=user.getUserId()%>)">
-										<img src="/conf4u/resources/imgs/yes_green.png">
-										</a>
-									<%}
-									else
-									{ %>
-										<a href="javascript:void(0)" onclick="updateUserArrival(<%=user.getUserId()%>)">
-										<img src=/conf4u/resources/imgs/cancel.png>
-										</a>
-									<%} %>	
-									</td>
+									<td><a class="vn_boldtext"
+										href="userDetails.jsp?userId=<%=user.getUserId()%>"> <img
+											src="/conf4u/resources/imgs/vn_world.png" alt="">
+											Details
+									</a></td>
 								</tr>
 								<%	} %>
 							</tbody>
@@ -312,35 +329,56 @@ $(document).ready(function(){
 			<% } %>
 			</div>
 		</div>
-	
+	</div>
 	<script type="text/javascript">
-		//$('.arrived').click(function()
-		var updateUserArrival = function(userId)
+		//define the table search object, which can implement both functions and properties
+    	window.tableSearch = {};
+
+    	//initialize the search, setup the current object
+	    tableSearch.init = function()
 		{
-			$.ajax({
-	            url: "ReceptionServlet",
-	            dataType: 'json',
-	            async: false,
-	            type: 'POST',
-	                data: {
-	                	"action": "updateUserArrival",
-	                	"<%=ProjConst.USER_ID%>" : userId,
-	                	"<%=ProjConst.CONF_NAME%>" : "<%=request.getParameter("filterConfName")%>"
-	                	//"userNames": $removeParticipant.closest('tr').find('td#userNameTd').text()
-	                },
-	            success: function(data) {
-	                if (data != null)
-	                {
-						//success
-	                	alert("Arrived");
-	                }
-	                else
-	               	{
-	               		jError("Error on update user arrival" );
-	               	}
-	            }
-	        });
-		};
+	        //define the properties I want on the tableSearch object
+	        this.Rows = document.getElementById('tabelData').getElementsByTagName('TR');
+	        this.RowsLength = tableSearch.Rows.length;
+	        this.RowsText = [];
+	       
+	        //loop through the table and add the data to the table search object
+	        for (var i = 0; i < tableSearch.RowsLength; i++) {
+	            this.RowsText[i] = (tableSearch.Rows[i].innerText) ? tableSearch.Rows[i].innerText.toUpperCase() : tableSearch.Rows[i].textContent.toUpperCase();
+	        }
+	    };
+	    //onlys shows the relevant rows as determined by the search string
+        tableSearch.runSearch = function() {
+			//get the search term
+            this.Term = document.getElementById('textBoxSearch').value.toUpperCase();
+           
+            //loop through the rows and hide rows that do not match the search query
+            for (var i = 0, row; row = this.Rows[i], rowText = this.RowsText[i]; i++)
+            {
+                row.style.display = ((rowText.indexOf(this.Term) != -1) || this.Term === '') ? '' : 'none';
+            }
+        };
+		
+        //handles the enter key being pressed
+        tableSearch.search = function(e) 
+        {
+			//checks if the user pressed the enter key, and if they did then run the search
+            var keycode;
+            if (window.event)
+            {
+            	keycode = window.event.keyCode; 
+            }
+            else if (e)
+            {
+            	keycode = e.which;
+            }
+            else { return false; }
+            if (keycode == 13) 
+            {
+                tableSearch.runSearch();
+            }
+            else { return false; }
+        };
 	</script>
 </body>
 </html>

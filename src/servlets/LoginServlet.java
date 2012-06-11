@@ -61,9 +61,9 @@ public class LoginServlet extends HttpServlet {
 				request.getSession(true).setAttribute(ProjConst.SESSION_USER_ID, user.getUserId());
 
 				// Update Cookie
-				Cookie userCookie = new Cookie(ProjConst.SESSION_USER_ID, String.valueOf(user.getUserId()));
-				userCookie.setMaxAge(ProjConst.SESSION_COOKIE_MAX_AGE);
-				response.addCookie(userCookie);
+				//Cookie userCookie = new Cookie(ProjConst.SESSION_USER_ID, String.valueOf(user.getUserId()));
+				//userCookie.setMaxAge(ProjConst.SESSION_COOKIE_MAX_AGE);
+				//response.addCookie(userCookie);
 								
 				//updating last login time:
 				user.setLastLogin(new Date());

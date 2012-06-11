@@ -90,7 +90,7 @@ public class ConferenceDao {
 	
 
 	/**
-	 * Get a list of all the Companies that match the given filter.
+	 * Get a list of all the Conference that match the given filter.
 	 * @param filter
 	 * @return
 	 */

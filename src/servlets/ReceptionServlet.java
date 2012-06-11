@@ -24,6 +24,7 @@ import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 
 import daos.ConferenceDao;
+import daos.ConferencesParticipantsDao;
 import daos.ConferencesUsersDao;
 import daos.LocationDao;
 import daos.UserDao;
@@ -55,6 +56,10 @@ public class ReceptionServlet extends HttpServlet {
 		}
 		else if (action.equals(FILTER_CHANGE)) {
 			getConferences(request, response);
+		}
+		else if(action.equals(UPDATE_USER_ARRIVAL))
+		{
+			userArrivalUpdate(request, response);
 		}
 		else {
 			//throw new Exception("Unknown request");
@@ -99,6 +104,52 @@ public class ReceptionServlet extends HttpServlet {
             out.flush();
         }
          finally {
+            out.close();
+        }
+    }
+    
+    private void userArrivalUpdate(HttpServletRequest request, HttpServletResponse response) throws IOException, ParseException
+    {
+    	String confName = request.getParameter(ProjConst.CONF_NAME);
+    	String userId = request.getParameter(ProjConst.USER_ID);
+    	
+    	User user = UserDao.getInstance().getUserById(Long.parseLong(userId));
+    	Conference conference = ConferenceDao.getInstance().getConferenceByName(confName);
+    	
+    	
+    	JsonObject jsonObject = new JsonObject();
+    	
+    	String resultSuccess;
+    	String message;
+    	
+    	try 
+    	{
+    		//ConferencesUsersDao.getInstance().assignUserToConference(conference, user, Integer.parseInt(userRole));
+    		ConferencesParticipantsDao.getInstance().updateUserArrival(conference, user);
+    		resultSuccess = "true";
+    		message = "User " + user.getName() + " arrived to conference " + conference.getName();
+    		
+    	}
+    	catch (Exception e)
+    	{
+    		resultSuccess = "false";
+    		message = "Failed to update user arrival";
+    	}
+    	
+        response.setContentType("application/json;charset=UTF-8");
+        PrintWriter out = response.getWriter();
+        try 
+        {
+            Gson gson = new Gson();
+           	String json;
+       		jsonObject.addProperty("resultSuccess", resultSuccess);
+       		jsonObject.addProperty("message", message);
+       		json = gson.toJson(jsonObject);
+           	out.write(json);
+            out.flush();
+       	}
+        finally
+        {
             out.close();
         }
     }
@@ -201,58 +252,6 @@ public class ReceptionServlet extends HttpServlet {
            	{
            		jsonObject.addProperty("resultSuccess", "false");
            		jsonObject.addProperty("message", "Failed to edit conference");
-           		json = gson.toJson(jsonObject);
-           	}
-           	out.write(json);
-            out.flush();
-        }
-         finally {
-            out.close();
-        }
-    }
-    
-    private void assignUser(HttpServletRequest request, HttpServletResponse response) throws IOException, ParseException
-    {
-    	String confName = request.getParameter(ProjConst.CONF_NAME);
-    	Conference conference = ConferenceDao.getInstance().getConferenceByName(confName);
-    	
-    	String userName = request.getParameter("userName");
-    	User user = UserDao.getInstance().getUserByUserName(userName);
-    	
-    	String userRole = request.getParameter("userRole");
-    	
-    	JsonObject jsonObject = new JsonObject();
-    	
-    	String resultSuccess;
-    	String message;
-    	try 
-    	{
-    		ConferencesUsersDao.getInstance().assignUserToConference(conference, user, Integer.parseInt(userRole));
-    		resultSuccess = "true";
-    		message = "User " + userName + " assigned to conference " + confName + " with role " + UserRole.resolveUserRole(Integer.parseInt(userRole)).toString().toLowerCase();
-    		
-    	}
-    	catch (Exception e)
-    	{
-    		resultSuccess = "false";
-    		message = "Failed to assign user";
-    	}
-    	
-        response.setContentType("application/json;charset=UTF-8");
-        PrintWriter out = response.getWriter();
-        try {
-            Gson gson = new Gson();
-           	String json;
-           	if (ConferenceDao.getInstance().isConferenceNameExists(confName))	
-           	{
-           		jsonObject.addProperty("resultSuccess", resultSuccess);
-           		jsonObject.addProperty("message", message);
-           		json = gson.toJson(jsonObject);
-           	}
-           	else
-           	{
-           		jsonObject.addProperty("resultSuccess", "false");
-           		jsonObject.addProperty("message", "Failed to assign user");
            		json = gson.toJson(jsonObject);
            	}
            	out.write(json);

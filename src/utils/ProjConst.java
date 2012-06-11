@@ -23,6 +23,7 @@ public final  class ProjConst {
 	
 	// conference
 	public static final String CONF_NAME = "confName";
+	public static final String CONF_ID = "confId";
 	public static final String CONF_NAME_BEFORE_EDIT = "confNameEdit";
 	public static final String CONF_DESC = "confDesc";
 	public static final String CONF_LOCATION = "locations";
