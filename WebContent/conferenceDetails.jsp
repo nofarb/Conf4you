@@ -347,14 +347,14 @@ $(document).ready(function(){
 		</thead>
 		<tbody>
 			<% 
-			List<ConferencesUsers> confParticipants =  ConferencesUsersDao.getInstance().getConderenceUsersByType(conf, UserRole.PARTICIPANT); 
+			List<ConferencesUsers> confParticipants =  ConferencesUsersDao.getInstance().getConferenceUsersByType(conf, UserRole.PARTICIPANT); 
 			for (ConferencesUsers confPartcipant : confParticipants) { %>
 			<tr class="gridRow">
 			<td>
 				<input class="checkboxUserName" id="select_one" type="checkbox" value="<%=confPartcipant.getUser().getUserName()%>" name="userNames">
 			</td>
 			<td id="userNameTd"><%=confPartcipant.getUser().getUserName()%></td>
-			<td><%=confPartcipant.getUser().getName()%></td>
+			<td><a class="vn_boldtext" href="userDetails.jsp?userId=<%=confPartcipant.getUser().getUserId()%>"><%=confPartcipant.getUser().getName()%></a></td>
 			<td><%=confPartcipant.getUser().getEmail()%></td>
 			<td><%=confPartcipant.getUser().getPasportID()%></td>
 			<%

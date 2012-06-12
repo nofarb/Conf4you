@@ -14,11 +14,13 @@ public class UiHelpers {
 		sb.append("<link type=\"text/css\" href=\"css/tables/tableList.css\" rel=\"stylesheet\" />");
 		sb.append("<link type=\"text/css\" href=\"css/cupertino/jquery-ui-1.8.18.custom.css\" rel=\"stylesheet\" />");
 		sb.append("<link type=\"text/css\" href=\"css/jNotify.jquery.css\" rel=\"stylesheet\" />");
+		sb.append("<link href=\"/conf4u/resources/imgs/conf4u_logo.ico\" rel=\"shortcut icon\" />");
 		sb.append("<script type=\"text/javascript\" src=\"js/jquery-1.7.1.min.js\"></script>");
 		sb.append("<script type=\"text/javascript\" src=\"js/jquery-ui-1.8.18.custom.min.js\"></script>");
 		sb.append("<script type=\"text/javascript\" src=\"js/jquery.validate.js\"></script>");
 		sb.append("<script type=\"text/javascript\" src=\"js/jNotify.jquery.js\"></script>");
 		sb.append("<script type=\"text/javascript\" src=\"js/jquery.quicksearch.js\"></script>");
+		
 		return sb;
 	}
 	

@@ -5,6 +5,7 @@ import java.util.Date;
 import java.util.List;
 import model.Conference;
 import model.ConferenceFilters;
+import model.ConferencesParticipants;
 import model.ConferencesUsers;
 import model.User;
 import model.UserAttendanceStatus;
@@ -124,7 +125,7 @@ public class ConferencesUsersDao {
 	}
 	
 	@SuppressWarnings("unchecked")
-	public List<ConferencesUsers> getConderenceUsersByType(Conference conference, UserRole ur ){	
+	public List<ConferencesUsers> getConferenceUsersByType(Conference conference, UserRole ur ){	
 		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
 		List<ConferencesUsers> result = null;
 		try {

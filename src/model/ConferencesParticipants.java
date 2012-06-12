@@ -39,7 +39,6 @@ public class ConferencesParticipants implements Serializable {
 		this.conferenceDateDay = date;
 	}
 	
-	
 	@Id
 	@ManyToOne(cascade = CascadeType.ALL)
 	public Conference getConference() {

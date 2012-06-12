@@ -143,8 +143,7 @@ $(document).ready(function(){
 					<tr>
 						<td>
 						
-					<!-- Filter : 
-	--------------------------------------->
+					<!-- Filter : --------------------------------------->
 					<tr>
 						<td>
 							<table class="filtersAndApllyTable">
@@ -179,15 +178,14 @@ $(document).ready(function(){
 					</tr>
 				</table>
 
-				<!-- Filter end 
-	--------------------------------------->
-								<%
-									String confName = request.getParameter("filterConfName");								
-									if (confName != null && confName != "null") {
-									Conference conference = ConferenceDao.getInstance().getConferenceByName(confName);								
-									List<ConferencesUsers> conferenceUsersList = ConferencesUsersDao.getInstance().getAllConferenceUsersByConference(conference);
-									if (conferenceUsersList.size() > 0) {
-								%>
+				<!-- Filter end --------------------------------------->
+		<%
+			String confName = request.getParameter("filterConfName");								
+			if (confName != null && confName != "null") {
+				Conference conference = ConferenceDao.getInstance().getConferenceByName(confName);								
+				List<ConferenceUsersArivalHelper> conferenceParticipantsList = ConferencesParticipantsDao.getInstance().getAllParticipantsByConferenceAndIfArrivedToDay(conference);
+					if (conferenceParticipantsList != null && conferenceParticipantsList.size() > 0) {
+		%>
 		
 		<div class="selectedFilter" style="display:none;"><%=request.getParameter("filter")%></div>
 		<span id="vn_mainbody_filter">
@@ -222,9 +220,9 @@ $(document).ready(function(){
 						<% 
 			String newsDate;
 			
-			for (ConferencesUsers cu : conferenceUsersList)
+			for (ConferenceUsersArivalHelper cua : conferenceParticipantsList)
 			{
-				User user = cu.getUser(); 
+				User user = cua.getConferenceUser().getUser(); 
 				Date date = user.getLastLogin();
 				if(date != null){
 					newsDate = new SimpleDateFormat("dd-MM-yyyy hh:mm:ss aaa").format(date);
@@ -235,24 +233,23 @@ $(document).ready(function(){
 								<tr class="gridRow">
 									
 									<td><%=user.getPasportID()%></td>
-									<td><a class="vn_boldtext" href="userDetails.jsp?userId=<%=user.getUserId()%>"> <%=user.getName()%> </a></td>
+									<td><span id="userId" class="<%=user.getUserId()%>"><a class="vn_boldtext" href="userDetails.jsp?userId=<%=user.getUserId()%>"> <%=user.getName()%> </a></span></td>
 									<td><%=user.getCompany().getName()%></td>
 									<td width="10%"><%=user.getCompany().getCompanyType().toString()%></td>
 									<td><%=user.getPhone1()%></td>
 									<td><%=user.getPhone2()%></td>
 									<td width="5%" align="center">
 									<%
-									boolean isUserArrivedToday = ConferencesParticipantsDao.getInstance().isUserArrivedToday(conference, user);
-									if (isUserArrivedToday)
+									if (cua.isArived())
 									{
 									%>
-										<a href="javascript:void(0)" onclick="updateUserArrival(<%=user.getUserId()%>)">
+										<a href="javascript:;" class="updateArival">
 										<img src="/conf4u/resources/imgs/yes_green.png">
 										</a>
 									<%}
 									else
 									{ %>
-										<a href="javascript:void(0)" onclick="updateUserArrival(<%=user.getUserId()%>)">
+										<a href="javascript:;" class="updateArival">
 										<img src=/conf4u/resources/imgs/cancel.png>
 										</a>
 									<%} %>	
@@ -313,10 +310,12 @@ $(document).ready(function(){
 			</div>
 		</div>
 	
-	<script type="text/javascript">
-		//$('.arrived').click(function()
-		var updateUserArrival = function(userId)
-		{
+	<script type="text/javascript">				
+		$('.updateArival').click(function () {
+			$updateArrival = $(this);
+			var status = $("#confStatusFilter").val();
+			var confName = $("#confNameFilter").val();
+			
 			$.ajax({
 	            url: "ReceptionServlet",
 	            dataType: 'json',
@@ -324,23 +323,23 @@ $(document).ready(function(){
 	            type: 'POST',
 	                data: {
 	                	"action": "updateUserArrival",
-	                	"<%=ProjConst.USER_ID%>" : userId,
+	                	"userId" : $updateArrival.closest('tr').find('span#userId').attr('class'),
 	                	"<%=ProjConst.CONF_NAME%>" : "<%=request.getParameter("filterConfName")%>"
-	                	//"userNames": $removeParticipant.closest('tr').find('td#userNameTd').text()
 	                },
 	            success: function(data) {
-	                if (data != null)
-	                {
-						//success
-	                	alert("Arrived");
-	                }
-	                else
-	               	{
-	               		jError("Error on update user arrival" );
-	               	}
+	            	if (data != null){
+		            	if (data.resultSuccess == "true")
+						{
+					 	   	window.location = "reception.jsp?filterStatus=" +status + "&filterConfName=" + confName + "&messageNotification=" + data.message + "&messageNotificationType=success";
+						}
+						else
+						{
+							jError(data.message);
+						}
+		            }
 	            }
 	        });
-		};
+		 });
 	</script>
 </body>
 </html>
