@@ -303,23 +303,46 @@ $(document).ready(function(){
 				<td>End Date</td>
 				<td><%=endDateFormatted%></td>
 			</tr>
+			<% List<ConferencesUsers> confUsers = ConferencesUsersDao.getInstance().getAllConferenceUsersByConference(conf); %>
 			<tr>
-				<td>Users</td>
+				<td>Speakers</td>
 				<td>
-				<% List<ConferencesUsers> confUsers = ConferencesUsersDao.getInstance().getAllConferenceUsersByConference(conf); 
-				if (confUsers != null)
-				{
+				<%  
 					for (ConferencesUsers cu : confUsers) {
 						String url = UiHelpers.GetUserDetailsUrl(String.valueOf(cu.getUser().getUserId()));
 						String role = UserRole.resolveUserRoleToFriendlyName(cu.getUserRole());
-						if (cu.getUserRole() != UserRole.PARTICIPANT.getValue()) {
+						if (cu.getUserRole() != UserRole.PARTICIPANT.getValue() && cu.getUserRole() == UserRole.SPEAKER.getValue()) {
 						%>
-							<div><a href="<%=url%>"><%=cu.getUser().getUserName()%></a> with role <%=role%></div>
+							<div><a href="<%=url%>"><%=cu.getUser().getUserName()%></a></div>
 						<% } %>
 					<% } %>
-				<% }else{ %>
-					<div>No assigned users</div>
-				<% } %>
+				</td>
+			</tr>
+			<tr>
+				<td>Receptionists</td>
+				<td> 
+					<% for (ConferencesUsers cu : confUsers) {
+						String url = UiHelpers.GetUserDetailsUrl(String.valueOf(cu.getUser().getUserId()));
+						String role = UserRole.resolveUserRoleToFriendlyName(cu.getUserRole());
+						if (cu.getUserRole() != UserRole.PARTICIPANT.getValue() && cu.getUserRole() == UserRole.RECEPTIONIST.getValue()) {
+						%>
+							<div><a href="<%=url%>"><%=cu.getUser().getUserName()%></a></div>
+						<% } %>
+					<% } %>
+				</td>
+			</tr>
+			<tr>
+				<td>Conference Managers</td>
+				<td>
+				<% 
+					for (ConferencesUsers cu : confUsers) {
+						String url = UiHelpers.GetUserDetailsUrl(String.valueOf(cu.getUser().getUserId()));
+						String role = UserRole.resolveUserRoleToFriendlyName(cu.getUserRole());
+						if (cu.getUserRole() != UserRole.PARTICIPANT.getValue() && cu.getUserRole() == UserRole.CONF_MNGR.getValue()) {
+						%>
+							<div><a href="<%=url%>"><%=cu.getUser().getUserName()%></a></div>
+						<% } %>
+					<% } %>
 				</td>
 			</tr>
 		</tbody>
@@ -440,19 +463,29 @@ $(document).ready(function(){
 	<% }%>
 	</div>
 	<div style="padding: 10px 0;">
-		<button class="addParticipant" type="button">
+		<div class="buttons">
+		<a class="addParticipant" type="button">
 		<img src="/conf4u/resources/imgs/vn_action_add.png" alt="" style="margin-bottom: -2px;">
 		Add participant
-		</button>
-		<button class="assignUser" type="button">Assign user</button>
-		<button id="sendInvitationToSelected">
+		</a>
+		</div>
+		<div class="buttons">
+		<a class="assignUser" type="button">
+		<img src="/conf4u/resources/imgs/assign.png" alt="" style="margin-bottom: -2px;">
+		Assign user</a>
+		</div>
+		<div class="buttons">
+		<a id="sendInvitationToSelected">
 		<img src="/conf4u/resources/imgs/vn_action_email.png" alt="" style="margin-bottom: -2px;">
 		&nbsp; Send invitation to selected
-		</button>
-		<button id="deleteSelectedParticipants" type="button">
+		</a>
+		</div>
+		<div class="buttons">
+		<a id="deleteSelectedParticipants" type="button">
 		<img src="/conf4u/resources/imgs/vn_action_delete.png" alt="" style="margin-bottom: -2px;">
 		&nbsp; Delete selected
-		</button>
+		</a>
+		</div>
 	</div>
 		
 	<div id="dialogConfirmDeleteConf" title="Delete conference?" style="display:none;">
