@@ -80,9 +80,17 @@ $(document).ready(function(){
 </head>
 
 <body>
+<% User viewingUser = SessionUtils.getUser(request); %>
+<% 
+//If user got to not allowed page
+String retUrl = (String)getServletContext().getAttribute("retUrl");
+if (!viewingUser.isAdmin())
+	response.sendRedirect(retUrl);
 
-<%= UiHelpers.GetHeader(SessionUtils.getUser(request)).toString() %>
-<%= UiHelpers.GetTabs(SessionUtils.getUser(request), ProjConst.TAB_USERS).toString() %>
+getServletContext().setAttribute("retUrl", request.getRequestURL().toString());
+%>
+<%= UiHelpers.GetHeader(viewingUser).toString() %>
+<%= UiHelpers.GetTabs(viewingUser, ProjConst.TAB_USERS).toString() %>
 
 <div id="content">
 <div class="pageTitle">
@@ -91,15 +99,15 @@ $(document).ready(function(){
 <div class="titleSeparator"></div>
 <div class="titleSub">View, modify, add/remove participants for this user</div>
 </div>
-
-
-	<% String userId = request.getParameter("userId");
-	   Long id = new Long(userId);
-	   User user = UserDao.getInstance().getUserById(id);
-	%>
-	
+<% 
+String userId = request.getParameter("userId");
+Long id = new Long(userId);
+User user = UserDao.getInstance().getUserById(id);
+%>
+<%List<ConferencesUsers> confUsers = ConferencesUsersDao.getInstance().getAllConferenceUsersByUser(user, true); %>
 <div id="detailsAndActions">
 
+	<% if (viewingUser.isAdmin()) {%>
 	<div class="vn_detailsgeneraltitle">Actions </div>
 	<div class="vn_actionlistdiv yui-reset yui-base">
 		<div class="vn_actionlistcolumn">
@@ -128,8 +136,7 @@ $(document).ready(function(){
 				</a>
 				</div>
 			</div>
-
-			<% List<ConferencesUsers> confUsers = ConferencesUsersDao.getInstance().getAllConferenceUsersByUser(user, true); 
+			<%  
 			if (confUsers !=null && confUsers.size() != 0) { %>
 			<div class="vn_actionbuttondiv">
 				<div class="title">
@@ -142,6 +149,7 @@ $(document).ready(function(){
 			<% } %>
 		</div>
 	</div>
+	<%} %>
 	<div class="vn_detailsgeneraltitle">Details </div>
 	
 	
@@ -181,7 +189,7 @@ $(document).ready(function(){
 			</tr>
 			<tr>
 				<td>Company Name</td>
-				<td><%=user.getCompany().getName()%></td>
+				<td><a class="vn_boldtext" href="companyDetails.jsp?companyName=<%=user.getCompany().getName()%>"><%=user.getCompany().getName()%></a></td>
 			</tr>
 			<tr>
 				<td>Company Type</td>

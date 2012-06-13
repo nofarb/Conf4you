@@ -1,3 +1,4 @@
+<%@page import="daos.ConferencesUsersDao"%>
 <%@page import="model.*"%>
 <%@page import="model.ConferenceFilters.ConferencePreDefinedFilter"%>
 <%@page import="daos.ConferenceDao"%>
@@ -51,9 +52,20 @@ $(document).ready(function(){
 </script>
 <body>
 <div id="body_wrap">
+<% User viewingUser = SessionUtils.getUser(request); %>
+<% 
+//If user got to not allowed page
+String retUrl = (String)getServletContext().getAttribute("retUrl");
+if (!viewingUser.isAdmin())
+{
+	if (ConferencesUsersDao.getInstance().getUserHighestRole(viewingUser) == null || ConferencesUsersDao.getInstance().getUserHighestRole(viewingUser).getValue() < UserRole.CONF_MNGR.getValue())
+		response.sendRedirect(retUrl);
+}
+getServletContext().setAttribute("retUrl", request.getRequestURL().toString());
+%>
 
-<%= UiHelpers.GetHeader(SessionUtils.getUser(request)).toString() %>
-<%= UiHelpers.GetTabs(SessionUtils.getUser(request), ProjConst.TAB_CONFERENCES).toString() %>
+<%= UiHelpers.GetHeader(viewingUser).toString() %>
+<%= UiHelpers.GetTabs(viewingUser, ProjConst.TAB_CONFERENCES).toString() %>
 
 <div id="content">
 	<div class="pageTitle">
@@ -66,6 +78,7 @@ $(document).ready(function(){
 
 	<div id="vn_mainbody">
 	<div class="vn_tblheadzone buttons">
+		<% if (viewingUser.isAdmin()) {%>
 		<div class="buttons">
 			<a id="createNewConference" href="conferenceAddEdit.jsp?action=add">
 			<span></span>
@@ -73,6 +86,7 @@ $(document).ready(function(){
 			Add Conference
 			</a>
 		</div>
+		<%} %>
 		
 		<div class="selectedFilter" style="display:none;"><%=request.getParameter("filter")%></div>
 		<span id="vn_mainbody_filter">
@@ -119,7 +133,9 @@ $(document).ready(function(){
 				}
 			}
 			List <Conference> conferences = ConferenceDao.getInstance().getConferences(filterEnum);
-		
+			//List<ConferencesUsers> ss = ConferencesUsersDao.getInstance().getAllConferenceUsersByUser(viewingUser);
+			//TODO: Bring conferences that user is CM there with filter
+			
 			// Print each application in a single row
 			for (Conference conference : conferences )
 			{

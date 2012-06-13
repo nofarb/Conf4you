@@ -1,14 +1,5 @@
-<%@page import="model.ConferencesUsers"%>
-<%@page import="model.UserRole"%>
-<%@page import="daos.ConferencesUsersDao"%>
-<%@page import="model.Company"%>
-<%@page import="model.Conference"%>
-<%@page import="model.Location"%>
-<%@page import="model.ConferenceFilters.ConferencePreDefinedFilter"%>
-<%@page import="daos.ConferenceDao"%>
-<%@page import="daos.LocationDao"%>
-<%@page import="daos.UserDao"%>
-<%@page import="daos.CompanyDao"%>
+<%@page import="model.*"%>
+<%@page import="daos.*"%>
 
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="ISO-8859-1"%>
@@ -44,10 +35,19 @@ div.error {
 </head>
 
 <body>
-<%User user = UserDao.getInstance().getUserById(Long.parseLong(request.getParameter("userId")));%>
+<% User viewingUser = SessionUtils.getUser(request); %>
+<% 
+//If user got to not allowed page
+String retUrl = (String)getServletContext().getAttribute("retUrl");
+if (!viewingUser.isAdmin())
+	response.sendRedirect(retUrl);
 
-<%= UiHelpers.GetHeader().toString() %>
-<%= UiHelpers.GetTabs(SessionUtils.getUser(request), ProjConst.TAB_CONFERENCES).toString() %>
+getServletContext().setAttribute("retUrl", request.getRequestURL().toString());
+%>
+
+
+<%= UiHelpers.GetHeader(viewingUser).toString() %>
+<%= UiHelpers.GetTabs(viewingUser, ProjConst.TAB_CONFERENCES).toString() %>
 <div id="content">
 	<div class="pageTitle">
 	<div class="titleMain ">Remove from conference</div>

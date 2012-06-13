@@ -1,6 +1,5 @@
-<%@page import="model.Location"%>
-<%@page import="daos.LocationDao"%>
-<%@page import="daos.UserDao"%>
+<%@page import="model.*"%>
+<%@page import="daos.*"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="ISO-8859-1"%>
 <%@ page import="java.util.List"%>
 <%@ page import="java.util.Date"%>
@@ -68,9 +67,20 @@ $(document).ready(function(){
 </head>
 
 <body>
+<% User viewingUser = SessionUtils.getUser(request); %>
+<% 
+//If user got to not allowed page
+String retUrl = (String)getServletContext().getAttribute("retUrl");
+if (!viewingUser.isAdmin())
+{
+	if (ConferencesUsersDao.getInstance().getUserHighestRole(viewingUser) == null || ConferencesUsersDao.getInstance().getUserHighestRole(viewingUser).getValue() < UserRole.CONF_MNGR.getValue())
+		response.sendRedirect(retUrl);
+}
+getServletContext().setAttribute("retUrl", request.getRequestURL().toString());
+%>
 
-<%= UiHelpers.GetHeader().toString() %>
-<%= UiHelpers.GetTabs(SessionUtils.getUser(request), ProjConst.TAB_LOCATIONS).toString() %>
+<%= UiHelpers.GetHeader(viewingUser).toString() %>
+<%= UiHelpers.GetTabs(viewingUser, ProjConst.TAB_LOCATIONS).toString() %>
 
 <div id="content">
 	<div class="pageTitle">
@@ -83,6 +93,7 @@ $(document).ready(function(){
 	<% String locName = request.getParameter(ProjConst.LOC_NAME);
 	   Location location = LocationDao.getInstance().getLocationByName(locName);
 	%>
+	<% if (viewingUser.isAdmin()) {%>
 	<div class="vn_detailsgeneraltitle">Actions </div>
 	<div class="vn_actionlistdiv yui-reset yui-base">
 		<div class="vn_actionlistcolumn">
@@ -104,6 +115,7 @@ $(document).ready(function(){
 			</div>
 		</div>
 	</div>
+	<%} %>
 	<div class="vn_detailsgeneraltitle">Details </div>
 	
 	

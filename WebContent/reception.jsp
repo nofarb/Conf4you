@@ -123,7 +123,11 @@ $(document).ready(function(){
 
 <body>
 	<div id="body_wrap">
-		<% User sessionUser = UserDao.getInstance().getUserById((Long)session.getAttribute(ProjConst.SESSION_USER_ID));%>
+		<% User viewingUser = SessionUtils.getUser(request); %>
+		<% 
+		getServletContext().setAttribute("retUrl", request.getRequestURL().toString());
+		%>
+
 		<%= UiHelpers.GetHeader(SessionUtils.getUser(request)).toString()%>
 		<%= UiHelpers.GetTabs(SessionUtils.getUser(request), ProjConst.TAB_RECEPTION).toString() %>
 

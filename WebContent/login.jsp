@@ -29,6 +29,9 @@ $(document).ready(function(){
 </script>
 </head>
 <body>
+<% 
+getServletContext().setAttribute("retUrl", request.getRequestURL().toString());
+%>
 <div id="pagewrap">
 	<div id="pageheader">
 		<div id="logo">

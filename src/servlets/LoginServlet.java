@@ -89,7 +89,7 @@ public class LoginServlet extends HttpServlet {
 					response.sendRedirect(ProjConst.RECEPTION_PAGE);
 					return;
 				}
-				response.sendRedirect(ProjConst.USER_PAGE); //redirect to main page
+				response.sendRedirect(ProjConst.CONFERENCE_PAGE); //TODO: Will be home page
 			}
 			else{
 				logger.info("User with no permitions tried to login, user name: " + userName);

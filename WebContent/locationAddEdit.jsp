@@ -201,8 +201,17 @@ $(document).ready(function(){
 </head>
 
 <body>
-<%=UiHelpers.GetHeader().toString()%>
-<%=UiHelpers.GetTabs(SessionUtils.getUser(request), ProjConst.TAB_LOCATIONS).toString()%>
+<% User viewingUser = SessionUtils.getUser(request); %>
+<% 
+//If user got to not allowed page
+String retUrl = (String)getServletContext().getAttribute("retUrl");
+if (!viewingUser.isAdmin())
+	response.sendRedirect(retUrl);
+
+getServletContext().setAttribute("retUrl", request.getRequestURL().toString());
+%>
+<%=UiHelpers.GetHeader(viewingUser).toString()%>
+<%=UiHelpers.GetTabs(viewingUser, ProjConst.TAB_LOCATIONS).toString()%>
 <div id="content">
 	<div class="pageTitle">
 		<%

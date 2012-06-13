@@ -279,7 +279,7 @@ public class ConferenceServlet extends HttpServlet {
     	{
     		ConferencesUsersDao.getInstance().assignUserToConference(conference, user, Integer.parseInt(userRole));
     		resultSuccess = "true";
-    		message = "User " + userName + " assigned to conference " + confName + " with role " + UserRole.resolveUserRole(Integer.parseInt(userRole)).toString().toLowerCase();
+    		message = "User " + userName + " assigned to conference " + confName + " with role " + UserRole.resolveUserRoleToFriendlyName(Integer.parseInt(userRole)).toString();
     		
     	}
     	catch (Exception e)

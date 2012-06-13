@@ -39,9 +39,19 @@ div.error {
 </head>
 
 <body>
+<% User viewingUser = SessionUtils.getUser(request); %>
+<% 
+//If user got to not allowed page
+String retUrlPrevPage = (String)getServletContext().getAttribute("retUrl");
+if (!viewingUser.isAdmin())
+	response.sendRedirect(retUrlPrevPage);
 
-<%= UiHelpers.GetHeader().toString() %>
-<%= UiHelpers.GetTabs(SessionUtils.getUser(request), ProjConst.TAB_COMPANIES).toString() %>
+getServletContext().setAttribute("retUrl", request.getRequestURL().toString());
+%>
+
+
+<%= UiHelpers.GetHeader(viewingUser).toString() %>
+<%= UiHelpers.GetTabs(viewingUser, ProjConst.TAB_COMPANIES).toString() %>
 
 <div id="content">
 

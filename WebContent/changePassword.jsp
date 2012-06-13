@@ -14,18 +14,14 @@
 <%@ page import="java.text.SimpleDateFormat"%>
 <%@ page import="model.User"%>
 <%@page import="utils.ProjConst"%>
+<%@page import="javax.servlet.jsp.PageContext"%>
+<%@page import="javax.servlet.jsp.JspContext"%>
 <%@page import="utils.*"%>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
-<link type="text/css" href="css/main.css" rel="stylesheet" />
-<link type="text/css" href="css/tables/tableList.css" rel="stylesheet" />
-<link type="text/css" href="css/cupertino/jquery-ui-1.8.18.custom.css" rel="stylesheet" />
-<script type="text/javascript" src="js/jquery-1.7.1.min.js"></script>
-<script type="text/javascript" src="js/jquery-ui-1.8.18.custom.min.js"></script>
-<script type="text/javascript" src="js/jquery.validate.js"></script>
-<script type="text/javascript" src="js/jquery.floatingmessage.js"></script>
+<%= UiHelpers.GetAllJsAndCss().toString() %>
 <style type="text/css">
 div.message {
 	background: transparent url(/conf4u/resources/imgs/msg_arrow.gif)
@@ -45,6 +41,16 @@ div.error {
 </head>
 
 <body>
+<% User viewingUser = SessionUtils.getUser(request); %>
+
+<% 
+//If user got to not allowed page
+String retUrl = (String)getServletContext().getAttribute("retUrl");
+if (!viewingUser.isAdmin())
+	response.sendRedirect(retUrl);
+
+getServletContext().setAttribute("retUrl", request.getRequestURL().toString());
+%>
 
 <%= UiHelpers.GetHeader().toString() %>
 <%= UiHelpers.GetTabs(SessionUtils.getUser(request), ProjConst.TAB_USERS).toString() %>

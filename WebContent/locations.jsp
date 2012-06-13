@@ -52,9 +52,18 @@ $(document).ready(function()
 </script>
 <body>
 <div id="body_wrap">
+<% User viewingUser = SessionUtils.getUser(request); %>
+<% 
+//If user got to not allowed page
+String retUrl = (String)getServletContext().getAttribute("retUrl");
+if (!viewingUser.isAdmin())
+	response.sendRedirect(retUrl);
 
-<%= UiHelpers.GetHeader(SessionUtils.getUser(request)).toString()%>
-<%= UiHelpers.GetTabs(SessionUtils.getUser(request), ProjConst.TAB_LOCATIONS).toString() %>
+getServletContext().setAttribute("retUrl", request.getRequestURL().toString());
+%>
+
+<%= UiHelpers.GetHeader(viewingUser).toString()%>
+<%= UiHelpers.GetTabs(viewingUser, ProjConst.TAB_LOCATIONS).toString() %>
 
 <div id="content">
 	<div class="pageTitle">
@@ -67,6 +76,7 @@ $(document).ready(function()
 
 	<div id="vn_mainbody">
 	<div class="vn_tblheadzone buttons">
+		<% if (viewingUser.isAdmin()) {%>
 		<div class="buttons">
 			<a id="createNewLocation" href="locationAddEdit.jsp?action=add">
 			<span></span>
@@ -74,6 +84,7 @@ $(document).ready(function()
 			Add Location
 			</a>
 		</div>
+		<%} %>
 		<!-- 
 		<div class="selectedFilter" style="display:none;"><%=request.getParameter("filter")%></div>
 		<span id="vn_mainbody_filter">

@@ -2,6 +2,7 @@ package utils;
 
 import daos.ConferencesUsersDao;
 import model.User;
+import model.UserRole;
 
 public class UiHelpers {
 
@@ -67,7 +68,7 @@ public class UiHelpers {
 		sb.append("<div id=\"vn_header_tabs\">");
 		sb.append("<ul>");
 		
-		if (requstingUser.isAdmin() || ConferencesUsersDao.getInstance().getUserHighestRole(requstingUser).getValue() >= 4)
+		if (requstingUser.isAdmin())
 		{
 			//Users tab
 			//--------------------------------------------------------------------
@@ -91,7 +92,7 @@ public class UiHelpers {
 			//--------------------------------------------------------------------
 		}
 		
-		if (requstingUser.isAdmin() || ConferencesUsersDao.getInstance().getUserHighestRole(requstingUser).getValue() >= 4)
+		if (requstingUser.isAdmin())
 		{
 			//Companies tab
 			//--------------------------------------------------------------------
@@ -103,7 +104,7 @@ public class UiHelpers {
 			//--------------------------------------------------------------------
 		}
 		
-		if (requstingUser.isAdmin() || ConferencesUsersDao.getInstance().getUserHighestRole(requstingUser).getValue() >= 4)
+		if (requstingUser.isAdmin())
 		{
 			//Locations tab
 			//--------------------------------------------------------------------
@@ -115,7 +116,7 @@ public class UiHelpers {
 			//--------------------------------------------------------------------
 		}
 
-		if (requstingUser.isAdmin() || ConferencesUsersDao.getInstance().getUserHighestRole(requstingUser).getValue() >= 4)
+		if (requstingUser.isAdmin() || ConferencesUsersDao.getInstance().getUserHighestRole(requstingUser).getValue() >= UserRole.RECEPTIONIST.getValue())
 		{
 			//Reception tab
 			//--------------------------------------------------------------------

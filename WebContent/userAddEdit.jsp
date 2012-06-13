@@ -1,11 +1,6 @@
-<%@page import="model.Company"%>
-<%@page import="model.Conference"%>
-<%@page import="model.Location"%>
+<%@page import="model.*"%>
 <%@page import="model.ConferenceFilters.ConferencePreDefinedFilter"%>
-<%@page import="daos.ConferenceDao"%>
-<%@page import="daos.LocationDao"%>
-<%@page import="daos.UserDao"%>
-<%@page import="daos.CompanyDao"%>
+<%@page import="daos.*"%>
 
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="ISO-8859-1"%>
@@ -43,8 +38,18 @@ div.error {
    Boolean isAddParticipant = action != null && action.equals("addParticipant");
 %>
 
-<%= UiHelpers.GetHeader().toString() %>
-<%= UiHelpers.GetTabs(SessionUtils.getUser(request), ProjConst.TAB_USERS).toString() %>
+<% User viewingUser = SessionUtils.getUser(request); %>
+<% 
+//If user got to not allowed page
+String retUrl = (String)getServletContext().getAttribute("retUrl");
+if (!viewingUser.isAdmin())
+	response.sendRedirect(retUrl);
+
+getServletContext().setAttribute("retUrl", request.getRequestURL().toString());
+%>
+
+<%= UiHelpers.GetHeader(viewingUser).toString() %>
+<%= UiHelpers.GetTabs(viewingUser, ProjConst.TAB_USERS).toString() %>
 <div id="content">
 	<div class="pageTitle">
 		<% Boolean isEdit = action != null && action.equals("edit");

@@ -43,11 +43,22 @@ div.error {
 </head>
 
 <body>
-<%User user = UserDao.getInstance().getUserById((Long)session.getAttribute(ProjConst.SESSION_USER_ID));%>
-<%Conference conf = ConferenceDao.getInstance().getConferenceByName(request.getParameter("confName"));%>
+<% 
+User viewingUser = SessionUtils.getUser(request);
+//If user got to not allowed page
+String retUrl = (String)getServletContext().getAttribute("retUrl");
+if (!viewingUser.isAdmin())
+{
+	if (ConferencesUsersDao.getInstance().getUserHighestRole(viewingUser) == null || ConferencesUsersDao.getInstance().getUserHighestRole(viewingUser).getValue() < UserRole.CONF_MNGR.getValue())
+		response.sendRedirect(retUrl);
+}
+getServletContext().setAttribute("retUrl", request.getRequestURL().toString());
 
-<%= UiHelpers.GetHeader().toString() %>
-<%= UiHelpers.GetTabs(SessionUtils.getUser(request), ProjConst.TAB_CONFERENCES).toString() %>
+Conference conf = ConferenceDao.getInstance().getConferenceByName(request.getParameter("confName"));
+%>
+
+<%= UiHelpers.GetHeader(viewingUser).toString() %>
+<%= UiHelpers.GetTabs(viewingUser, ProjConst.TAB_CONFERENCES).toString() %>
 <div id="content">
 	<div class="pageTitle">
 	<div class="titleMain ">Assign user</div>
@@ -96,8 +107,12 @@ div.error {
 									
 									Iterator it = roles.entrySet().iterator();
 								    while (it.hasNext()) {
-								        Map.Entry pairs = (Map.Entry)it.next(); %>
-									<option value="<%=pairs.getKey()%>" selected="selected"><%=pairs.getValue()%></option>
+								        Map.Entry pairs = (Map.Entry)it.next(); 
+								        String selected  = (Integer)pairs.getKey() == UserRole.PARTICIPANT.getValue() ? "selected=\"selected\"" : "";
+								        if ( viewingUser.isAdmin() || (ConferencesUsersDao.getInstance().getConferenceUser(conf, viewingUser).getUserRole() == UserRole.CONF_MNGR.getValue() && (Integer)pairs.getKey() == UserRole.PARTICIPANT.getValue())) {
+								        %>
+											<option value="<%=pairs.getKey()%>" <%=selected%>><%=pairs.getValue()%></option>
+										<%} %>
 									<%} %>
 								</select>
 							</td>

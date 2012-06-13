@@ -240,10 +240,19 @@ $(document).ready(function(){
 </head>
 
 <body>
-<%User user = UserDao.getInstance().getUserById((Long)session.getAttribute(ProjConst.SESSION_USER_ID));%>
-
-<%= UiHelpers.GetHeader(SessionUtils.getUser(request)).toString() %>
-<%= UiHelpers.GetTabs(SessionUtils.getUser(request), ProjConst.TAB_CONFERENCES).toString() %>
+<% User viewingUser = SessionUtils.getUser(request); %>
+<% 
+//If user got to not allowed page
+String retUrl = (String)getServletContext().getAttribute("retUrl");
+if (!viewingUser.isAdmin())
+{
+	if (ConferencesUsersDao.getInstance().getUserHighestRole(viewingUser) == null || ConferencesUsersDao.getInstance().getUserHighestRole(viewingUser).getValue() < UserRole.CONF_MNGR.getValue())
+		response.sendRedirect(retUrl);
+}
+getServletContext().setAttribute("retUrl", request.getRequestURL().toString());
+%>
+<%= UiHelpers.GetHeader(viewingUser).toString() %>
+<%= UiHelpers.GetTabs(viewingUser, ProjConst.TAB_CONFERENCES).toString() %>
 
 <div id="content">
 <div class="pageTitle">
@@ -256,6 +265,7 @@ $(document).ready(function(){
 	<% String confName = request.getParameter("conferenceName");
 	   Conference conf = ConferenceDao.getInstance().getConferenceByName(confName);
 	%>
+	<% if (viewingUser.isAdmin()) {%>
 	<div class="vn_detailsgeneraltitle">Actions </div>
 	<div class="vn_actionlistdiv yui-reset yui-base">
 		<div class="vn_actionlistcolumn">
@@ -277,6 +287,7 @@ $(document).ready(function(){
 			</div>
 		</div>
 	</div>
+	<%} %>
 	<div class="vn_detailsgeneraltitle">Details </div>
 	
 	<div class="groupedList" style="width: 800px;">
@@ -293,7 +304,7 @@ $(document).ready(function(){
 			</tr>
 			<tr>
 				<td>Location</td>
-				<td><%=conf.getLocation().getName()%></td>
+				<td><a class="vn_boldtext" href="LocationDetails.jsp?locName=<%=conf.getLocation().getName()%>"><%=conf.getLocation().getName()%></a></td>
 			</tr>
 			<tr>
 				<td>Start Date</td>
@@ -462,7 +473,7 @@ $(document).ready(function(){
 		<div>No participants in the conference</div>
 	<% }%>
 	</div>
-	<div style="padding: 10px 0;">
+	<div style="padding: 10px 0 30px;">
 		<div class="buttons">
 		<a class="addParticipant" type="button">
 		<img src="/conf4u/resources/imgs/vn_action_add.png" alt="" style="margin-bottom: -2px;">
