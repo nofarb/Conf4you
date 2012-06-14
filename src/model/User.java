@@ -1,8 +1,6 @@
 package model;
 
 import java.io.Serializable;
-import java.security.NoSuchAlgorithmException;
-import java.sql.SQLException;
 import java.util.Date;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;

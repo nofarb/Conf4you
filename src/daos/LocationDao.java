@@ -26,6 +26,7 @@ public class LocationDao {
 	/**
 	 * Get a list of all the locations that are stored in the database
 	 */
+	@SuppressWarnings("unchecked")
 	public List<Location> getLocations(){
 		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
 		List<Location> result = null;

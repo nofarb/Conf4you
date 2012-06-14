@@ -35,9 +35,6 @@ public class ConferenceFilters {
 		private Date fromDate;
 		private Date toDate;
 		
-		private ConferenceDatesFilter(){} // private on purpose!
-		
-		
 		public ConferenceDatesFilter(Date fromDate, Date toDate) {
 			super();
 			this.fromDate = fromDate;
