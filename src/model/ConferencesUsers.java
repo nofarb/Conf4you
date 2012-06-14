@@ -30,8 +30,8 @@ public class ConferencesUsers implements Serializable{
 	private Conference conference;
 	private User user; 
 	private int userRole;
-	private UserAttendanceStatus attendanceStatus;
-	private boolean notifiedByMail;
+	private UserAttendanceStatus attendanceStatus; //APPROVED, DECLINED, MAYBE
+	private boolean notifiedByMail;  //means user invited to conference
 	private String uniqueIdForEmailNotification;
 	
 	ConferencesUsers() {}  //not public on purpose!

@@ -10,9 +10,7 @@ import system.exceptions.ItemNotFoundException;
 import utils.OwaspAuthentication;
 import db.HibernateUtil;
 import model.CompanyType;
-import model.Conference;
 import model.User;
-import model.UserRole;
 
 /**
  * This class is responsible of supplying services related to the User entity

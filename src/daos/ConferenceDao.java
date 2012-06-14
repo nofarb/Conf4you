@@ -7,12 +7,8 @@ import org.hibernate.Session;
 import db.HibernateUtil;
 import model.Conference;
 import model.ConferenceFilters;
-import model.ConferencesParticipants;
-import model.ConferencesUsers;
 import model.Location;
-import model.User;
-import model.UserAttendanceStatus;
-import model.UserRole;
+
 
 /**
  * This class is responsible of supplying services related to the Conference entity which require database access.

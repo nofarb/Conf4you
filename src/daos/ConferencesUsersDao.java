@@ -5,15 +5,12 @@ import java.util.Date;
 import java.util.List;
 import model.Conference;
 import model.ConferenceFilters;
-import model.ConferencesParticipants;
 import model.ConferencesUsers;
 import model.User;
 import model.UserAttendanceStatus;
 import model.UserRole;
-
 import org.hibernate.Session;
 import org.apache.log4j.Logger;
-
 import utils.EmailContent;
 import utils.EmailTemplate;
 import utils.EmailUtils;
@@ -407,7 +404,6 @@ public class ConferencesUsersDao {
 		return result;
 	}
 	
-	@SuppressWarnings("unchecked")
 	public ConferencesUsers getConferenceUsersByUUID(String uuid){
 		
 		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
@@ -427,5 +423,57 @@ public class ConferencesUsersDao {
 		}		
 	
 		return result;
+	}
+	
+	/**
+	 * get the users the were invited (notified by mail) to the given conference
+	 */
+	@SuppressWarnings("unchecked")
+	public List<User> getUsersThatWereInvitedToConference(Conference conference){
+		
+		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
+		List<User> users = null;
+		try
+		{
+			session.beginTransaction();
+			users = session.createQuery(
+					"select cu.user from  ConferencesUsers cu where cu.conference = :conf and cu.notifiedByMail = :notified")
+	                .setEntity("conf", conference)
+	                .setBoolean("notified", true)
+	                .list();
+			session.getTransaction().commit();
+		}
+		catch (RuntimeException e)
+		{
+			logger.error(e.getMessage(), e);
+			session.getTransaction().rollback();
+		}
+		return users;
+	}
+	
+	/**
+	 * get the users that in the given attendance status in the given conference
+	 */
+	@SuppressWarnings("unchecked")
+	public List<User> getUsersThatWereInvitedToConference(Conference conference, UserAttendanceStatus status){
+		
+		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
+		List<User> users = null;
+		try
+		{
+			session.beginTransaction();
+			users = session.createQuery(
+					"select cu.user from  ConferencesUsers cu where cu.conference = :conf and cu.attendanceStatus = :attendanceStatus")
+	                .setEntity("conf", conference)
+	                .setInteger("attendanceStatus", status.ordinal())
+	                .list();
+			session.getTransaction().commit();
+		}
+		catch (RuntimeException e)
+		{
+			logger.error(e.getMessage(), e);
+			session.getTransaction().rollback();
+		}
+		return users;
 	}
 }

@@ -1,12 +1,8 @@
 package daos;
 
-import java.util.Calendar;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Locale;
-import java.util.TimeZone;
-
 import org.apache.commons.lang3.time.DateUtils;
 import org.apache.log4j.Logger;
 import org.hibernate.Session;
@@ -148,6 +144,37 @@ public class ConferencesParticipantsDao {
 		}
 		return exists;
 		
+	}
+	
+	/**
+	 * get the users the arrived to the given conference in the given date
+	 */
+	@SuppressWarnings("unchecked")
+	public List<User> getUsersThatArrivedToConferenceInDate(Conference conference, Date date){
+		
+		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
+		List<User> users = null;
+		try
+		{
+			date = DateUtils.setHours(date, 0);
+			date = DateUtils.setMinutes(date, 0);
+			date = DateUtils.setSeconds(date, 0);
+			date = DateUtils.setMilliseconds(date, 0);
+			
+			session.beginTransaction();
+			users = session.createQuery(
+					"select cp.user from  ConferencesParticipants cp where cu.conference = :conf and cp.date=:date")
+	                .setEntity("conf", conference)
+	                .setDate("date", date)
+	                .list();
+			session.getTransaction().commit();
+		}
+		catch (RuntimeException e)
+		{
+			logger.error(e.getMessage(), e);
+			session.getTransaction().rollback();
+		}
+		return users;
 	}
 	
 }

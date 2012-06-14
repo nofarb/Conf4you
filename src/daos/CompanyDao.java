@@ -27,6 +27,7 @@ public class CompanyDao {
 	/**
 	 * Get a list of all the Companies that are stored in the database
 	 */
+	@SuppressWarnings("unchecked")
 	public List<Company> getAllCompanies() {
 		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
 		List<Company> result = null;
@@ -46,6 +47,7 @@ public class CompanyDao {
 	/**
 	 * Get a list of all the Companies of type <Company Type> that are stored in the database
 	 */
+	@SuppressWarnings("unchecked")
 	public List<Company> getCompaniesOfType(CompanyType companyType) {
 		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
 		List<Company> results = null;
@@ -209,6 +211,7 @@ public class CompanyDao {
 	}
 
 
+	@SuppressWarnings("unchecked")
 	public List<Company> getCompanyListByName(String name) {
 		
 		Session session = HibernateUtil.getSessionFactory().getCurrentSession();

@@ -2,9 +2,6 @@ package daos;
 
 import java.util.List;
 
-import model.Company;
-import model.Conference;
-import model.ConferenceFilters;
 import model.Location;
 import org.hibernate.Session;
 import db.HibernateUtil;
