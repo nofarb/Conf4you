@@ -186,7 +186,7 @@ $(document).ready(function(){
 		sorter.paginate = true;
 		sorter.currentid = "currentpage";
 		sorter.limitid = "pagelimit";
-		sorter.init("table1", 1);
+		sorter.init("table1", 0);
 	</script>
 </div>
 </div>
