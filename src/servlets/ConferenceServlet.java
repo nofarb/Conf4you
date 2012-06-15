@@ -77,7 +77,7 @@ public class ConferenceServlet extends HttpServlet {
 			sendInvitationToUsers(request, response);
 		}
 		else if (action.equals(ASSING_USER)) {
-			assignUser(request, response);
+			assignUsers(request, response);
 		}
 		else if (action.equals(REMOVE_USER)) {
 			removeUser(request, response);
@@ -261,13 +261,21 @@ public class ConferenceServlet extends HttpServlet {
         }
     }
     
-    private void assignUser(HttpServletRequest request, HttpServletResponse response) throws IOException, ParseException
+    private void assignUsers(HttpServletRequest request, HttpServletResponse response) throws IOException, ParseException
     {
     	String confName = request.getParameter(ProjConst.CONF_NAME);
     	Conference conference = ConferenceDao.getInstance().getConferenceByName(confName);
     	
-    	String userName = request.getParameter("userName");
-    	User user = UserDao.getInstance().getUserByUserName(userName);
+    	String userNamesNotFormatted = request.getParameter("userNames");
+    	String[] userNames = userNamesNotFormatted.split(",");
+    	
+    	List<User> users = new LinkedList<User>();
+    	
+    	for (String user : userNames)
+    	{
+    		if (user != null)
+    			users.add(UserDao.getInstance().getUserByUserName(user));
+    	}
     	
     	String userRole = request.getParameter("userRole");
     	
@@ -277,15 +285,15 @@ public class ConferenceServlet extends HttpServlet {
     	String message;
     	try 
     	{
-    		ConferencesUsersDao.getInstance().assignUserToConference(conference, user, Integer.parseInt(userRole));
+    		ConferencesUsersDao.getInstance().assignUsersToConference(conference, users, Integer.parseInt(userRole));
     		resultSuccess = "true";
-    		message = "User " + userName + " assigned to conference " + confName + " with role " + UserRole.resolveUserRoleToFriendlyName(Integer.parseInt(userRole)).toString();
+    		message = "User/s " + userNamesNotFormatted + " assigned to conference " + confName + " with role " + UserRole.resolveUserRoleToFriendlyName(Integer.parseInt(userRole)).toString();
     		
     	}
     	catch (Exception e)
     	{
     		resultSuccess = "false";
-    		message = "Failed to assign user";
+    		message = e.getMessage();
     	}
     	
         response.setContentType("application/json;charset=UTF-8");

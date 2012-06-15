@@ -34,17 +34,28 @@ div.error {
 </head>
 
 <body>
-<% String action = request.getParameter("action");
-   Boolean isAddParticipant = action != null && action.equals("addParticipant");
+<%
+User viewingUser = SessionUtils.getUser(request);
+String action = request.getParameter("action");
+ Boolean isAddParticipant = action != null && action.equals("addParticipant");
+ 
+ String confName = request.getParameter("confName");
+ Conference viewerConference = null;
+ if (confName != null)
+	 viewerConference =  ConferenceDao.getInstance().getConferenceByName(confName);
+ ConferencesUsers viewerConferenceUser = null;
+ if (viewerConference != null)
+ {
+	 viewerConferenceUser = ConferencesUsersDao.getInstance().getConferenceUser(viewerConference, viewingUser);
+ }
 %>
-
-<% User viewingUser = SessionUtils.getUser(request); %>
 <% 
-//If user got to not allowed page
-String retUrl = (String)getServletContext().getAttribute("retUrl");
+String retUrlPrevPage = (String)getServletContext().getAttribute("retUrl");
 if (!viewingUser.isAdmin())
-	response.sendRedirect(retUrl);
-
+{
+	if (!isAddParticipant ||  viewerConferenceUser == null || viewerConferenceUser.getUserRole() !=  UserRole.CONF_MNGR.getValue())
+		response.sendRedirect(retUrlPrevPage);
+}
 getServletContext().setAttribute("retUrl", request.getRequestURL().toString());
 %>
 
@@ -246,10 +257,8 @@ getServletContext().setAttribute("retUrl", request.getRequestURL().toString());
 									<%} %>
 						<%} %>
 
-
 						   <%
-								User sessionUser = SessionUtils.getUser(request);
-								if (sessionUser != null && sessionUser.isAdmin() && !isAddParticipant) {
+								if (viewingUser != null && viewingUser.isAdmin() && !isAddParticipant) {
 							%>
 									<tr>
 										<td class="labelcell required">

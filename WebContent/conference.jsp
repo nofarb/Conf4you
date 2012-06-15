@@ -1,3 +1,4 @@
+<%@page import="java.util.LinkedList"%>
 <%@page import="daos.ConferencesUsersDao"%>
 <%@page import="model.*"%>
 <%@page import="model.ConferenceFilters.ConferencePreDefinedFilter"%>
@@ -92,6 +93,7 @@ getServletContext().setAttribute("retUrl", request.getRequestURL().toString());
 		<span id="vn_mainbody_filter">
 			Search:
    			<input type="text" id="search">
+   			<% if (viewingUser.isAdmin()) {%>
 			Show: 	
 			<select id="filterSelect">
 				<option value="LAST7DAYS">Last Week</option>
@@ -99,6 +101,7 @@ getServletContext().setAttribute("retUrl", request.getRequestURL().toString());
 				<option value="LAST90DAYS">Last 3 Months</option>
 				<option value="ALL" selected="selected">All</option>
 			</select>
+			<%} %>
 		</span>
 
 	</div>
@@ -132,9 +135,16 @@ getServletContext().setAttribute("retUrl", request.getRequestURL().toString());
 					//PASS
 				}
 			}
-			List <Conference> conferences = ConferenceDao.getInstance().getConferences(filterEnum);
-			//List<ConferencesUsers> ss = ConferencesUsersDao.getInstance().getAllConferenceUsersByUser(viewingUser);
-			//TODO: Bring conferences that user is CM there with filter
+			
+			List <Conference> conferences = new LinkedList<Conference>();
+			if (viewingUser.isAdmin())
+			{
+				conferences = ConferenceDao.getInstance().getConferences(filterEnum);
+			}
+			else
+			{
+				conferences = ConferencesUsersDao.getInstance().getAllActiveConferencesOfUserByUserType(viewingUser, UserRole.CONF_MNGR);
+			}
 			
 			// Print each application in a single row
 			for (Conference conference : conferences )

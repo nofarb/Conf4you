@@ -33,6 +33,8 @@ $(document).ready(function(){
 			}
 		}
 		
+		$('input#search').quicksearch('table#table2 tbody tr');
+		
 	 	$('#sendInvitationToSelected').click(function () {
 	 		 var allVals = "";
 	 		 var $checked = $('input:checkbox[name=userNames]:checked');
@@ -249,6 +251,7 @@ if (!viewingUser.isAdmin())
 	if (ConferencesUsersDao.getInstance().getUserHighestRole(viewingUser) == null || ConferencesUsersDao.getInstance().getUserHighestRole(viewingUser).getValue() < UserRole.CONF_MNGR.getValue())
 		response.sendRedirect(retUrl);
 }
+
 getServletContext().setAttribute("retUrl", request.getRequestURL().toString());
 %>
 <%= UiHelpers.GetHeader(viewingUser).toString() %>
@@ -360,7 +363,16 @@ getServletContext().setAttribute("retUrl", request.getRequestURL().toString());
 	</table>
 	</div>
 	<div style="clear:both"></div>
-	<div style="margin-top: 10px;"><h3>Invited participants</h3></div>
+	
+	<div class="vn_tblheadzone buttons" style="width: 1000px; margin-top: 15px;" >
+		
+		<span style="font-size: 14px; font-weight: bold;">Invited participants</span>
+		
+		<span id="vn_mainbody_filter">
+			Search:
+   			<input type="text" id="search">
+		</span>
+	</div>
 	
 	<div>
 	<div class="groupedList" style="width: 1000px;">
@@ -374,7 +386,7 @@ getServletContext().setAttribute("retUrl", request.getRequestURL().toString());
 			<th>Name</th>
 			<th>Email</th>
 			<th>Passport ID</th>
-			<th class="nosort">Invitation sent</th>
+			<th class="nosort" style="width: 11%">Invitation sent</th>
 			<th>Invitation status</th>
 			<th class="nosort"></th>
 		</tr>

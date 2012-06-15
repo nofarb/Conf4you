@@ -2,6 +2,7 @@ package daos;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.LinkedList;
 import java.util.List;
 import model.Conference;
 import model.ConferenceFilters;
@@ -37,23 +38,34 @@ public class ConferencesUsersDao {
 	 * Assign users to a conference
 	 * @param conference
 	 * @return
+	 * @throws Exception 
 	 */
 	
-	public void assignUserToConference(Conference conference, User user, int role){
+	public void assignUsersToConference(Conference conference, List<User> users, int role) throws Exception{
 		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
-
-		try {
-			session.beginTransaction();
-			
-			ConferencesUsers cu = new ConferencesUsers(conference, user, role);
-			
-			session.save(cu);
-			session.getTransaction().commit();
+		session.beginTransaction();
+		
+		for (User user : users)
+		{
+			try {
+				ConferencesUsers cu = new ConferencesUsers(conference, user, role);
+				session.save(cu);
+			}
+			catch (RuntimeException e) {
+				logger.error(e.getMessage(), e);
+				session.getTransaction().rollback();
+				throw new Exception("User " + user.getUserName() + " failed to assign");
+			}	
 		}
-		catch (RuntimeException e) {
-			logger.error(e.getMessage(), e);
-			session.getTransaction().rollback();
-		}	
+		
+		session.getTransaction().commit();
+	}
+	
+	public void assignUsersToConference(Conference conference, User user, int role) throws Exception{
+		List<User> convertedToList = new LinkedList<User>();
+		convertedToList.add(user);
+		
+		assignUsersToConference(conference, convertedToList, role);
 	}
 	
 	@SuppressWarnings("unchecked")
@@ -120,6 +132,34 @@ public class ConferencesUsersDao {
 	
 		return result;
 	}
+	
+	
+	public List<Conference> getAllActiveConferencesOfUserByUserType(User user, UserRole userRole){
+		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
+		List<Conference> result = null;
+		
+		Date date = new Date();
+		
+		String query = "select conf from ConferencesUsers cu left join cu.conference conf where cu.user = :user and cu.userRole = :userRole and conf.endDate >= :now";
+		
+		try {
+			session.beginTransaction();
+				result = (List<Conference>)session.createQuery(
+						query)
+		                .setEntity("user", user)
+		                .setInteger("userRole",userRole.getValue())
+		                .setDate("now", date)
+		                .list();
+			session.getTransaction().commit();
+		}
+		catch (Exception e) {
+			logger.error(e.getMessage(), e);
+			session.getTransaction().rollback();
+		}		
+	
+		return result;
+	}
+	
 	
 	@SuppressWarnings("unchecked")
 	public List<ConferencesUsers> getConferenceUsersByType(Conference conference, UserRole ur ){	

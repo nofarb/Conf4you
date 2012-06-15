@@ -494,7 +494,7 @@ public class UsersServlet extends HttpServlet {
     		UserDao.getInstance().addUser(new User(userName, passportId, company, name, email, phone1, phone2, password, isAdmin));
     		
     		//Assign to conference
-    		ConferencesUsersDao.getInstance().assignUserToConference(conference, UserDao.getInstance().getUserByUserName(userName), UserRole.PARTICIPANT.getValue());
+    		ConferencesUsersDao.getInstance().assignUsersToConference(conference, UserDao.getInstance().getUserByUserName(userName), UserRole.PARTICIPANT.getValue());
     		
     		message = "Participant successfully added";
     		resultSuccess = "true";
@@ -503,7 +503,7 @@ public class UsersServlet extends HttpServlet {
     	catch (Exception e)
     	{
     		message = "Problem occurred while adding participant";
-    		resultSuccess = "false";
+    		resultSuccess = e.getMessage();
     	}
     	
         response.setContentType("application/json;charset=UTF-8");

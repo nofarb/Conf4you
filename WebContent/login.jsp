@@ -75,7 +75,7 @@ getServletContext().setAttribute("retUrl", request.getRequestURL().toString());
 							</tr>
 							<tr>
 								<td align="left" colspan="2">
-								<input  class="submitbtn" type="submit" value="Submit">
+								<input  class="submitbtn" type="submit" value="Login">
 								</td>
 							</tr>
 							</tbody>

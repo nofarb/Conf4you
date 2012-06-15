@@ -103,9 +103,8 @@ $(document).ready(function(){
 <% User viewingUser = SessionUtils.getUser(request); %>
 <% 
 //If user got to not allowed page
-String retUrl = (String)getServletContext().getAttribute("retUrl");
 if (!viewingUser.isAdmin())
-	response.sendRedirect(retUrl);
+	response.sendRedirect((String)getServletContext().getAttribute("retUrl"));
 
 getServletContext().setAttribute("retUrl", request.getRequestURL().toString());
 %>
