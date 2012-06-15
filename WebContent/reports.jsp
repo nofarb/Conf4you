@@ -15,6 +15,10 @@
 <title>Insert title here</title>
 </head>
 
+<%= UiHelpers.GetAllJsAndCss().toString() %>
+<%= UiHelpers.GetHeader(SessionUtils.getUser(request)).toString() %>
+<%= UiHelpers.GetTabs(SessionUtils.getUser(request), ProjConst.TAB_REPORTS).toString() %>
+
 <script type="text/javascript">
 
 $(document).ready(function(){
@@ -45,13 +49,13 @@ $(document).ready(function(){
 		if(checkedValue == "filter2"){
 			
 			 var selectedFilterVal = $("#confSumFilter").val();
-			 window.location.href = "users.jsp?filterNum=1&filterBy=" + selectedFilterVal; 
+			 window.location.href = "reports.jsp?filterNum=2&filterBy=" + selectedFilterVal; 
 			
 		}else{ //fiter1
 			 
 			 var selectedRole = $("#roleFilter").val();
 			 var selectedConfId = $("#confFilter").val();
-			 window.location.href = "users.jsp?filterNum=2&role=" + selectedRole+"&confId="+selectedConfId; 
+			 window.location.href = "reports.jsp?filterNum=1&role=" + selectedRole+"&confId="+selectedConfId; 
 		 
 		}
 			
@@ -100,9 +104,6 @@ $(document).ready(function(){
 
 <body>
 <div id="body_wrap">
-<%= UiHelpers.GetAllJsAndCss().toString() %>
-<%= UiHelpers.GetHeader(SessionUtils.getUser(request)).toString() %>
-<%= UiHelpers.GetTabs(SessionUtils.getUser(request), ProjConst.TAB_REPORTS).toString() %>
 
 		<div id="content">
 			<div class="pageTitle">

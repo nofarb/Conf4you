@@ -344,8 +344,7 @@ $(document).ready(function(){
 					}
 					else
 					{
-						$.floatingMessage(data.message);
-						$(".ui-widget-content").addClass("errorFeedback");
+						jError(data.message);
 					}
                 }
             }
