@@ -163,7 +163,7 @@ public class ConferencesParticipantsDao {
 			
 			session.beginTransaction();
 			users = session.createQuery(
-					"select cp.user from  ConferencesParticipants cp where cu.conference = :conf and cp.date=:date")
+					"select cp.user from ConferencesParticipants cp where cp.conference = :conf and cp.date=:date")
 	                .setEntity("conf", conference)
 	                .setDate("date", date)
 	                .list();
@@ -175,6 +175,16 @@ public class ConferencesParticipantsDao {
 			session.getTransaction().rollback();
 		}
 		return users;
+	}
+	
+	/**
+	 * get the users the arrived to the given conference in the given date
+	 */
+	@SuppressWarnings("unchecked")
+	public int getNumberOfUsersThatArrivedToConferenceInDate(Conference conference, Date date){
+		
+		List<User> users =  getUsersThatArrivedToConferenceInDate(conference, date);
+		return users.size();
 	}
 	
 }

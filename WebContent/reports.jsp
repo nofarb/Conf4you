@@ -1,13 +1,19 @@
+<%@page import="daos.ConferencesParticipantsDao"%>
 <%@ page language="java" contentType="text/html; charset=windows-1255"
-    pageEncoding="windows-1255"%>
-    <%@page import="utils.*"%>
-    <%@page import="model.*"%>
-    <%@page import="java.util.LinkedList"%>
-    <%@ page import="java.util.Date"%>
-    <%@ page import="java.util.List"%>
-   <%@page import="model.ConferenceFilters.ConferencePreDefinedFilter"%>
-   <%@ page import="java.text.SimpleDateFormat"%>
-    <%@page import="daos.*"%>
+	pageEncoding="windows-1255"%>
+<%@page import="utils.*"%>
+<%@page import="model.*"%>
+<%@page import="java.util.LinkedList"%>
+<%@page import="java.util.Date"%>
+<%@page import="java.util.List"%>
+<%@page import="model.ConferenceFilters.ConferencePreDefinedFilter"%>
+<%@page import="java.text.SimpleDateFormat"%>
+<%@page import="daos.ConferencesUsersDao"%>
+<%@page import="daos.ConferenceDao"%>
+<%@page import="daos.UserDao"%>
+<%@page import="org.apache.commons.lang3.time.DateUtils"%>
+
+
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -60,8 +66,8 @@ $(document).ready(function(){
 		
 		if(checkedValue == "filter2"){
 			
-			 var selectedFilterVal = $("#confSumFilter").val();
-			 window.location.href = "reports.jsp?filterNum=2&filterBy=" + selectedFilterVal; 
+			 var selectedConfId = $("#confSumFilter").val();
+			 window.location.href = "reports.jsp?filterNum=2&confId="+selectedConfId; 
 			
 		}else{ //fiter1
 			 
@@ -91,9 +97,11 @@ $(document).ready(function(){
 		if(filterNum != null){
 			if(filterNum.trim().equals("2")){
 	%>
+				var confIdstr = "<%=request.getParameter("confId")%>";
+
 				$('#filter2').prop('checked',true);
-				var filterBy = "<%=request.getParameter("filterBy")%>";
-				$("#confSumFilter option[value="+filterBy+"]").attr('selected', 'selected');
+				$("#confSumFilter option[value="+confIdstr+"]").attr('selected', 'selected');
+
 	<%
 			}else{ // filter 2
 	%>
@@ -164,10 +172,13 @@ $(document).ready(function(){
 									</td>
 									<td>
 										<select id="confSumFilter">
-												<option selected="selected" value="active">Active Users</option>
-												<option value="nonActive">Non Active Users</option>
-												<option value="admin">Admin Users</option>
-												<option value="all">All Users</option>
+										<%
+											for(Conference conf : confrences){
+										%>
+											 	<option value="<%=conf.getConferenceId()%>" > <%=conf.getName()%> </option>
+										<%
+											}
+										%>
 										</select>
 									</td>
 								</tr>
@@ -252,7 +263,63 @@ $(document).ready(function(){
 			</table>
 			
 			<%
-				}
+				}else{ //filter 2
+					
+					%>
+					<div>
+					<div class="groupedList">
+					<table cellpadding="0" cellspacing="0" border="0" id="table1"
+						class="sortable">
+						<thead>
+							<tr>
+								<th><h3>Date</h3></th>
+								<th><h3>Invited</h3></th>
+								<th><h3>Approved</h3></th>
+								<th><h3>Arrived</h3></th>
+							</tr>
+						</thead>
+						<tbody>
+					<% 	
+		
+					String confIdStr = request.getParameter("confId");
+					Long confId = new Long(confIdStr.trim());
+					Conference conf = ConferenceDao.getInstance().getConferenceById(confId);
+					int invited = ConferencesUsersDao.getInstance().getCountOfUsersInConferenceWithRole(conf, UserRole.PARTICIPANT);
+					
+					Date start = conf.getStartDate();
+					start = DateUtils.setHours(start, 0);
+					start = DateUtils.setMinutes(start, 0);
+					start = DateUtils.setSeconds(start, 0);
+					start = DateUtils.setMilliseconds(start, 0);
+					
+					Date end = conf.getEndDate();
+					end = DateUtils.setHours(end, 0);
+					end = DateUtils.setMinutes(end, 0);
+					end = DateUtils.setSeconds(end, 0);
+					end = DateUtils.setMilliseconds(end, 0);
+					
+					int approved = ConferencesUsersDao.getInstance().getNumOfUsersInAttendanceStatusInConference(conf, UserAttendanceStatus.APPROVED);
+							
+					while(start.before(end) || start.equals(end)) {
+						String dateToPresent = new SimpleDateFormat("dd-MM-yyyy").format(start);
+						int arrived = ConferencesParticipantsDao.getInstance().getNumberOfUsersThatArrivedToConferenceInDate(conf, start);
+
+						 %>	
+							<tr class="gridRow">
+								<td><%=dateToPresent%></td>
+								<td><%=invited%></td>
+								<td><%=approved%></td>
+								<td><a class="vn_boldtext"href="arrivedUsers.jsp?date=<%=start%>&confId=<%=conf.getConferenceId()%>"> <img src="/conf4u/resources/imgs/vn_world.png" alt=""> <%=arrived%> </a> </td>
+							</tr>
+						 
+						<% 	
+						start = DateUtils.addDays(start, 1);
+					} %>
+						</tbody>
+					</table>
+				<% 	
+				} 
+				
 
 			}else{ //filter is null
 				
@@ -308,6 +375,8 @@ $(document).ready(function(){
 		</div>
 	</div>
 		</div>
+	</div>
+			</div>
 	</div>
 </body>
 </html>

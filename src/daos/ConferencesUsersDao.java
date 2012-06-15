@@ -134,6 +134,7 @@ public class ConferencesUsersDao {
 	}
 	
 	
+	@SuppressWarnings("unchecked")
 	public List<Conference> getAllActiveConferencesOfUserByUserType(User user, UserRole userRole){
 		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
 		List<Conference> result = null;
@@ -466,36 +467,21 @@ public class ConferencesUsersDao {
 	}
 	
 	/**
-	 * get the users the were invited (notified by mail) to the given conference
+	 * get the number of users the were assigned to a given conference with a given role 
 	 */
 	@SuppressWarnings("unchecked")
-	public List<User> getUsersThatWereInvitedToConference(Conference conference){
+	public int getCountOfUsersInConferenceWithRole(Conference conf, UserRole ur ){	
+
+		List<User> users = getUsersForRoleInConference(conf, ur);
+		return users.size();
 		
-		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
-		List<User> users = null;
-		try
-		{
-			session.beginTransaction();
-			users = session.createQuery(
-					"select cu.user from  ConferencesUsers cu where cu.conference = :conf and cu.notifiedByMail = :notified")
-	                .setEntity("conf", conference)
-	                .setBoolean("notified", true)
-	                .list();
-			session.getTransaction().commit();
-		}
-		catch (RuntimeException e)
-		{
-			logger.error(e.getMessage(), e);
-			session.getTransaction().rollback();
-		}
-		return users;
 	}
 	
 	/**
 	 * get the users that in the given attendance status in the given conference
 	 */
 	@SuppressWarnings("unchecked")
-	public List<User> getUsersThatWereInvitedToConference(Conference conference, UserAttendanceStatus status){
+	public List<User> getUsersInAttendanceStatusInConference(Conference conference, UserAttendanceStatus status){
 		
 		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
 		List<User> users = null;
@@ -516,4 +502,14 @@ public class ConferencesUsersDao {
 		}
 		return users;
 	}
+	
+	
+	
+	
+		public int getNumOfUsersInAttendanceStatusInConference(Conference conference, UserAttendanceStatus status){
+		
+		List<User> users = getUsersInAttendanceStatusInConference(conference, status);
+		return users.size();
+	}
+	
 }

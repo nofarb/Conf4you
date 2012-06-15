@@ -4,6 +4,8 @@ import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 
+import org.apache.commons.lang3.time.DateUtils;
+
 import daos.CompanyDao;
 import daos.ConferenceDao;
 import daos.ConferencesUsersDao;
@@ -62,7 +64,11 @@ public class MockCreation {
 		List<Conference> newConfs = new LinkedList<Conference>();
 		
 		for(int i = 0 ; i < 5; i++){
-			Conference conf = new Conference("conf"+i, LocationDao.getInstance().getLocationByName("locationNameBlah"), "yada", new Date(), new Date());
+			Date start = new Date();
+			Date end = new Date();
+			end = DateUtils.addDays(end, 3);
+			
+			Conference conf = new Conference("conf"+i, LocationDao.getInstance().getLocationByName("locationNameBlah"), "yada", start, end);
 			newConfs.add(conf);
 			ConferenceDao.getInstance().addNewConference(conf);
 		}

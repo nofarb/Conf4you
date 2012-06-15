@@ -24,7 +24,7 @@ public class ConferencesParticipants implements Serializable {
 	private static final long serialVersionUID = -4855020745124479949L;
 	
 	private Conference conference; 
-	private User participant; 
+	private User user; 
 	private Date conferenceDateDay;
 	
 	ConferencesParticipants() {}  //not public on purpose!
@@ -32,7 +32,7 @@ public class ConferencesParticipants implements Serializable {
 	public ConferencesParticipants(Conference conf, User user, Date date) 
 	{
 		this.conference = conf;
-		this.participant = user;
+		this.user = user;
 		this.conferenceDateDay = date;
 	}
 	
@@ -48,10 +48,10 @@ public class ConferencesParticipants implements Serializable {
 	@Id
 	@ManyToOne(cascade = CascadeType.ALL)
 	public User getUser() {
-		return participant;
+		return user;
 	}
 	public void setUser(User user) {
-		this.participant = user;
+		this.user = user;
 	}
 
 	@Id
