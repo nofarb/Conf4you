@@ -184,7 +184,7 @@ getServletContext().setAttribute("retUrl", request.getRequestURL().toString());
 			<th>Email</th>
 			<th>Passport ID</th>
 			<th class="nosort" style="width: 11%">Invitation sent</th>
-			<th>Invitation status</th>
+			<th>Attendance status</th>
 			<th class="nosort"></th>
 		</tr>
 		</thead>
