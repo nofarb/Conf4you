@@ -6849,3 +6849,7 @@ div.itsDBStats.green {
 	border-spacing: 8px;
 	
 }
+.searchLine{
+	float: right;
+	margin-top: 10px;
+}

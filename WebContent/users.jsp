@@ -70,6 +70,9 @@ $(document).ready(function(){
 		$('#filter2').prop('checked',true);
 				
 	});
+	
+	 $('input#search').quicksearch('table#table1 tbody tr');
+
 
 	<%
 		String filterNum = request.getParameter("filterNum");
@@ -196,7 +199,10 @@ getServletContext().setAttribute("retUrl", request.getRequestURL().toString());
 		
 	<!-- Filter end 
 	--------------------------------------->	
-	
+	<div class="searchLine">
+			Search:
+   			<input type="text" id="search">
+	</div>
 	
 	<div>
 	<div class="groupedList">
