@@ -43,6 +43,10 @@ if (!viewingUser.isAdmin())
 	response.sendRedirect(retUrl);
 
 getServletContext().setAttribute("retUrl", request.getRequestURL().toString());
+ 
+String userId = request.getParameter("userId");
+Long id = new Long(userId);
+User user = UserDao.getInstance().getUserById(id);
 %>
 
 

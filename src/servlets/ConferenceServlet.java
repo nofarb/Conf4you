@@ -19,6 +19,7 @@ import model.Conference;
 import model.ConferencesUsers;
 import model.Location;
 import model.User;
+import model.UserAttendanceStatus;
 import model.UserRole;
 
 import utils.ProjConst;
@@ -44,6 +45,7 @@ public class ConferenceServlet extends HttpServlet {
 	private static final String REMOVE_USER = "removeUser";
 	private static final String ASSING_USER = "assignUser";
 	private static final String CONF_NAME_VALIDATION = "validation";
+	private static final String UPDATE_USER_ATTENDANCE = "updateUserAttendance";
 	
     /**
      * @see HttpServlet#HttpServlet()
@@ -82,6 +84,9 @@ public class ConferenceServlet extends HttpServlet {
 		else if (action.equals(REMOVE_USER)) {
 			removeUser(request, response);
 		}
+		else if (action.equals(UPDATE_USER_ATTENDANCE)) {
+			updateAttendance(request, response);
+		}
 		else {
 			//throw new Exception("Unknown request");
 		}	
@@ -93,7 +98,7 @@ public class ConferenceServlet extends HttpServlet {
     	String desc = request.getParameter(ProjConst.CONF_DESC);
     	String location = request.getParameter(ProjConst.CONF_LOCATION);
     	
-	    DateFormat formatter = new SimpleDateFormat("MM/dd/yyyy");
+	    DateFormat formatter = new SimpleDateFormat("MM/dd/yyyy hh:mm");
     			  
     	Date startDate = (Date)formatter.parse(request.getParameter(ProjConst.CONF_START_DATE));
     	Date endDate = (Date)formatter.parse(request.getParameter(ProjConst.CONF_END_DATE));
@@ -398,6 +403,59 @@ public class ConferenceServlet extends HttpServlet {
     	catch (Exception e)
     	{
     		message = "Found problem while deleting conference";
+    		resultSuccess = "false";
+    	}
+    	
+    	response.setContentType("application/json;charset=UTF-8");
+        PrintWriter out = response.getWriter();
+        try {
+            Gson gson = new Gson();
+           	String json;
+           	if (ConferenceDao.getInstance().isConferenceNameExists(confName))	
+           	{
+           		jsonObject.addProperty("resultSuccess", resultSuccess);
+           		jsonObject.addProperty("message", message);
+           		json = gson.toJson(jsonObject);
+           	}
+           	else
+           	{
+           		jsonObject.addProperty("resultSuccess", "false");
+           		jsonObject.addProperty("message", "Failed to delete conference");
+           		json = gson.toJson(jsonObject);
+           	}
+           	out.write(json);
+            out.flush();
+        }
+         finally {
+            out.close();
+        }
+    }
+    
+    private void updateAttendance(HttpServletRequest request, HttpServletResponse response) throws IOException
+    {
+    	JsonObject jsonObject = new JsonObject();
+    	
+    	String confName = request.getParameter(ProjConst.CONF_NAME);
+    	Conference conference = ConferenceDao.getInstance().getConferenceByName(confName);
+    	
+    	String userName = request.getParameter(ProjConst.USER_NAME);
+    	User user = UserDao.getInstance().getUserByUserName(userName);
+    	
+    	String value = request.getParameter("value");
+    	
+    	
+      	String resultSuccess;
+    	String message;
+    	try 
+    	{
+    		ConferencesUsersDao.getInstance().updateUserAttendanceApproval(conference, user, UserAttendanceStatus.valueOf(value));
+    		message = "Attendance successfully updated for user " + user.getName();
+    		resultSuccess = "true";
+    		
+    	}
+    	catch (Exception e)
+    	{
+    		message = "Found problem while update user attendance";
     		resultSuccess = "false";
     	}
     	

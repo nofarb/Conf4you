@@ -28,6 +28,10 @@ div.error {
 	border-width: 2px;
 	padding: 4px;
 }
+
+.ui-datepicker .ui-datepicker-buttonpane button {
+	margin: 2.5em 0.2em 0.4em; 
+}
 </style>
 
 </head>
@@ -132,7 +136,7 @@ getServletContext().setAttribute("retUrl", request.getRequestURL().toString());
 							<div></div></td>
 						</tr>
 						<%
-						SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
+						SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy hh:mm");
 						String startDateFormatted = "";
 						String endDateFormatted = "";
 						if (isEdit)
@@ -206,7 +210,8 @@ getServletContext().setAttribute("retUrl", request.getRequestURL().toString());
 
 	<script type="text/javascript">	
 	$(function() {
-		$( ".datepicker" ).datepicker();
+		$( ".datepicker" ).datetimepicker();
+		$('#example1').datetimepicker();
 	});
 	
 	$(document).ready(function(){

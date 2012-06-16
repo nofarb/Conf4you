@@ -102,8 +102,8 @@ div.error {
 						<%
 							Date start = conf.getStartDate();
 							Date end = conf.getEndDate();
-							String formattedStart = new SimpleDateFormat("dd-MM-yyyy hh:mm:ss aaa").format(start);
-							String formattedEnd = new SimpleDateFormat("dd-MM-yyyy hh:mm:ss aaa").format(end);
+							String formattedStart = new SimpleDateFormat("dd-MM-yyyy hh:mm aaa").format(start);
+							String formattedEnd = new SimpleDateFormat("dd-MM-yyyy hh:mm aaa").format(end);
 						%>
 
 						<tr>

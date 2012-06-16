@@ -21,6 +21,7 @@ public class UiHelpers {
 		sb.append("<script type=\"text/javascript\" src=\"js/jquery.validate.js\"></script>");
 		sb.append("<script type=\"text/javascript\" src=\"js/jNotify.jquery.js\"></script>");
 		sb.append("<script type=\"text/javascript\" src=\"js/jquery.quicksearch.js\"></script>");
+		sb.append("<script type=\"text/javascript\" src=\"js/datetimepicker.js\"></script>");
 		
 		return sb;
 	}
