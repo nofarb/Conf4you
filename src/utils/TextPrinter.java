@@ -7,7 +7,6 @@ import java.awt.print.PageFormat;
 import java.awt.print.Printable;
 import java.awt.print.PrinterException;
 import java.awt.print.PrinterJob;
-import java.io.BufferedReader;
 
 public class TextPrinter implements Printable {
    /**
@@ -90,10 +89,11 @@ public class TextPrinter implements Printable {
     * This method returns true if printing was initiated, or
     * false if the user cancelled printer.  This method may 
     * throw PrinterException if printing could not be started.
+ * @throws Exception 
     */
    public boolean doPrint(String [] header, String [] body, 
                   boolean interactive) 
-       throws PrinterException
+       throws Exception
    {
        if (job == null) {
            init();
@@ -102,12 +102,10 @@ public class TextPrinter implements Printable {
            if (job.printDialog()) {
                // we are going to print
            } else {
-               // we are not going to print
-               return false;
+        	   throw new Exception("print was canceled");
            }
        } catch (Exception pe) {
-           System.err.println("Could not pop up print dialog");
-           // assume user wants to print anyway...
+           throw new Exception("Failed to print");
        }
 
        job.setPrintable((Printable) this);
@@ -164,46 +162,4 @@ public class TextPrinter implements Printable {
 
        return PAGE_EXISTS;
    }
-   
-   /**
-    * Main method for testing.  This main method sets up
-    * a header of "PRINTER TEST" and reads System.in to
-    * get body text.
-    */
-   /*public static void main(String [] args) {
-       BufferedReader br;
-       java.util.List lines;
-       
-       TextPrinter tp;
-       tp = new TextPrinter();
-       lines = new java.util.ArrayList();
-       try {
-           InputStreamReader isr;
-           isr = new InputStreamReader(System.in);
-           br = new BufferedReader(isr);
-           String line;
-           for(line = br.readLine(); line != null;
-               line = br.readLine())
-               {
-                   lines.add(line);
-               }
-           br.close();
-
-           System.out.println("chars per line: " + 
-                              tp.getCharsPerLine());
-           System.out.println("attempting to print...");
-           String [] headers = new String[1];
-           headers[0] = "PRINT TEST";
-           String [] body = new String[lines.size()];
-           for(int ix = 0; ix < lines.size(); ix++) {
-               body[ix] = (String)(lines.get(ix));
-           }
-           boolean didit = tp.doPrint(headers, body, true);
-           System.out.println("doPrint returns " + didit);
-       }
-       catch (Exception e) {
-           System.err.println("Error printing: " + e);
-           e.printStackTrace();
-       }
-   } */      
 }

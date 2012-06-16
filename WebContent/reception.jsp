@@ -218,48 +218,55 @@ $(document).ready(function(){
 							<th><h3>Phone 1</h3></th>
 							<th><h3>Phone 2</h3></th>				
 							<th class="nosort"><h3>Arrived</h3></th>
+							<th class="nosort"></th>
 						</tr>
 					</thead>
 					<tbody id="tabelData">
 						<% 
-			String newsDate;
-			
-			for (ConferenceUsersArivalHelper cua : conferenceParticipantsList)
-			{
-				User user = cua.getConferenceUser().getUser(); 
-				Date date = user.getLastLogin();
-				if(date != null){
-					newsDate = new SimpleDateFormat("dd-MM-yyyy hh:mm:ss aaa").format(date);
-				}else{
-					newsDate = "";
-				}
-			%>
-								<tr class="gridRow">
-									
-									<td><%=user.getPasportID()%></td>
-									<td><span id="userId" class="<%=user.getUserId()%>"><a class="vn_boldtext" href="userDetails.jsp?userId=<%=user.getUserId()%>"> <%=user.getName()%> </a></span></td>
-									<td><%=user.getCompany().getName()%></td>
-									<td width="10%"><%=user.getCompany().getCompanyType().toString()%></td>
-									<td><%=user.getPhone1()%></td>
-									<td><%=user.getPhone2()%></td>
-									<td width="5%" align="center">
-									<%
-									if (cua.isArived())
-									{
-									%>
-										<a href="javascript:;" class="updateArival">
-										<img src="/conf4u/resources/imgs/yes_green.png">
-										</a>
-									<%}
-									else
-									{ %>
-										<a href="javascript:;" class="updateArival">
-										<img src=/conf4u/resources/imgs/cancel.png>
-										</a>
-									<%} %>	
-									</td>
-								</tr>
-								<%	} %>
+							String newsDate;
+							
+							for (ConferenceUsersArivalHelper cua : conferenceParticipantsList)
+							{
+								User user = cua.getConferenceUser().getUser(); 
+								Date date = user.getLastLogin();
+								if(date != null){
+									newsDate = new SimpleDateFormat("dd-MM-yyyy hh:mm:ss aaa").format(date);
+								}else{
+									newsDate = "";
+								}
+							%>
+							<tr class="gridRow">
+								
+								<td><%=user.getPasportID()%></td>
+								<td><span id="userId" class="<%=user.getUserId()%>"><a class="vn_boldtext" href="userDetails.jsp?userId=<%=user.getUserId()%>"> <%=user.getName()%> </a></span></td>
+								<td><%=user.getCompany().getName()%></td>
+								<td width="10%"><%=user.getCompany().getCompanyType().toString()%></td>
+								<td><%=user.getPhone1()%></td>
+								<td><%=user.getPhone2()%></td>
+								<td width="5%" align="center">
+								<%
+								if (cua.isArived())
+								{
+								%>
+									<img src="/conf4u/resources/imgs/yes_green.png">
+								<%}
+								else
+								{ %>
+									<img src=/conf4u/resources/imgs/cancel.png>
+								<%} %>	
+								</td>
+								<td style="width: 150px;">
+									<a href="javascript:;" class="vn_boldtext updateArival">
+										<img alt="" src="/conf4u/resources/imgs/vn_world.png">
+										Update
+									</a>
+									<a href="javascript:;" class="vn_boldtext print" style="padding-left: 5px;">
+										<img alt="" src="/conf4u/resources/imgs/print.gif">
+										Print
+									</a>
+								</td>
+							</tr>
+							<% } %>
 							</tbody>
 						</table>
 						<div id="controls">
@@ -328,6 +335,36 @@ $(document).ready(function(){
 	                data: {
 	                	"action": "updateUserArrival",
 	                	"userId" : $updateArrival.closest('tr').find('span#userId').attr('class'),
+	                	"<%=ProjConst.CONF_NAME%>" : "<%=request.getParameter("filterConfName")%>"
+	                },
+	            success: function(data) {
+	            	if (data != null){
+		            	if (data.resultSuccess == "true")
+						{
+					 	   	window.location = "reception.jsp?filterStatus=" +status + "&filterConfName=" + confName + "&messageNotification=" + data.message + "&messageNotificationType=success";
+						}
+						else
+						{
+							jError(data.message);
+						}
+		            }
+	            }
+	        });
+		 });
+		
+		$('.print').click(function () {
+			$print = $(this);
+			var status = $("#confStatusFilter").val();
+			var confName = $("#confNameFilter").val();
+			
+			$.ajax({
+	            url: "ReceptionServlet",
+	            dataType: 'json',
+	            async: false,
+	            type: 'POST',
+	                data: {
+	                	"action": "print",
+	                	"userId" : $print.closest('tr').find('span#userId').attr('class'),
 	                	"<%=ProjConst.CONF_NAME%>" : "<%=request.getParameter("filterConfName")%>"
 	                },
 	            success: function(data) {
