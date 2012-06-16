@@ -146,7 +146,6 @@ public class ConferencesParticipantsDao {
 		
 	}
 	
-<<<<<<< HEAD
 	/**
 	 * get the users the arrived to the given conference in the given date
 	 */
@@ -188,7 +187,6 @@ public class ConferencesParticipantsDao {
 		return users.size();
 	}
 	
-=======
 	public void removeUserArrivalFromConference(Conference conference, User user) throws Exception
 	{
 		//ConferencesUsers conferenceUser = getConferenceUser(conference, user);
@@ -234,6 +232,6 @@ public class ConferencesParticipantsDao {
 		return result;
 	}
 
->>>>>>> added remove arrival of participant
+
 }
 

@@ -186,7 +186,8 @@ $(document).ready(function(){
 			if (confName != null && confName != "null") {
 				Conference conference = ConferenceDao.getInstance().getConferenceByName(confName);								
 				List<ConferenceUsersArivalHelper> conferenceParticipantsList = ConferencesParticipantsDao.getInstance().getAllParticipantsByConferenceAndIfArrivedToDay(conference);
-					if (conferenceParticipantsList != null && conferenceParticipantsList.size() > 0) {
+					if (conferenceParticipantsList != null && conferenceParticipantsList.size() > 0) 
+					{
 		%>
 		
 		<div class="selectedFilter" style="display:none;"><%=request.getParameter("filter")%></div>
@@ -216,71 +217,27 @@ $(document).ready(function(){
 							<th><h3>Phone 1</h3></th>
 							<th><h3>Phone 2</h3></th>				
 							<th class="nosort"><h3>Arrived</h3></th>
-							<th class="nosort"></th>
 						</tr>
 					</thead>
 					<tbody id="tabelData">
 						<% 
-<<<<<<< HEAD
 							String newsDate;
 							
 							for (ConferenceUsersArivalHelper cua : conferenceParticipantsList)
 							{
 								User user = cua.getConferenceUser().getUser(); 
 								Date date = user.getLastLogin();
-								if(date != null){
+								if(date != null)
+								{
 									newsDate = new SimpleDateFormat("dd-MM-yyyy hh:mm:ss aaa").format(date);
-								}else{
+								}
+								else
+								{
 									newsDate = "";
 								}
 							%>
 							<tr class="gridRow">
 								
-								<td><%=user.getPasportID()%></td>
-								<td><span id="userId" class="<%=user.getUserId()%>"><a class="vn_boldtext" href="userDetails.jsp?userId=<%=user.getUserId()%>"> <%=user.getName()%> </a></span></td>
-								<td><%=user.getCompany().getName()%></td>
-								<td width="10%"><%=user.getCompany().getCompanyType().toString()%></td>
-								<td><%=user.getPhone1()%></td>
-								<td><%=user.getPhone2()%></td>
-								<td width="5%" align="center">
-								<%
-								if (cua.isArived())
-								{
-								%>
-									<img src="/conf4u/resources/imgs/yes_green.png">
-								<%}
-								else
-								{ %>
-									<img src=/conf4u/resources/imgs/cancel.png>
-								<%} %>	
-								</td>
-								<td style="width: 150px;">
-									<a href="javascript:;" class="vn_boldtext updateArival">
-										<img alt="" src="/conf4u/resources/imgs/vn_world.png">
-										Update
-									</a>
-									<a href="javascript:;" class="vn_boldtext print" style="padding-left: 5px;">
-										<img alt="" src="/conf4u/resources/imgs/print.gif">
-										Print
-									</a>
-								</td>
-							</tr>
-							<% } %>
-=======
-			String newsDate;
-			
-			for (ConferenceUsersArivalHelper cua : conferenceParticipantsList)
-			{
-				User user = cua.getConferenceUser().getUser(); 
-				Date date = user.getLastLogin();
-				if(date != null){
-					newsDate = new SimpleDateFormat("dd-MM-yyyy hh:mm:ss aaa").format(date);
-				}else{
-					newsDate = "";
-				}
-			%>
-								<tr class="gridRow">
-									
 									<td><%=user.getPasportID()%></td>
 									<td><span id="userId" class="<%=user.getUserId()%>"><a class="vn_boldtext" href="userDetails.jsp?userId=<%=user.getUserId()%>"> <%=user.getName()%> </a></span></td>
 									<td><%=user.getCompany().getName()%></td>
@@ -305,8 +262,8 @@ $(document).ready(function(){
 									<%} %>	
 									</td>
 								</tr>
-								<%	} %>
->>>>>>> added remove arrival of participant
+						<% } %>
+
 							</tbody>
 						</table>
 						<div id="controls">
@@ -357,8 +314,7 @@ $(document).ready(function(){
 					</script>
 				<% } else { %>
 					<div>No participants in conference</div>
-				<% } %>
-			<% } %>
+				<% } }%>
 			</div>
 		</div>
 	
@@ -393,7 +349,6 @@ $(document).ready(function(){
 	        });
 		 });
 		
-<<<<<<< HEAD
 		$('.print').click(function () {
 			$print = $(this);
 			var status = $("#confStatusFilter").val();
@@ -423,7 +378,7 @@ $(document).ready(function(){
 	            }
 	        });
 		 });
-=======
+
 		 $('.removePartArival').click(function () { 
 			 var $RemoveParticipant = $(this);
 			 var status = $("#confStatusFilter").val();
@@ -446,7 +401,7 @@ $(document).ready(function(){
 					            data: {
 					            	"action": "removeUserArrival",
 					            	"userId" : $RemoveParticipant.closest('tr').find('span#userId').attr('class'),
-				                	"<%=ProjConst.CONF_NAME%>" : "<%=request.getParameter("filterConfName")%>"
+					            	"<%=ProjConst.CONF_NAME%>" : "<%=request.getParameter("filterConfName")%>"
 					            },
 					        success: function(data) {
 					            if (data != null){
@@ -469,7 +424,6 @@ $(document).ready(function(){
 				}
 			});
 		});
->>>>>>> added remove arrival of participant
 	</script>
 </body>
 </html>
