@@ -124,7 +124,6 @@ getServletContext().setAttribute("retUrl", request.getRequestURL().toString());
 	</div>
 
 	<div id="vn_mainbody">
-	
 	<table >
 		<tr>
 			<td>

@@ -300,7 +300,7 @@ $(document).ready(function(){
 					
 					int approved = ConferencesUsersDao.getInstance().getNumOfUsersInAttendanceStatusInConference(conf, UserAttendanceStatus.APPROVED);
 							
-					while(start.before(end) || start.equals(end)) {
+					while(start.before(end) || start.equals(end)){
 						String dateToPresent = new SimpleDateFormat("dd-MM-yyyy").format(start);
 						int arrived = ConferencesParticipantsDao.getInstance().getNumberOfUsersThatArrivedToConferenceInDate(conf, start);
 
@@ -309,7 +309,7 @@ $(document).ready(function(){
 								<td><%=dateToPresent%></td>
 								<td><%=invited%></td>
 								<td><%=approved%></td>
-								<td><a class="vn_boldtext"href="arrivedUsers.jsp?date=<%=start%>&confId=<%=conf.getConferenceId()%>"> <img src="/conf4u/resources/imgs/vn_world.png" alt=""> <%=arrived%> </a> </td>
+								<td><a class="vn_boldtext"href="arrivedUsers.jsp?date=<%=dateToPresent%>&confId=<%=conf.getConferenceId()%>"> <img src="/conf4u/resources/imgs/vn_world.png" alt=""> <%=arrived%> </a> </td>
 							</tr>
 						 
 						<% 	
