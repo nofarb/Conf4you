@@ -39,7 +39,12 @@ public class ReceptionServlet extends HttpServlet {
        
 	private static final String FILTER_CHANGE = "filterChange";
 	private static final String UPDATE_USER_ARRIVAL = "updateUserArrival";
+<<<<<<< HEAD
 	private static final String PRINT = "print";
+=======
+	private static final String REMOVE_USER_ARRIVAL = "removeUserArrival";
+	
+>>>>>>> added remove arrival of participant
     /**
      * @see HttpServlet#HttpServlet()
      */
@@ -63,9 +68,15 @@ public class ReceptionServlet extends HttpServlet {
 		{
 			userArrivalUpdate(request, response);
 		}
+<<<<<<< HEAD
 		else if(action.equals(PRINT))
 		{
 			print(request, response);
+=======
+		else if (action.equals(REMOVE_USER_ARRIVAL))
+		{
+			removeUser(request, response);
+>>>>>>> added remove arrival of participant
 		}
 		else {
 			//throw new Exception("Unknown request");
@@ -160,6 +171,7 @@ public class ReceptionServlet extends HttpServlet {
         }
     }
     
+<<<<<<< HEAD
     private void print(HttpServletRequest request, HttpServletResponse response) throws IOException, ParseException
     {
     	String confName = request.getParameter(ProjConst.CONF_NAME);
@@ -209,6 +221,54 @@ public class ReceptionServlet extends HttpServlet {
             out.close();
         }
     }
+    
+    private void editConference(HttpServletRequest request, HttpServletResponse response) throws IOException, ParseException
+=======
+    private void removeUser(HttpServletRequest request, HttpServletResponse response) throws IOException, ParseException
+>>>>>>> added remove arrival of participant
+    {
+    	String confName = request.getParameter(ProjConst.CONF_NAME);
+    	String userId = request.getParameter(ProjConst.USER_ID);
+    	
+    	User user = UserDao.getInstance().getUserById(Long.parseLong(userId));
+    	Conference conference = ConferenceDao.getInstance().getConferenceByName(confName);
+    	
+    	JsonObject jsonObject = new JsonObject();
+    	
+    	String resultSuccess;
+    	String message;
+    	try 
+    	{
+    		//ConferencesUsersDao.getInstance().removeUserFromConference(conference, user);
+    		ConferencesParticipantsDao.getInstance().removeUserArrivalFromConference(conference, user);
+    		resultSuccess = "true";
+    		message = "User " + user.getName() + " removed from arrival list to conference " + conference.getName();
+    		
+    	}
+    	catch (Exception e)
+    	{
+    		resultSuccess = "false";
+    		message = "Failed to update user arrival";
+    	}
+    	
+    	response.setContentType("application/json;charset=UTF-8");
+        PrintWriter out = response.getWriter();
+        try 
+        {
+            Gson gson = new Gson();
+           	String json;
+       		jsonObject.addProperty("resultSuccess", resultSuccess);
+       		jsonObject.addProperty("message", message);
+       		json = gson.toJson(jsonObject);
+           	out.write(json);
+            out.flush();
+       	}
+        finally
+        {
+            out.close();
+        }
+    }
+    
     
     private void editConference(HttpServletRequest request, HttpServletResponse response) throws IOException, ParseException
     {
@@ -271,53 +331,6 @@ public class ReceptionServlet extends HttpServlet {
         }
     }
      
-    private void removeUser(HttpServletRequest request, HttpServletResponse response) throws IOException, ParseException
-    {
-    	String confName = request.getParameter(ProjConst.CONF_NAME);
-    	Conference conference = ConferenceDao.getInstance().getConferenceByName(confName);
-    	
-    	String userName = request.getParameter("userName");
-    	User user = UserDao.getInstance().getUserByUserName(userName);
-    	
-    	JsonObject jsonObject = new JsonObject();
-    	
-    	String resultSuccess;
-    	String message;
-    	try 
-    	{
-    		ConferencesUsersDao.getInstance().removeUserFromConference(conference, user);
-    		resultSuccess = "true";
-    		
-    	}
-    	catch (Exception e)
-    	{
-    		resultSuccess = "false";
-    	}
-    	
-        response.setContentType("application/json;charset=UTF-8");
-        PrintWriter out = response.getWriter();
-        try {
-            Gson gson = new Gson();
-           	String json;
-           	if (ConferenceDao.getInstance().isConferenceNameExists(confName))	
-           	{
-           		jsonObject.addProperty("resultSuccess", resultSuccess);
-           		json = gson.toJson(jsonObject);
-           	}
-           	else
-           	{
-           		jsonObject.addProperty("resultSuccess", "false");
-           		jsonObject.addProperty("message", "Failed to edit conference");
-           		json = gson.toJson(jsonObject);
-           	}
-           	out.write(json);
-            out.flush();
-        }
-         finally {
-            out.close();
-        }
-    }
-    
     private void conferenceNameValidation(HttpServletRequest request, HttpServletResponse response) throws IOException
     {
         response.setContentType("application/json;charset=UTF-8");

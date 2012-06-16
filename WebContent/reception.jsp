@@ -3,19 +3,17 @@
 <%@page import="model.ConferenceFilters"%>
 <%@page import="java.util.LinkedList"%>
 <%@page import="daos.ConferencesUsersDao"%>
-<%@page
-	import="org.eclipse.jdt.internal.compiler.ast.CompilationUnitDeclaration"%>
+<%@page import="org.eclipse.jdt.internal.compiler.ast.CompilationUnitDeclaration"%>
 <%@page import="model.ConferenceFilters.ConferencePreDefinedFilter"%>
 <%@page import="model.Conference"%>
 <%@page import="model.User"%>
 <%@page import="daos.ConferenceDao"%>
 <%@page import="daos.UserDao"%>
-<%@page import="utils.*"%>
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="ISO-8859-1"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="ISO-8859-1"%>
 <%@ page import="java.util.List"%>
 <%@ page import="java.util.Date"%>
 <%@ page import="java.text.SimpleDateFormat"%>
+<%@page import="utils.*"%>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
@@ -223,6 +221,7 @@ $(document).ready(function(){
 					</thead>
 					<tbody id="tabelData">
 						<% 
+<<<<<<< HEAD
 							String newsDate;
 							
 							for (ConferenceUsersArivalHelper cua : conferenceParticipantsList)
@@ -267,6 +266,47 @@ $(document).ready(function(){
 								</td>
 							</tr>
 							<% } %>
+=======
+			String newsDate;
+			
+			for (ConferenceUsersArivalHelper cua : conferenceParticipantsList)
+			{
+				User user = cua.getConferenceUser().getUser(); 
+				Date date = user.getLastLogin();
+				if(date != null){
+					newsDate = new SimpleDateFormat("dd-MM-yyyy hh:mm:ss aaa").format(date);
+				}else{
+					newsDate = "";
+				}
+			%>
+								<tr class="gridRow">
+									
+									<td><%=user.getPasportID()%></td>
+									<td><span id="userId" class="<%=user.getUserId()%>"><a class="vn_boldtext" href="userDetails.jsp?userId=<%=user.getUserId()%>"> <%=user.getName()%> </a></span></td>
+									<td><%=user.getCompany().getName()%></td>
+									<td width="10%"><%=user.getCompany().getCompanyType().toString()%></td>
+									<td><%=user.getPhone1()%></td>
+									<td><%=user.getPhone2()%></td>
+									<td width="5%" align="center">
+									<%
+									if (cua.isArived())
+									{
+									%>
+										<a href="javascript:;" class="removePartArival">
+										<img src="/conf4u/resources/imgs/yes_green.png">
+										</a>
+									<%}
+									else
+									{ %>
+										<!-- <a href="javascript:;" class="updateArival">  -->
+										<a class="updateArival"  href="javascript:;">
+										<img src=/conf4u/resources/imgs/cancel.png>
+										</a>
+									<%} %>	
+									</td>
+								</tr>
+								<%	} %>
+>>>>>>> added remove arrival of participant
 							</tbody>
 						</table>
 						<div id="controls">
@@ -294,26 +334,27 @@ $(document).ready(function(){
 									id="pagelimit"></span>
 							</div>
 						</div>
-
-						<script type="text/javascript" src="js/tables/script.js"></script>
-						<script type="text/javascript">
-		var sorter = new TINY.table.sorter("sorter");
-		sorter.head = "head";
-		sorter.asc = "asc";
-		sorter.desc = "desc";
-		sorter.even = "evenrow";
-		sorter.odd = "oddrow";
-		sorter.evensel = "evenselected";
-		sorter.oddsel = "oddselected";
-		sorter.paginate = true;
-		sorter.currentid = "currentpage";
-		sorter.limitid = "pagelimit";
-		sorter.init("table1", 1);
-	</script>
-
-
 					</div>
 				</div>
+					<div id="dialogConfirmRemoveParticipant" title="Cancel participant Arrival from conference?" style="display:none;">
+							<p><span class="ui-icon ui-icon-alert" style="float:left; margin:0 7px 20px 0;"></span>Cancel participant Arrival. Are you sure?</p>
+					</div>
+						
+					<script type="text/javascript" src="js/tables/script.js"></script>
+					<script type="text/javascript">
+						var sorter = new TINY.table.sorter("sorter");
+						sorter.head = "head";
+						sorter.asc = "asc";
+						sorter.desc = "desc";
+						sorter.even = "evenrow";
+						sorter.odd = "oddrow";
+						sorter.evensel = "evenselected";
+						sorter.oddsel = "oddselected";
+						sorter.paginate = true;
+						sorter.currentid = "currentpage";
+						sorter.limitid = "pagelimit";
+						sorter.init("table1", 1);
+					</script>
 				<% } else { %>
 					<div>No participants in conference</div>
 				<% } %>
@@ -352,6 +393,7 @@ $(document).ready(function(){
 	        });
 		 });
 		
+<<<<<<< HEAD
 		$('.print').click(function () {
 			$print = $(this);
 			var status = $("#confStatusFilter").val();
@@ -381,6 +423,53 @@ $(document).ready(function(){
 	            }
 	        });
 		 });
+=======
+		 $('.removePartArival').click(function () { 
+			 var $RemoveParticipant = $(this);
+			 var status = $("#confStatusFilter").val();
+			 var confName = $("#confNameFilter").val();
+			 
+			 $('#dialogConfirmRemoveParticipant').dialog({
+				resizable: false,
+				height: 150,
+				width: 400,
+				modal: true,
+				hide: "fade", 
+	            show: "fade",
+				buttons: {
+					"Delete": function() {
+						$.ajax({
+					        url: "ReceptionServlet",
+					        dataType: 'json',
+					        async: false,
+					        type: 'POST',
+					            data: {
+					            	"action": "removeUserArrival",
+					            	"userId" : $RemoveParticipant.closest('tr').find('span#userId').attr('class'),
+				                	"<%=ProjConst.CONF_NAME%>" : "<%=request.getParameter("filterConfName")%>"
+					            },
+					        success: function(data) {
+					            if (data != null){
+									if (data.resultSuccess == "true")
+									{
+								 	   	window.location = "reception.jsp?filterStatus=" +status + "&filterConfName=" + confName + "&messageNotification=" + data.message + "&messageNotificationType=success";
+									}
+									else
+									{
+										$( this ).dialog( "close" );
+										jError(data.message);
+									}
+					            }
+					        }
+					    });
+					},
+					Cancel: function() {
+						$( this ).dialog( "close" );
+					}
+				}
+			});
+		});
+>>>>>>> added remove arrival of participant
 	</script>
 </body>
 </html>

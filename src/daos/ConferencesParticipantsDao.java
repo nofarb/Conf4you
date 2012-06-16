@@ -146,6 +146,7 @@ public class ConferencesParticipantsDao {
 		
 	}
 	
+<<<<<<< HEAD
 	/**
 	 * get the users the arrived to the given conference in the given date
 	 */
@@ -187,5 +188,52 @@ public class ConferencesParticipantsDao {
 		return users.size();
 	}
 	
+=======
+	public void removeUserArrivalFromConference(Conference conference, User user) throws Exception
+	{
+		//ConferencesUsers conferenceUser = getConferenceUser(conference, user);
+		
+		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
+		
+		try {
+			Date now = new Date( );
+			now = DateUtils.setHours(now, 0);
+			now = DateUtils.setMinutes(now, 0);
+			now = DateUtils.setSeconds(now, 0);
+			now = DateUtils.setMilliseconds(now, 0);
+			
+			session.beginTransaction();
+			ConferencesParticipants confUsr = new ConferencesParticipants(conference, user,  now);
+			session.delete(confUsr);
+			session.getTransaction().commit();
+		}
+		catch (Exception e) {
+			logger.error(e.getMessage(), e);
+			session.getTransaction().rollback();
+		}
+	}
+	
+	public ConferencesParticipants getConferencesParticipants(Conference conference, User user ){	
+		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
+		
+		ConferencesParticipants result = null;
+		try {
+			session.beginTransaction();
+			result = (ConferencesParticipants)session.createQuery(
+					"select cp from  ConferencesParticipants cp where cp.conference = :conf and cp.user = :user")
+	                .setEntity("conf", conference)
+	                .setEntity("user", user)
+	                .uniqueResult();
+			session.getTransaction().commit();
+		}
+		catch (Exception e) {
+			logger.error(e.getMessage(), e);
+			session.getTransaction().rollback();
+		}
+	
+		return result;
+	}
+
+>>>>>>> added remove arrival of participant
 }
 
