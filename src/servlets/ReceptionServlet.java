@@ -69,6 +69,10 @@ public class ReceptionServlet extends HttpServlet {
 		{
 			removeUser(request, response);
 		}
+		else if(action.equals(PRINT))
+		{
+			print(request, response);
+		}
 		else {
 			//throw new Exception("Unknown request");
 		}	
@@ -206,6 +210,55 @@ public class ReceptionServlet extends HttpServlet {
         }
     }
     
+    private void print(HttpServletRequest request, HttpServletResponse response) throws IOException, ParseException
+    {
+    	String confName = request.getParameter(ProjConst.CONF_NAME);
+    	String userId = request.getParameter(ProjConst.USER_ID);
+    	
+    	User user = UserDao.getInstance().getUserById(Long.parseLong(userId));
+    	Conference conference = ConferenceDao.getInstance().getConferenceByName(confName);
+    	
+    	
+    	JsonObject jsonObject = new JsonObject();
+    	
+    	String resultSuccess;
+    	String message;
+    	
+    	try 
+    	{
+    		String[] stringToPrint = new String[] { "Date: " + new Date() +  "\n\tName: " + user.getName() + "\n\tCompany: " + user.getCompany().getName()};
+    		
+    		TextPrinter tp = new TextPrinter();
+    		tp.doPrint(null, stringToPrint, true);
+    		
+    		ConferencesParticipantsDao.getInstance().updateUserArrival(conference, user);
+    		resultSuccess = "true";
+    		message = "Participant tag is printing";
+    		
+    	}
+    	catch (Exception e)
+    	{
+    		resultSuccess = "false";
+    		message = "Failed to print the participant tag";
+    	}
+    	
+        response.setContentType("application/json;charset=UTF-8");
+        PrintWriter out = response.getWriter();
+        try 
+        {
+            Gson gson = new Gson();
+           	String json;
+       		jsonObject.addProperty("resultSuccess", resultSuccess);
+       		jsonObject.addProperty("message", message);
+       		json = gson.toJson(jsonObject);
+           	out.write(json);
+            out.flush();
+       	}
+        finally
+        {
+            out.close();
+        }
+    }
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */

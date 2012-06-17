@@ -59,7 +59,10 @@ getServletContext().setAttribute("retUrl", request.getRequestURL().toString());
 <div class="titleMain ">Conference details</div>
 <div style="clear:both;"></div>
 <div class="titleSeparator"></div>
-<div class="titleSub">View, modify, add/remove participants for this conference</div>
+<div class="titleSub">View, modify, add/remove participants for this conference
+	<span class="sendingInvitations" style="display: none; padding-left: 300px;">
+		<img src="/conf4u/resources/imgs/loadinfo.gif" /> Sending invitations...
+	</span>
 </div>
 <div id="detailsAndActions">
 	<% String confName = request.getParameter("conferenceName");
@@ -373,6 +376,9 @@ $(document).ready(function(){
 	 		
 	 		var confName = "<%=request.getParameter("conferenceName")%>";
 	 		
+	 		scrollTo(0,0);
+	 		$('.sendingInvitations').show();
+	 		
  			$.ajax({
 		        url: "ConferenceServlet",
 		        dataType: 'json',
@@ -387,10 +393,12 @@ $(document).ready(function(){
 		            if (data != null){
 						if (data.resultSuccess == "true")
 						{
+							$('.sendingInvitations').hide();
 							window.location = "conferenceDetails.jsp?conferenceName=" +confName + "&messageNotification=" + data.message + "&messageNotificationType=success";
 						}
 						else
 						{
+							$('.sendingInvitations').hide();
 							jError(data.message);
 						}
 		            }

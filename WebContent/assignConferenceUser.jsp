@@ -97,17 +97,17 @@ Conference conf = ConferenceDao.getInstance().getConferenceByName(request.getPar
 	<div class="titleSub">Assign users to conference with specific user role</div>
 	</div>
 	<div id="vn_mainbody">
-	<div class="vn_tblheadzone buttons" style="width: 1500px;">
+	<div class="vn_tblheadzone buttons" style="width: 1300px;">
 		<span id="vn_mainbody_filter">
 			Search:
    			<input type="text" id="search">
 		</span>
 	</div>
-	<div class="groupedList" style="width: 1500px;">
+	<div class="groupedList" style="width: 1300px;">
 	<table class="sortable" id="table2" cellspacing="0" border="0">
 		<thead>
 		<tr>
-			<th class="nosort">
+			<th class="nosort" style="width:3em; text-align: center;">
 				<input class="select_all" type="checkbox">
 			</th>
 			<th>User name</th>
@@ -121,7 +121,7 @@ Conference conf = ConferenceDao.getInstance().getConferenceByName(request.getPar
 			List<User> users = ConferencesUsersDao.getInstance().getUsersThatNotBelongsToConference(conf);
 			for (User user : users) { %>
 			<tr class="gridRow">
-			<td>
+			<td align="center">
 				<input class="checkboxUserName" id="select_one" type="checkbox" value="<%=user.getUserName()%>" name="userNames">
 			</td>
 			<td id="userNameTd"><%=user.getUserName()%></td>

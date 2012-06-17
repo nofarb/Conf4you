@@ -3,13 +3,15 @@
 <%@page import="model.ConferenceFilters"%>
 <%@page import="java.util.LinkedList"%>
 <%@page import="daos.ConferencesUsersDao"%>
-<%@page import="org.eclipse.jdt.internal.compiler.ast.CompilationUnitDeclaration"%>
+<%@page
+	import="org.eclipse.jdt.internal.compiler.ast.CompilationUnitDeclaration"%>
 <%@page import="model.ConferenceFilters.ConferencePreDefinedFilter"%>
 <%@page import="model.Conference"%>
 <%@page import="model.User"%>
 <%@page import="daos.ConferenceDao"%>
 <%@page import="daos.UserDao"%>
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="ISO-8859-1"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+	pageEncoding="ISO-8859-1"%>
 <%@ page import="java.util.List"%>
 <%@ page import="java.util.Date"%>
 <%@ page import="java.text.SimpleDateFormat"%>
@@ -118,7 +120,6 @@ $(document).ready(function(){
 			 
 });
 </script>
-
 <body>
 	<div id="body_wrap">
 		<% User viewingUser = SessionUtils.getUser(request); %>
@@ -135,8 +136,12 @@ $(document).ready(function(){
 				<br />
 				<div style="clear: both;"></div>
 				<div class="titleSeparator"></div>
-				<div class="titleSub">Conference Reception</div>
-			</div>
+				<div class="titleSub">Conference Reception
+				<span class="printing" style="display: none; padding-left: 470px;">
+					<img src="/conf4u/resources/imgs/loadinfo.gif" /> In printing progress...
+				</span>
+				</div>
+
 			<div class="filterStatusHidden" style="display: none;"><%=request.getParameter("filterStatus")%></div>
 			<div class="filterConfNameHidden" style="display: none;"><%=request.getParameter("filterConfName")%></div>
 			<div id="vn_mainbody">
@@ -144,8 +149,7 @@ $(document).ready(function(){
 				<table>
 					<tr>
 						<td>
-						
-					<!-- Filter : --------------------------------------->
+							<!-- Filter : --------------------------------------->
 					<tr>
 						<td>
 							<table class="filtersAndApllyTable">
@@ -153,20 +157,22 @@ $(document).ready(function(){
 									<td>
 										<table class="filtersTable">
 											<tr id="filterTableRow1">
-												
+
 												<td>Conference Status: <select id="confStatusFilter">
-														<option value="<%=ConferenceFilters.ConferenceTimeFilter.CURRENT%>">Current</option>
-														<option value="<%=ConferenceFilters.ConferenceTimeFilter.FUTURE%>">Future</option>
-														<option value="<%=ConferenceFilters.ConferenceTimeFilter.PAST%>">Past</option>
-														<option value="<%=ConferenceFilters.ConferenceTimeFilter.ALL%>">All</option>
-												</select> 
-												Conference Name: <select id="confNameFilter"></select>
+														<option
+															value="<%=ConferenceFilters.ConferenceTimeFilter.CURRENT%>">Current</option>
+														<option
+															value="<%=ConferenceFilters.ConferenceTimeFilter.FUTURE%>">Future</option>
+														<option
+															value="<%=ConferenceFilters.ConferenceTimeFilter.PAST%>">Past</option>
+														<option
+															value="<%=ConferenceFilters.ConferenceTimeFilter.ALL%>">All</option>
+												</select> Conference Name: <select id="confNameFilter"></select>
 												</td>
 												<td>
 													<div class="buttons">
-														<a class="apply" href="javascript:;"> 
-															<img src="/conf4u/resources/imgs/yes_green.png"> 
-															Apply
+														<a class="apply" href="javascript:;"> <img
+															src="/conf4u/resources/imgs/yes_green.png"> Apply
 														</a>
 													</div>
 												</td>
@@ -181,7 +187,7 @@ $(document).ready(function(){
 				</table>
 
 				<!-- Filter end --------------------------------------->
-		<%
+				<%
 			String confName = request.getParameter("filterConfName");								
 			if (confName != null && confName != "null") {
 				Conference conference = ConferenceDao.getInstance().getConferenceByName(confName);								
@@ -189,38 +195,36 @@ $(document).ready(function(){
 					if (conferenceParticipantsList != null && conferenceParticipantsList.size() > 0) 
 					{
 		%>
-		
-		<div class="selectedFilter" style="display:none;"><%=request.getParameter("filter")%></div>
-		<span id="vn_mainbody_filter">
-			Search:
-   			<input type="text" id="search">
-			Show: 	
-			<select id="filterSelect">
-				<option value="LAST7DAYS">Not Arrived</option>
-				<option value="LAST30DAYS">Arrived</option>
-				<option value="ALL" selected="selected">All</option>
-			</select>
-			
-		</span>
 
-		</div>
-		<div>
-			<div class="groupedList">
-				<table cellpadding="0" cellspacing="0" border="0" id="table1"
-					class="sortable">
-					<thead>
-						<tr>
-							<th class="nosort"><h3>ID</h3></th>
-							<th><h3>Name</h3></th>
-							<th><h3>Company</h3></th>
-							<th><h3>Company Type</h3></th>
-							<th><h3>Phone 1</h3></th>
-							<th><h3>Phone 2</h3></th>				
-							<th class="nosort"><h3>Arrived</h3></th>
-						</tr>
-					</thead>
-					<tbody id="tabelData">
-						<% 
+				<div class="selectedFilter" style="display: none;"><%=request.getParameter("filter")%></div>
+				<span id="vn_mainbody_filter"> Search: <input type="text"
+					id="search"> Show: <select id="filterSelect">
+						<option value="LAST7DAYS">Not Arrived</option>
+						<option value="LAST30DAYS">Arrived</option>
+						<option value="ALL" selected="selected">All</option>
+				</select>
+
+				</span>
+
+			</div>
+			<div>
+				<div class="groupedList">
+					<table cellpadding="0" cellspacing="0" border="0" id="table1"
+						class="sortable">
+						<thead>
+							<tr>
+								<th class="nosort"><h3>ID</h3></th>
+								<th><h3>Name</h3></th>
+								<th><h3>Company</h3></th>
+								<th><h3>Company Type</h3></th>
+								<th><h3>Phone 1</h3></th>
+								<th><h3>Phone 2</h3></th>
+								<th class="nosort"><h3>Arrived</h3></th>
+								<th class="nosort"></th>
+							</tr>
+						</thead>
+						<tbody id="tabelData">
+							<% 
 							String newsDate;
 							
 							for (ConferenceUsersArivalHelper cua : conferenceParticipantsList)
@@ -237,68 +241,78 @@ $(document).ready(function(){
 								}
 							%>
 							<tr class="gridRow">
-								
-									<td><%=user.getPasportID()%></td>
-									<td><span id="userId" class="<%=user.getUserId()%>"><a class="vn_boldtext" href="userDetails.jsp?userId=<%=user.getUserId()%>"> <%=user.getName()%> </a></span></td>
-									<td><%=user.getCompany().getName()%></td>
-									<td width="10%"><%=user.getCompany().getCompanyType().toString()%></td>
-									<td><%=user.getPhone1()%></td>
-									<td><%=user.getPhone2()%></td>
-									<td width="5%" align="center">
-									<%
-									if (cua.isArived())
-									{
-									%>
-										<a href="javascript:;" class="removePartArival">
-										<img src="/conf4u/resources/imgs/yes_green.png">
-										</a>
-									<%}
-									else
-									{ %>
-										<!-- <a href="javascript:;" class="updateArival">  -->
-										<a class="updateArival"  href="javascript:;">
-										<img src=/conf4u/resources/imgs/cancel.png>
-										</a>
-									<%} %>	
-									</td>
-								</tr>
-						<% } %>
 
-							</tbody>
-						</table>
-						<div id="controls">
-							<div id="perpage">
-								<select onchange="sorter.size(this.value)">
-									<option value="5">5</option>
-									<option value="10" selected="selected">10</option>
-									<option value="20">20</option>
-									<option value="50">50</option>
-									<option value="100">100</option>
-								</select> <span>Entries Per Page</span>
-							</div>
-							<div id="navigation">
-								<img src="css/tables/images/first.gif" width="16" height="16"
-									alt="First Page" onclick="sorter.move(-1,true)" /> <img
-									src="css/tables/images/previous.gif" width="16" height="16"
-									alt="First Page" onclick="sorter.move(-1)" /> <img
-									src="css/tables/images/next.gif" width="16" height="16"
-									alt="First Page" onclick="sorter.move(1)" /> <img
-									src="css/tables/images/last.gif" width="16" height="16"
-									alt="Last Page" onclick="sorter.move(1,true)" />
-							</div>
-							<div id="text">
-								Displaying Page <span id="currentpage"></span> of <span
-									id="pagelimit"></span>
-							</div>
+								<td><%=user.getPasportID()%></td>
+								<td><span id="userId" class="<%=user.getUserId()%>"><a
+										class="vn_boldtext"
+										href="userDetails.jsp?userId=<%=user.getUserId()%>"> <%=user.getName()%>
+									</a></span></td>
+								<td><%=user.getCompany().getName()%></td>
+								<td width="10%"><%=user.getCompany().getCompanyType().toString()%></td>
+								<td><%=user.getPhone1()%></td>
+								<td><%=user.getPhone2()%></td>
+								<td width="4%" align="center">
+									<%
+								if (cua.isArived())
+								{
+								%> <img src="/conf4u/resources/imgs/yes_green.png"> <%}
+								else
+								{ %> <img src=/conf4u/resources/imgs/cancel.png> <%} %>
+								</td>
+								<td style="width: 150px;">
+									<% if (cua.isArived()) {
+									%> <a class="vn_boldtext removePartArival" href="javascript:;">
+										<img src="/conf4u/resources/imgs/vn_world.png"> Update
+								</a> <% } else { %> <a class="vn_boldtext updateArival"
+									href="javascript:;"> <img
+										src=/conf4u/resources/imgs/vn_world.png> Update
+								</a> <% } %> <a href="javascript:;" class="vn_boldtext print"
+									style="padding-left: 5px;"> <img alt=""
+										src="/conf4u/resources/imgs/print.gif"> Print
+								</a>
+								</td>
+							</tr>
+							<% } %>
+
+						</tbody>
+					</table>
+					<div id="controls">
+						<div id="perpage">
+							<select onchange="sorter.size(this.value)">
+								<option value="5">5</option>
+								<option value="10" selected="selected">10</option>
+								<option value="20">20</option>
+								<option value="50">50</option>
+								<option value="100">100</option>
+							</select> <span>Entries Per Page</span>
+						</div>
+						<div id="navigation">
+							<img src="css/tables/images/first.gif" width="16" height="16"
+								alt="First Page" onclick="sorter.move(-1,true)" /> <img
+								src="css/tables/images/previous.gif" width="16" height="16"
+								alt="First Page" onclick="sorter.move(-1)" /> <img
+								src="css/tables/images/next.gif" width="16" height="16"
+								alt="First Page" onclick="sorter.move(1)" /> <img
+								src="css/tables/images/last.gif" width="16" height="16"
+								alt="Last Page" onclick="sorter.move(1,true)" />
+						</div>
+						<div id="text">
+							Displaying Page <span id="currentpage"></span> of <span
+								id="pagelimit"></span>
 						</div>
 					</div>
 				</div>
-					<div id="dialogConfirmRemoveParticipant" title="Cancel participant Arrival from conference?" style="display:none;">
-							<p><span class="ui-icon ui-icon-alert" style="float:left; margin:0 7px 20px 0;"></span>Cancel participant Arrival. Are you sure?</p>
-					</div>
-						
-					<script type="text/javascript" src="js/tables/script.js"></script>
-					<script type="text/javascript">
+			</div>
+			<div id="dialogConfirmRemoveParticipant" title="Cancel participant Arrival from conference?" style="display: none;">
+				<p>
+					<span class="ui-icon ui-icon-alert"
+						style="float: left; margin: 0 7px 20px 0;"></span>Cancel
+					participant Arrival. Are you sure?
+				</p>
+			</div>
+
+			<script type="text/javascript" src="js/tables/script.js"></script>
+			<script type="text/javascript">
 						var sorter = new TINY.table.sorter("sorter");
 						sorter.head = "head";
 						sorter.asc = "asc";
@@ -312,13 +326,49 @@ $(document).ready(function(){
 						sorter.limitid = "pagelimit";
 						sorter.init("table1", 1);
 					</script>
-				<% } else { %>
-					<div>No participants in conference</div>
-				<% } }%>
-			</div>
+			<% } else { %>
+			<div>No participants in conference</div>
+			<% } }%>
 		</div>
-	
+	</div>
+
 	<script type="text/javascript">				
+		
+		$('.print').click(function () {
+			$print = $(this);
+			var status = $("#confStatusFilter").val();
+			var confName = $("#confNameFilter").val();
+			
+			$('.printing').show();
+		
+			
+			$.ajax({
+	            url: "ReceptionServlet",
+	            dataType: 'json',
+	            async: false,
+	            type: 'POST',
+	                data: {
+	                	"action": "print",
+	                	"userId" : $print.closest('tr').find('span#userId').attr('class'),
+	                	"<%=ProjConst.CONF_NAME%>" : "<%=request.getParameter("filterConfName")%>"
+	                },
+	            success: function(data) {
+	            	if (data != null){
+		            	if (data.resultSuccess == "true")
+						{
+		            		$('.printing').hide();
+					 	   	window.location = "reception.jsp?filterStatus=" +status + "&filterConfName=" + confName + "&messageNotification=" + data.message + "&messageNotificationType=success";
+						}
+						else
+						{
+							$('.printing').hide();
+							jError(data.message);
+						}
+		            }
+	            }
+	        });
+		 });
+
 		$('.updateArival').click(function () {
 			$updateArrival = $(this);
 			var status = $("#confStatusFilter").val();
@@ -349,36 +399,6 @@ $(document).ready(function(){
 	        });
 		 });
 		
-		$('.print').click(function () {
-			$print = $(this);
-			var status = $("#confStatusFilter").val();
-			var confName = $("#confNameFilter").val();
-			
-			$.ajax({
-	            url: "ReceptionServlet",
-	            dataType: 'json',
-	            async: false,
-	            type: 'POST',
-	                data: {
-	                	"action": "print",
-	                	"userId" : $print.closest('tr').find('span#userId').attr('class'),
-	                	"<%=ProjConst.CONF_NAME%>" : "<%=request.getParameter("filterConfName")%>"
-	                },
-	            success: function(data) {
-	            	if (data != null){
-		            	if (data.resultSuccess == "true")
-						{
-					 	   	window.location = "reception.jsp?filterStatus=" +status + "&filterConfName=" + confName + "&messageNotification=" + data.message + "&messageNotificationType=success";
-						}
-						else
-						{
-							jError(data.message);
-						}
-		            }
-	            }
-	        });
-		 });
-
 		 $('.removePartArival').click(function () { 
 			 var $RemoveParticipant = $(this);
 			 var status = $("#confStatusFilter").val();
@@ -392,7 +412,7 @@ $(document).ready(function(){
 				hide: "fade", 
 	            show: "fade",
 				buttons: {
-					"Delete": function() {
+					"Remove": function() {
 						$.ajax({
 					        url: "ReceptionServlet",
 					        dataType: 'json',
@@ -402,28 +422,32 @@ $(document).ready(function(){
 					            	"action": "removeUserArrival",
 					            	"userId" : $RemoveParticipant.closest('tr').find('span#userId').attr('class'),
 					            	"<%=ProjConst.CONF_NAME%>" : "<%=request.getParameter("filterConfName")%>"
-					            },
-					        success: function(data) {
-					            if (data != null){
-									if (data.resultSuccess == "true")
+									},
+									success : function(
+											data)
 									{
-								 	   	window.location = "reception.jsp?filterStatus=" +status + "&filterConfName=" + confName + "&messageNotification=" + data.message + "&messageNotificationType=success";
+										if (data != null)
+										{
+											if (data.resultSuccess == "true")
+											{
+												window.location = "reception.jsp?filterStatus=" + status + "&filterConfName=" + confName + "&messageNotification=" + data.message + "&messageNotificationType=success";
+											}
+											else
+											{
+												$(this).dialog("close");
+												jError(data.message);
+											}
+										}
 									}
-									else
-									{
-										$( this ).dialog( "close" );
-										jError(data.message);
-									}
-					            }
-					        }
-					    });
-					},
-					Cancel: function() {
-						$( this ).dialog( "close" );
-					}
-				}
-			});
-		});
+								});
+								},
+								Cancel : function()
+								{
+									$(this).dialog("close");
+								}
+							}
+						});
+					});
 	</script>
 </body>
 </html>
