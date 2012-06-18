@@ -2,9 +2,7 @@ package servlets;
 
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.text.DateFormat;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
@@ -14,10 +12,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import model.Conference;
-import model.ConferencesUsers;
-import model.Location;
 import model.User;
-import model.UserRole;
 
 import utils.ProjConst;
 import utils.TextPrinter;
@@ -28,7 +23,6 @@ import com.google.gson.JsonObject;
 import daos.ConferenceDao;
 import daos.ConferencesParticipantsDao;
 import daos.ConferencesUsersDao;
-import daos.LocationDao;
 import daos.UserDao;
 
 /**
@@ -85,24 +79,24 @@ public class ReceptionServlet extends HttpServlet {
    
     	User user = UserDao.getInstance().getUserById(Long.parseLong(userId));
     	    	
-    	JsonObject jsonObject = new JsonObject();
+    	//JsonObject jsonObject = new JsonObject();
     	
-    	String resultSuccess;
-    	String message;
+    	//String resultSuccess;
+    	//String message;
     	
     	List<String> confList = null;
     	
     	try 
     	{
     		confList = ConferencesUsersDao.getInstance().getScopedConferenceByDate(user, filter);
-    		message = "Conference successfully added";
-    		resultSuccess = "true";
+    		//message = "Conference successfully added";
+    		//resultSuccess = "true";
     		
     	}
     	catch (Exception e)
     	{
-    		message = "Found problem while adding conference";
-    		resultSuccess = "false";
+    		//message = "Found problem while adding conference";
+    		//resultSuccess = "false";
     	}
     	
         response.setContentType("application/json;charset=UTF-8");

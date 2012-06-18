@@ -117,7 +117,7 @@ $(document).ready(function(){
 	
 	$('input#search').quicksearch('table#table1 tbody tr');
 	
-			 
+	sorter.size(10);
 });
 </script>
 <body>
@@ -333,7 +333,6 @@ $(document).ready(function(){
 	</div>
 
 	<script type="text/javascript">				
-		
 		$('.print').click(function () {
 			$print = $(this);
 			var status = $("#confStatusFilter").val();
@@ -449,5 +448,6 @@ $(document).ready(function(){
 						});
 					});
 	</script>
+	</div>
 </body>
 </html>
