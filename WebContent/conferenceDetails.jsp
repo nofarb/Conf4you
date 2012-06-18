@@ -180,7 +180,7 @@ getServletContext().setAttribute("retUrl", request.getRequestURL().toString());
 		<thead>
 		<tr>
 			<th class="nosort">
-				<input class="select_all" type="checkbox">
+				<input class="select_all" type="checkbox" title="Select all">
 			</th>
 			<th>User name</th>
 			<th>Name</th>
@@ -227,7 +227,7 @@ getServletContext().setAttribute("retUrl", request.getRequestURL().toString());
 					statusString = "Maybe";
 			}
 			%>
-			<td id="attendanceTd">
+			<td id="attendanceTd" style="width: 200px;">
 				<span id="participiationStatus" class="<%=status%>"><%=statusString%></span>
 				
 				<span class="editPartStatus" style="display: none;">
@@ -340,23 +340,6 @@ getServletContext().setAttribute("retUrl", request.getRequestURL().toString());
 
 	<div id="dialogConfirmRemoveSelectedParticipant" title="Remove selected participant from conference?" style="display:none;">
 		<p><span class="ui-icon ui-icon-alert" style="float:left; margin:0 7px 20px 0;"></span>Selected participant will be removed. Are you sure?</p>
-	</div>
-	
-	<script type="text/javascript" src="js/tables/script.js"></script>
-	<script type="text/javascript">
-		var sorter = new TINY.table.sorter("sorter");
-		sorter.head = "head";
-		sorter.asc = "asc";
-		sorter.desc = "desc";
-		sorter.even = "evenrow";
-		sorter.odd = "oddrow";
-		sorter.evensel = "evenselected";
-		sorter.oddsel = "oddselected";
-		sorter.paginate = true;
-		sorter.currentid = "currentpage";
-		sorter.limitid = "pagelimit";
-		sorter.init("table2", 1);
-	</script>
 	</div>
 	</div>
 </div>
@@ -676,6 +659,8 @@ $(document).ready(function(){
 		 	$partStatus.show();
 		 	$editLink.show();	 
 		 });
+		 
+	     sorter.size(10);
 	});	
 </script>
 

@@ -66,6 +66,8 @@ $(document).ready(function(){
 		 	     });
 		 }
 	 });
+	 
+	 sorter.size(10);
 });
 </script>
 </head>

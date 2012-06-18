@@ -49,6 +49,8 @@ $(document).ready(function(){
 	 {
 		 $("#filterSelect option[value='" + selectedFilter + "']").attr('selected', 'selected');
 	 }
+	 
+	 sorter.size(10);
 });
 </script>
 <body>
