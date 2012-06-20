@@ -51,7 +51,7 @@ public final  class ProjConst {
 	public static final String USER_PAGE = "users.jsp";
 	public static final String CONFERENCE_PAGE = "conference.jsp";
 	public static final String RECEPTION_PAGE = "reception.jsp";
-	public static final String MAIN_PAGE = "mainPage.jsp";
+	public static final String HOME_PAGE = "home.jsp";
 
 	public static final String ADD = "add";
 	public static final String EDIT = "edit";

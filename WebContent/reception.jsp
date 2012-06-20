@@ -331,7 +331,7 @@ $(document).ready(function(){
 			<% } }%>
 		</div>
 	</div>
-
+</div>
 	<script type="text/javascript">				
 		$('.print').click(function () {
 			$print = $(this);
@@ -339,7 +339,6 @@ $(document).ready(function(){
 			var confName = $("#confNameFilter").val();
 			
 			$('.printing').show();
-		
 			
 			$.ajax({
 	            url: "ReceptionServlet",

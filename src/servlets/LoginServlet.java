@@ -71,7 +71,7 @@ public class LoginServlet extends HttpServlet {
 				
 				if (user.isAdmin())
 				{
-					response.sendRedirect(ProjConst.USER_PAGE);
+					response.sendRedirect(ProjConst.HOME_PAGE);
 					return;
 				}
 				
@@ -89,7 +89,7 @@ public class LoginServlet extends HttpServlet {
 					response.sendRedirect(ProjConst.RECEPTION_PAGE);
 					return;
 				}
-				response.sendRedirect(ProjConst.CONFERENCE_PAGE); //TODO: Will be home page
+				response.sendRedirect(ProjConst.HOME_PAGE);
 			}
 			else{
 				logger.info("User with no permitions tried to login, user name: " + userName);

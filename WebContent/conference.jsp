@@ -154,10 +154,11 @@ getServletContext().setAttribute("retUrl", request.getRequestURL().toString());
 				SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy hh:mm");
 				String startDateFormatted = sdf.format(conference.getStartDate());
 				String endDateFormatted = sdf.format(conference.getEndDate());
+				String locationDetailsUrl = UiHelpers.GetLocationDetailsUrl(conference.getLocation().getName()); 
 			%>
 			<tr class="gridRow">
 				<td><%=conference.getName()%></td>
-				<td><%=conference.getLocation().getName()%></td>
+				<td><a class="vn_boldtext" href="<%=locationDetailsUrl%>"><%=conference.getLocation().getName()%></a></td></td>
 				<td><%= startDateFormatted %></td>
 				<td><%= endDateFormatted %></td>
 				<td><a class="vn_boldtext" href="conferenceDetails.jsp?conferenceName=<%=conference.getName()%>">

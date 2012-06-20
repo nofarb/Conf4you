@@ -69,6 +69,18 @@ public class UiHelpers {
 		sb.append("<div id=\"vn_header_tabs\">");
 		sb.append("<ul>");
 		
+		if (requstingUser.isAdmin() || ConferencesUsersDao.getInstance().getUserHighestRole(requstingUser).getValue() >= 4)
+		{
+			//Conferences tab
+			//--------------------------------------------------------------------
+			sb.append(String.format("<li%s>", ProjConst.TAB_HOME == chosenTab ? " class=\"focuslink\"" : ""));
+			sb.append("<a href=\"home.jsp\">");
+			sb.append("<span>Home</span>");
+			sb.append("</a>");
+			sb.append("</li>");
+			//--------------------------------------------------------------------
+		}
+		
 		if (requstingUser.isAdmin())
 		{
 			//Users tab
@@ -188,9 +200,15 @@ public class UiHelpers {
 		return "conferenceDetails.jsp?conferenceName=" + confName;
 	}
 	
-	public static String GetUserDetailsUrl(String userId)
+	public static String GetUserDetailsUrl(long userId)
 	{
 		return "userDetails.jsp?userId=" + userId;
 	}
+	
+	public static String GetLocationDetailsUrl(String locationName)
+	{
+		return "LocationDetails.jsp?locName=" + locationName;
+	}
+	
 	
 }

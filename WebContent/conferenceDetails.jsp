@@ -64,6 +64,7 @@ getServletContext().setAttribute("retUrl", request.getRequestURL().toString());
 		<img src="/conf4u/resources/imgs/loadinfo.gif" /> Sending invitations...
 	</span>
 </div>
+</div>
 <div id="detailsAndActions">
 	<% String confName = request.getParameter("conferenceName");
 	   Conference conf = ConferenceDao.getInstance().getConferenceByName(confName);
@@ -96,7 +97,7 @@ getServletContext().setAttribute("retUrl", request.getRequestURL().toString());
 	<div class="groupedList" style="width: 800px;">
 	<table class="vn_envdetails" cellspacing="0" cellpadding="0" style="border-collapse: collapse;">
 		<% 
-			SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy hh:mm");
+			SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy kk:mm");
 			String startDateFormatted = sdf.format(conf.getStartDate());
 			String endDateFormatted = sdf.format(conf.getEndDate());
 		%>
@@ -123,7 +124,7 @@ getServletContext().setAttribute("retUrl", request.getRequestURL().toString());
 				<td>
 				<%  
 					for (ConferencesUsers cu : confUsers) {
-						String url = UiHelpers.GetUserDetailsUrl(String.valueOf(cu.getUser().getUserId()));
+						String url = UiHelpers.GetUserDetailsUrl(cu.getUser().getUserId());
 						String role = UserRole.resolveUserRoleToFriendlyName(cu.getUserRole());
 						if (cu.getUserRole() != UserRole.PARTICIPANT.getValue() && cu.getUserRole() == UserRole.SPEAKER.getValue()) {
 						%>
@@ -136,7 +137,7 @@ getServletContext().setAttribute("retUrl", request.getRequestURL().toString());
 				<td>Receptionists</td>
 				<td> 
 					<% for (ConferencesUsers cu : confUsers) {
-						String url = UiHelpers.GetUserDetailsUrl(String.valueOf(cu.getUser().getUserId()));
+						String url = UiHelpers.GetUserDetailsUrl(cu.getUser().getUserId());
 						String role = UserRole.resolveUserRoleToFriendlyName(cu.getUserRole());
 						if (cu.getUserRole() != UserRole.PARTICIPANT.getValue() && cu.getUserRole() == UserRole.RECEPTIONIST.getValue()) {
 						%>
@@ -150,7 +151,7 @@ getServletContext().setAttribute("retUrl", request.getRequestURL().toString());
 				<td>
 				<% 
 					for (ConferencesUsers cu : confUsers) {
-						String url = UiHelpers.GetUserDetailsUrl(String.valueOf(cu.getUser().getUserId()));
+						String url = UiHelpers.GetUserDetailsUrl(cu.getUser().getUserId());
 						String role = UserRole.resolveUserRoleToFriendlyName(cu.getUserRole());
 						if (cu.getUserRole() != UserRole.PARTICIPANT.getValue() && cu.getUserRole() == UserRole.CONF_MNGR.getValue()) {
 						%>
@@ -343,6 +344,7 @@ getServletContext().setAttribute("retUrl", request.getRequestURL().toString());
 	</div>
 	</div>
 </div>
+</div>
 <script type="text/javascript">	
 $(document).ready(function(){
 	 	$('#sendInvitationToSelected').click(function () {
@@ -359,7 +361,8 @@ $(document).ready(function(){
 	 		
 	 		var confName = "<%=request.getParameter("conferenceName")%>";
 	 		
-	 		scrollTo(0,0);
+	 		$("html,body").animate({ scrollTop: 0 }, "slow");
+	 		
 	 		$('.sendingInvitations').show();
 	 		
  			$.ajax({
@@ -660,7 +663,11 @@ $(document).ready(function(){
 		 	$editLink.show();	 
 		 });
 		 
-	     sorter.size(10);
+		 //perform only if the class "evenrow" exists
+		 if ($(".evenrow")[0]){
+			 sorter.size(10);
+			}
+
 	});	
 </script>
 

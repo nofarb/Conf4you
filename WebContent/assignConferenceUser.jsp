@@ -66,8 +66,7 @@ $(document).ready(function(){
 		 	     });
 		 }
 	 });
-	 
-	 sorter.size(10);
+
 });
 </script>
 </head>
@@ -231,7 +230,7 @@ Conference conf = ConferenceDao.getInstance().getConferenceByName(request.getPar
 
 <script>
 $(document).ready(function(){
-	
+		
     $('input#search').quicksearch('table#table2 tbody tr');
     
     $('.assignUsers').click(function () {
@@ -273,6 +272,7 @@ $(document).ready(function(){
 	        }
 	    });
 	});
+    sorter.size(10);
 });
 </script>
 

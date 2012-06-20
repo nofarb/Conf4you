@@ -17,6 +17,7 @@ import utils.EmailTemplate;
 import utils.EmailUtils;
 import utils.UniqueUuid;
 import db.HibernateUtil;
+import org.apache.commons.lang3.time.DateUtils;
 
 public class ConferencesUsersDao {
 
@@ -77,6 +78,31 @@ public class ConferencesUsersDao {
 			result = (List<ConferencesUsers>)session.createQuery(
 					"select cu from  ConferencesUsers cu where cu.conference = :conf")
 	                .setEntity("conf", conference)
+	                .list();
+			session.getTransaction().commit();
+		}
+		catch (Exception e) {
+			logger.error(e.getMessage(), e);
+			session.getTransaction().rollback();
+		}		
+	
+		return result;
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<ConferencesUsers> getAllConferenceUsersByConferenceThatLoggedInLastHoursCount(Conference conference, int lastHours){
+		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
+		
+		Date date = new Date();
+		date = DateUtils.addHours(date, -lastHours);
+		
+		List<ConferencesUsers> result = null;
+		try {
+			session.beginTransaction();
+			result = (List<ConferencesUsers>)session.createQuery(
+					"select cu from  ConferencesUsers cu join fetch cu.user user where cu.conference = :conf and user.lastLogin >= :loginDate ")
+	                .setEntity("conf", conference)
+	                .setDate("loginDate", date)
 	                .list();
 			session.getTransaction().commit();
 		}
@@ -350,10 +376,10 @@ public class ConferencesUsersDao {
 	}
 	
 	@SuppressWarnings("unchecked")
-	public List<String> getScopedConferenceByDate(User user, String filter)
+	public List<Conference> getScopedConferenceByDate(User user, String filter)
 	{
 		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
-		List<String> confList = null;
+		List<Conference> confList = null;
 		
 		try {
 			session.beginTransaction();
@@ -363,7 +389,7 @@ public class ConferencesUsersDao {
 			
 			Date current = new Date();
 			
-			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd kk:mm:ss");
 			String startDateFormatted = sdf.format(current);
 	
 			ConferenceFilters.ConferenceTimeFilter enumFilter = ConferenceFilters.ConferenceTimeFilter.valueOf(filter); 
@@ -374,15 +400,15 @@ public class ConferencesUsersDao {
 			}
 			else if (enumFilter == ConferenceFilters.ConferenceTimeFilter.CURRENT)
 			{
-				filterQuery = "where '"+ startDateFormatted + "' between DATE_FORMAT(c.startDate, '%Y-%m-%d') and DATE_FORMAT(c.endDate, '%Y-%m-%d')";
+				filterQuery = "where c.active = 1  and '"+ startDateFormatted + "' between c.startDate and c.endDate";
 			}
 			else if (enumFilter == ConferenceFilters.ConferenceTimeFilter.FUTURE)
 			{
-				filterQuery = "where DATE_FORMAT(c.startDate,'%Y-%m-%d') > " + startDateFormatted + ")";
+				filterQuery = "where c.active = 1  and '" + startDateFormatted + "' < c.startDate";
 			}
 			else if (enumFilter == ConferenceFilters.ConferenceTimeFilter.PAST)
 			{
-				filterQuery = "where DATE_FORMAT(c.endDate,'%Y-%m-%d') < " + startDateFormatted + ")";
+				filterQuery = "where c.active = 1  and '"+ startDateFormatted + "' > c.endDate";
 			}
 			else
 			{
@@ -391,23 +417,23 @@ public class ConferencesUsersDao {
 	
 			if (user.isAdmin())
 			{
-				query.append("select c.name from Conference c ");
+				query.append("select c from Conference c ");
 				query.append(filterQuery);
-				confList = (List<String>)session.createQuery(
+				confList = (List<Conference>)session.createQuery(
 						query.toString())
 		                .list();
 			}
 			else
 			{
-				query.append("select c.name from Conference c ");
+				query.append("select c from Conference c ");
 				query.append(filterQuery);
 				if (enumFilter == ConferenceFilters.ConferenceTimeFilter.ALL)
-					query.append(" where exists (select 1 from ConferencesUsers cu where cu.user = :user and cu.userRole = 1 and cu.conference = c)");
+					query.append(" where c.active = 1 and exists (select 1 from ConferencesUsers cu where cu.user = :user and cu.conference = c and (cu.userRole = 3 or cu.userRole = 4)) order by c.startDate");
 				else
-					query.append(" and exists (select 1 from ConferencesUsers cu where cu.user = :user and cu.userRole = 1 and cu.conference = c)");
+					query.append(" and exists (select 1 from ConferencesUsers cu where cu.user = :user and cu.conference = c and (cu.userRole = 3 or cu.userRole = 4)) order by c.startDate");
 				
 				
-				confList = (List<String>)session.createQuery(
+				confList = (List<Conference>)session.createQuery(
 						query.toString())
 		                .setEntity("user", user)
 		                .list();

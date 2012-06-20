@@ -25,6 +25,10 @@
     width: 13px;
 }
 
+.yui-cssbase p, .yui-cssbase fieldset, .yui-cssbase table, .yui-cssbase pre {
+    margin-bottom: 1em;
+}
+
 .ui-widget-content {
     background: none repeat scroll 0 0 #000000;
     font-size: 12px;
@@ -6156,6 +6160,7 @@ body .homeGrid {
 	font-family: verdana;
 	font-size: inherit;
 	width: 100%;
+	padding-bottom: 20px;
 }
 
 .homeGrid thead th {
@@ -6183,16 +6188,16 @@ body .homeGrid {
 }
 
 .homeGrid th.scoreHeader,.homeGrid td.scoreCell {
-	width: 30%;
+	width: 20%;
 }
 
-.homeGrid td,.homeGrid th .title {
-	font-size: 93%;
+.homeGrid th.mainHeader {
+	padding-bottom: 25px;
 }
 
 .homeGrid th .annotation {
-	font-size: 77%;
-	font-weight: normal;
+	font-size: 73%;
+	font-weight: bold;
 }
 
 .homeGrid th {

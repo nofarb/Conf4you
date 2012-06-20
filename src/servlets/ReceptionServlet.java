@@ -12,7 +12,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import model.Conference;
+import model.ConferencesUsers;
+import model.Location;
 import model.User;
+import model.UserRole;
 
 import utils.ProjConst;
 import utils.TextPrinter;
@@ -23,6 +26,7 @@ import com.google.gson.JsonObject;
 import daos.ConferenceDao;
 import daos.ConferencesParticipantsDao;
 import daos.ConferencesUsersDao;
+import daos.LocationDao;
 import daos.UserDao;
 
 /**
@@ -79,24 +83,28 @@ public class ReceptionServlet extends HttpServlet {
    
     	User user = UserDao.getInstance().getUserById(Long.parseLong(userId));
     	    	
-    	//JsonObject jsonObject = new JsonObject();
+    	JsonObject jsonObject = new JsonObject();
     	
-    	//String resultSuccess;
-    	//String message;
+    	String resultSuccess;
+    	String message;
     	
-    	List<String> confList = null;
+    	List<String> confList = new LinkedList<String>();
     	
     	try 
     	{
-    		confList = ConferencesUsersDao.getInstance().getScopedConferenceByDate(user, filter);
-    		//message = "Conference successfully added";
-    		//resultSuccess = "true";
+    		List<Conference> conferences = ConferencesUsersDao.getInstance().getScopedConferenceByDate(user, filter);
+    		for (Conference conf : conferences)
+    		{
+    			confList.add(conf.getName());	
+    		}
+    		message = "Conference successfully added";
+    		resultSuccess = "true";
     		
     	}
     	catch (Exception e)
     	{
-    		//message = "Found problem while adding conference";
-    		//resultSuccess = "false";
+    		message = "Found problem while adding conference";
+    		resultSuccess = "false";
     	}
     	
         response.setContentType("application/json;charset=UTF-8");
@@ -220,20 +228,20 @@ public class ReceptionServlet extends HttpServlet {
     	
     	try 
     	{
+    		String[] header = new String[] { "Conference: " + conference.getName() };
     		String[] stringToPrint = new String[] { "Date: " + new Date() +  "\n\tName: " + user.getName() + "\n\tCompany: " + user.getCompany().getName()};
     		
     		TextPrinter tp = new TextPrinter();
     		tp.doPrint(null, stringToPrint, true);
     		
-    		ConferencesParticipantsDao.getInstance().updateUserArrival(conference, user);
     		resultSuccess = "true";
     		message = "Participant tag is printing";
     		
     	}
     	catch (Exception e)
     	{
-    		resultSuccess = "false";
-    		message = "Failed to print the participant tag";
+    		resultSuccess = "false";	
+    		message = e.getMessage();
     	}
     	
         response.setContentType("application/json;charset=UTF-8");
