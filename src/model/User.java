@@ -56,17 +56,7 @@ public class User implements Serializable{
 		this.phone2 = phone2;
 		this.admin = isAdmin;
 		this.active = true;
-		
-		try
-		{
-			byte[] bSalt = OwaspAuthentication.getBsalt();
-			this.password = OwaspAuthentication.getUserPassword(userName, password, bSalt);
-			this.salt = OwaspAuthentication.byteToBase64(bSalt);
-		}
-		catch (Exception e)
-		{
-			//TODO: OwaspAuthentication failed
-		}
+		changePassword(password);
 	}
 
 	@Id
@@ -129,8 +119,23 @@ public class User implements Serializable{
 	public String getPassword() {
 		return password;
 	}
+	
 	public void setPassword(String password) {
 		this.password = password;
+	}
+	
+	public void changePassword(String password)
+	{
+		try
+		{
+			byte[] bSalt = OwaspAuthentication.getBsalt();
+			this.password = OwaspAuthentication.getUserPassword(this.userName, password, bSalt);
+			this.salt = OwaspAuthentication.byteToBase64(bSalt);
+		}
+		catch (Exception e)
+		{
+			//TODO: OwaspAuthentication failed
+		}
 	}
 
 	public boolean isAdmin() {

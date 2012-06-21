@@ -116,7 +116,7 @@ public class UsersServlet extends HttpServlet {
     	try 
     	{
     		User user = UserDao.getInstance().getUserById(userId);
-    		user.setPassword(password);
+    		user.changePassword(password);
     		UserDao.getInstance().updateUser(user);
     		message = "Password successfully updated";
     		resultSuccess = "true";

@@ -275,7 +275,7 @@ public class UserDao {
 	 */
 	public void changePassword(User user, String newPassword) {
 				
-		user.setPassword(newPassword); //TODO - hash password
+		user.changePassword(newPassword); //TODO - hash password
 		updateUser(user);
 		
 	}

@@ -83,7 +83,7 @@ getServletContext().setAttribute("retUrl", request.getRequestURL().toString());
 					<tr>
 						<td class="labelcell required"><label for=<%=ProjConst.PASSWORD%>> New Password: </label></td>
 						<td class="inputcell">
-							<input id="<%=ProjConst.PASSWORD%>" type="password"  value="" name="<%=ProjConst.PASSWORD%>">
+							<input id="<%=ProjConst.PASSWORD%>" type="password" autocomplete="off" value="" name="<%=ProjConst.PASSWORD%>">
 						</td>
 					</tr>
 
