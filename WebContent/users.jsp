@@ -73,7 +73,22 @@ $(document).ready(function(){
 	
 	 $('input#search').quicksearch('table#table1 tbody tr');
 
-
+	 $("#exportToExcel").downloadify({
+    	    filename:  "UsersTable.csv",
+   			data: function(){
+   				return $('#table1').table2CSV({delivery:'value'});
+   			},
+    	    onComplete: function(){ 
+    	      alert('Users table successfully exported'); 
+    	    },
+    	    transparent: false,
+    	    swf: '/conf4u/resources/imgs/downloadify.swf',
+    	    downloadImage: '/conf4u/resources/imgs/excel.gif',
+    	    width: 100,
+    	    height: 30,
+    	    transparent: true,
+    	    append: false
+    	  });
 	<%
 		String filterNum = request.getParameter("filterNum");
 		if(filterNum != null){
@@ -198,9 +213,13 @@ getServletContext().setAttribute("retUrl", request.getRequestURL().toString());
 		
 	<!-- Filter end 
 	--------------------------------------->	
-	<div class="searchLine">
+	<div class="searchLine" >
 			Search:
-   			<input type="text" id="search">
+   			<input type="text" id="search">		
+			<span id="exportToExcel" style="padding-top: 18px;vertical-align: middle;">
+				You must have Flash 10 installed to download this file.
+			</span>
+			
 	</div>
 	
 	<div>

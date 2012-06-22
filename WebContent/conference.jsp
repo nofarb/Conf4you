@@ -50,6 +50,23 @@ $(document).ready(function(){
 		 $("#filterSelect option[value='" + selectedFilter + "']").attr('selected', 'selected');
 	 }
 	 
+	 $("#exportToExcel").downloadify({
+ 	    filename:  "ConferenceTable.csv",
+			data: function(){
+				return $('#table1').table2CSV({delivery:'value'});
+			},
+ 	    onComplete: function(){ 
+ 	      alert('Conference table successfully exported'); 
+ 	    },
+ 	    transparent: false,
+ 	    swf: '/conf4u/resources/imgs/downloadify.swf',
+ 	    downloadImage: '/conf4u/resources/imgs/excel.gif',
+ 	    width: 100,
+ 	    height: 30,
+ 	    transparent: true,
+ 	    append: false
+ 	  });
+	 
 	 sorter.size(10);
 });
 </script>
@@ -104,6 +121,9 @@ getServletContext().setAttribute("retUrl", request.getRequestURL().toString());
 				<option value="ALL" selected="selected">All</option>
 			</select>
 			<%} %>
+			<span id="exportToExcel" style="padding-top: 18px;vertical-align: middle;">
+				You must have Flash 10 installed to download this file.
+			</span>
 		</span>
 
 	</div>

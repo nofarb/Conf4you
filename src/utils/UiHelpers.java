@@ -22,6 +22,9 @@ public class UiHelpers {
 		sb.append("<script type=\"text/javascript\" src=\"js/jNotify.jquery.js\"></script>");
 		sb.append("<script type=\"text/javascript\" src=\"js/jquery.quicksearch.js\"></script>");
 		sb.append("<script type=\"text/javascript\" src=\"js/datetimepicker.js\"></script>");
+		sb.append("<script type=\"text/javascript\" src=\"js/tableToCsv.js\"></script>");
+		sb.append("<script type=\"text/javascript\" src=\"js/downloadify.min.js\"></script>");
+		sb.append("<script type=\"text/javascript\" src=\"js/swfobject.js\"></script>");
 		
 		return sb;
 	}
