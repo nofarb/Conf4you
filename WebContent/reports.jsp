@@ -156,8 +156,17 @@ $(document).ready(function(){
 										in Conference:
 										<select id="confFilter">
 										<%
-											List<Conference> confrences = ConferenceDao.getInstance().getConferences(ConferencePreDefinedFilter.ALL);
-											for(Conference conf : confrences){
+										
+										List <Conference> conferences = new LinkedList<Conference>();
+										if (viewingUser.isAdmin())
+										{
+											conferences = ConferenceDao.getInstance().getConferences(ConferencePreDefinedFilter.ALL);
+										}
+										else
+										{
+											conferences = ConferencesUsersDao.getInstance().getAllActiveConferencesOfUserByUserType(viewingUser, UserRole.CONF_MNGR);
+										}
+											for(Conference conf : conferences){
 										%>
 											 	<option value="<%=conf.getConferenceId()%>" > <%=conf.getName()%> </option>
 										<%
@@ -173,7 +182,7 @@ $(document).ready(function(){
 									<td>
 										<select id="confSumFilter">
 										<%
-											for(Conference conf : confrences){
+											for(Conference conf : conferences){
 										%>
 											 	<option value="<%=conf.getConferenceId()%>" > <%=conf.getName()%> </option>
 										<%
