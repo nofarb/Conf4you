@@ -56,10 +56,10 @@ $(document).ready(function(){
 				return $('#table1').table2CSV({delivery:'value'});
 			},
  	    onComplete: function(){ 
- 	    	jSuccess('Conference table successfully exported'); 
+ 	    	jSuccess('Conference table successfully exported', { autoHide : true }); 
  	    },
  	    onCancel:function(){ 
- 	    	jNotify('Export to excel canceled'); 
+ 	    	jNotify('Export to excel canceled', { autoHide : true }); 
  	    },
  	    transparent: false,
  	    swf: '/conf4u/resources/imgs/downloadify.swf',
@@ -142,7 +142,7 @@ getServletContext().setAttribute("retUrl", request.getRequestURL().toString());
 				<th><h3>Location</h3></th>
 				<th><h3>Start date</h3></th>
 				<th><h3>End date</h3></th>
-				<th class="nosort"><h3>Details</h3></th>
+				<th class="nosort"></th>
 			</tr>
 		</thead>
 		<tbody>
