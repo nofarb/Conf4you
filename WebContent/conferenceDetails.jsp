@@ -253,7 +253,7 @@ getServletContext().setAttribute("retUrl", request.getRequestURL().toString());
 			<td>
 			<a class="removePart" href="javascript:;">
 			<img src="/conf4u/resources/imgs/vn_action_delete.png" alt="">
-			Delete
+			Remove
 			</a>
 			</td>
 			</tr>

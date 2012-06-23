@@ -15,10 +15,10 @@
 		defaults: {
 			/** VARS - OPTIONS **/
 			
-			autoHide : false, // added in v2.0
+			autoHide : true, // added in v2.0
 		  	clickOverlay : true, // added in v2.0
 		  	MinWidth : 300,
-		  	TimeShown : 2000,
+		  	TimeShown : 3000,
 		  	ShowTimeEffect : 200,
 		  	HideTimeEffect : 200,
 		  	LongTrip :20,

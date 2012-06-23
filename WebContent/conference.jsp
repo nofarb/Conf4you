@@ -56,10 +56,10 @@ $(document).ready(function(){
 				return $('#table1').table2CSV({delivery:'value'});
 			},
  	    onComplete: function(){ 
- 	    	jSuccess('Conference table successfully exported', { autoHide : true }); 
+ 	    	jSuccess('Conference table successfully exported'); 
  	    },
  	    onCancel:function(){ 
- 	    	jNotify('Export to excel canceled', { autoHide : true }); 
+ 	    	jNotify('Export to excel canceled'); 
  	    },
  	    transparent: false,
  	    swf: '/conf4u/resources/imgs/downloadify.swf',
