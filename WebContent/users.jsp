@@ -79,8 +79,11 @@ $(document).ready(function(){
    				return $('#table1').table2CSV({delivery:'value'});
    			},
     	    onComplete: function(){ 
-    	      alert('Users table successfully exported'); 
+    	    	jSuccess('Users table successfully exported'); 
     	    },
+     	    onCancel:function(){ 
+     	    	jNotify('Export to excel canceled'); 
+     	    },
     	    transparent: false,
     	    swf: '/conf4u/resources/imgs/downloadify.swf',
     	    downloadImage: '/conf4u/resources/imgs/excel.gif',
@@ -216,7 +219,7 @@ getServletContext().setAttribute("retUrl", request.getRequestURL().toString());
 	<div class="searchLine" >
 			Search:
    			<input type="text" id="search">		
-			<span id="exportToExcel" style="padding-top: 18px;vertical-align: middle;">
+			<span id="exportToExcel" style="vertical-align:-10px;">
 				You must have Flash 10 installed to download this file.
 			</span>
 			

@@ -56,7 +56,10 @@ $(document).ready(function(){
 				return $('#table1').table2CSV({delivery:'value'});
 			},
  	    onComplete: function(){ 
- 	      alert('Conference table successfully exported'); 
+ 	    	jSuccess('Conference table successfully exported'); 
+ 	    },
+ 	    onCancel:function(){ 
+ 	    	jNotify('Export to excel canceled'); 
  	    },
  	    transparent: false,
  	    swf: '/conf4u/resources/imgs/downloadify.swf',
@@ -121,7 +124,7 @@ getServletContext().setAttribute("retUrl", request.getRequestURL().toString());
 				<option value="ALL" selected="selected">All</option>
 			</select>
 			<%} %>
-			<span id="exportToExcel" style="padding-top: 18px;vertical-align: middle;">
+			<span id="exportToExcel" style="vertical-align:-10px;">
 				You must have Flash 10 installed to download this file.
 			</span>
 		</span>
