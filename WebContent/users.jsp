@@ -79,10 +79,10 @@ $(document).ready(function(){
    				return $('#table1').table2CSV({delivery:'value'});
    			},
     	    onComplete: function(){ 
-    	    	jSuccess('Users table successfully exported'); 
+    	    	jSuccess('Users table successfully exported', { autoHide : true });  
     	    },
      	    onCancel:function(){ 
-     	    	jNotify('Export to excel canceled'); 
+     	    	jNotify('Export to excel canceled', { autoHide : true }); 
      	    },
     	    transparent: false,
     	    swf: '/conf4u/resources/imgs/downloadify.swf',
@@ -238,7 +238,7 @@ getServletContext().setAttribute("retUrl", request.getRequestURL().toString());
 				<th><h3>Email</h3></th>
 				<th><h3>Company</h3></th>
 				<th><h3>Last Access</h3></th>
-				<th class="nosort"><h3>Details</h3></th>
+				<th class="nosort"></th>
 			</tr>
 		</thead>
 		<tbody>
