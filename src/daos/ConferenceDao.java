@@ -153,7 +153,7 @@ public class ConferenceDao {
 		session.beginTransaction();
 		try {
 			conferences = (List<Conference>)session.createQuery(
-					"select conf from  Conference conf where conf.location = :location")
+					"select conf from  Conference conf where conf.location = :location and conf.active = '1'")
 	                .setEntity("location",location)
 	                .list();
 			session.getTransaction().commit();
