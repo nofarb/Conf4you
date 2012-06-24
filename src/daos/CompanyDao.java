@@ -6,7 +6,6 @@ import org.hibernate.Session;
 import db.HibernateUtil;
 import model.Company;
 import model.CompanyType;
-
 /**
  * This class is responsible of supplying services related to the Company entity which require database access.
  * Singleton class.
@@ -174,8 +173,8 @@ public class CompanyDao {
 	 */
 	public void deleteCompany(String name)
 	{	
-		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
 		Company companyToDelete = getCompanyByName(name);
+		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
 		try {
 			session.beginTransaction();
 			session.update(companyToDelete.setActive(false));
@@ -184,6 +183,7 @@ public class CompanyDao {
 		catch (Exception e) {
 			session.getTransaction().rollback();
 		}
+
 	}
 	
 	/**
@@ -208,7 +208,6 @@ public class CompanyDao {
 
 		return result;
 	}
-
 
 	@SuppressWarnings("unchecked")
 	public List<Company> getCompanyListByName(String name) {

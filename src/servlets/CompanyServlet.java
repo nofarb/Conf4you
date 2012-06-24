@@ -13,7 +13,6 @@ import utils.ProjConst;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import daos.CompanyDao;
-import daos.LocationDao;
 
 
 /**

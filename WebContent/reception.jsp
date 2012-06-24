@@ -92,6 +92,7 @@ $(document).ready(function(){
 	var updateUsersListAndFilters = function(){
 		var filterStatus = "<%=request.getParameter("filterStatus")%>";
 		var filterConfName = "<%=request.getParameter("filterConfName")%>";
+		var filterArrived = "<%=request.getParameter("filterArrived")%>";
 		
 		if (filterStatus == "null")
 		{
@@ -110,7 +111,11 @@ $(document).ready(function(){
 		{
 			$("#confStatusFilter option[value='" + filterStatus + "']").attr('selected', 'selected');
 			$("#confNameFilter option[value='" + filterConfName + "']").attr('selected', 'selected');
-		}  	
+		}
+		if (filterArrived != "null")
+		{
+			$("#filterSelect option[value='" + filterArrived + "']").attr('selected', 'selected');
+		}
 	};
 		
 	updateUsersListAndFilters();
@@ -199,8 +204,8 @@ $(document).ready(function(){
 				<div class="selectedFilter" style="display: none;"><%=request.getParameter("filter")%></div>
 				<span id="vn_mainbody_filter"> Search: <input type="text"
 					id="search"> Show: <select id="filterSelect">
-						<option value="LAST7DAYS">Not Arrived</option>
-						<option value="LAST30DAYS">Arrived</option>
+						<option value="NotArrived">Not Arrived</option>
+						<option value="Arrived">Arrived</option>
 						<option value="ALL" selected="selected">All</option>
 				</select>
 
@@ -332,7 +337,20 @@ $(document).ready(function(){
 		</div>
 	</div>
 </div>
-	<script type="text/javascript">				
+	<script type="text/javascript">
+		 $('#filterSelect').change(function () {
+			 var status = $("#confStatusFilter").val();
+			 var confName = $("#confNameFilter").val();
+			 var selectedFilter = $("#filterSelect").val();
+			 window.location.href = "reception.jsp?filterStatus="+status +"&filterConfName=" + confName + "&filterArrived=" + selectedFilter;
+		 });
+		 
+		 var selectedFilter = $('.selectedFilter').text();
+		 if (selectedFilter != null && selectedFilter.length != 0)
+		 {
+			 $("#filterSelect option[value='" + selectedFilter + "']").attr('selected', 'selected');
+		 }
+	 
 		$('.print').click(function () {
 			$print = $(this);
 			var status = $("#confStatusFilter").val();
@@ -447,6 +465,5 @@ $(document).ready(function(){
 						});
 					});
 	</script>
-	</div>
 </body>
 </html>
