@@ -432,7 +432,7 @@ $(document).ready(function(){
 										}
 										else
 										{
-											$( this ).dialog( "close" );
+											$('#dialogConfirmRemoveSelectedParticipant').dialog('close');
 											jError(data.message);
 										}
 						            }
@@ -476,7 +476,7 @@ $(document).ready(function(){
 									}
 									else
 									{
-										$( this ).dialog( "close" );
+										$('#dialogConfirmRemoveParticipant').dialog('close');
 										jError(data.message);
 									}
 					            }
@@ -517,7 +517,7 @@ $(document).ready(function(){
 									}
 									else
 									{
-										$(this).dialog("close");
+										$('#dialogConfirmDeleteConf').dialog('close');
 										jError(data.message);
 									}
 					            }
