@@ -164,6 +164,7 @@ $(document).ready(function(){
 										//$.floatingMessage(data.message);
 										//$(".ui-widget-content").addClass("errorFeedback");
 										jError(data.message);
+										$( this ).dialog( "close" );
 									}
 					            }
 					        }

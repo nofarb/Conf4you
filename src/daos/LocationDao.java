@@ -2,6 +2,7 @@ package daos;
 
 import java.util.List;
 
+import model.Conference;
 import model.Location;
 import org.hibernate.Session;
 import db.HibernateUtil;
@@ -148,16 +149,21 @@ public class LocationDao {
 		return exists;
 	}
 	
-	private boolean isDeleteAllowed(Long locationId)
+	private boolean isDeleteAllowed(Location locationToDelete)
 	{
-		
+		List<Conference> confListByLocation = ConferenceDao.getInstance().getActiveConferencesByLocation(locationToDelete);
+		if (confListByLocation.size() == 0)
+		{
 			return true;
+		}
+		return false;
+		
 	}
 	
 	public void deleteLocation(String name) throws Exception
 	{	
 		Location locationToDelete = getLocationByName(name);
-		if (isDeleteAllowed(locationToDelete.getLocationId()))
+		if (isDeleteAllowed(locationToDelete))
 		{
 			Session session = HibernateUtil.getSessionFactory().getCurrentSession();
 			try {
