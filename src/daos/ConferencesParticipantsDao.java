@@ -231,6 +231,28 @@ public class ConferencesParticipantsDao {
 	
 		return result;
 	}
+	
+	public List<ConferencesParticipants> getConferencesParticipantsByConference(Conference conference){	
+		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
+		
+		List<ConferencesParticipants> result = null;
+		try {
+			session.beginTransaction();
+			result = (List<ConferencesParticipants>)session.createQuery(
+					"select cp from  ConferencesParticipants cp where cp.conference = :conf")
+	                .setEntity("conf", conference)
+	                .list();
+			session.getTransaction().commit();
+		}
+		catch (Exception e) {
+			logger.error(e.getMessage(), e);
+			session.getTransaction().rollback();
+		}
+	
+		return result;
+	}
+	
+	
 
 
 }

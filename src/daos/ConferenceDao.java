@@ -7,6 +7,7 @@ import org.hibernate.Session;
 import db.HibernateUtil;
 import model.Conference;
 import model.ConferenceFilters;
+import model.ConferencesParticipants;
 import model.Location;
 
 
@@ -54,13 +55,19 @@ public class ConferenceDao {
 		}
 		
 		dateToFilter.setTime(filterDate.getTimeInMillis());
+		List<Conference> result = null;
 		
 		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
-		session.beginTransaction();
-		List<Conference> result = (List<Conference>) session.createQuery("select conf from Conference conf where conf.startDate >= :filterDate and conf.active = '1'")
-				.setDate("filterDate", dateToFilter)
-				.list();
-		session.getTransaction().commit();
+		try {
+			session.beginTransaction();
+			result = (List<Conference>) session.createQuery("select conf from Conference conf where conf.startDate >= :filterDate and conf.active = '1'")
+					.setDate("filterDate", dateToFilter)
+					.list();
+			session.getTransaction().commit();
+		}
+		catch (Exception e) {
+			session.getTransaction().rollback();
+		}
 		return result;
 	}
 	
@@ -72,14 +79,19 @@ public class ConferenceDao {
 	 */
 	public Conference getConferenceById(long id) {
 		
+		Conference conf = null;
 		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
 		session.beginTransaction();
-		
-		Conference conf = (Conference)session.createQuery(
-				"from Conference where conferenceId=:conferenceId")
-                .setLong("conferenceId",id)
-                .uniqueResult();
-		session.getTransaction().commit();
+		try {
+			conf = (Conference)session.createQuery(
+					"from Conference where conferenceId=:conferenceId")
+	                .setLong("conferenceId",id)
+	                .uniqueResult();
+			session.getTransaction().commit();
+		}
+		catch (Exception e) {
+			session.getTransaction().rollback();
+		}
 		return conf;
 		
 	}
@@ -92,14 +104,21 @@ public class ConferenceDao {
 	 */
 	@SuppressWarnings("unchecked")
 	public List<Conference> getConferences(ConferenceFilters.ConferenceDatesFilter filter){
+		List<Conference> result = null;
+		
 		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
+		try {
 		session.beginTransaction();
-		List<Conference> result = (List<Conference>)HibernateUtil.getSessionFactory().getCurrentSession().createQuery(
+		result = (List<Conference>)HibernateUtil.getSessionFactory().getCurrentSession().createQuery(
 				"select conf from Conference conf where conf.startDate >= :startDate and conf.endtDate <= :endDate and conf.active = '1'")
                 .setDate("startDate", filter.getFromDate())
                 .setDate("endDate", filter.getToDate())
                 .list();
 		session.getTransaction().commit();
+		}
+		catch (Exception e) {
+			session.getTransaction().rollback();
+		}
 		return result;
 	}
 	
@@ -110,35 +129,82 @@ public class ConferenceDao {
 	 * @return
 	 */
 	public Conference getConferenceByName(String name){
+		Conference conf = null;
 		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
+		
+		try {
 		session.beginTransaction();
-		Conference conf = (Conference)session.createQuery(
+		conf = (Conference)session.createQuery(
 				"select conf from  Conference conf where conf.name = :name")
                 .setString("name", name)
                 .uniqueResult();
 		session.getTransaction().commit();
+		}
+		catch (Exception e) {
+			session.getTransaction().rollback();
+		}
 		return conf;
 	}
 	
-	public Boolean isConferenceNameExists(String name){
+	public List<Conference> getActiveConferencesByLocation(Location location) {
+		
+		List<Conference> conferences = null;
 		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
 		session.beginTransaction();
-		Boolean exists = session.createQuery(
+		try {
+			conferences = (List<Conference>)session.createQuery(
+					"select conf from  Conference conf where conf.location = :location")
+	                .setEntity("location",location)
+	                .list();
+			session.getTransaction().commit();
+		}
+		catch (Exception e) {
+			session.getTransaction().rollback();
+		}
+		
+		return conferences;
+	}
+	
+	public Boolean isConferenceNameExists(String name){
+		Boolean exists = false;
+		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
+		try {
+		session.beginTransaction();
+		exists = session.createQuery(
 				"select conf from  Conference conf where conf.name = :name")
                 .setString("name", name)
                 .uniqueResult() != null;
 		session.getTransaction().commit();
+		}
+		catch (Exception e) {
+			session.getTransaction().rollback();
+		}
 		return exists;
 	}
 	
-	public void deleteConference(String name){
+	public void deleteConference(String name) throws Exception{
 		
 		Conference conferenceToDelete = getConferenceByName(name);
 		
+		List<ConferencesParticipants> cp = ConferencesParticipantsDao.getInstance().getConferencesParticipantsByConference(conferenceToDelete);
+		if (cp.size() != 0)
+		{
+			throw new Exception("Cannot delete conference there is a user participants entry");
+		}
+		
 		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
-		session.beginTransaction();
-		session.update(conferenceToDelete.setActive(false));
-		session.getTransaction().commit();
+		
+		try {
+			session.beginTransaction();
+			session.update(conferenceToDelete.setActive(false));
+			session.getTransaction().commit();
+		}
+		catch (Exception e) {
+			session.getTransaction().rollback();
+			throw new Exception("Failed to delete conference " + name);
+		}
+
+		ConferencesUsersDao.getInstance().removeAllUsersThatAssignToConference(conferenceToDelete);
 	}
 	
 	public void addNewConference(List<Conference> conferences){
@@ -162,10 +228,15 @@ public class ConferenceDao {
 		}
 		
 		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
-		session.beginTransaction();
-		session.merge(conference);
-		session.getTransaction().commit();
 		
+		try {
+			session.beginTransaction();
+			session.merge(conference);
+			session.getTransaction().commit();
+		}
+		catch (Exception e) {
+			session.getTransaction().rollback();
+		}
 		return conference;
 	}
 
@@ -175,12 +246,16 @@ public class ConferenceDao {
 	public Conference updateConference(Conference conference){
 		
 		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
-		session.beginTransaction();
-		session.merge(conference);
-		session.getTransaction().commit();
+		try {
+			session.beginTransaction();
+			session.merge(conference);
+			session.getTransaction().commit();
+		}
+		catch (Exception e) {
+			session.getTransaction().rollback();
+		}
 		
 		return conference;
-	
 	}
 	
 
@@ -190,11 +265,17 @@ public class ConferenceDao {
 	 * @return
 	 */
 	public Conference assignLocationToConference(Conference conference, Location location){
+		Conference conf = null;
 		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
-		session.beginTransaction();
-		Conference conf = getConferenceByName(conference.getName());
-		session.update(conf.setLocation(location));
-		session.getTransaction().commit();
+		try {
+			session.beginTransaction();
+			conf = getConferenceByName(conference.getName());
+			session.update(conf.setLocation(location));
+			session.getTransaction().commit();
+		}
+		catch (Exception e) {
+			session.getTransaction().rollback();
+		}
 		
 		return conf;
 	}

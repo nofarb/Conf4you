@@ -528,14 +528,21 @@ public class ConferencesUsersDao {
 		}
 		return users;
 	}
-	
-	
-	
-	
-		public int getNumOfUsersInAttendanceStatusInConference(Conference conference, UserAttendanceStatus status){
 		
+	public int getNumOfUsersInAttendanceStatusInConference(Conference conference, UserAttendanceStatus status){
+	
 		List<User> users = getUsersInAttendanceStatusInConference(conference, status);
 		return users.size();
+	}
+	
+	public void removeAllUsersThatAssignToConference(Conference conference) throws Exception{
+		
+		List<ConferencesUsers> conferenceUsers = getAllConferenceUsersByConference(conference);
+		
+		for (ConferencesUsers uc : conferenceUsers)
+		{
+			removeUserFromConference(uc.getConference(), uc.getUser());
+		}
 	}
 	
 }

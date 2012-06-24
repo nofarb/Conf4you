@@ -332,7 +332,7 @@ getServletContext().setAttribute("retUrl", request.getRequestURL().toString());
 	</div>
 		
 	<div id="dialogConfirmDeleteConf" title="Delete conference?" style="display:none;">
-		<p><span class="ui-icon ui-icon-alert" style="float:left; margin:0 7px 20px 0;"></span>Conference will be deleted. Are you sure?</p>
+		<p><span class="ui-icon ui-icon-alert" style="float:left; margin:0 7px 20px 0;"></span>Conference will be deleted, all users will be removed from this conference. Are you sure?</p>
 	</div>
 	
 	<div id="dialogConfirmRemoveParticipant" title="Remove participant from conference?" style="display:none;">
@@ -517,7 +517,7 @@ $(document).ready(function(){
 									}
 									else
 									{
-										$( this ).dialog( "close" );
+										$(this).dialog("close");
 										jError(data.message);
 									}
 					            }
@@ -525,7 +525,7 @@ $(document).ready(function(){
 					    });
 					},
 					Cancel: function() {
-						$( this ).dialog( "close" );
+						$(this).dialog("close");
 					}
 				}
 				});

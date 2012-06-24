@@ -402,7 +402,7 @@ public class ConferenceServlet extends HttpServlet {
     	}
     	catch (Exception e)
     	{
-    		message = "Found problem while deleting conference";
+    		message = "Found problem while deleting conference, message: " + e.getMessage();
     		resultSuccess = "false";
     	}
     	
@@ -411,18 +411,11 @@ public class ConferenceServlet extends HttpServlet {
         try {
             Gson gson = new Gson();
            	String json;
-           	if (ConferenceDao.getInstance().isConferenceNameExists(confName))	
-           	{
-           		jsonObject.addProperty("resultSuccess", resultSuccess);
-           		jsonObject.addProperty("message", message);
-           		json = gson.toJson(jsonObject);
-           	}
-           	else
-           	{
-           		jsonObject.addProperty("resultSuccess", "false");
-           		jsonObject.addProperty("message", "Failed to delete conference");
-           		json = gson.toJson(jsonObject);
-           	}
+
+       		jsonObject.addProperty("resultSuccess", resultSuccess);
+       		jsonObject.addProperty("message", message);
+       		json = gson.toJson(jsonObject);
+       		
            	out.write(json);
             out.flush();
         }
