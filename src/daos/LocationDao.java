@@ -148,17 +148,30 @@ public class LocationDao {
 		return exists;
 	}
 	
-	public void deleteLocation(String name)
+	private boolean isDeleteAllowed(Long locationId)
+	{
+		
+			return true;
+	}
+	
+	public void deleteLocation(String name) throws Exception
 	{	
 		Location locationToDelete = getLocationByName(name);
-		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
-		try {
-			session.beginTransaction();
-			session.update(locationToDelete.setActive(false));
-			session.getTransaction().commit();
+		if (isDeleteAllowed(locationToDelete.getLocationId()))
+		{
+			Session session = HibernateUtil.getSessionFactory().getCurrentSession();
+			try {
+				session.beginTransaction();
+				session.update(locationToDelete.setActive(false));
+				session.getTransaction().commit();
+			}
+			catch (Exception e) {
+				session.getTransaction().rollback();
+			}
 		}
-		catch (Exception e) {
-			session.getTransaction().rollback();
+		else
+		{
+			throw new Exception("Cannot delete location, there are conferences in this location");
 		}
 	}
 }

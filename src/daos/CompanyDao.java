@@ -6,6 +6,7 @@ import org.hibernate.Session;
 import db.HibernateUtil;
 import model.Company;
 import model.CompanyType;
+import model.User;
 /**
  * This class is responsible of supplying services related to the Company entity which require database access.
  * Singleton class.
@@ -171,19 +172,37 @@ public class CompanyDao {
 	/**
 	 * Delete (set active=false) an existing company
 	 */
-	public void deleteCompany(String name)
+	private boolean isDeleteAllowed(Long companyId)
+	{
+		List<User> usersInCompany = UserDao.getInstance().getUsersInCompany(companyId);
+		if (usersInCompany.size() == 0)
+		{
+			return true;
+		}
+		return false;
+	}
+	
+	public void deleteCompany(String name) throws Exception
 	{	
 		Company companyToDelete = getCompanyByName(name);
-		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
-		try {
-			session.beginTransaction();
-			session.update(companyToDelete.setActive(false));
-			session.getTransaction().commit();
+		if (isDeleteAllowed(companyToDelete.getCompanyID()))
+		{
+			Session session = HibernateUtil.getSessionFactory().getCurrentSession();
+			try
+			{
+				session.beginTransaction();
+				session.update(companyToDelete.setActive(false));
+				session.getTransaction().commit();
+			}
+			catch (Exception e)
+			{
+				session.getTransaction().rollback();
+			}
 		}
-		catch (Exception e) {
-			session.getTransaction().rollback();
+		else
+		{
+			throw new Exception("Cannot delete company, users are belong to it");
 		}
-
 	}
 	
 	/**

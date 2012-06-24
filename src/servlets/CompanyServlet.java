@@ -191,9 +191,6 @@ public class CompanyServlet extends HttpServlet {
     	String message;
     	try 
     	{
-    		//Company company = CompanyDao.getInstance().getCompanyByName(compName);
-    		//company.setActive(false);
-    		//CompanyDao.getInstance().updateCompany(company);
     		CompanyDao.getInstance().deleteCompany(compName);
     		message = "Company " + compName + " successfully deleted";
     		resultSuccess = "true";
@@ -201,7 +198,8 @@ public class CompanyServlet extends HttpServlet {
     	}
     	catch (Exception e)
     	{
-    		message = "Found problem while deleting Company";
+    		//message = "Found problem while deleting Company";
+    		message = e.getMessage();
     		resultSuccess = "false";
     	}
     	
@@ -210,7 +208,6 @@ public class CompanyServlet extends HttpServlet {
         try {
             Gson gson = new Gson();
            	String json;
-           	//if (ConferenceDao.getInstance().isConferenceNameExists(confName))	
            	if (CompanyDao.getInstance().isCompanyNameExists(compName))
            	{
            		jsonObject.addProperty("resultSuccess", resultSuccess);

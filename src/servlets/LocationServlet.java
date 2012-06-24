@@ -140,7 +140,8 @@ public class LocationServlet extends HttpServlet {
     	}
     	catch (Exception e)
     	{
-    		message = "Found problem while deleting location";
+    		//message = "Found problem while deleting location";
+    		message = e.getMessage();
     		resultSuccess = "false";
     	}
     	

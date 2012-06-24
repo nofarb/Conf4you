@@ -13,10 +13,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import model.Conference;
-import model.ConferencesUsers;
-import model.Location;
 import model.User;
-import model.UserRole;
 
 import utils.ProjConst;
 import utils.TextPrinter;
@@ -27,7 +24,6 @@ import com.google.gson.JsonObject;
 import daos.ConferenceDao;
 import daos.ConferencesParticipantsDao;
 import daos.ConferencesUsersDao;
-import daos.LocationDao;
 import daos.UserDao;
 
 /**
@@ -84,10 +80,10 @@ public class ReceptionServlet extends HttpServlet {
    
     	User user = UserDao.getInstance().getUserById(Long.parseLong(userId));
     	    	
-    	JsonObject jsonObject = new JsonObject();
+    	//JsonObject jsonObject = new JsonObject();
     	
-    	String resultSuccess;
-    	String message;
+    	//String resultSuccess;
+    	//String message;
     	
     	List<String> confList = new LinkedList<String>();
     	
@@ -98,14 +94,14 @@ public class ReceptionServlet extends HttpServlet {
     		{
     			confList.add(conf.getName());	
     		}
-    		message = "Conference successfully added";
-    		resultSuccess = "true";
+    		//message = "Conference successfully added";
+    		//resultSuccess = "true";
     		
     	}
     	catch (Exception e)
     	{
-    		message = "Found problem while adding conference";
-    		resultSuccess = "false";
+    		//message = "Found problem while adding conference";
+    		//resultSuccess = "false";
     	}
     	
         response.setContentType("application/json;charset=UTF-8");
@@ -229,11 +225,13 @@ public class ReceptionServlet extends HttpServlet {
     	
     	try 
     	{
-    		String[] header = new String[] { "Conference: " + conference.getName() };
+    		//String[] header = new String[] { "Conference: " + conference.getName() };
+    		String[] header = new String[] { conference.getName() };
     		String[] stringToPrint = new String[] { "Date: " + new Date() +  "\n\tName: " + user.getName() + "\n\tCompany: " + user.getCompany().getName()};
     		
     		TextPrinter tp = new TextPrinter();
-    		tp.doPrint(null, stringToPrint, true);
+    		tp.doPrint(header, stringToPrint, true);
+    		
     		
     		resultSuccess = "true";
     		message = "Participant tag is printing";
