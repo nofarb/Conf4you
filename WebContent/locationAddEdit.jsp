@@ -40,163 +40,7 @@ div.error {
 }
 </style>
 
-<script type="text/javascript">	
-$(function() {
-	$( ".datepicker" ).datepicker();
-});
 
-$(document).ready(function(){
-	
-	var addLocSubmit = function() {
-		alert("add location");
-		$.ajax({
-            url: "LocationServlet",
-            dataType: 'json',
-            async: false,
-            type: 'POST',
-                data: {
-                	"action": $(".operation").text(),
-                	"<%=ProjConst.LOC_NAME%>" : "<%=request.getParameter("action")%>" == "<%=ProjConst.ADD%>" ? $("#" + "<%=ProjConst.LOC_NAME%>").val() : $("#" + "<%=ProjConst.LOC_NAME%>").text(),
-                	"<%=ProjConst.LOC_NAME_BEFORE_EDIT%>" : $(".locBeforeHidden").text(),
-                	"<%=ProjConst.LOC_Phone1%>" : $("#" + "<%=ProjConst.LOC_Phone1%>").val(),
-                	"<%=ProjConst.LOC_Phone2%>" : $("#" + "<%=ProjConst.LOC_Phone2%>").val(),
-                	"<%=ProjConst.LOC_MaxCapacity%>" : $("#" + "<%=ProjConst.LOC_MaxCapacity%>").val(),
-                	"<%=ProjConst.LOC_ContactName%>" : $("#" + "<%=ProjConst.LOC_ContactName%>").val(),
-                	"<%=ProjConst.LOC_Address%>" : $("#" + "<%=ProjConst.LOC_Address%>").val()
-                },
-            success: function(data) {
-                if (data != null){
-					if (data.resultSuccess == "true")
-					{
-					
-					 	//window.location.reload();
-					 	    $.floatingMessage(data.message ,{  
-					 	    	height : 30
-						    }); 
-					 	    $(".ui-widget-content").addClass("successFeedback");
-					 	
-					}
-					else
-					{
-						$.floatingMessage(data.message);
-						$(".ui-widget-content").addClass("errorFeedback");
-					}
-                }
-            }
-        });
-    };
-	
-	$.validator.addMethod("uniqueLocationName", function(value, element) {
-		  var is_valid = false;
-		  alert("uniqueLocationName");
-		  $.ajax({
-              url: "LocationServlet",
-              dataType: 'json',
-              async: false,
-              type: 'POST',
-                  data: {
-                	  "action": "validation",
-                      "data": value
-                  },
-              success: function(data) {
-                  if (data != null){
-                      if (data == "true")
-                      {
-                    	 $.validator.messages.uniqueLocationName = value + " is already taken";
-                       	is_valid = false;
-                      }
-                      else
-                   	  {
-                    	  is_valid = true;
-                   	  }
-                  }
-              }
-          });
-	      return is_valid;
-	 }, "Location name is already exists");
- 
-	 $.validator.addMethod("numberValidate", function(value, element) {
-		 return !isNaN(parseFloat(value)) && isFinite(value) && parseFloat(value)>0;
-	 }, "Must be a number" );
-	
-	$("#locationAddEditForm").validate({
-		  onkeyup: false,
-		  onfocusout: false,
-		  submitHandler: function(form)
-		  {
-			  try
-			  {
-				  if ($(form).valid())
-	              {
-	            	  alert("locationAddEditForm-valid");
-	            	  addLocSubmit();
-	              }
-			  }
-			  catch(e)
-			  {
-				  // if exception do nothing
-			  }
-              return false;
-     		},
-		  rules: {
-			  "<%=ProjConst.LOC_NAME%>": {
-			    required: true,
-			    minlength: 4,
-			    maxlength: 30,
-			    uniqueLocationName: $(".operation").text() == "<%=ProjConst.ADD%>"
-			  },
-			  "<%=ProjConst.LOC_MaxCapacity%>": {
-				  	required: true,
-				  	maxlength: 254,
-				  	numberValidate: "Capacity must be a number bigger then 0"
-			  },
-			  "<%=ProjConst.LOC_Address%>": {
-			  	required: true,
-			    minlength: 4,
-			    maxlength: 254
-			  },
-			  "<%=ProjConst.LOC_ContactName%>": {
-				  	required: true
-			  },
-			  "<%=ProjConst.LOC_Phone1%>": {
-				  required: true
-			  },
-		  },
-		  messages: {
-			  "<%=ProjConst.LOC_NAME%>": {
-					 required: "Required",
-					 minlength: "You need to use at least 4 characters for your location name.",
-					 maxlength: "You need to use at most 30 characters for your location name.",
-					 uniqueLocationeName : "This location name is already exists"
-				},
-				"<%=ProjConst.LOC_MaxCapacity%>": {
-					required: "you mast enter location capacity.",
-					numberValidate: "Capacity must be a number bigger then 0"
-				},
-				"<%=ProjConst.LOC_Address%>": {
-					 required: "Required",
-					 minlength: "You need to use at least 4 characters for your location address.",
-					 maxlength: "You need to use at most 254 characters for your location address."
-				},
-				"<%=ProjConst.LOC_ContactName%>": {
-					required: "Required"
-				},
-				"<%=ProjConst.LOC_Phone1%>": {
-					required: "Required"
-				}
-	  		},
-	  		errorElement: "div",
-	        wrapper: "div",  // a wrapper around the error message
-	        errorPlacement: function(error, element) {
-	            offset = element.offset();
-	            error.insertBefore(element);
-	            error.addClass('message');  // add a class to the wrapper
-	            error.css('position', 'absolute');
-	            error.css('left', offset.left + element.outerWidth());
-	        }
-		});
-});
-</script>
 
 </head>
 
@@ -217,10 +61,10 @@ getServletContext().setAttribute("retUrl", request.getRequestURL().toString());
 		<%
 			    String action = request.getParameter("action");
 				String locName = request.getParameter("locName");
-				Boolean isTrue = action.equals("edit");
+				Boolean isEdit = action.equals("edit");
 				Location location = new Location();
 				
-				   if (isTrue)
+				   if (isEdit)
 				   {
 			   			location = LocationDao.getInstance().getLocationByName(locName);
 				   }
@@ -408,6 +252,172 @@ getServletContext().setAttribute("retUrl", request.getRequestURL().toString());
 		<div class="clearboth"></div>
 	</div>
 	</div>
+
+
+
+
+<script type="text/javascript">	
+$(function() {
+	$( ".datepicker" ).datepicker();
+});
+
+$(document).ready(function(){
+	
+	var addLocSubmit = function() {
+		//alert("add location");
+		$.ajax({
+            url: "LocationServlet",
+            dataType: 'json',
+            async: false,
+            type: 'POST',
+                data: {
+                	"action": $(".operation").text(),
+                	"<%=ProjConst.LOC_NAME%>" : "<%=request.getParameter("action")%>" == "<%=ProjConst.ADD%>" ? $("#" + "<%=ProjConst.LOC_NAME%>").val() : $("#" + "<%=ProjConst.LOC_NAME%>").text(),
+                	"<%=ProjConst.LOC_NAME_BEFORE_EDIT%>" : $(".locBeforeHidden").text(),
+                	"<%=ProjConst.LOC_Phone1%>" : $("#" + "<%=ProjConst.LOC_Phone1%>").val(),
+                	"<%=ProjConst.LOC_Phone2%>" : $("#" + "<%=ProjConst.LOC_Phone2%>").val(),
+                	"<%=ProjConst.LOC_MaxCapacity%>" : $("#" + "<%=ProjConst.LOC_MaxCapacity%>").val(),
+                	"<%=ProjConst.LOC_ContactName%>" : $("#" + "<%=ProjConst.LOC_ContactName%>").val(),
+                	"<%=ProjConst.LOC_Address%>" : $("#" + "<%=ProjConst.LOC_Address%>").val()
+                },
+            success: function(data) {
+                if (data != null){
+					if (data.resultSuccess == "true")
+					{
+					 	var params;
+						var returnUrl;
+							
+						<%if (isEdit) {%>
+							params = "?locationName=" +$("#locName").val() + "&messageNotification=" + data.message + "&messageNotificationType=success";
+						<% } else {%>
+							params = "?messageNotification=" + data.message + "&messageNotificationType=success";						
+						<% } %>
+						returnUrl = "<%=retUrl%>";
+						returnUrl += params;
+				 	    window.location.href = returnUrl;
+					}
+					else
+					{
+						//$.floatingMessage(data.message);
+						//$(".ui-widget-content").addClass("errorFeedback");
+						jError(data.message);
+					}
+                }
+            }
+        });
+    };
+	
+	$.validator.addMethod("uniqueLocationName", function(value, element) {
+		  var is_valid = false;
+		  //alert("uniqueLocationName");
+		  $.ajax({
+              url: "LocationServlet",
+              dataType: 'json',
+              async: false,
+              type: 'POST',
+                  data: {
+                	  "action": "validation",
+                      "data": value
+                  },
+              success: function(data) {
+                  if (data != null){
+                      if (data == "true")
+                      {
+                    	 $.validator.messages.uniqueLocationName = value + " is already taken";
+                       	is_valid = false;
+                      }
+                      else
+                   	  {
+                    	  is_valid = true;
+                   	  }
+                  }
+              }
+          });
+	      return is_valid;
+	 }, "Location name is already exists");
+ 
+	 $.validator.addMethod("numberValidate", function(value, element) {
+		 return !isNaN(parseFloat(value)) && isFinite(value) && parseFloat(value)>0;
+	 }, "Must be a number" );
+	
+	$("#locationAddEditForm").validate({
+		  onkeyup: false,
+		  onfocusout: false,
+		  submitHandler: function(form)
+		  {
+			  try
+			  {
+				  if ($(form).valid())
+	              {
+	            	  //alert("locationAddEditForm-valid");
+	            	  addLocSubmit();
+	              }
+			  }
+			  catch(e)
+			  {
+				  // if exception do nothing
+			  }
+              return false;
+     		},
+		  rules: {
+			  "<%=ProjConst.LOC_NAME%>": {
+			    required: true,
+			    minlength: 4,
+			    maxlength: 30,
+			    uniqueLocationName: $(".operation").text() == "<%=ProjConst.ADD%>"
+			  },
+			  "<%=ProjConst.LOC_MaxCapacity%>": {
+				  	required: true,
+				  	maxlength: 254,
+				  	numberValidate: "Capacity must be a number bigger then 0"
+			  },
+			  "<%=ProjConst.LOC_Address%>": {
+			  	required: true,
+			    minlength: 4,
+			    maxlength: 254
+			  },
+			  "<%=ProjConst.LOC_ContactName%>": {
+				  	required: true
+			  },
+			  "<%=ProjConst.LOC_Phone1%>": {
+				  required: true
+			  },
+		  },
+		  messages: {
+			  "<%=ProjConst.LOC_NAME%>": {
+					 required: "Required",
+					 minlength: "You need to use at least 4 characters for your location name.",
+					 maxlength: "You need to use at most 30 characters for your location name.",
+					 uniqueLocationeName : "This location name is already exists"
+				},
+				"<%=ProjConst.LOC_MaxCapacity%>": {
+					required: "you mast enter location capacity.",
+					numberValidate: "Capacity must be a number bigger then 0"
+				},
+				"<%=ProjConst.LOC_Address%>": {
+					 required: "Required",
+					 minlength: "You need to use at least 4 characters for your location address.",
+					 maxlength: "You need to use at most 254 characters for your location address."
+				},
+				"<%=ProjConst.LOC_ContactName%>": {
+					required: "Required"
+				},
+				"<%=ProjConst.LOC_Phone1%>": {
+					required: "Required"
+				}
+	  		},
+	  		errorElement: "div",
+	        wrapper: "div",  // a wrapper around the error message
+	        errorPlacement: function(error, element) {
+	            offset = element.offset();
+	            error.insertBefore(element);
+	            error.addClass('message');  // add a class to the wrapper
+	            error.css('position', 'absolute');
+	            error.css('left', offset.left + element.outerWidth());
+	        }
+		});
+});
+</script>
 
 </body>
 </html>

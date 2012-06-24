@@ -12,58 +12,6 @@
 <head>
 <%= UiHelpers.GetAllJsAndCss().toString() %>
 
-<script type="text/javascript">	
-$(document).ready(function(){
-	
-		 $('.deleteLoc').click(function () { 
-			 $('#dialog-confirm').dialog({
-				resizable: false,
-				height: 150,
-				width: 400,
-				modal: true,
-				hide: "fade", 
-	            show: "fade",
-				buttons: {
-					"Delete": function() {
-						$.ajax({
-					        url: "LocationServlet",
-					        dataType: 'json',
-					        async: false,
-					        type: 'POST',
-					            data: {
-					            	"action": "delete",
-					            	"locName": $(".locName").text()
-					            },
-					        success: function(data) {
-					            if (data != null){
-									if (data.resultSuccess == "true")
-									{
-								 	   	window.location = "location.jsp";
-								 	    $.floatingMessage(data.message ,{  
-								 	    	height : 30
-									    }); 
-								 	    $(".ui-widget-content").addClass("successFeedback");
-									}
-									else
-									{
-										$.floatingMessage(data.message);
-										$(".ui-widget-content").addClass("errorFeedback");
-									}
-					            }
-					        }
-					    });
-					},
-					Cancel: function() {
-						$( this ).dialog( "close" );
-					}
-				}
-				});
-			});
-	});
-	
-	
-</script>
-
 </head>
 
 <body>
@@ -173,5 +121,63 @@ getServletContext().setAttribute("retUrl", request.getRequestURL().toString());
 	 -->
 	</div>
 </div>
+<script type="text/javascript">	
+$(document).ready(function(){
+	
+		 $('.deleteLoc').click(function () { 
+			 $('#dialog-confirm').dialog({
+				resizable: false,
+				height: 150,
+				width: 400,
+				modal: true,
+				hide: "fade", 
+	            show: "fade",
+				buttons: {
+					"Delete": function() {
+						$.ajax({
+					        url: "LocationServlet",
+					        dataType: 'json',
+					        async: false,
+					        type: 'POST',
+					            data: {
+					            	"action": "delete",
+					            	"locName": $(".locName").text()
+					            },
+					        success: function(data) {
+					            if (data != null){
+									if (data.resultSuccess == "true")
+									{
+								 	   	//window.location = "locations.jsp";
+								 	    //$.floatingMessage(data.message ,{  
+								 	    //	height : 30
+									    //}); 
+								 	    //$(".ui-widget-content").addClass("successFeedback");
+										var params;
+										var returnUrl;
+										params = "?messageNotification=" + data.message + "&messageNotificationType=success";						
+										returnUrl = "<%=retUrl%>";
+										returnUrl += params;
+								 	    window.location.href = returnUrl;
+									}
+									else
+									{
+										//$.floatingMessage(data.message);
+										//$(".ui-widget-content").addClass("errorFeedback");
+										jError(data.message);
+									}
+					            }
+					        }
+					    });
+					},
+					Cancel: function() {
+						$( this ).dialog( "close" );
+					}
+				}
+				});
+			});
+	});
+	
+	
+</script>
 </body>
 </html>

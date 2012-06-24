@@ -88,7 +88,7 @@ public class LocationServlet extends HttpServlet {
     		//ConferenceDao.getInstance().addNewConference(new Conference(confName, locationInstance, desc, startDate, endDate));
     		int locationMaxCapacity = Integer.parseInt( locationMaxCapacityStr );
     		LocationDao.getInstance().addLocation(new Location(locationName, locationAddress, locationMaxCapacity, locationContactName, locationPhone1, locationPhone2));
-    		message = "Location successfully added";
+    		message = "Location " +locationName+ " successfully added";
     		resultSuccess = "true";
     		
     	}
@@ -134,7 +134,7 @@ public class LocationServlet extends HttpServlet {
     	try 
     	{
     		LocationDao.getInstance().deleteLocation(locationName);
-    		message = "Location successfully deleted";
+    		message = "Location " + locationName + " removed successfully from the system";
     		resultSuccess = "true";
     		
     	}

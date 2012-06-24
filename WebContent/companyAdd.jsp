@@ -231,7 +231,7 @@ $(document).ready(function(){
 	<tbody>
 	<tr>
 		<td class="labelcell required">
-			<label for=<%=ProjConst.COMP_NAME%>">
+			<label for="<%=ProjConst.COMP_NAME%>">
 			Company name:
 			<em>*</em>
 			</label>

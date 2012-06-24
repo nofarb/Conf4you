@@ -15,7 +15,6 @@
 <html>
 <head>
 <%= UiHelpers.GetAllJsAndCss().toString() %>
-
 <script type="text/javascript">
 $(document).ready(function()
 {
@@ -51,6 +50,7 @@ $(document).ready(function()
 });
 </script>
 <body>
+
 <div id="body_wrap">
 <% User viewingUser = SessionUtils.getUser(request); %>
 <% 
@@ -61,9 +61,8 @@ if (!viewingUser.isAdmin())
 
 getServletContext().setAttribute("retUrl", request.getRequestURL().toString());
 %>
-
-<%= UiHelpers.GetHeader(viewingUser).toString()%>
-<%= UiHelpers.GetTabs(viewingUser, ProjConst.TAB_LOCATIONS).toString() %>
+<%= UiHelpers.GetHeader(SessionUtils.getUser(request)).toString()%>
+<%= UiHelpers.GetTabs(SessionUtils.getUser(request), ProjConst.TAB_COMPANIES).toString() %>
 
 <div id="content">
 	<div class="pageTitle">
