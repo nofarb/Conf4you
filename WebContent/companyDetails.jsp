@@ -12,76 +12,7 @@
 <head>
 <%= UiHelpers.GetAllJsAndCss().toString() %>
 
-<script type="text/javascript">	
-$(document).ready(function(){
-	
-	var message = "<%=request.getParameter("messageNotification")%>";
-	if (message != "null")
-	{
-		var messageType = "<%=request.getParameter("messageNotificationType")%>";
-		if (messageType == "success")
-		{
-			jSuccess(message);
-		}
-		else if (messageType == "error")
-		{
-			jError(message);
-		}
-		else
-		{
-			alert("unknown message type");
-		}
-	}
-	
-	 $('.deleteComp').click(function () { 
-		 $('#dialog-confirm').dialog({
-			resizable: false,
-			height: 150,
-			width: 400,
-			modal: true,
-			hide: "fade", 
-           show: "fade",
-			buttons: {
-				"Delete": function() {
-					$.ajax({
-				        url: "CompanyServlet",
-				        dataType: 'json',
-				        async: false,
-				        type: 'POST',
-				            data: {
-				            	"action": "delete",
-				            	"compName": $(".compName").text()
-				            },
-				        success: function(data) {
-				            if (data != null){
-								if (data.resultSuccess == "true")
-								{
-							 	   	window.location = "company.jsp";
-							 	    $.floatingMessage(data.message ,{  
-							 	    	height : 30
-								    }); 
-							 	    $(".ui-widget-content").addClass("successFeedback");
-								}
-								else
-								{
-									$.floatingMessage(data.message);
-									$(".ui-widget-content").addClass("errorFeedback");
-								}
-				            }
-				        }
-				    });
-				},
-				Cancel: function() {
-					$( this ).dialog( "close" );
-				}
-			}
-			});
-		});
-});
 
-
-
-</script>
 
 
 </head>
@@ -176,5 +107,78 @@ getServletContext().setAttribute("retUrl", request.getRequestURL().toString());
 	-->
 	</div>
 </div>
+<script type="text/javascript">	
+$(document).ready(function(){
+	
+	var message = "<%=request.getParameter("messageNotification")%>";
+	if (message != "null")
+	{
+		var messageType = "<%=request.getParameter("messageNotificationType")%>";
+		if (messageType == "success")
+		{
+			jSuccess(message);
+		}
+		else if (messageType == "error")
+		{
+			jError(message);
+		}
+		else
+		{
+			alert("unknown message type");
+		}
+	}
+	
+	 $('.deleteComp').click(function () { 
+		 $('#dialog-confirm').dialog({
+			resizable: false,
+			height: 150,
+			width: 400,
+			modal: true,
+			hide: "fade", 
+           show: "fade",
+			buttons: {
+				"Delete": function() {
+					$.ajax({
+				        url: "CompanyServlet",
+				        dataType: 'json',
+				        async: false,
+				        type: 'POST',
+				            data: {
+				            	"action": "delete",
+				            	"<%=ProjConst.COMP_NAME%>": $(".compName").text()
+				            },
+				        success: function(data) {
+				            if (data != null){
+								if (data.resultSuccess == "true")
+								{
+							 	   	//window.location = "company.jsp";
+							 	    //$.floatingMessage(data.message ,{  
+							 	    //	height : 30
+								    //}); 
+							 	    //$(".ui-widget-content").addClass("successFeedback");
+									var params;
+									var returnUrl;
+									params = "?messageNotification=" + data.message + "&messageNotificationType=success";						
+									returnUrl = "<%=retUrl%>";
+									returnUrl += params;
+							 	    window.location.href = returnUrl;
+								}
+								else
+								{
+									//$.floatingMessage(data.message);
+									//$(".ui-widget-content").addClass("errorFeedback");
+									jError(data.message);								}
+				            }
+				        }
+				    });
+				},
+				Cancel: function() {
+					$( this ).dialog( "close" );
+				}
+			}
+			});
+		});
+});
+</script>
 </body>
 </html>

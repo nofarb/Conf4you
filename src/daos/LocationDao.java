@@ -151,9 +151,7 @@ public class LocationDao {
 	public void deleteLocation(String name)
 	{	
 		Location locationToDelete = getLocationByName(name);
-		
 		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
-		Boolean exists = null;
 		try {
 			session.beginTransaction();
 			session.update(locationToDelete.setActive(false));

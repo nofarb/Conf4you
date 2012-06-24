@@ -13,6 +13,7 @@ import utils.ProjConst;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import daos.CompanyDao;
+import daos.LocationDao;
 
 
 /**
@@ -80,7 +81,7 @@ public class CompanyServlet extends HttpServlet {
     		//ConferenceDao.getInstance().addNewConference(new Conference(confName, locationInstance, desc, startDate, endDate));
     		CompanyType compType = CompanyType.valueOf(compTypeStr); 
     		CompanyDao.getInstance().addCompany(new Company(compName,compType));
-    		message = "Company successfully added";
+    		message = "Company " + compName + " successfully added";
     		resultSuccess = "true";
     		
     	}
@@ -145,7 +146,7 @@ public class CompanyServlet extends HttpServlet {
     		
     		//ConferenceDao.getInstance().updateConference(origConf);
     		CompanyDao.getInstance().updateCompany(origComp);
-    		message = "Company successfully edited";
+    		message = "Company " + origComp.getName() + " successfully edited";
     		resultSuccess = "true";
     		
     	}
@@ -191,9 +192,11 @@ public class CompanyServlet extends HttpServlet {
     	String message;
     	try 
     	{
-    		//ConferenceDao.getInstance().deleteConference(confName);
+    		//Company company = CompanyDao.getInstance().getCompanyByName(compName);
+    		//company.setActive(false);
+    		//CompanyDao.getInstance().updateCompany(company);
     		CompanyDao.getInstance().deleteCompany(compName);
-    		message = "Company successfully deleted";
+    		message = "Company " + compName + " successfully deleted";
     		resultSuccess = "true";
     		
     	}

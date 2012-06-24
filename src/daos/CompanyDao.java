@@ -175,10 +175,9 @@ public class CompanyDao {
 	public void deleteCompany(String name)
 	{	
 		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
-		
+		Company companyToDelete = getCompanyByName(name);
 		try {
 			session.beginTransaction();
-			Company companyToDelete = getCompanyByName(name);
 			session.update(companyToDelete.setActive(false));
 			session.getTransaction().commit();
 		}

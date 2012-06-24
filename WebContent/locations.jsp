@@ -62,7 +62,7 @@ if (!viewingUser.isAdmin())
 getServletContext().setAttribute("retUrl", request.getRequestURL().toString());
 %>
 <%= UiHelpers.GetHeader(SessionUtils.getUser(request)).toString()%>
-<%= UiHelpers.GetTabs(SessionUtils.getUser(request), ProjConst.TAB_COMPANIES).toString() %>
+<%= UiHelpers.GetTabs(SessionUtils.getUser(request), ProjConst.TAB_LOCATIONS).toString() %>
 
 <div id="content">
 	<div class="pageTitle">
