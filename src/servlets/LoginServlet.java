@@ -1,6 +1,10 @@
 package servlets;
 
 import java.io.IOException;
+import java.io.PrintWriter;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
@@ -13,14 +17,21 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.log4j.Logger;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
+import com.sun.corba.se.spi.activation.Repository;
+
 import utils.EmailUtils;
 import utils.MockCreation;
 import utils.ProjConst;
+import utils.UniqueUuid;
 import model.Conference;
+import model.Location;
 import model.User;
 import model.UserRole;
 import daos.ConferenceDao;
 import daos.ConferencesUsersDao;
+import daos.LocationDao;
 import daos.UserDao;
 
 
@@ -31,6 +42,7 @@ import daos.UserDao;
 public class LoginServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	static Logger logger = Logger.getLogger(LoginServlet.class);
+	private static final String RESET_PASSWORD = "resetPassword";
     /**
      * @see HttpServlet#HttpServlet()
      */
@@ -39,7 +51,7 @@ public class LoginServlet extends HttpServlet {
         // TODO Auto-generated constructor stub
     }
     
-    protected void processLoginRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    protected void processLoginRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {  	
     	try 
 		{
     		
@@ -96,9 +108,9 @@ public class LoginServlet extends HttpServlet {
 				response.sendRedirect(ProjConst.LOGIN_PAGE + "?messageNotificationType=error&messageNotification=Wrong user name or password");
 			}
 		}
-		catch (Throwable theException)
+		catch (Exception ex)
 		{ 
-			System.out.println(theException);	
+			logger.error("unexpected error while login operation", ex);
 		}
     }
     
@@ -114,6 +126,55 @@ public class LoginServlet extends HttpServlet {
 			System.out.println(theException);	
 		}
     }
+    
+    private void resetPassword(HttpServletRequest request, HttpServletResponse response) throws IOException
+    {
+    	String userName = request.getParameter("userName");
+    	
+    	User user = UserDao.getInstance().getUserByUserName(userName);
+    	    	
+    	JsonObject jsonObject = new JsonObject();
+    	
+    	String resultSuccess;
+    	String message;
+    	if (user != null)
+    	{
+	    	try 
+	    	{
+	    		UserDao.getInstance().resetForgottenPassword(user);
+	    		message = "Email with new password sent";
+	    		resultSuccess = "true";
+	    		
+	    	}
+	    	catch (Exception e)
+	    	{
+	    		message = e.getMessage();
+	    		resultSuccess = "false";
+	    	}
+    	}
+    	else
+    	{
+    		message = "Can't remember your user name? Your conference manager can help!";
+    		resultSuccess = "false";
+    	}
+    	
+        response.setContentType("application/json;charset=UTF-8");
+        PrintWriter out = response.getWriter();
+        try {
+            Gson gson = new Gson();
+           	String json;
+
+       		jsonObject.addProperty("resultSuccess", resultSuccess);
+       		jsonObject.addProperty("message", message);
+       		json = gson.toJson(jsonObject);
+           	
+           	out.write(json);
+            out.flush();
+        }
+         finally {
+            out.close();
+        }
+    }
 
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
@@ -126,6 +187,8 @@ public class LoginServlet extends HttpServlet {
 			processLoginRequest(request, response);
 		}else if(action.equals("logout")){
 			processLogoutRequest(request, response);
+		}else if(action.equals(RESET_PASSWORD)){
+			resetPassword(request, response);
 		}else{
 			logger.error("Unknown doHet request");
 		}

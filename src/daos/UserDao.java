@@ -2,12 +2,19 @@ package daos;
 
 import java.security.NoSuchAlgorithmException;
 import java.sql.SQLException;
+import java.text.SimpleDateFormat;
 import java.util.List;
+
+import org.apache.log4j.Logger;
 import org.hibernate.Session;
 
 import system.exceptions.ItemCanNotBeDeleted;
 import system.exceptions.ItemNotFoundException;
+import utils.EmailContent;
+import utils.EmailTemplate;
+import utils.EmailUtils;
 import utils.OwaspAuthentication;
+import utils.UniqueUuid;
 import db.HibernateUtil;
 import model.CompanyType;
 import model.User;
@@ -19,7 +26,8 @@ import model.User;
 public class UserDao {
 
 	private static UserDao instance = null;
-
+	static Logger logger = Logger.getLogger(UserDao.class);
+	
 	private UserDao() {
 	}
 
@@ -262,11 +270,40 @@ public class UserDao {
 	 * case we do not provide an error alert for security reasons.
 	 * 
 	 * @param emailAddr
+	 * @throws Exception 
 	 */
-	public void resetForgottenPassword(String emailAddr) {
-			//TODO
+	public void resetForgottenPassword(User user) throws Exception {
+		String newPassword = UniqueUuid.GenarateUniqueId().substring(0, 6);
+		changePassword(user, newPassword);
+		
+		sendResetForgottenPasswordEmail(user, newPassword);
 	}
 
+	/**
+	 * This function sends an email with a new password if the email address
+	 * exist in the DB
+	 * 
+	 * @param emailAddr
+	 * @throws Exception 
+	 */
+	private void sendResetForgottenPasswordEmail(User user, String newPassword) throws Exception {
+		EmailTemplate email = new EmailTemplate(EmailContent.ForgotPasswordEmail.from, EmailContent.ForgotPasswordEmail.subject, EmailContent.ForgotPasswordEmail.body);
+		email.setSubject(email.getSubject());
+		email.setBody(String.format(email.getBody(), 
+				user.getName(), 
+				newPassword));
+		
+		try
+		{
+			EmailUtils.sendEmail(email, user.getEmail(), true);
+		}
+		catch (Exception e) {
+			logger.error(e.getMessage(), e);
+			throw new Exception("Failed to send email, please try later");
+		}
+	}
+	
+	
 	/**
 	 * Changed a password of a logged in user
 	 * 
@@ -275,9 +312,8 @@ public class UserDao {
 	 */
 	public void changePassword(User user, String newPassword) {
 				
-		user.changePassword(newPassword); //TODO - hash password
+		user.changePassword(newPassword);
 		updateUser(user);
-		
 	}
 
 	/**
@@ -377,16 +413,6 @@ public class UserDao {
 		return result;	
 	}
 
-	/**
-	 * This function sends an email with a new password if the email address
-	 * exist in the DB
-	 * 
-	 * @param emailAddr
-	 */
-	private void sendResetForgottenPasswordEmail(String emailAddr) {
-		//TODO
-	}
-	
 	private boolean isDeleteAllowed(Long userId)
 	{
 		//TODO implement
