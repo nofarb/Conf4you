@@ -174,7 +174,7 @@ getServletContext().setAttribute("retUrl", request.getRequestURL().toString());
 			// Print each application in a single row
 			for (Conference conference : conferences )
 			{
-				SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy hh:mm");
+				SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy HH:mm");
 				String startDateFormatted = sdf.format(conference.getStartDate());
 				String endDateFormatted = sdf.format(conference.getEndDate());
 				String locationDetailsUrl = UiHelpers.GetLocationDetailsUrl(conference.getLocation().getName()); 

@@ -17,9 +17,14 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
+
 <meta http-equiv="Content-Type" content="text/html; charset=windows-1255">
 <title>Reports</title>
 <%= UiHelpers.GetAllJsAndCss().toString() %>
+<script type="text/javascript" src="js/jquery.jqplot.js"></script>
+<script type="text/javascript" src="js/jqplot.dateAxisRenderer.min.js"></script>
+<link type="text/css" href="css/jquery.jqplot.css" rel="stylesheet" />
+
 </head>
 
 <% User viewingUser = SessionUtils.getUser(request); %>
@@ -101,6 +106,60 @@ $(document).ready(function(){
 
 				$('#filter2').prop('checked',true);
 				$("#confSumFilter option[value="+confIdstr+"]").attr('selected', 'selected');
+				
+				//chart
+				$.ajax({
+			        url: "ReportsServlet",
+			        dataType: 'json',
+			        async: false,
+			        type: 'POST',
+			            data: {
+			            	"action": "getArrivedUserDate",
+			            	"confId": $("#confSumFilter").val()
+			            },
+			        success: function(data) {
+			            if (data != null){
+							if (data.resultSuccess == "true" && data.results != null && data.results != "")
+							{
+								try
+								{
+								
+									var arr = eval(data.results.toString());
+									
+								 	 $.jqplot('attendanceChart', [arr], {
+										    title:'Participant arrival data',
+										    axes:{
+										        xaxis:{
+										        	label: "Date",
+										        	tickOptions:{formatString:'%b %#d, %y'},
+										            renderer:$.jqplot.DateAxisRenderer
+										        },
+										        yaxis: {
+										            label: "Arrived",
+										            tickInterval: 1,
+										            min: 0
+										          }
+										    },
+										    
+										    series:[{lineWidth:4, markerOptions:{style:'square'}}]
+										  });
+									}
+							 	catch(e)
+								{
+								   alert('invalid json');
+								}
+							}
+							else
+							{
+								var message = "Failed to get conference chart data";
+								if (data.message != null)
+									message = data.message
+									
+								jError(message);
+							}
+			            }
+			        }
+			    });
 
 	<%
 			}else{ // filter 2
@@ -116,8 +175,10 @@ $(document).ready(function(){
 			}
 		}
 	%>
+	
+	  
+	  
 
-	 
 });
 
 </script>
@@ -179,7 +240,7 @@ $(document).ready(function(){
 									<td>
 										<input type="radio" id="filter2" name="reportsFilter" value="filter2"/> 
 									</td>
-									<td>
+									<td> Conference summary: 
 										<select id="confSumFilter">
 										<%
 											for(Conference conf : conferences){
@@ -270,15 +331,58 @@ $(document).ready(function(){
 					<%	} %>
 				</tbody>
 			</table>
-			
+						
+			<div id="controls">
+				<div id="perpage">
+					<select onchange="sorter.size(this.value)">
+						<option value="5">5</option>
+						<option value="10" selected="selected">10</option>
+						<option value="20">20</option>
+						<option value="50">50</option>
+						<option value="100">100</option>
+					</select> <span>Entries Per Page</span>
+				</div>
+				<div id="navigation">
+					<img src="css/tables/images/first.gif" width="16" height="16"
+						alt="First Page" onclick="sorter.move(-1,true)" /> <img
+						src="css/tables/images/previous.gif" width="16" height="16"
+						alt="First Page" onclick="sorter.move(-1)" /> <img
+						src="css/tables/images/next.gif" width="16" height="16"
+						alt="First Page" onclick="sorter.move(1)" /> <img
+						src="css/tables/images/last.gif" width="16" height="16"
+						alt="Last Page" onclick="sorter.move(1,true)" />
+				</div>
+				<div id="text">
+					Displaying Page <span id="currentpage"></span> of <span
+						id="pagelimit"></span>
+				</div>
+			</div>
+			<script type="text/javascript" src="js/tables/script.js"></script>
+			<script type="text/javascript">
+				var sorter = new TINY.table.sorter("sorter");
+				sorter.head = "head";
+				sorter.asc = "asc";
+				sorter.desc = "desc";
+				sorter.even = "evenrow";
+				sorter.odd = "oddrow";
+				sorter.evensel = "evenselected";
+				sorter.oddsel = "oddselected";
+				sorter.paginate = true;
+				sorter.currentid = "currentpage";
+				sorter.limitid = "pagelimit";
+				sorter.init("table1", 1);
+			</script>	
+	
 			<%
 				}else{ //filter 2
 					
 					%>
 					<div>
 					<div class="groupedList">
-					<table cellpadding="0" cellspacing="0" border="0" id="table1"
-						class="sortable">
+					<table cellpadding="0" cellspacing="0" border="0"
+						class="sortable"
+	                	id="AttendancePercentages" 
+						>
 						<thead>
 							<tr>
 								<th><h3>Date</h3></th>
@@ -326,6 +430,7 @@ $(document).ready(function(){
 					} %>
 						</tbody>
 					</table>
+					<div class="example-plot" id="attendanceChart" style="height: 250px; width: 700px; position: relative;"></div>
 				<% 	
 				} 
 				
@@ -334,51 +439,6 @@ $(document).ready(function(){
 				
 			}
 			%>
-	
-	
-	
-	
-	<div id="controls">
-		<div id="perpage">
-			<select onchange="sorter.size(this.value)">
-				<option value="5">5</option>
-				<option value="10" selected="selected">10</option>
-				<option value="20">20</option>
-				<option value="50">50</option>
-				<option value="100">100</option>
-			</select> <span>Entries Per Page</span>
-		</div>
-		<div id="navigation">
-			<img src="css/tables/images/first.gif" width="16" height="16"
-				alt="First Page" onclick="sorter.move(-1,true)" /> <img
-				src="css/tables/images/previous.gif" width="16" height="16"
-				alt="First Page" onclick="sorter.move(-1)" /> <img
-				src="css/tables/images/next.gif" width="16" height="16"
-				alt="First Page" onclick="sorter.move(1)" /> <img
-				src="css/tables/images/last.gif" width="16" height="16"
-				alt="Last Page" onclick="sorter.move(1,true)" />
-		</div>
-		<div id="text">
-			Displaying Page <span id="currentpage"></span> of <span
-				id="pagelimit"></span>
-		</div>
-	</div>
-	<script type="text/javascript" src="js/tables/script.js"></script>
-	<script type="text/javascript">
-		var sorter = new TINY.table.sorter("sorter");
-		sorter.head = "head";
-		sorter.asc = "asc";
-		sorter.desc = "desc";
-		sorter.even = "evenrow";
-		sorter.odd = "oddrow";
-		sorter.evensel = "evenselected";
-		sorter.oddsel = "oddselected";
-		sorter.paginate = true;
-		sorter.currentid = "currentpage";
-		sorter.limitid = "pagelimit";
-		sorter.init("table1", 1);
-	</script>	
-	
 			
 			</div>
 		</div>

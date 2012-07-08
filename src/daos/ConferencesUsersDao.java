@@ -389,7 +389,7 @@ public class ConferencesUsersDao {
 			
 			Date current = new Date();
 			
-			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd kk:mm:ss");
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 			String startDateFormatted = sdf.format(current);
 	
 			ConferenceFilters.ConferenceTimeFilter enumFilter = ConferenceFilters.ConferenceTimeFilter.valueOf(filter); 

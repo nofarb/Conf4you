@@ -44,6 +44,14 @@
     <servlet-name>LocationServlet</servlet-name>
     <url-pattern>/LocationServlet</url-pattern>
   </servlet-mapping>
+   <servlet>
+    <servlet-name>ReportsServlet</servlet-name>
+    <servlet-class>servlets.ReportsServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>ReportsServlet</servlet-name>
+    <url-pattern>/ReportsServlet</url-pattern>
+  </servlet-mapping>
   <servlet>
     <servlet-name>ReceptionServlet</servlet-name>
     <servlet-class>servlets.ReceptionServlet</servlet-class>

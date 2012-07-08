@@ -98,7 +98,7 @@ public class ConferenceServlet extends HttpServlet {
     	String desc = request.getParameter(ProjConst.CONF_DESC);
     	String location = request.getParameter(ProjConst.CONF_LOCATION);
     	
-	    DateFormat formatter = new SimpleDateFormat("MM/dd/yyyy hh:mm");
+	    DateFormat formatter = new SimpleDateFormat("MM/dd/yyyy HH:mm");
     			  
     	Date startDate = (Date)formatter.parse(request.getParameter(ProjConst.CONF_START_DATE));
     	Date endDate = (Date)formatter.parse(request.getParameter(ProjConst.CONF_END_DATE));
