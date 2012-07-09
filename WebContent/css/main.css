@@ -35,6 +35,10 @@
     font-style: bold;
 }
 
+#search {
+	width: 120px;
+}
+
 #invitationInfo li {
     list-style: none outside none;
 }

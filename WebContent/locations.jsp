@@ -36,6 +36,8 @@ $(document).ready(function()
 		}
 	}
 	
+	$('input#search').quicksearch('table#table1 tbody tr');
+	
 	$('#filterSelect').change(function ()
 	{
 		var selectedFilter = $("#filterSelect").val();
@@ -47,6 +49,26 @@ $(document).ready(function()
 	{
 		 $("#filterSelect option[value='" + selectedFilter + "']").attr('selected', 'selected');
 	}
+	
+	 $("#exportToExcel").downloadify({
+	 	    filename:  "LocationsTable.csv",
+				data: function(){
+					return $('#table1').table2CSV({delivery:'value'});
+				},
+	 	    onComplete: function(){ 
+	 	    	jSuccess('Locations table successfully exported'); 
+	 	    },
+	 	    onCancel:function(){ 
+	 	    	jNotify('Export to excel canceled'); 
+	 	    },
+	 	    transparent: false,
+	 	    swf: '/conf4u/resources/imgs/downloadify.swf',
+	 	    downloadImage: '/conf4u/resources/imgs/excel.gif',
+	 	    width: 100,
+	 	    height: 30,
+	 	    transparent: true,
+	 	    append: false
+ 	  });
 });
 </script>
 <body>
@@ -84,18 +106,13 @@ getServletContext().setAttribute("retUrl", request.getRequestURL().toString());
 			</a>
 		</div>
 		<%} %>
-		<!-- 
-		<div class="selectedFilter" style="display:none;"><%=request.getParameter("filter")%></div>
 		<span id="vn_mainbody_filter">
-			Show: 	
-			<select id="filterSelect">
-				<option value="LAST7DAYS">Last Week</option>
-				<option value="LAST30DAYS">Last Month</option>
-				<option value="LAST90DAYS">Last 3 Months</option>
-				<option value="ALL" selected="selected">Ever</option>
-			</select>
+			Search:
+   			<input type="text" id="search">
+   			<span id="exportToExcel" style="vertical-align:-10px;">
+				You must have Flash 10 installed to download this file.
+			</span>
 		</span>
-		 -->
 	</div>
 	
 	
@@ -111,24 +128,11 @@ getServletContext().setAttribute("retUrl", request.getRequestURL().toString());
 				<th><h3>Contact name</h3></th>
 				<th><h3>Phone 1</h3></th>
 				<th><h3>Phone 2</h3></th>
-				<th class="nosort"><h3>Details</h3></th>
+				<th class="nosort"></th>
 			</tr>
 		</thead>
 		<tbody>
-			<%/* 
-			String filter = request.getParameter("filter");
-			ConferencePreDefinedFilter filterEnum = ConferencePreDefinedFilter.ALL;
-			if (filter != null)
-			{
-				try
-				{
-					filterEnum = ConferenceFilters.ConferencePreDefinedFilter.valueOf(filter);
-				}
-				catch (Exception e)
-				{
-					//PASS
-				}
-			}*/
+			<%
 			
 			List <Location> locations = LocationDao.getInstance().getLocations();
 		

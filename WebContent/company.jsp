@@ -47,6 +47,28 @@ $(document).ready(function(){
 	 {
 		 $("#filterSelect option[value='" + selectedFilter + "']").attr('selected', 'selected');
 	 }
+	 
+	 $('input#search').quicksearch('table#table1 tbody tr');
+	 
+	 $("#exportToExcel").downloadify({
+	 	    filename:  "CompanyTable.csv",
+				data: function(){
+					return $('#table1').table2CSV({delivery:'value'});
+				},
+	 	    onComplete: function(){ 
+	 	    	jSuccess('Company table successfully exported'); 
+	 	    },
+	 	    onCancel:function(){ 
+	 	    	jNotify('Export to excel canceled'); 
+	 	    },
+	 	    transparent: false,
+	 	    swf: '/conf4u/resources/imgs/downloadify.swf',
+	 	    downloadImage: '/conf4u/resources/imgs/excel.gif',
+	 	    width: 100,
+	 	    height: 30,
+	 	    transparent: true,
+	 	    append: false
+	 	  });
 });
 </script>
 <body>
@@ -85,20 +107,19 @@ getServletContext().setAttribute("retUrl", request.getRequestURL().toString());
 		
 		<div class="selectedFilter" style="display:none;"><%=request.getParameter("filter")%></div>
 		<span id="vn_mainbody_filter">
+			Search:
+   			<input type="text" id="search">
 			Show Type: 	
 			<select id="filterSelect">
 			<%
-				//List<Location> locations = LocationDao.getInstance().getLocations();
-								
-				//for (Location location : locations) {
 				for (CompanyType companyType : CompanyType.values()) {%>
 					<option value="<%=companyType.toString()%>"><%=companyType.toString()%></option>
 				<%} %>
-				<!-- <option value="LAST7DAYS">Last Week</option> -->
-				<!-- <option value="LAST30DAYS">Last Month</option> -->
-				<!-- <option value="LAST90DAYS">Last 3 Months</option> -->
 				<option value="ALL" selected="selected">All Types</option>
 			</select>
+			<span id="exportToExcel" style="vertical-align:-10px;">
+				You must have Flash 10 installed to download this file.
+			</span>
 		</span>
 	</div>
 	
@@ -111,7 +132,7 @@ getServletContext().setAttribute("retUrl", request.getRequestURL().toString());
 			<tr>
 				<th><h3>Name</h3></th>
 				<th><h3>Type</h3></th>
-				<th class="nosort"><h3>Details</h3></th>
+				<th class="nosort"></th>
 			</tr>
 		</thead>
 		<tbody>
@@ -123,7 +144,6 @@ getServletContext().setAttribute("retUrl", request.getRequestURL().toString());
 			{
 				try
 				{
-					//filterEnum = ConferenceFilters.ConferencePreDefinedFilter.valueOf(filter);
 					CompanyType compType = CompanyType.valueOf(filter);
 					companyList =  CompanyDao.getInstance().getCompaniesOfType(compType);
 					
@@ -137,8 +157,6 @@ getServletContext().setAttribute("retUrl", request.getRequestURL().toString());
 			{
 				companyList = CompanyDao.getInstance().getAllCompanies();
 			}
-			//List <Conference> conferences = ConferenceDao.getInstance().getConferences(filterEnum);
-			
 		
 			// Print each application in a single row
 			for (Company company : companyList )
