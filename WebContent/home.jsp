@@ -2,7 +2,7 @@
 <%@page import="daos.*"%>
 <%@page import="model.*"%>
 <%@page import="model.ConferenceFilters.ConferencePreDefinedFilter"%>
-<%@page import="utils.*"%>
+<%@page import="helpers.*"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="ISO-8859-1"%>
 <%@ page import="java.util.List"%>
 <%@ page import="java.util.Date"%>

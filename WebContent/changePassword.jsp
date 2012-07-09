@@ -13,10 +13,10 @@
 <%@ page import="java.util.Date"%>
 <%@ page import="java.text.SimpleDateFormat"%>
 <%@ page import="model.User"%>
-<%@page import="utils.ProjConst"%>
+<%@page import="helpers.ProjConst"%>
 <%@page import="javax.servlet.jsp.PageContext"%>
 <%@page import="javax.servlet.jsp.JspContext"%>
-<%@page import="utils.*"%>
+<%@page import="helpers.*"%>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>

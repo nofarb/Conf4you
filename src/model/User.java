@@ -1,5 +1,7 @@
 package model;
 
+import helpers.OwaspAuthentication;
+
 import java.io.Serializable;
 import java.util.Date;
 import javax.persistence.CascadeType;
@@ -13,7 +15,6 @@ import javax.persistence.TemporalType;
 
 import org.hibernate.annotations.GenericGenerator;
 
-import utils.OwaspAuthentication;
 import model.Company;
 
 /**

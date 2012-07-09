@@ -1,7 +1,7 @@
 <%@page import="daos.ConferencesParticipantsDao"%>
 <%@ page language="java" contentType="text/html; charset=windows-1255"
 	pageEncoding="windows-1255"%>
-<%@page import="utils.*"%>
+<%@page import="helpers.*"%>
 <%@page import="model.*"%>
 <%@page import="java.util.LinkedList"%>
 <%@page import="java.util.Date"%>

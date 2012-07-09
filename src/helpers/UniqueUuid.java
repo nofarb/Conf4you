@@ -1,5 +1,5 @@
 
-package utils;
+package helpers;
 import java.util.UUID;
 
 public class UniqueUuid {

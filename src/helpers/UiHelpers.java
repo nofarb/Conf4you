@@ -1,4 +1,4 @@
-package utils;
+package helpers;
 
 import daos.ConferencesUsersDao;
 import model.User;

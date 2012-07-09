@@ -1,5 +1,7 @@
 package filters;
 
+import helpers.ProjConst;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.StringTokenizer;
@@ -15,7 +17,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import utils.ProjConst;
 
 /**
  * Servlet Filter implementation class SessionFilter

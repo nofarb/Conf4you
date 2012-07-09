@@ -1,5 +1,8 @@
 package servlets;
 
+import helpers.ProjConst;
+import helpers.TextPrinter;
+
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.text.ParseException;
@@ -15,8 +18,6 @@ import javax.servlet.http.HttpServletResponse;
 import model.Conference;
 import model.User;
 
-import utils.ProjConst;
-import utils.TextPrinter;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;

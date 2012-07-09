@@ -1,5 +1,7 @@
 package daos;
 
+import helpers.ConferenceUsersArivalHelper;
+
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
@@ -7,7 +9,6 @@ import org.apache.commons.lang3.time.DateUtils;
 import org.apache.log4j.Logger;
 import org.hibernate.Session;
 
-import utils.ConferenceUsersArivalHelper;
 
 import db.HibernateUtil;
 import model.Conference;

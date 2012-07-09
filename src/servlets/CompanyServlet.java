@@ -1,5 +1,7 @@
 package servlets;
 
+import helpers.ProjConst;
+
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.text.ParseException;
@@ -9,7 +11,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import model.Company;
 import model.CompanyType;
-import utils.ProjConst;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import daos.CompanyDao;

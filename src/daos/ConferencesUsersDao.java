@@ -1,5 +1,10 @@
 package daos;
 
+import helpers.EmailContent;
+import helpers.EmailTemplate;
+import helpers.EmailUtils;
+import helpers.UniqueUuid;
+
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.LinkedList;
@@ -12,10 +17,6 @@ import model.UserAttendanceStatus;
 import model.UserRole;
 import org.hibernate.Session;
 import org.apache.log4j.Logger;
-import utils.EmailContent;
-import utils.EmailTemplate;
-import utils.EmailUtils;
-import utils.UniqueUuid;
 import db.HibernateUtil;
 import org.apache.commons.lang3.time.DateUtils;
 

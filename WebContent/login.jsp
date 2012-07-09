@@ -1,4 +1,4 @@
-<%@page import="utils.*"%>
+<%@page import="helpers.*"%>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
@@ -83,7 +83,7 @@ getServletContext().setAttribute("retUrl", request.getRequestURL().toString());
 			</table>
 		</form>
 	</div>	
-	<a class="cantRememberPassword" style="padding-left: 35px;">Can't remember your password?</a>
+	<a class="cantRememberPassword" style="padding-left: 35px; cursor: pointer;">Can't remember your password?</a>
 		<div class="resetPasswordArea" style="display: none;">
 			<form id="resetPassword">
 				<table>
@@ -96,7 +96,7 @@ getServletContext().setAttribute("retUrl", request.getRequestURL().toString());
 					</tr>
 					<tr>
 					<td style="text-align:right; padding-right: 8px;">
-						<a class="cancelReset">Cancel</a>
+						<a class="cancelReset" style="cursor: pointer;">Cancel</a>
 					</td>
 					<td colspan="2">
 						<input id="emailSubmit" type="submit" value="Email new password" name="emailSubmit">

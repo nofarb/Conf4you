@@ -1,4 +1,4 @@
-package utils;
+package helpers;
 
 public final  class ProjConst {
 	

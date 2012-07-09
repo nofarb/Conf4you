@@ -1,5 +1,10 @@
 package servlets;
 
+import helpers.EmailUtils;
+import helpers.MockCreation;
+import helpers.ProjConst;
+import helpers.UniqueUuid;
+
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.text.DateFormat;
@@ -21,10 +26,6 @@ import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.sun.corba.se.spi.activation.Repository;
 
-import utils.EmailUtils;
-import utils.MockCreation;
-import utils.ProjConst;
-import utils.UniqueUuid;
 import model.Conference;
 import model.Location;
 import model.User;

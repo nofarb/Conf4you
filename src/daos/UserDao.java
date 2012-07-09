@@ -1,5 +1,11 @@
 package daos;
 
+import helpers.EmailContent;
+import helpers.EmailTemplate;
+import helpers.EmailUtils;
+import helpers.OwaspAuthentication;
+import helpers.UniqueUuid;
+
 import java.security.NoSuchAlgorithmException;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
@@ -10,11 +16,6 @@ import org.hibernate.Session;
 
 import system.exceptions.ItemCanNotBeDeleted;
 import system.exceptions.ItemNotFoundException;
-import utils.EmailContent;
-import utils.EmailTemplate;
-import utils.EmailUtils;
-import utils.OwaspAuthentication;
-import utils.UniqueUuid;
 import db.HibernateUtil;
 import model.CompanyType;
 import model.User;

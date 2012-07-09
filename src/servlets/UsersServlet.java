@@ -1,5 +1,7 @@
 package servlets;
 
+import helpers.ProjConst;
+
 import java.io.IOException;
 import java.io.PrintWriter;
 
@@ -9,7 +11,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import system.exceptions.ItemCanNotBeDeleted;
-import utils.ProjConst;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import model.Company;

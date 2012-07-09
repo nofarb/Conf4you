@@ -1,4 +1,4 @@
-package utils;
+package helpers;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.FontMetrics;
@@ -7,6 +7,8 @@ import java.awt.print.PageFormat;
 import java.awt.print.Printable;
 import java.awt.print.PrinterException;
 import java.awt.print.PrinterJob;
+
+import system.exceptions.PrintCancelledExcpetion;
 
 public class TextPrinter implements Printable {
    /**
@@ -102,8 +104,10 @@ public class TextPrinter implements Printable {
            if (job.printDialog()) {
                // we are going to print
            } else {
-        	   throw new Exception("print was canceled");
+        	   throw new PrintCancelledExcpetion("Printing job cancelled");
            }
+       } catch (PrintCancelledExcpetion pe) {
+    	   throw new Exception(pe.getMessage());
        } catch (Exception pe) {
            throw new Exception("Failed to print");
        }

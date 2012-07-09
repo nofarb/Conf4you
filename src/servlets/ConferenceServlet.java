@@ -1,5 +1,7 @@
 package servlets;
 
+import helpers.ProjConst;
+
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.text.DateFormat;
@@ -22,7 +24,6 @@ import model.User;
 import model.UserAttendanceStatus;
 import model.UserRole;
 
-import utils.ProjConst;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
