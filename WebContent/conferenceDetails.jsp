@@ -326,7 +326,7 @@ getServletContext().setAttribute("retUrl", request.getRequestURL().toString());
 		<div class="buttons">
 		<a id="deleteSelectedParticipants" type="button">
 		<img src="/conf4u/resources/imgs/vn_action_delete.png" alt="" style="margin-bottom: -2px;">
-		&nbsp; Delete selected
+		&nbsp; Remove selected
 		</a>
 		</div>
 	</div>
