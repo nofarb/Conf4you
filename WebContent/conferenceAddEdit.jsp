@@ -350,7 +350,8 @@ getServletContext().setAttribute("retUrl", request.getRequestURL().toString());
 				  endDate: {
 				  	required: true,
 				 	date: true,
-				 	endDateValidate:true
+				 	endDateValidate:true,
+				 	startDateGreaterThanNow:true
 				  },
 			  },
 			  messages: {
