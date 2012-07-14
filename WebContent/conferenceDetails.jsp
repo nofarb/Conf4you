@@ -413,7 +413,7 @@ $(document).ready(function(){
 				hide: "fade", 
 	            show: "fade",
 				buttons: {
-					"Delete selected users": function() {
+					"Remove selected users": function() {
 							$.ajax({
 						        url: "ConferenceServlet",
 						        dataType: 'json',
@@ -457,7 +457,7 @@ $(document).ready(function(){
 				hide: "fade", 
 	            show: "fade",
 				buttons: {
-					"Delete": function() {
+					"Remove": function() {
 						$.ajax({
 					        url: "ConferenceServlet",
 					        dataType: 'json',
