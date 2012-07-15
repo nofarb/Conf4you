@@ -248,10 +248,7 @@ $(document).ready(function(){
 							<tr class="gridRow">
 
 								<td><%=user.getPasportID()%></td>
-								<td><span id="userId" class="<%=user.getUserId()%>"><a
-										class="vn_boldtext"
-										href="userDetails.jsp?userId=<%=user.getUserId()%>"> <%=user.getName()%>
-									</a></span></td>
+								<td><%=user.getName()%></td>
 								<td><%=user.getCompany().getName()%></td>
 								<td width="10%"><%=user.getCompany().getCompanyType().toString()%></td>
 								<td><%=user.getPhone1()%></td>
