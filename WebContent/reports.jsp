@@ -23,6 +23,7 @@
 <%= UiHelpers.GetAllJsAndCss().toString() %>
 <script type="text/javascript" src="js/jquery.jqplot.js"></script>
 <script type="text/javascript" src="js/jqplot.dateAxisRenderer.min.js"></script>
+<script type="text/javascript" src="js/jqplot.pointLabels.min.js"></script>
 <link type="text/css" href="css/jquery.jqplot.css" rel="stylesheet" />
 
 </head>
@@ -128,6 +129,11 @@ $(document).ready(function(){
 									
 								 	 $.jqplot('attendanceChart', [arr], {
 										    title:'Participant arrival data',
+										    seriesDefaults: {
+										        showMarker:false,
+										        pointLabels: {
+										          show: true
+										        }},
 										    axes:{
 										        xaxis:{
 										        	label: "Date",
