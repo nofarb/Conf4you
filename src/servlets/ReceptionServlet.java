@@ -6,6 +6,7 @@ import helpers.TextPrinter;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
@@ -14,6 +15,8 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import org.apache.commons.lang3.time.DateUtils;
 
 import model.Conference;
 import model.User;
@@ -226,9 +229,13 @@ public class ReceptionServlet extends HttpServlet {
     	
     	try 
     	{
-    		//String[] header = new String[] { "Conference: " + conference.getName() };
-    		String[] header = new String[] { conference.getName() };
-    		String[] stringToPrint = new String[] { "Date: " + new Date() +  "\n\tName: " + user.getName() + "\n\tCompany: " + user.getCompany().getName()};
+    		String[] header = new String[] { "       " + conference.getName()};
+    		String[] stringToPrint = new String[3];
+    		Date today = new Date();
+    		SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
+    		stringToPrint[0] =  "Date: " + sdf.format(today);
+    		stringToPrint[1] =  "My Name: " + user.getName();
+    		stringToPrint[2] =  "My Company: " + user.getCompany().getName();
     		
     		TextPrinter tp = new TextPrinter();
     		tp.doPrint(header, stringToPrint, true);
