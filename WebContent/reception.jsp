@@ -248,7 +248,7 @@ $(document).ready(function(){
 							<tr class="gridRow">
 
 								<td><%=user.getPasportID()%></td>
-								<td><%=user.getName()%></td>
+								<td><span id="userId" class="<%=user.getUserId()%>"><%=user.getName()%></span></td>
 								<td><%=user.getCompany().getName()%></td>
 								<td width="10%"><%=user.getCompany().getCompanyType().toString()%></td>
 								<td><%=user.getPhone1()%></td>
