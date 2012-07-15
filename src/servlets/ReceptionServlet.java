@@ -229,7 +229,7 @@ public class ReceptionServlet extends HttpServlet {
     	
     	try 
     	{
-    		String[] header = new String[] { "       " + conference.getName()};
+    		String[] header = new String[] { "         " + conference.getName()};
     		String[] stringToPrint = new String[3];
     		Date today = new Date();
     		SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
