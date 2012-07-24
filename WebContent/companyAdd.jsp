@@ -279,7 +279,7 @@ $(document).ready(function(){
 		<td class="inputcell">
 			<div class="buttons">
 				<button id="createButton" type="submit">
-				<img class="img_png" width="16" height="16" alt="" src="/conf4u/resources/imgs/table_save.png">
+				<img class="img_png" width="16" height="16" alt="" src="/conf4u/resources/imgs/save.png">
 				Create
 				</button>
 				<a id="cancelButton" href="#" onClick="window.location.reload( true )">

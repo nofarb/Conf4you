@@ -112,34 +112,34 @@ User user = UserDao.getInstance().getUserById(id);
 	<div class="vn_detailsgeneraltitle">Actions </div>
 	<div class="vn_actionlistdiv yui-reset yui-base">
 		<div class="vn_actionlistcolumn">
-			<div class="vn_actionbuttondiv">
+			<div class="actionButton">
 				<div class="title">
 				<a title="Edit Conference" href="userAddEdit.jsp?action=edit&userId=<%=user.getUserId()%>">
-					<img src="/conf4u/resources/imgs/vn_action_edit.png" alt=""> 
+					<img src="/conf4u/resources/imgs/edit.png" alt=""> 
 					Edit
 				</a>
 				</div>
 			</div>
-			<div class="vn_actionbuttondiv">
+			<div class="actionButton">
 				<div class="title">
 				<a title="Change Password" href="changePassword.jsp?userId=<%=user.getUserId()%>">
-					<img src="/conf4u/resources/imgs/icon_encrypted.png" alt=""> 
+					<img src="/conf4u/resources/imgs/change_pass.png" alt=""> 
 					Change Password
 				</a>
 				
 				</div>
 			</div>
-			<div class="vn_actionbuttondiv">
+			<div class="actionButton">
 				<div class="title">
-				<a class="deleteUser" title="Delete User">
-					<img src="/conf4u/resources/imgs/vn_action_delete.png" alt=""> 
+				<a class="deleteUser" title="Delete User" style="cursor:pointer;">
+					<img src="/conf4u/resources/imgs/delete.png" alt=""> 
 					Delete
 				</a>
 				</div>
 			</div>
 			<%  
 			if (confUsers !=null && confUsers.size() != 0) { %>
-			<div class="vn_actionbuttondiv">
+			<div class="actionButton">
 				<div class="title">
 				<a title="Remove from conference" href="removeFromConference.jsp?userId=<%=userId%>">
 					<img src="/conf4u/resources/imgs/user_delete.png" alt=""> 

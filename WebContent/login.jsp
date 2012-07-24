@@ -6,6 +6,7 @@
 <%= UiHelpers.GetAllJsAndCss().toString() %>
 <title>Conf4U</title>
 <link type="text/css" href="css/login.css" rel="stylesheet" />
+<link href="css/login-box.css" rel="stylesheet" type="text/css" />
 <style type="text/css">
 div.message {
 	background: transparent url(/conf4u/resources/imgs/msg_arrow.gif)
@@ -39,75 +40,33 @@ getServletContext().setAttribute("retUrl", request.getRequestURL().toString());
 		<span class="sendingResetPasswordEmail" style="display: none; padding-left: 100px;">
 			<img src="/conf4u/resources/imgs/loadinfo.gif" /> Sending reset password email...
 		</span>
-		<div class="breadcrumbs"></div>
-		<h4> Access to conference management.</h4>
-		<div class="column_2wide">
-		<div class="loginform" style="margin-bottom: 5px;">
-		<div class="loginform_title">Login:</div>
-		<form name="loginform" method="post" action="LoginServlet?action=login" accept-charset="utf-8" >
-			<table cellspacing="0" cellpadding="6" style="border-collapse:collapse;">
-				<tbody>
-					<tr>
-						<td>
-							<table cellpadding="0">
-							<tbody>
-							<tr>
-								<td align="right">
-								<label class="caption" for="un">User Name:</label>
-								</td>
-								<td>
-								<input id="un" class="required" type="text" name="un">
-								</td>
-							</tr>
-							<tr>
-								<td align="right">
-								<label class="caption" for="pw">Password:</label>
-								</td>
-								<td>
-								<input id="pw" class="required" type="password" name="pw">
-								</td>
-							</tr>
-							<tr>
-								<td class="loginfailure" align="center" style="color:Red;" colspan="2"> </td>
-							</tr>
-							<tr>
-								<td align="left" colspan="2">
-								<input  class="submitbtn" type="submit" value="Login">
-								</td>
-							</tr>
-							</tbody>
-							</table>
-						</td>
-					</tr>
-				</tbody>
-			</table>
-		</form>
-	</div>	
-	<a class="cantRememberPassword" style="padding-left: 35px; cursor: pointer;">Can't remember your password?</a>
+		<div class="fakeBoarder"></div>
+		<div id="login-box">
+		<H2>Login</H2>
+		Access to conference management.
+		<br />
+		<br />
+		<div class="newLoginform" style="margin-bottom: 5px;">
+			<form name="loginform" method="post" action="LoginServlet?action=login" accept-charset="utf-8" >
+			<div id="login-box-name" style="margin-top:20px;">User Name:</div><div id="login-box-field" style="margin-top:20px;"><input name="un" id="un" class="form-login" title="Username" value="" size="30" maxlength="2048" /></div>
+			<div id="login-box-name">Password:</div><div id="login-box-field"><input name="pw" id="pw" type="password" class="form-login" title="Password" value="" size="30" maxlength="2048" /></div>
+			<br />
+			<br />
+			<input class="submitbtn" type="submit" value="Login">
+			</form>
+			<br />
+			<span class="login-box-options"><a style="cursor: pointer;" class="cantRememberPassword">Forgot password?</a></span>
+		</div>
 		<div class="resetPasswordArea" style="display: none;">
 			<form id="resetPassword">
-				<table>
-					<tbody>
-					<tr>
-					<td style="height: 41px"> Enter your user name: </td>
-					<td class="inputcell" style="height: 41px">
-						<input id="userName" type="text" name="userName">
-					</td>
-					</tr>
-					<tr>
-					<td style="text-align:right; padding-right: 8px;">
-						<a class="cancelReset" style="cursor: pointer;">Cancel</a>
-					</td>
-					<td colspan="2">
-						<input id="emailSubmit" type="submit" value="Email new password" name="emailSubmit">
-					</td>
-					</tr>
-					</tbody>
-				</table>
+				<div id="login-box-name" style="margin-top:20px;">User name:</div><div id="login-box-field" style="margin-top:20px;"><input id="userName" class="form-login" type="text" name="userName" /></div>
+					<a class="cancelReset" style="cursor: pointer; margin-left: 92px; color: #666666;">Cancel</a>
+					<input style="margin-left: 10px;" class="submitbtn" id="emailSubmit" type="submit" value="Email new password" name="emailSubmit">
 			</form>
 		</div>
-	</div>
-	</div>
+		</div>
+		</div>
+		
 	<div style="clear:both;"></div>
 	</div>
 	<div class="main_text_footerimg"></div>
@@ -145,14 +104,14 @@ $(document).ready(function(){
 		if($(this).is(":visible"))
 		{
 			$(this).hide();
-			$(".loginform").slideUp();
+			$(".newLoginform").slideUp();
 			$(".resetPasswordArea").fadeIn();
 		}
 	});
 	
 	$(".cancelReset").click(function () {
 		$(".resetPasswordArea").slideUp("slow");
-		$(".loginform").slideDown("slow");
+		$(".newLoginform").slideDown("slow");
 		$(".cantRememberPassword").show();
 	});
 	

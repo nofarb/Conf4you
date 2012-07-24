@@ -100,7 +100,7 @@ getServletContext().setAttribute("retUrl", request.getRequestURL().toString());
 		<div class="buttons">
 			<a id="createNewCompany" href="companyAddEdit.jsp?action=add">
 			<span></span>
-			<img src="/conf4u/resources/imgs/vn_action_add.png">
+			<img src="/conf4u/resources/imgs/add.png">
 			Add Company
 			</a>
 		</div>
@@ -166,7 +166,7 @@ getServletContext().setAttribute("retUrl", request.getRequestURL().toString());
 				<td><%=company.getName()%></td>
 				<td><%=company.getCompanyType()%></td>
 				<td><a class="vn_boldtext" href="companyDetails.jsp?companyName=<%=company.getName()%>">
-				<img src="/conf4u/resources/imgs/vn_world.png" alt="">
+				<img src="/conf4u/resources/imgs/details.png" alt="">
 				Details
 				</a>
 				</td>

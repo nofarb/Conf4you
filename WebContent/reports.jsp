@@ -263,7 +263,7 @@ $(document).ready(function(){
 						<td>
 							<div class="buttons">
 								<a id="apply"> 
-									<img src="/conf4u/resources/imgs/yes_green.png"> Apply
+									<img src="/conf4u/resources/imgs/apply.png"> Apply
 								</a>
 							</div>
 						</td>
@@ -332,7 +332,7 @@ $(document).ready(function(){
 						<td><a style="color: blue;" href="mailto:<%=user.getEmail()%>"><%=user.getEmail()%></a></td>
 						<td><%=user.getCompany().getName()%></td>
 						<td><%=newsDate%></td>
-						<td><a class="vn_boldtext"href="userDetails.jsp?userId=<%=user.getUserId()%>"> <img src="/conf4u/resources/imgs/vn_world.png" alt=""> Details </a> </td>
+						<td><a class="vn_boldtext"href="userDetails.jsp?userId=<%=user.getUserId()%>"> <img src="/conf4u/resources/imgs/details.png" alt=""> Details </a> </td>
 					</tr>
 					<%	} %>
 				</tbody>
@@ -428,7 +428,7 @@ $(document).ready(function(){
 								<td><%=dateToPresent%></td>
 								<td><%=invited%></td>
 								<td><%=approved%></td>
-								<td><a class="vn_boldtext"href="arrivedUsers.jsp?date=<%=dateToPresent%>&confId=<%=conf.getConferenceId()%>"> <img src="/conf4u/resources/imgs/vn_world.png" alt=""> <%=arrived%> </a> </td>
+								<td><a class="vn_boldtext"href="arrivedUsers.jsp?date=<%=dateToPresent%>&confId=<%=conf.getConferenceId()%>"> <img src="/conf4u/resources/imgs/details.png" alt=""> <%=arrived%> </a> </td>
 							</tr>
 						 
 						<% 	

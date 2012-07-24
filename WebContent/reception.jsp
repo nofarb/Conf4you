@@ -122,7 +122,9 @@ $(document).ready(function(){
 	
 	$('input#search').quicksearch('table#table1 tbody tr');
 	
-	sorter.size(10);
+	 if ($(".evenrow")[0]){
+		 sorter.size(10);
+		}
 });
 </script>
 <body>
@@ -177,7 +179,7 @@ $(document).ready(function(){
 												<td>
 													<div class="buttons">
 														<a class="apply" href="javascript:;"> <img
-															src="/conf4u/resources/imgs/yes_green.png"> Apply
+															src="/conf4u/resources/imgs/apply.png"> Apply
 														</a>
 													</div>
 												</td>
@@ -257,17 +259,17 @@ $(document).ready(function(){
 									<%
 								if (cua.isArived())
 								{
-								%> <img src="/conf4u/resources/imgs/yes_green.png"> <%}
+								%> <img src="/conf4u/resources/imgs/apply.png"> <%}
 								else
 								{ %> <img src=/conf4u/resources/imgs/cancel.png> <%} %>
 								</td>
 								<td style="width: 150px;">
 									<% if (cua.isArived()) {
 									%> <a class="vn_boldtext removePartArival" href="javascript:;">
-										<img src="/conf4u/resources/imgs/vn_world.png"> Update
+										<img src="/conf4u/resources/imgs/details.png"> Update
 								</a> <% } else { %> <a class="vn_boldtext updateArival"
 									href="javascript:;"> <img
-										src=/conf4u/resources/imgs/vn_world.png> Update
+										src=/conf4u/resources/imgs/details.png> Update
 								</a> <% } %> <a href="javascript:;" class="vn_boldtext print"
 									style="padding-left: 5px;"> <img alt=""
 										src="/conf4u/resources/imgs/print.gif"> Print

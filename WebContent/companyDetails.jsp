@@ -49,18 +49,18 @@ getServletContext().setAttribute("retUrl", request.getRequestURL().toString());
 	<div class="vn_detailsgeneraltitle">Actions </div>
 	<div class="vn_actionlistdiv yui-reset yui-base">
 		<div class="vn_actionlistcolumn">
-			<div class="vn_actionbuttondiv">
+			<div class="actionButton">
 				<div class="title">
 				<a title="Edit Company" href="companyAddEdit.jsp?action=edit&compName=<%=compName%>">
-					<img src="/conf4u/resources/imgs/vn_action_edit.png" alt=""> 
+					<img src="/conf4u/resources/imgs/edit.png" alt=""> 
 					Edit
 				</a>
 				</div>
 			</div>
-				<div class="vn_actionbuttondiv">
+				<div class="actionButton">
 				<div class="title">
-				<a class="deleteComp" title="Delete Company">
-					<img src="/conf4u/resources/imgs/vn_action_delete.png" alt=""> 
+				<a class="deleteComp" title="Delete Company" style="cursor:pointer;">
+					<img src="/conf4u/resources/imgs/delete.png" alt=""> 
 					Delete
 				</a>
 				</div>

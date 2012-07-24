@@ -148,7 +148,7 @@ getServletContext().setAttribute("retUrl", request.getRequestURL().toString());
 								<div class="buttons">
 									<button id="createButton" type="submit">
 										<img class="img_png" width="16" height="16" alt=""
-											src="/conf4u/resources/imgs/table_save.png"> Save
+											src="/conf4u/resources/imgs/save.png"> Save
 									</button>
 									<a id="cancelButton" href="<%=retUrl + "?companyName=" + comp.getName()%>"> 
 									<img class="img_png" width="16" height="16" alt=""

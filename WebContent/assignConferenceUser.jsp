@@ -204,7 +204,7 @@ Conference conf = ConferenceDao.getInstance().getConferenceByName(request.getPar
 		<%} %>
 		</select>
 		<a id="createButton" class="assignUsers">
-			<img src="/conf4u/resources/imgs/assign.png" alt=""> Assign selected users
+			<img src="/conf4u/resources/imgs/assign_users.png" alt=""> Assign selected users
 		</a>
 		<a id="cancelButton" href="conferenceDetails.jsp?conferenceName=<%=conf.getName()%>">
 		 <img class="img_png" width="16" height="16" alt="" src="/conf4u/resources/imgs/arrow_rotate_clockwise.png"> Back

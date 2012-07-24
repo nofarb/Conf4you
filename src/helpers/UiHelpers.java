@@ -68,18 +68,14 @@ public class UiHelpers {
 		
 		//Tabs starts
 		//--------------------------------------------------------------------
-		sb.append("<div id=\"navHIDDENBYTAL\">");
-		sb.append("<div id=\"vn_header_tabs\">");
-		sb.append("<ul>");
+		sb.append("<ul id=\"tabnav\">");
 		
 		if (requstingUser.isAdmin() || ConferencesUsersDao.getInstance().getUserHighestRole(requstingUser).getValue() >= 4)
 		{
 			//Conferences tab
 			//--------------------------------------------------------------------
-			sb.append(String.format("<li%s>", ProjConst.TAB_HOME == chosenTab ? " class=\"focuslink\"" : ""));
-			sb.append("<a href=\"home.jsp\">");
-			sb.append("<span>Home</span>");
-			sb.append("</a>");
+			sb.append(String.format("<li%s>", ProjConst.TAB_HOME == chosenTab ? " class=\"focuslink tab1\"" : " class=\"tab1\""));
+			sb.append("<a href=\"home.jsp\">Home</a>");
 			sb.append("</li>");
 			//--------------------------------------------------------------------
 		}
@@ -88,10 +84,8 @@ public class UiHelpers {
 		{
 			//Users tab
 			//--------------------------------------------------------------------
-			sb.append(String.format("<li%s>", ProjConst.TAB_USERS == chosenTab ? " class=\"focuslink\"" : ""));
-			sb.append("<a href=\"users.jsp\">");
-			sb.append("<span>Users</span>");
-			sb.append("</a>");
+			sb.append(String.format("<li%s>", ProjConst.TAB_USERS == chosenTab ? " class=\"focuslink tab2\"" : " class=\"tab2\""));
+			sb.append("<a href=\"users.jsp\">Users</a>");
 			sb.append("</li>");
 			//--------------------------------------------------------------------
 		}
@@ -100,10 +94,8 @@ public class UiHelpers {
 		{
 			//Conferences tab
 			//--------------------------------------------------------------------
-			sb.append(String.format("<li%s>", ProjConst.TAB_CONFERENCES == chosenTab ? " class=\"focuslink\"" : ""));
-			sb.append("<a href=\"conference.jsp\">");
-			sb.append("<span>Conferences</span>");
-			sb.append("</a>");
+			sb.append(String.format("<li%s>", ProjConst.TAB_CONFERENCES == chosenTab ? " class=\"focuslink tab3\"" : " class=\"tab3\""));
+			sb.append("<a href=\"conference.jsp\">Conferences</a>");
 			sb.append("</li>");
 			//--------------------------------------------------------------------
 		}
@@ -112,10 +104,8 @@ public class UiHelpers {
 		{
 			//Companies tab
 			//--------------------------------------------------------------------
-			sb.append(String.format("<li%s>", ProjConst.TAB_COMPANIES == chosenTab ? " class=\"focuslink\"" : ""));
-			sb.append("<a href=\"company.jsp\">");
-			sb.append("<span>Companies</span>");
-			sb.append("</a>");
+			sb.append(String.format("<li%s>", ProjConst.TAB_COMPANIES == chosenTab ? " class=\"focuslink tab4\"" : " class=\"tab4\""));
+			sb.append("<a href=\"company.jsp\">Companies</a>");
 			sb.append("</li>");
 			//--------------------------------------------------------------------
 		}
@@ -124,10 +114,8 @@ public class UiHelpers {
 		{
 			//Locations tab
 			//--------------------------------------------------------------------
-			sb.append(String.format("<li%s>", ProjConst.TAB_LOCATIONS == chosenTab ? " class=\"focuslink\"" : ""));
-			sb.append("<a href=\"locations.jsp\">");
-			sb.append("<span>Locations</span>");
-			sb.append("</a>");
+			sb.append(String.format("<li%s>", ProjConst.TAB_LOCATIONS == chosenTab ? " class=\"focuslink tab5\"" : " class=\"tab5\""));
+			sb.append("<a href=\"locations.jsp\">Locations</a>");
 			sb.append("</li>");
 			//--------------------------------------------------------------------
 		}
@@ -136,10 +124,8 @@ public class UiHelpers {
 		{
 			//Reception tab
 			//--------------------------------------------------------------------
-			sb.append(String.format("<li%s>", ProjConst.TAB_RECEPTION == chosenTab ? " class=\"focuslink\"" : ""));
-			sb.append("<a href=\"reception.jsp\">");
-			sb.append("<span>Reception</span>");
-			sb.append("</a>");
+			sb.append(String.format("<li%s>", ProjConst.TAB_RECEPTION == chosenTab ? " class=\"focuslink tab6\"" : " class=\"tab6\""));
+			sb.append("<a href=\"reception.jsp\">Reception</a>");
 			sb.append("</li>");
 			//--------------------------------------------------------------------
 		}
@@ -147,17 +133,12 @@ public class UiHelpers {
 		{
 			//reports tab
 			//--------------------------------------------------------------------
-			sb.append(String.format("<li%s>", ProjConst.TAB_REPORTS == chosenTab ? " class=\"focuslink\"" : ""));
-			sb.append("<a href=\"reports.jsp\">");
-			sb.append("<span>Reports</span>");
-			sb.append("</a>");
+			sb.append(String.format("<li%s>", ProjConst.TAB_REPORTS == chosenTab ? " class=\"focuslink tab7\"" : " class=\"tab7\""));
+			sb.append("<a href=\"reports.jsp\">Reports</a>");
 			sb.append("</li>");
 			//--------------------------------------------------------------------
 		}
 		sb.append("</ul>");
-		sb.append("</div>");
-		sb.append("</div>");
-		sb.append("<div id=\"bottomNav\"> </div>");
 		//--------------------------------------------------------------------
 		
 		

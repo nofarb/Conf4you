@@ -148,7 +148,7 @@ getServletContext().setAttribute("retUrl", request.getRequestURL().toString());
 				<div class="buttons">
 					<a id="createNewUser" href="userAddEdit.jsp?action=add">
 					<span></span>
-					<img src="/conf4u/resources/imgs/vn_action_add.png">
+					<img src="/conf4u/resources/imgs/add.png">
 					Add User
 					</a>
 				</div>
@@ -204,7 +204,7 @@ getServletContext().setAttribute("retUrl", request.getRequestURL().toString());
 						<td>
 							<div class="buttons">
 								<a id="apply"> 
-									<img src="/conf4u/resources/imgs/yes_green.png"> Apply
+									<img src="/conf4u/resources/imgs/apply.png"> Apply
 								</a>
 							</div>
 						</td>
@@ -307,7 +307,7 @@ getServletContext().setAttribute("retUrl", request.getRequestURL().toString());
 				<td><%=user.getCompany().getName()%></td>
 				<td><%=newsDate%></td>
 				<td><a class="vn_boldtext" href="userDetails.jsp?userId=<%=user.getUserId()%>"> 
-				<img src="/conf4u/resources/imgs/vn_world.png" alt="">
+				<img src="/conf4u/resources/imgs/details.png" alt="">
 				Details
 				</a>
 				</td>

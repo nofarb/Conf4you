@@ -93,7 +93,7 @@ User user = UserDao.getInstance().getUserById(id);
 							<div class="buttons">
 								<button id="removeUser">
 									<img class="img_png" width="16" height="16" alt=""
-										src="/conf4u/resources/imgs/table_save.png"> Remove
+										src="/conf4u/resources/imgs/save.png"> Remove
 								</button>
 								<a id="cancelButton" href="userDetails.jsp?userId=<%=user.getUserId()%>">
 								 <img class="img_png" width="16" height="16" alt="" src="/conf4u/resources/imgs/cancel.png"> Cancel

@@ -73,18 +73,18 @@ getServletContext().setAttribute("retUrl", request.getRequestURL().toString());
 	<div class="vn_detailsgeneraltitle">Actions </div>
 	<div class="vn_actionlistdiv yui-reset yui-base">
 		<div class="vn_actionlistcolumn">
-			<div class="vn_actionbuttondiv">
+			<div class="actionButton">
 				<div class="title">
 				<a title="Edit Conference" href="conferenceAddEdit.jsp?action=edit&confName=<%=confName%>">
-					<img src="/conf4u/resources/imgs/vn_action_edit.png" alt=""> 
+					<img src="/conf4u/resources/imgs/edit.png" alt=""> 
 					Edit
 				</a>
 				</div>
 			</div>
-				<div class="vn_actionbuttondiv">
+				<div class="actionButton">
 				<div class="title">
-				<a class="deleteConf" title="Delete Conference">
-					<img src="/conf4u/resources/imgs/vn_action_delete.png" alt=""> 
+				<a class="deleteConf" title="Delete Conference" style="cursor:pointer;">
+					<img src="/conf4u/resources/imgs/delete.png" alt=""> 
 					Delete
 				</a>
 				</div>
@@ -241,7 +241,7 @@ getServletContext().setAttribute("retUrl", request.getRequestURL().toString());
 			 	</span>
 				
 				<span class="savePartStatus" title="Save participant status" style="cursor: pointer; display: none; float: right; margin-right: 5px;">
-					<img src="/conf4u/resources/imgs/save.ico" alt="">
+					<img src="/conf4u/resources/imgs/save.png" alt="">
 				</span>
 				<span class="cancelPartStatusSave" title="Cancel participant status edit" style="cursor: pointer; display: none; float: right; margin-right: 10px;">
 					<img src="/conf4u/resources/imgs/cancel.ico" alt="">
@@ -252,7 +252,7 @@ getServletContext().setAttribute("retUrl", request.getRequestURL().toString());
 			</td>
 			<td>
 			<a class="removePart" href="javascript:;">
-			<img src="/conf4u/resources/imgs/vn_action_delete.png" alt="">
+			<img src="/conf4u/resources/imgs/delete.png" alt="">
 			Remove
 			</a>
 			</td>
@@ -306,26 +306,26 @@ getServletContext().setAttribute("retUrl", request.getRequestURL().toString());
 	<% }%>
 	</div>
 	<div style="padding: 10px 0 30px;">
-		<div class="buttons">
+		<div class="buttons" style="display:inline-block; padding-right: 5px;">
 		<a class="addParticipant" type="button">
-		<img src="/conf4u/resources/imgs/vn_action_add.png" alt="" style="margin-bottom: -2px;">
+		<img src="/conf4u/resources/imgs/add.png" alt="" style="margin-bottom: -2px;">
 		Add participant
 		</a>
 		</div>
-		<div class="buttons">
+		<div class="buttons" style="display:inline-block; padding-right: 5px;">
 		<a class="assignUser" type="button">
-		<img src="/conf4u/resources/imgs/assign.png" alt="" style="margin-bottom: -2px;">
+		<img src="/conf4u/resources/imgs/assign_users.png" alt="" style="margin-bottom: -2px;">
 		Assign user</a>
 		</div>
-		<div class="buttons">
+		<div class="buttons" style="display:inline-block; padding-right: 5px;">
 		<a id="sendInvitationToSelected">
-		<img src="/conf4u/resources/imgs/vn_action_email.png" alt="" style="margin-bottom: -2px;">
+		<img src="/conf4u/resources/imgs/email.png" alt="" style="margin-bottom: -2px;">
 		&nbsp; Send invitation to selected
 		</a>
 		</div>
-		<div class="buttons">
+		<div class="buttons" style="display:inline-block;">
 		<a id="deleteSelectedParticipants" type="button">
-		<img src="/conf4u/resources/imgs/vn_action_delete.png" alt="" style="margin-bottom: -2px;">
+		<img src="/conf4u/resources/imgs/delete.png" alt="" style="margin-bottom: -2px;">
 		&nbsp; Remove selected
 		</a>
 		</div>

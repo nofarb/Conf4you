@@ -1,23 +1,49 @@
+
+.submitbtn {
+	-moz-box-shadow:inset 0px 1px 0px 0px #ffffff;
+	-webkit-box-shadow:inset 0px 1px 0px 0px #ffffff;
+	box-shadow:inset 0px 1px 0px 0px #ffffff;
+	background-color:#ededed;
+	-moz-border-radius:6px;
+	-webkit-border-radius:6px;
+	border-radius:6px;
+	border:1px solid #dcdcdc;
+	display:inline-block;
+	color:#777777;
+	font-family: "Lucida Grande", Tahoma, Arial, Verdana, sans-serif;
+	font-size: 100%;
+	font-weight:bold;
+	padding: 5px 10px 6px 7px;
+	text-decoration:none;
+	text-shadow:1px 1px 0px #ffffff;
+	cursor: pointer;
+	margin-left: 90px;
+	margin-top: 2px;
+}
+
+.submitbtn:hover {
+	background-color:#dfdfdf;
+}
+
+.submitbtn:active {
+	position:relative;
+	top:1px;
+}
+
+
 html {
     overflow: scroll;
 }
+
 body {
-    color: #3F3F3F;
-    font-family: Verdana;
-    font-size: 11px;
-    margin: 0;
-    padding: 0;
+	font-family: verdana;
+	font-size: 11px;
+	margin-left: auto;
+    margin-right: auto;
+    position: relative;
+    width: 80%;
 }
-a {
-    color: #00A0C6;
-    font-family: Verdana;
-    font-size: 11px;
-    text-decoration: none;
-}
-a:hover {
-    color: #047E8D;
-    text-decoration: underline;
-}
+
 #pagewrap {
     margin-left: auto;
     margin-right: auto;
@@ -250,19 +276,11 @@ a:hover {
     right: 14px;
     top: 11px;
 }
-.breadcrumbs {
+.fakeBoarder {
     color: #000000;
     font-size: 11px;
-    padding-bottom: 7px;
-    padding-top: 11px;
-}
-.breadcrumbs a {
-    color: #8B8B8B;
-    font-size: 11px;
-    text-decoration: none;
-}
-.breadcrumbs a:hover {
-    text-decoration: underline;
+    padding-bottom: 11px;
+    padding-top: 25px;
 }
 #pagecontent {
     clear: both;
@@ -507,7 +525,7 @@ a:hover {
     text-decoration: none;
 }
 #pagefooter {
-    border-top: 1px solid #D9D9D9;
+    border-top: 1px solid #00A0C6;
     clear: both;
     color: #666666;
     font-size: 10px;
@@ -836,95 +854,6 @@ a:hover {
     margin-left: 10px;
     width: 345px;
 }
-.tryform {
-    background-color: #858585;
-    color: #FFFFFF;
-    left: 35px;
-    padding: 10px;
-    position: relative;
-}
-.tryform p {
-    color: #FFFFFF;
-}
-.tryform label {
-    color: #FFFFFF;
-    display: block;
-    float: left;
-    margin-right: 4px;
-    text-align: right;
-    width: 100px;
-}
-.tryform input {
-    font-family: verdana;
-    font-size: 11px;
-    width: 150px;
-}
-.tryform select {
-    font-family: verdana;
-    font-size: 11px;
-}
-.tryform .submitbtn {
-    font-family: verdana;
-    font-size: 11px;
-    margin-left: 104px;
-    padding: 2px;
-    position: relative;
-    width: auto;
-}
-.tryform .tryform_title {
-    border-bottom: 1px solid #FFFFFF;
-    font-size: 14px;
-    font-weight: bold;
-}
-.supportform {
-}
-.supportform p {
-}
-.supportform label {
-    color: #000000;
-    display: block;
-    float: left;
-    font-weight: bold;
-    margin-right: 12px;
-    text-align: right;
-    width: 120px;
-}
-.supportform input {
-    font-family: verdana;
-    font-size: 11px;
-    width: 170px;
-}
-.supportform select {
-    font-family: verdana;
-    font-size: 11px;
-}
-.supportform textarea {
-    font-family: verdana;
-    font-size: 11px;
-    height: 130px;
-    width: 310px;
-}
-.supportform .submitbtn {
-    font-family: verdana;
-    font-size: 11px;
-    margin-left: 130px;
-    padding: 2px;
-    width: auto;
-}
-.supportform #sla_div {
-    background-image: url("/images/support_info_icon.png");
-    background-repeat: no-repeat;
-    border: 0 solid #CCCCCC;
-    color: #333333;
-    font-size: 10px;
-    left: 236px;
-    line-height: 14px;
-    margin-bottom: -25px;
-    padding-left: 17px;
-    position: absolute;
-    top: 0;
-    width: 310px;
-}
 .loginform {
     background-color: #F3F3F3;
     left: 35px;
@@ -958,32 +887,7 @@ a:hover {
     margin-bottom: 10px;
     font-size: 14px;
 }
-#alreadyAUser {
-    font-size: 12px;
-    height: 14px;
-    padding-left: 2px;
-    padding-top: 13px;
-    position: relative;
-    width: 200px;
-}
-#alreadyAUser a {
-    background-image: url("/resources/imgs/corporate/login_link_bg.png");
-    background-repeat: no-repeat;
-    color: #FFFFFF;
-    display: block;
-    font-size: 12px;
-    font-weight: bold;
-    height: 23px;
-    left: 105px;
-    padding-left: 27px;
-    padding-top: 3px;
-    position: absolute;
-    top: 10px;
-    width: 47px;
-}
-#alreadyAUser a:hover {
-    text-decoration: none;
-}
+
 .signupform label.leftcol {
     color: #000000;
     display: block;
@@ -1050,33 +954,9 @@ a:hover {
 .signupform .caption {
     display: block;
 }
-#pagenavigation {
-    z-index: 3;
-}
-#homepagebanner {
-    z-index: 2;
-}
+
 #pagebanner {
     z-index: 2;
-}
-.validationStatus label.error {
-    color: #FF3F3F;
-    display: inline;
-    float: none;
-    font-size: 10px;
-    font-weight: bold;
-    margin-right: 0;
-    text-align: left;
-    width: auto;
-}
-.validationStatus {
-    font-size: xx-small;
-    white-space: nowrap;
-}
-.validationStatus label.error {
-    color: #FF3F3F;
-    display: block;
-    font-weight: bold;
 }
 .formtable .inputcell input.error, .signupform input.error {
     border-color: #FF7070;
@@ -1097,41 +977,6 @@ label .required_star {
     left: 103px;
     position: relative;
 }
-.push131 {
-    left: 131px;
-    position: relative;
-}
-.whitelabel label {
-    color: #FFFFFF;
-    font-weight: bold;
-}
-.quote_whitelabel {
-    background-image: url("/resources/imgs/corporate/images/quote_whitelabel_top.png");
-    background-position: left top;
-    background-repeat: no-repeat;
-    left: -12px;
-    position: relative;
-    top: 50px;
-    width: 186px;
-}
-.quote_whitelabel_text {
-    color: #666666;
-    font-size: 11px;
-    left: 23px;
-    line-height: 17px;
-    position: relative;
-    top: 22px;
-    width: 148px;
-}
-.quote_whitelabel_customer {
-    color: #3F3F3F;
-    font-size: 10px;
-    font-style: normal;
-    font-weight: bold;
-    line-height: 13px;
-    padding-bottom: 10px;
-    padding-top: 10px;
-}
 .main_text_landing {
     color: #FFFFFF;
     width: 650px;
@@ -1148,17 +993,4 @@ label .required_star {
     left: 15px;
     top: -15px;
     width: 733px;
-}
-.tryform_landing {
-    top: 4px;
-}
-.pagebanner_landing {
-}
-.column_1narrow_landing {
-    width: 300px;
-}
-.column_1narrow_landing ul {
-    list-style-position: outside;
-    margin-left: 20px;
-    margin-top: -3px;
 }

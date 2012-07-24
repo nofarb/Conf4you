@@ -105,7 +105,7 @@ getServletContext().setAttribute("retUrl", request.getRequestURL().toString());
 		<div class="buttons">
 			<a id="createNewConference" href="conferenceAddEdit.jsp?action=add">
 			<span></span>
-			<img src="/conf4u/resources/imgs/vn_action_add.png">
+			<img src="/conf4u/resources/imgs/add.png">
 			Add Conference
 			</a>
 		</div>
@@ -185,7 +185,7 @@ getServletContext().setAttribute("retUrl", request.getRequestURL().toString());
 				<td><%= startDateFormatted %></td>
 				<td><%= endDateFormatted %></td>
 				<td><a class="vn_boldtext" href="conferenceDetails.jsp?conferenceName=<%=conference.getName()%>">
-				<img src="/conf4u/resources/imgs/vn_world.png" alt="">
+				<img src="/conf4u/resources/imgs/details.png" alt="">
 				Details
 				</a>
 				</td>
