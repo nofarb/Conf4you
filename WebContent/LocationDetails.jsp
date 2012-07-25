@@ -45,7 +45,7 @@ getServletContext().setAttribute("retUrl", request.getRequestURL().toString());
 	<div class="vn_detailsgeneraltitle">Actions </div>
 	<div class="vn_actionlistdiv yui-reset yui-base">
 		<div class="vn_actionlistcolumn">
-			<div class="action">
+			<div class="actionButton">
 				<div class="title">
 				<a title="Edit Conference" href="locationAddEdit.jsp?action=edit&locName=<%=location.getName()%>">
 					<img src="/conf4u/resources/imgs/edit.png" alt=""> 
