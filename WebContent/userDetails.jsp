@@ -142,7 +142,7 @@ User user = UserDao.getInstance().getUserById(id);
 			<div class="actionButton">
 				<div class="title">
 				<a title="Remove from conference" href="removeFromConference.jsp?userId=<%=userId%>">
-					<img src="/conf4u/resources/imgs/user_delete.png" alt=""> 
+					<img src="/conf4u/resources/imgs/removeUser.png" alt=""> 
 					Remove from conference
 				</a>
 				</div>
