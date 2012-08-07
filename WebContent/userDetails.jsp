@@ -176,13 +176,22 @@ User user = UserDao.getInstance().getUserById(id);
 				<%
 				if(user.isActive()){
 
-				%>
-				<a class="deleteUser" title="Delete User" style="cursor:pointer;">
-					<img src="/conf4u/resources/imgs/delete.png" alt=""> 
-					Delete
-				</a>
+					if(ConferencesUsersDao.getInstance().isUserLinkedToConfrences(user)){
+						%>
+						<a class="deleteUser" style="cursor:pointer;" disabled="disabled" title="Remove this user from its confrences if you wish to delete it">
+							<img src="/conf4u/resources/imgs/delete.png" alt=""> 
+							Delete
+						</a>
+						<%
+					}else{
+						%>
+						<a class="deleteUser" title="Delete User" style="cursor:pointer;">
+							<img src="/conf4u/resources/imgs/delete.png" alt=""> 
+							Delete
+						</a>
+						<%
+					}
 				
-				<%
 				}else{
 				%>
 				<a class="activateUser" title="Activate User" style="cursor:pointer;">

@@ -14,6 +14,7 @@ import javax.persistence.TemporalType;
 /**
  * This class is an entity class that represents the connection between conferences and invitees participants in 
  * in the database (e.g. whether a user arrived to a conference).
+ * When a user arrives to a conference an entry should be made to the table this class is linked to in the DB
  * This class holds no logic, only getters, setter and constructors.
  * This class also contains instructions to hibernate that define how the entity should be saved to the database.
  */

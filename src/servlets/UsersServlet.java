@@ -312,10 +312,17 @@ public class UsersServlet extends HttpServlet {
     	String message;
     	try 
     	{
-    		UserDao.getInstance().deleteUser(userId);
-    		message = "User successfully deleted";
-    		resultSuccess = "true";
-    		success = true;
+    		User user = UserDao.getInstance().getUserById(userId);
+    		if(ConferencesUsersDao.getInstance().isUserLinkedToConfrences(user)){
+    			message = "User cannot be deleted because it's linked to a conference";
+	    		resultSuccess = "false";
+	    		success = false;
+    		}else{
+	    		UserDao.getInstance().deleteUser(userId);
+	    		message = "User successfully deleted";
+	    		resultSuccess = "true";
+	    		success = true;
+    		}
     		
     	}
     	catch (Exception e)

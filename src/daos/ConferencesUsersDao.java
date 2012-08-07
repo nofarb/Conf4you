@@ -115,6 +115,10 @@ public class ConferencesUsersDao {
 		return result;
 	}
 	
+	public boolean isUserLinkedToConfrences(User user){
+		return !getAllConferenceUsersByUser(user).isEmpty();
+	}
+	
 	public List<ConferencesUsers> getAllConferenceUsersByUser(User user){
 		return getAllConferenceUsersByUser(user, false);
 	}
