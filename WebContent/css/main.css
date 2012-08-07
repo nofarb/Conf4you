@@ -3313,3 +3313,10 @@ input.disabled {
 .searchLine{
 	float: right;
 }
+
+input[readonly]
+{
+    background-color: #F2F2F2 !important;
+    color: grey;
+    border-color: #ddd;
+}

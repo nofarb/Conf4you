@@ -141,7 +141,7 @@ getServletContext().setAttribute("retUrl", request.getRequestURL().toString());
 							</label></td>
 							<% if (isEdit) {%>
 								<td class="inputcell">
-									<input id="<%=ProjConst.USER_NAME%>" type="text" value="<%=user.getUserName()%>" name="<%=ProjConst.USER_NAME%>">
+									<input id="<%=ProjConst.USER_NAME%>" type="text" value="<%=user.getUserName()%>" name="<%=ProjConst.USER_NAME%>" readonly="readonly">
 								</td>
 							<% } else {%>
 								<td class="inputcell">
