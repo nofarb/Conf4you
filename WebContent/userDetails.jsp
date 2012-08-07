@@ -34,7 +34,11 @@ $(document).ready(function(){
 		}
 	}
 	
-	 $('.deleteUser').click(function () { 
+	 $('.deleteUser').click(function () {
+		 
+		 if ($('.deleteUser').disabled())
+			  return;
+			 
 		 $('#dialogConfirmDeleteUser').dialog({
 			resizable: false,
 			height: 150,
