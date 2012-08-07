@@ -36,6 +36,10 @@ import model.User;
        salt = user.getSalt();
        digest = user.getPassword();
        
+       if(!user.isActive()){
+    	   return false;
+       }
+       
        try
        {
            byte[] bDigest = base64ToByte(digest);
