@@ -395,6 +395,20 @@ $(document).ready(function(){
 	      return is_valid;
 	 }, "The user name already exists");
 	
+
+
+	 $.validator.addMethod("onlyChars", function(value, element) {
+		 
+
+		 var onlyLetters = /^[a-zA-Z]*$/.test(value);
+
+			if(onlyLetters == true )
+      	 	return true;
+     	 	else 
+     			return false;		 
+   }, "User name can include characters only");
+	 
+	
 	
 	 $.validator.addMethod("phone1Validator", function(value, element) {
 		 
@@ -441,6 +455,7 @@ $.validator.addMethod("phone2Validator", function(value, element) {
 			    required: true,
 			    minlength: 4,
 			    maxlength: 10,
+			    onlyChars:true,
 			    uniqueUserName: true
 			  },
 			  <%=ProjConst.NAME%>: {
@@ -479,6 +494,7 @@ $.validator.addMethod("phone2Validator", function(value, element) {
 					 minlength: "You need to use at least 4 characters for your user name.",
 					 maxlength: "You need to use at most 10 characters for your user name.",
 					 uniqueUserName : "This user name already exists",
+					 onlyChars: "User name can include characters only"
 				},
 				<%=ProjConst.NAME%>: {
 					 required: "Required",
