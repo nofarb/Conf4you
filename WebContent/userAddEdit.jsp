@@ -412,33 +412,35 @@ $(document).ready(function(){
 	
 	 $.validator.addMethod("phone1Validator", function(value, element) {
 		 
-		 var phoneNumber = value;
+		 /* allowing + in the beginning (optional) followed by 7-15 digits  */
 		 
-		 var isCellNum = /^05[2-9]-?[2-9]\d{6}$/.test(phoneNumber);
-		 var isHomeNum = /^0[23489]-?[2-9]\d{6}$/.test(phoneNumber);
+		 var validPhone = /^\+?\b[0-9]{7,15}\b$/.test(value);
 
-			if(isCellNum == true || isHomeNum == true)
-       	 	return true;
-      	 	else 
-      			return false;		 
-    }, "Phone number is invalid");
+		 if(validPhone == true)
+      	 	return true;
+   	 	 else 
+    		return false;
+		 
+    }, "Phone number can contain 7-15 digits and might statrt with +");
 	 
 $.validator.addMethod("phone2Validator", function(value, element) {
 		 
+	 /* allowing enpty string OR number in the format: + in the beginning (optional) followed by 7-15 digits  */
+
 		 var phoneNumber =  $.trim(value);
 		 
 		 if(phoneNumber == ""){
 			 return true;
 		 }
 		 
-		 var isCellNum = /^05[2-9]-?[2-9]\d{6}$/.test(phoneNumber);
-		 var isHomeNum = /^0[23489]-?[2-9]\d{6}$/.test(phoneNumber);
+		 var validPhone = /^\+?\b[0-9]{7,15}\b$/.test(value);
 
-			if(isCellNum == true || isHomeNum == true)
-       	 	return true;
-      	 	else 
-      			return false;		 
-    }, "Phone number is invalid");
+		 if(validPhone == true)
+      	 	return true;
+   	 	 else 
+    		return false;	
+		 
+    }, "Phone number can be empty, or contain 7-15 digits and might statrt with +");
 	
 	$("#userAddEditForm").validate({
 		  onkeyup: false,
