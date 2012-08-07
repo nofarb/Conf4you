@@ -74,6 +74,48 @@ $(document).ready(function(){
 			}
 			});
 		});
+	 
+	 
+	 $('.activateUser').click(function () { 
+		 $('#dialogConfirmActivateUser').dialog({
+			resizable: false,
+			height: 150,
+			width: 400,
+			modal: true,
+			hide: "fade", 
+            show: "fade",
+			buttons: {
+				"Activate": function() {
+					$.ajax({
+				        url: "UsersServlet",
+				        dataType: 'json',
+				        async: false,
+				        type: 'POST',
+				            data: {
+				            	"action": "activate",
+				            	"userId": $(".userId").text()
+				            },
+				        success: function(data) {
+				            if (data != null){
+								if (data.resultSuccess == "true")
+								{
+							 	   	window.location = "users.jsp?messageNotification=" + data.message + "&messageNotificationType=success";
+								}
+								else
+								{
+									$( this ).dialog( "close" );
+									jError(data.message);
+								}
+				            }
+				        }
+				    });
+				},
+				Cancel: function() {
+					$( this ).dialog( "close" );
+				}
+			}
+			});
+		});
 	
 });
 </script>
@@ -131,10 +173,26 @@ User user = UserDao.getInstance().getUserById(id);
 			</div>
 			<div class="actionButton">
 				<div class="title">
+				<%
+				if(user.isActive()){
+
+				%>
 				<a class="deleteUser" title="Delete User" style="cursor:pointer;">
 					<img src="/conf4u/resources/imgs/delete.png" alt=""> 
 					Delete
 				</a>
+				
+				<%
+				}else{
+				%>
+				<a class="activateUser" title="Activate User" style="cursor:pointer;">
+					<img src="/conf4u/resources/imgs/undo.png" alt=""> 
+					Activate
+				</a>
+				
+				<%
+				}
+				%>
 				</div>
 			</div>
 			<%  
@@ -156,6 +214,10 @@ User user = UserDao.getInstance().getUserById(id);
 	
 	<div id="dialogConfirmDeleteUser" title="Delete User?" style="display:none;">
 		<p><span class="ui-icon ui-icon-alert" style="float:left; margin:0 7px 20px 0;"></span>User will be deleted. Are you sure?</p>
+	</div>
+	
+		<div id="dialogConfirmActivateUser" title="Activate User?" style="display:none;">
+		<p><span class="ui-icon ui-icon-alert" style="float:left; margin:0 7px 20px 0;"></span>User will be activated. Are you sure?</p>
 	</div>
 	
 	<div class="<%=ProjConst.USER_ID%>" style="display:none;"><%=user.getUserId()%></div>

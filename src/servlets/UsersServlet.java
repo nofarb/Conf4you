@@ -31,6 +31,7 @@ public class UsersServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	
 	private static final String DELETE_USER = "delete";
+	private static final String ACTIVATE_USER = "activate";
 	private static final String EDIT_USER = "edit";
 	private static final String ADD_USER = "add";
 	private static final String ADD_PARTICIPANT = "addParticipant";
@@ -63,6 +64,9 @@ public class UsersServlet extends HttpServlet {
 			}
 			else if (action.equals(DELETE_USER)) {
 				deleteUser(request, response);
+			}
+			else if (action.equals(ACTIVATE_USER)) {
+				activateUser(request, response);
 			}
 			else if (action.equals(EDIT_USER)) {
 				editUser(request, response);
@@ -336,6 +340,64 @@ public class UsersServlet extends HttpServlet {
            	{
            		jsonObject.addProperty("resultSuccess", "false");
            		jsonObject.addProperty("message", "Failed to delete user");
+           		json = gson.toJson(jsonObject);
+           	}
+           	out.write(json);
+            out.flush();
+        }
+         finally {
+            out.close();
+        }
+	}
+	
+	private void activateUser(HttpServletRequest request,	HttpServletResponse response) throws Exception {
+
+    	JsonObject jsonObject = new JsonObject();
+
+		String userIdstr = request.getParameter(ProjConst.USER_ID);
+		Long userId;
+		boolean success;
+		
+		if ( userIdstr == null) {
+			throw new Exception("Failed to get user id");
+		}else{
+			userId = Long.valueOf(userIdstr.trim());
+		}
+		
+		String resultSuccess;
+    	String message;
+    	try 
+    	{
+    		User user = UserDao.getInstance().getUserById(userId);
+    		user.setActive(true);
+    		UserDao.getInstance().updateUser(user);
+    		message = "User successfully activated";
+    		resultSuccess = "true";
+    		success = true;
+    		
+    	}
+    	catch (Exception e)
+    	{
+    		message = "Found problem while activating user";
+    		resultSuccess = "false";
+    		success = false;
+    	}
+    	
+    	response.setContentType("application/json;charset=UTF-8");
+        PrintWriter out = response.getWriter();
+        try {
+            Gson gson = new Gson();
+           	String json;
+           	if (success)	
+           	{
+           		jsonObject.addProperty("resultSuccess", resultSuccess);
+           		jsonObject.addProperty("message", message);
+           		json = gson.toJson(jsonObject);
+           	}
+           	else
+           	{
+           		jsonObject.addProperty("resultSuccess", "false");
+           		jsonObject.addProperty("message", "Failed to activate user");
            		json = gson.toJson(jsonObject);
            	}
            	out.write(json);
