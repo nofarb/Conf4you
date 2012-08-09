@@ -36,7 +36,7 @@ $(document).ready(function(){
 	
 	 $('.deleteUser').click(function () {
 		 
-		 if ($('.deleteUser').disabled())
+		 if ($(this).attr("disabled") == "disabled")
 			  return;
 			 
 		 $('#dialogConfirmDeleteUser').dialog({
