@@ -414,30 +414,15 @@ public class UserDao {
 		return result;	
 	}
 
-	private boolean isDeleteAllowed(Long userId)
-	{
-		//TODO implement
-		
-		return true;
-		
-	}
 	
-	public void deleteUser(Long userId) throws ItemCanNotBeDeleted
-	{
-		//TDOD - improve logic
-		if(isDeleteAllowed(userId)){
-			User user = getUserById(userId);
-			if(user != null){
-				user.setActive(false);
-				updateUser(user);
-			}
-		}else{
-			throw new ItemCanNotBeDeleted("Can't delete user name");
-		}
-	}
-	
-	
-	
-	
+	public void deleteUser(Long userId){
 
+		User user = getUserById(userId);
+		if(user != null){
+			user.setActive(false);
+			updateUser(user);
+		}
+
+	}
+		
 }
