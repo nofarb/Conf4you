@@ -192,6 +192,51 @@ public class ConferencesUsersDao {
 		return result;
 	}
 	
+	@SuppressWarnings("unchecked")
+	public List<Conference> getAllActiveConferencesOfUserByUser(User user){
+		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
+		List<Conference> result = null;
+		
+		Date date = new Date();
+		
+		String query = "select conf from ConferencesUsers cu left join cu.conference conf where cu.user = :user and and conf.endDate >= :now";
+		
+		try {
+			session.beginTransaction();
+				result = (List<Conference>)session.createQuery(
+						query)
+		                .setEntity("user", user)
+		                .setDate("now", date)
+		                .list();
+			session.getTransaction().commit();
+		}
+		catch (Exception e) {
+			logger.error(e.getMessage(), e);
+			session.getTransaction().rollback();
+		}		
+	
+		return result;
+	}
+	
+	public boolean CanUserSeeOtherUserDetails(User viewingUser, User user)
+	{
+		 List<Conference> viewableConferences = getAllActiveConferencesOfUserByUserType(viewingUser, UserRole.CONF_MNGR);
+		 List<Conference> userConferences = getAllActiveConferencesOfUserByUser(user);
+		 
+		 if (viewableConferences == null)
+			 return false;
+		 
+		 if (userConferences == null)
+			 return true;
+		 
+		 for (Conference c : viewableConferences)
+		 {
+			 if (userConferences.contains(c))
+				 return true;
+		 }
+		
+		 return false;
+	}
 	
 	@SuppressWarnings("unchecked")
 	public List<ConferencesUsers> getConferenceUsersByType(Conference conference, UserRole ur ){	

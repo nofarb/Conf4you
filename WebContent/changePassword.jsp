@@ -42,12 +42,16 @@ div.error {
 
 <body>
 <% User viewingUser = SessionUtils.getUser(request); %>
-
+<% 
+String userIdStr = request.getParameter("userId");
+Long id = new Long(userIdStr);
+%>
 <% 
 //If user got to not allowed page
 String retUrl = (String)getServletContext().getAttribute("retUrl");
 if (!viewingUser.isAdmin())
-	response.sendRedirect(retUrl);
+	if (viewingUser.getUserId() != id)
+		response.sendRedirect(retUrl);
 
 getServletContext().setAttribute("retUrl", request.getRequestURL().toString());
 %>
@@ -56,9 +60,6 @@ getServletContext().setAttribute("retUrl", request.getRequestURL().toString());
 <%= UiHelpers.GetTabs(SessionUtils.getUser(request), ProjConst.TAB_USERS).toString() %>
 <div id="content">
 	<div class="pageTitle">
-		<% 
-		   String userIdStr = request.getParameter("userId");
-		%>
 		<div class="<%=ProjConst.OPERATION%>" style="display:none;">changePassword</div>
 
 		<div class="<%=ProjConst.USER_ID%>" style="display:none;"> <%=userIdStr%> </div>

@@ -128,11 +128,38 @@ $(document).ready(function(){
 <body>
 <% User viewingUser = SessionUtils.getUser(request); %>
 <% 
+String userId = request.getParameter("userId");
+if (userId == null)
+{
+	if (ConferencesUsersDao.getInstance().getUserHighestRole(viewingUser).getValue() == UserRole.RECEPTIONIST.getValue())
+	{
+		response.sendRedirect("reception.jsp");
+		return;
+	}
+	response.sendRedirect((String)getServletContext().getAttribute("retUrl"));
+	return;
+}
+
+Long id = new Long(userId);
+User user = UserDao.getInstance().getUserById(id);
+%>
+<% 
 //If user got to not allowed page
 if (!viewingUser.isAdmin())
 {
-	if (ConferencesUsersDao.getInstance().getUserHighestRole(viewingUser) == null || ConferencesUsersDao.getInstance().getUserHighestRole(viewingUser).getValue() < UserRole.CONF_MNGR.getValue())
-		response.sendRedirect((String)getServletContext().getAttribute("retUrl"));
+	if (id != viewingUser.getUserId())
+	{
+		if (ConferencesUsersDao.getInstance().getUserHighestRole(viewingUser) == null || ConferencesUsersDao.getInstance().getUserHighestRole(viewingUser).getValue() < UserRole.CONF_MNGR.getValue())
+		{
+			if (ConferencesUsersDao.getInstance().getUserHighestRole(viewingUser).getValue() == UserRole.RECEPTIONIST.getValue())
+			{
+				response.sendRedirect("reception.jsp");
+				return;
+			}
+			response.sendRedirect((String)getServletContext().getAttribute("retUrl"));
+			return;
+		}
+	}
 }
 getServletContext().setAttribute("retUrl", request.getRequestURL().toString());
 %>
@@ -146,15 +173,12 @@ getServletContext().setAttribute("retUrl", request.getRequestURL().toString());
 <div class="titleSeparator"></div>
 <div class="titleSub">View, modify, add/remove participants for this user</div>
 </div>
-<% 
-String userId = request.getParameter("userId");
-Long id = new Long(userId);
-User user = UserDao.getInstance().getUserById(id);
-%>
+
 <%List<ConferencesUsers> confUsers = ConferencesUsersDao.getInstance().getAllConferenceUsersByUser(user, true); %>
+
 <div id="detailsAndActions">
 
-	<% if (viewingUser.isAdmin()) {%>
+	<% if (viewingUser.isAdmin() || id == viewingUser.getUserId()) {%>
 	<div class="vn_detailsgeneraltitle">Actions </div>
 	<div class="vn_actionlistdiv yui-reset yui-base">
 		<div class="vn_actionlistcolumn">
@@ -175,6 +199,7 @@ User user = UserDao.getInstance().getUserById(id);
 				
 				</div>
 			</div>
+			<%if (viewingUser.isAdmin()) {%>
 			<div class="actionButton">
 				<div class="title">
 				<%
@@ -218,6 +243,7 @@ User user = UserDao.getInstance().getUserById(id);
 				</a>
 				</div>
 			</div>
+			<% } %>
 			<% } %>
 		</div>
 	</div>

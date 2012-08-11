@@ -49,13 +49,40 @@ String action = request.getParameter("action");
 	 viewerConferenceUser = ConferencesUsersDao.getInstance().getConferenceUser(viewerConference, viewingUser);
  }
 %>
+<% Boolean isEdit = action != null && action.equals("edit");
+   User user = null;
+
+   String userIdStr = request.getParameter("userId");
+   
+   if (isEdit)
+   {
+	   if(userIdStr != null){
+		   Long userId = new Long(userIdStr);
+		   user = UserDao.getInstance().getUserById(userId);
+	   }
+   }
+%>
 <% 
+
 String retUrlPrevPage = (String)getServletContext().getAttribute("retUrl");
+boolean isSelfEdit = isEdit && user != null && user.getUserId() == viewingUser.getUserId();
 if (!viewingUser.isAdmin())
 {
-	if (!isAddParticipant ||  viewerConferenceUser == null || viewerConferenceUser.getUserRole() !=  UserRole.CONF_MNGR.getValue())
-		response.sendRedirect(retUrlPrevPage);
+	if (!isSelfEdit)
+	{
+		if (!isAddParticipant ||  viewerConferenceUser == null || viewerConferenceUser.getUserRole() !=  UserRole.CONF_MNGR.getValue())
+		{
+			if (ConferencesUsersDao.getInstance().getUserHighestRole(viewingUser).getValue() == UserRole.RECEPTIONIST.getValue())
+			{
+				response.sendRedirect("reception.jsp");	
+				return;
+			}
+			response.sendRedirect(retUrlPrevPage);
+			return;
+		}
+	}
 }
+
 getServletContext().setAttribute("retUrl", request.getRequestURL().toString());
 %>
 
@@ -63,20 +90,7 @@ getServletContext().setAttribute("retUrl", request.getRequestURL().toString());
 <%= UiHelpers.GetTabs(viewingUser, ProjConst.TAB_USERS).toString() %>
 <div id="content">
 	<div class="pageTitle">
-		<% Boolean isEdit = action != null && action.equals("edit");
-		   User user = new User();
 
-		   String userIdStr = request.getParameter("userId");
-		   
-		   if (isEdit)
-		   {
-			   if(userIdStr != null){
-				   Long userId = new Long(userIdStr);
-				   user = UserDao.getInstance().getUserById(userId);
-			   }
-		   }
-
-		%>
 		<div class="<%=ProjConst.OPERATION%>" style="display:none;"><%=action%></div>
 		
 		<%
@@ -397,16 +411,16 @@ $(document).ready(function(){
 	
 
 
-	 $.validator.addMethod("onlyChars", function(value, element) {
+	 $.validator.addMethod("onlyCharsAndNumbers", function(value, element) {
 		 
 
-		 var onlyLetters = /^[a-zA-Z]*$/.test(value);
+		 var onlyLetters = /^[a-zA-Z0-9]*$/.test(value);
 
 			if(onlyLetters == true )
-      	 	return true;
+      	 		return true;
      	 	else 
      			return false;		 
-   }, "User name can include characters only");
+   }, "User name can include characters or numbers only");
 	 
 	
 	
@@ -457,7 +471,7 @@ $.validator.addMethod("phone2Validator", function(value, element) {
 			    required: true,
 			    minlength: 4,
 			    maxlength: 10,
-			    onlyChars:true,
+			    onlyCharsAndNumbers:true,
 			    uniqueUserName: true
 			  },
 			  <%=ProjConst.NAME%>: {
@@ -496,7 +510,7 @@ $.validator.addMethod("phone2Validator", function(value, element) {
 					 minlength: "You need to use at least 4 characters for your user name.",
 					 maxlength: "You need to use at most 10 characters for your user name.",
 					 uniqueUserName : "This user name already exists",
-					 onlyChars: "User name can include characters only"
+					 onlyCharsAndNumbers: "User name can include characters or numbers only"
 				},
 				<%=ProjConst.NAME%>: {
 					 required: "Required",
