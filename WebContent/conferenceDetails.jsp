@@ -39,14 +39,28 @@ $(document).ready(function(){
 </head>
 
 <body>
-<% User viewingUser = SessionUtils.getUser(request); %>
+<% User viewingUser = SessionUtils.getUser(request); 
+String confName = request.getParameter("conferenceName");
+Conference conf = ConferenceDao.getInstance().getConferenceByName(confName);
+
+%>
 <% 
 //If user got to not allowed page
 String retUrl = (String)getServletContext().getAttribute("retUrl");
+if (conf == null)
+{
+	response.sendRedirect("conference.jsp");
+	return;
+}
+
 if (!viewingUser.isAdmin())
 {
-	if (ConferencesUsersDao.getInstance().getUserHighestRole(viewingUser) == null || ConferencesUsersDao.getInstance().getUserHighestRole(viewingUser).getValue() < UserRole.CONF_MNGR.getValue())
+	if (ConferencesUsersDao.getInstance().getUserHighestRole(viewingUser) == null || ConferencesUsersDao.getInstance().getUserHighestRole(viewingUser).getValue() < UserRole.CONF_MNGR.getValue()
+			|| ConferencesUsersDao.getInstance().getUsersRoleInConference(conf, viewingUser) != UserRole.CONF_MNGR)
+	{
 		response.sendRedirect(retUrl);
+		return;
+	}
 }
 
 getServletContext().setAttribute("retUrl", request.getRequestURL().toString());
@@ -66,9 +80,6 @@ getServletContext().setAttribute("retUrl", request.getRequestURL().toString());
 </div>
 </div>
 <div id="detailsAndActions">
-	<% String confName = request.getParameter("conferenceName");
-	   Conference conf = ConferenceDao.getInstance().getConferenceByName(confName);
-	%>
 	<% if (viewingUser.isAdmin()) {%>
 	<div class="vn_detailsgeneraltitle">Actions </div>
 	<div class="vn_actionlistdiv yui-reset yui-base">

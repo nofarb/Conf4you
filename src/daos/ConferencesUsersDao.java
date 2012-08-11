@@ -476,6 +476,34 @@ public class ConferencesUsersDao {
 		return result;
 	}
 	
+	@SuppressWarnings("unchecked")
+	public UserRole getUsersRoleInConference(Conference conference, User user){	
+		
+		Integer result = null;
+		
+		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
+		try {
+			session.beginTransaction();
+			result = (Integer)HibernateUtil.getSessionFactory().getCurrentSession().createQuery(
+					"select cu.userRole from  ConferencesUsers cu where cu.conference = :conf and cu.user = :user")
+	                .setEntity("conf", conference)
+	                .setEntity("user", user)
+	                .uniqueResult();
+			session.getTransaction().commit();
+		}
+		catch (Exception e) {
+			logger.error(e.getMessage(), e);
+			session.getTransaction().rollback();
+		}
+		
+		if (result == null)
+			return null;
+		
+		UserRole ur = UserRole.resolveUserRole(result);
+		
+		return ur;
+	}
+	
 	public ConferencesUsers getConferenceUsersByUUID(String uuid){
 		
 		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
