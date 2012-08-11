@@ -97,7 +97,7 @@ getServletContext().setAttribute("retUrl", request.getRequestURL().toString());
 	<div class="groupedList" style="width: 800px;">
 	<table class="vn_envdetails" cellspacing="0" cellpadding="0" style="border-collapse: collapse;">
 		<% 
-			SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy kk:mm");
+			SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy kk:mm");
 			String startDateFormatted = sdf.format(conf.getStartDate());
 			String endDateFormatted = sdf.format(conf.getEndDate());
 		%>
