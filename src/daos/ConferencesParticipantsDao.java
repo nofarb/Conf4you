@@ -212,26 +212,6 @@ public class ConferencesParticipantsDao {
 		}
 	}
 	
-	public ConferencesParticipants getConferencesParticipants(Conference conference, User user ){	
-		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
-		
-		ConferencesParticipants result = null;
-		try {
-			session.beginTransaction();
-			result = (ConferencesParticipants)session.createQuery(
-					"select cp from  ConferencesParticipants cp where cp.conference = :conf and cp.user = :user")
-	                .setEntity("conf", conference)
-	                .setEntity("user", user)
-	                .uniqueResult();
-			session.getTransaction().commit();
-		}
-		catch (Exception e) {
-			logger.error(e.getMessage(), e);
-			session.getTransaction().rollback();
-		}
-	
-		return result;
-	}
 	
 	public List<ConferencesParticipants> getConferencesParticipantsByConference(Conference conference){	
 		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
