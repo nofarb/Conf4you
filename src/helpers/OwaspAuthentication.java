@@ -110,45 +110,7 @@ import model.User;
    }
  
  
-   public static void creerTable(Connection con) throws SQLException{
-       Statement st = null;
-       try {
-           st = con.createStatement();
-           st.execute("CREATE TABLE CREDENTIAL (LOGIN VARCHAR(100) PRIMARY KEY, PASSWORD VARCHAR(32) NOT NULL, SALT VARCHAR(32) NOT NULL)");
-       } finally {
-           close(st);
-       }
-   }
- 
- 
- 
-   /**
-    * Closes the current statement
-    * @param ps Statement
-    */
-   public static void close(Statement ps) {
-       if (ps!=null){
-           try {
-               ps.close();
-           } catch (SQLException ignore) {
-           }
-       }
-   }
- 
-   /**
-    * Closes the current resultset
-    * @param ps Statement
-    */
-   public void close(ResultSet rs) {
-       if (rs!=null){
-           try {
-               rs.close();
-           } catch (SQLException ignore) {
-           }
-       }
-   }
- 
- 
+   
    /**
     * From a base 64 representation, returns the corresponding byte[] 
     * @param data String The base64 representation
