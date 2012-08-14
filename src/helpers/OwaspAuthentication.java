@@ -23,14 +23,13 @@ import model.User;
     * If password and/or login is null then always returns false.
     * If the user does not exist in the database returns false.
     * @param con Connection An open connection to a database
-    * @param login String The login of the user
     * @param password String The password of the user
     * @return boolean Returns true if the user is authenticated, false otherwise
     * @throws SQLException If the database is inconsistent or unavailable (
     *           (Two users with the same login, salt or digested password altered etc.)
     * @throws NoSuchAlgorithmException If the algorithm SHA-1 is not supported by the JVM
     */
-   public static boolean authenticate(String login, String password, User user){
+   public static boolean authenticate(String password, User user){
 	   
 	   String digest, salt;
        salt = user.getSalt();

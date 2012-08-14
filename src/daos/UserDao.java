@@ -257,7 +257,7 @@ public class UserDao {
 			 return null;
 		 }
 		 
-		 if (OwaspAuthentication.authenticate(userName, password, user))
+		 if (OwaspAuthentication.authenticate(password, user))
 		 {
 			return user;
 		 }
