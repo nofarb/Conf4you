@@ -165,12 +165,9 @@ $(document).ready(function(){
 									<td>
 										<table class="filtersTable">
 											<tr id="filterTableRow1">
-
 												<td>Conference Status: <select id="confStatusFilter">
 														<option
 															value="<%=ConferenceFilters.ConferenceTimeFilter.CURRENT%>">Current</option>
-														<option
-															value="<%=ConferenceFilters.ConferenceTimeFilter.FUTURE%>">Future</option>
 														<option
 															value="<%=ConferenceFilters.ConferenceTimeFilter.PAST%>">Past</option>
 														<option
@@ -185,9 +182,19 @@ $(document).ready(function(){
 													</div>
 												</td>
 											</tr>
+											<tr id="filterTableRow2">
+												<td>
+													Search: <input type="text" id="search" style="width: 130px">
+													Show:
+													<select id="filterSelect">
+														<option value="NotArrived">Not Arrived</option>
+														<option value="Arrived">Arrived</option>
+														<option value="ALL" selected="selected">All</option>
+													</select>
+												</td>
+											</tr>
 										</table>
 									</td>
-
 								</tr>
 							</table>
 						</td>
@@ -204,18 +211,6 @@ $(document).ready(function(){
 					if (conferenceParticipantsList != null && conferenceParticipantsList.size() > 0) 
 					{
 		%>
-
-				<div class="selectedFilter" style="display: none;"><%=request.getParameter("filter")%></div>
-				<span id="vn_mainbody_filter"> Search: <input type="text"
-					id="search"> Show: <select id="filterSelect">
-						<option value="NotArrived">Not Arrived</option>
-						<option value="Arrived">Arrived</option>
-						<option value="ALL" selected="selected">All</option>
-				</select>
-
-				</span>
-
-			</div>
 			<div>
 				<div class="groupedList">
 					<table cellpadding="0" cellspacing="0" border="0" id="table1"
