@@ -30,10 +30,23 @@ public class ConferencesParticipantsDao {
 		return instance;
 	}
 	
-
+	public enum IsArrivedEnum
+	{
+		Arrived, NotArrived, All
+	}
+	
 	@SuppressWarnings("unchecked")
-	public List<ConferenceUsersArivalHelper> getAllParticipantsByConferenceAndIfArrivedToDay(Conference conference){
+	public List<ConferenceUsersArivalHelper> getAllParticipantsByConferenceAndIfArrivedToDay(Conference conference, String filterArrived){
 		
+		IsArrivedEnum isArrivedEnum = IsArrivedEnum.All;
+		if (filterArrived != null)
+		{
+			if (filterArrived.equals("Arrived"))
+				isArrivedEnum = IsArrivedEnum.Arrived;
+			if (filterArrived.equals("NotArrived"))
+				isArrivedEnum = IsArrivedEnum.NotArrived;
+		}
+				
 		List<ConferencesUsers> conferenceUsers = ConferencesUsersDao.getInstance().getConferenceUsersByType(conference, UserRole.PARTICIPANT);
 		
 		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
@@ -78,7 +91,10 @@ public class ConferencesParticipantsDao {
 				}
 			}
 			
-			cua.add(new ConferenceUsersArivalHelper(cu, contains));
+			if (contains && (isArrivedEnum == IsArrivedEnum.Arrived || isArrivedEnum == IsArrivedEnum.All))
+				cua.add(new ConferenceUsersArivalHelper(cu, contains));
+			if (!contains && (isArrivedEnum == IsArrivedEnum.NotArrived || isArrivedEnum == IsArrivedEnum.All))
+				cua.add(new ConferenceUsersArivalHelper(cu, contains));
 		}
 		
 		return cua;

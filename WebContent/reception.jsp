@@ -110,6 +110,7 @@ $(document).ready(function(){
 		if (filterStatus != "null" && filterConfName != "null")
 		{
 			$("#confStatusFilter option[value='" + filterStatus + "']").attr('selected', 'selected');
+			getConferenceList();
 			$("#confNameFilter option[value='" + filterConfName + "']").attr('selected', 'selected');
 		}
 		if (filterArrived != "null")
@@ -195,10 +196,11 @@ $(document).ready(function(){
 
 				<!-- Filter end --------------------------------------->
 				<%
-			String confName = request.getParameter("filterConfName");								
+			String confName = request.getParameter("filterConfName");
+			String arrivedFilter = request.getParameter("filterArrived"); 
 			if (confName != null && confName != "null") {
 				Conference conference = ConferenceDao.getInstance().getConferenceByName(confName);								
-				List<ConferenceUsersArivalHelper> conferenceParticipantsList = ConferencesParticipantsDao.getInstance().getAllParticipantsByConferenceAndIfArrivedToDay(conference);
+				List<ConferenceUsersArivalHelper> conferenceParticipantsList = ConferencesParticipantsDao.getInstance().getAllParticipantsByConferenceAndIfArrivedToDay(conference, arrivedFilter);
 					if (conferenceParticipantsList != null && conferenceParticipantsList.size() > 0) 
 					{
 		%>
