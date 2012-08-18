@@ -335,6 +335,38 @@ $(document).ready(function(){
           });
 	      return is_valid;
 	 }, "Location name is already exists");
+	
+	 $.validator.addMethod("phone1Validator", function(value, element) {
+			 
+			 /* allowing + in the beginning (optional) followed by 7-15 digits  */
+			 
+			 var validPhone = /^\+?\b[0-9]{7,15}\b$/.test(value);
+	
+			 if(validPhone == true)
+	      	 	return true;
+	   	 	 else 
+	    		return false;
+			 
+	    }, "Phone number can contain 7-15 digits and might statrt with +");
+		 
+	$.validator.addMethod("phone2Validator", function(value, element) {
+			 
+		 /* allowing enpty string OR number in the format: + in the beginning (optional) followed by 7-15 digits  */
+	
+			 var phoneNumber =  $.trim(value);
+			 
+			 if(phoneNumber == ""){
+				 return true;
+			 }
+			 
+			 var validPhone = /^\+?\b[0-9]{7,15}\b$/.test(value);
+	
+			 if(validPhone == true)
+	      	 	return true;
+	   	 	 else 
+	    		return false;	
+			 
+	    }, "Phone number can be empty, or contain 7-15 digits and might statrt with +");
  
 	 $.validator.addMethod("numberValidate", function(value, element) {
 		 return !isNaN(parseFloat(value)) && isFinite(value) && parseFloat(value)>0;
@@ -379,8 +411,13 @@ $(document).ready(function(){
 			  "<%=ProjConst.LOC_ContactName%>": {
 				  	required: true
 			  },
-			  "<%=ProjConst.LOC_Phone1%>": {
-				  required: true
+			  <%=ProjConst.LOC_Phone1%>: {
+				  	required: true,
+				  	phone1Validator: true
+			  },
+			  <%=ProjConst.LOC_Phone2%>: {
+				  	required: false,
+				  	phone2Validator: true
 			  },
 		  },
 		  messages: {
@@ -402,9 +439,13 @@ $(document).ready(function(){
 				"<%=ProjConst.LOC_ContactName%>": {
 					required: "Required"
 				},
-				"<%=ProjConst.LOC_Phone1%>": {
-					required: "Required"
-				}
+				 <%=ProjConst.LOC_Phone1%>: {
+						required: "Required",
+					 	phoneNumberValidator:"Phone number invalid",
+				},
+			 	<%=ProjConst.LOC_Phone2%>: {
+					 	phoneNumberValidator:"Phone number invalid",
+				},
 	  		},
 	  		errorElement: "div",
 	        wrapper: "div",  // a wrapper around the error message
