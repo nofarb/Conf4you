@@ -130,7 +130,7 @@ getServletContext().setAttribute("retUrl", request.getRequestURL().toString());
 							<select id="<%=ProjConst.CONF_LOCATION%>" name="<%=ProjConst.CONF_LOCATION%>">
 								<% List<Location> locations = LocationDao.getInstance().getLocations();
 								for (Location location : locations) { %>
-									<option value="<%=location.getLocationId()%>" 
+									<option value="<%=location.getName()%>" 
 									<% if (isEdit && conf.getLocation() == location) {%>
 									 	selected="selected"
 							 		<%} %>

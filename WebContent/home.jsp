@@ -56,7 +56,7 @@ getServletContext().setAttribute("retUrl", request.getRequestURL().toString());
 
 <div id="content">
 	<div class="pageTitle">
-		<div class="titleMain titleMainNoSub">Conference highlights</div>
+		<div class="titleMain titleMainNoSub">Conference summary</div>
 		<a href="<%=request.getRequestURL().toString()%>" style="float:right; padding-top: 6px; padding-right: 20px;">
 			<img width="16" border="0" height="16" alt="" style="position:relative;margin-bottom:-3px" src="/conf4u/resources/imgs/refresh.png">
 			Refresh
