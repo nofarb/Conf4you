@@ -10,5 +10,5 @@ package model;
 
 public enum CompanyType {
 	
-	A,B,C //TODO
+	Hightech, Pharmaceuticals, Manufacturing, FoodBeverage, TelecommunicationsMedia, Financial, Automotive, Agriculture, AerospaceDefense
 }

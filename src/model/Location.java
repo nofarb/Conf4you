@@ -2,6 +2,8 @@ package model;
 
 import java.io.Serializable;
 
+import javax.persistence.Basic;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -98,6 +100,8 @@ public class Location implements Serializable{
 		return this;
 	}
 
+	@Basic
+	@Column(columnDefinition = "BIT", length = 1)
 	public boolean isActive() {
 		return active;
 	}

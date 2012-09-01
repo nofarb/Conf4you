@@ -4,7 +4,10 @@ import helpers.OwaspAuthentication;
 
 import java.io.Serializable;
 import java.util.Date;
+
+import javax.persistence.Basic;
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -139,6 +142,8 @@ public class User implements Serializable{
 		}
 	}
 
+	@Basic
+	@Column(columnDefinition = "BIT", length = 1)
 	public boolean isAdmin() {
 		return admin;
 	}
@@ -165,6 +170,8 @@ public class User implements Serializable{
 		this.pasportID = pasportID;
 	}
 
+	@Basic
+	@Column(columnDefinition = "BIT", length = 1)
 	public boolean isActive() {
 		return active;
 	}

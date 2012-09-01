@@ -1,7 +1,10 @@
 package model;
 
 import java.io.Serializable;
+
+import javax.persistence.Basic;
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -79,6 +82,8 @@ public class ConferencesUsers implements Serializable{
 	}
 
 	@Nullable
+	@Basic
+	@Column(columnDefinition = "BIT", length = 1)
 	public boolean isNotifiedByMail() {
 		return notifiedByMail;
 	}

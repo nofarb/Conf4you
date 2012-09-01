@@ -428,7 +428,7 @@ $(document).ready(function(){
 		 
 		 /* allowing + in the beginning (optional) followed by 7-15 digits  */
 		 
-		 var validPhone = /^\+?\b[0-9]{7,15}\b$/.test(value);
+		 var validPhone = /^\+?\b[0-9,\-]{7,15}\b$/.test(value);
 
 		 if(validPhone == true)
       	 	return true;
@@ -447,7 +447,7 @@ $.validator.addMethod("phone2Validator", function(value, element) {
 			 return true;
 		 }
 		 
-		 var validPhone = /^\+?\b[0-9]{7,15}\b$/.test(value);
+		 var validPhone = /^\+?\b[0-9,\-]{7,15}\b$/.test(value);
 
 		 if(validPhone == true)
       	 	return true;

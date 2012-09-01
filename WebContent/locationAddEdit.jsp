@@ -395,7 +395,7 @@ $(document).ready(function(){
 			  "<%=ProjConst.LOC_NAME%>": {
 			    required: true,
 			    minlength: 4,
-			    maxlength: 30,
+			    maxlength: 60,
 			    uniqueLocationName: $(".operation").text() == "<%=ProjConst.ADD%>"
 			  },
 			  "<%=ProjConst.LOC_MaxCapacity%>": {

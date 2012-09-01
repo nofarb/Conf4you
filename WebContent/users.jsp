@@ -114,6 +114,7 @@ $(document).ready(function(){
 			}
 		}
 	%>
+	
 	  sorter.size(10);
 	 
 });

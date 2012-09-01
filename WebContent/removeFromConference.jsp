@@ -124,7 +124,7 @@ $(document).ready(function(){
 			hide: "fade", 
             show: "fade",
 			buttons: {
-				"Delete": function() {
+				"Remove": function() {
 					$.ajax({
 				        url: "ConferenceServlet",
 				        dataType: 'json',

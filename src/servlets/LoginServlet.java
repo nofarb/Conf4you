@@ -1,21 +1,12 @@
 package servlets;
 
-import helpers.EmailUtils;
-import helpers.MockCreation;
-import helpers.ProjConst;
-import helpers.UniqueUuid;
 
+import helpers.ProjConst;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.LinkedList;
-import java.util.List;
 
 import javax.servlet.ServletException;
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -24,15 +15,13 @@ import org.apache.log4j.Logger;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
-import com.sun.corba.se.spi.activation.Repository;
 
-import model.Conference;
-import model.Location;
+import model.Company;
+import model.CompanyType;
 import model.User;
 import model.UserRole;
-import daos.ConferenceDao;
+import daos.CompanyDao;
 import daos.ConferencesUsersDao;
-import daos.LocationDao;
 import daos.UserDao;
 
 
@@ -60,10 +49,16 @@ public class LoginServlet extends HttpServlet {
     		
     		if (adminUser == null)
     		{
-    			List<Conference> confs = (List<Conference>) MockCreation.createMockConferencesAndLocations();
-    			List<User> users = (List<User>) MockCreation.createMockUsersAndCompanies(); 
+    			CompanyDao.getInstance().addCompany(new Company("Conf4U", CompanyType.Hightech));
+    			User adminUserToCreate = new User("admin", "123123123", CompanyDao.getInstance().getCompanyByName("Conf4U"), "admin", "admin@conf4u.com", "03-3333333", "03-3333331", "pass1", true);
+    			UserDao.getInstance().addUser(adminUserToCreate);
+    			    			 			
+    			
+    			
+    			//List<Conference> confs = (List<Conference>) MockCreation.createMockConferencesAndLocations();
+    			//List<User> users = (List<User>) MockCreation.createMockUsersAndCompanies(); 
     		}
-    		
+    	  		 			
 			String userName = request.getParameter("un");
 			String password = request.getParameter("pw"); 
 			

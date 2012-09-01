@@ -22,9 +22,9 @@ import model.UserRole;
 public class MockCreation {
 	
 	public static List<User> createMockUsersAndCompanies(){
- 		CompanyDao.getInstance().addCompany(new Company("comp1", CompanyType.A));
- 		CompanyDao.getInstance().addCompany(new Company("comp2", CompanyType.B));
- 		CompanyDao.getInstance().addCompany(new Company("comp3", CompanyType.C));
+ 		CompanyDao.getInstance().addCompany(new Company("comp1", CompanyType.Hightech));
+ 		CompanyDao.getInstance().addCompany(new Company("comp2", CompanyType.Financial));
+ 		CompanyDao.getInstance().addCompany(new Company("comp3", CompanyType.Manufacturing));
  		
 		List<User> newUsers = new LinkedList<User>();
 

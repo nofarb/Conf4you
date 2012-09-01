@@ -69,6 +69,11 @@ $(document).ready(function()
 	 	    transparent: true,
 	 	    append: false
  	  });
+	 
+	 //perform only if the class "evenrow" exists
+	 if ($(".evenrow")[0]){
+		 sorter.size(10);
+      }
 });
 </script>
 <body>

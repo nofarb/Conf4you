@@ -3,7 +3,9 @@ package model;
 import java.io.Serializable;
 import java.util.Date;
 
+import javax.persistence.Basic;
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
@@ -13,6 +15,7 @@ import javax.persistence.TemporalType;
 import javax.persistence.GeneratedValue;
 
 import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Type;
 
 @Entity
 @Table(name = "CONFERENCES")
@@ -92,6 +95,8 @@ public class Conference implements Serializable {
 		return this;
 	}
 
+	@Basic
+	@Column(columnDefinition = "BIT", length = 1)
 	public boolean isActive() {
 		return active;
 	}

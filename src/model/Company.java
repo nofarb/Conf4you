@@ -2,6 +2,8 @@ package model;
 
 import java.io.Serializable;
 
+import javax.persistence.Basic;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -68,6 +70,8 @@ public class Company implements Serializable {
 		return this;
 	}
 
+	@Basic
+	@Column(columnDefinition = "BIT", length = 1)
 	public boolean isActive() {
 		return active;
 	}
