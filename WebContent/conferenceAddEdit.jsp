@@ -131,10 +131,9 @@ getServletContext().setAttribute("retUrl", request.getRequestURL().toString());
 								<% List<Location> locations = LocationDao.getInstance().getLocations();
 								for (Location location : locations) { %>
 									<option value="<%=location.getName()%>" 
-									<% if (isEdit && conf.getLocation() == location) {%>
-									 	selected="selected"
-							 		<%} %>
-							 		><%=location.getName()%></option>
+									<% if (isEdit && (conf.getLocation().getName().equals(location.getName()))) {%>
+									 	selected="selected" <%} %>>
+									 	<%=location.getName()%></option>
 				 				<%} %>
 							</select>
 							<div></div></td>

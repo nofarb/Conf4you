@@ -162,7 +162,7 @@ public class ConferenceServlet extends HttpServlet {
     	Date startDate = (Date)formatter.parse(request.getParameter(ProjConst.CONF_START_DATE));
     	Date endDate = (Date)formatter.parse(request.getParameter(ProjConst.CONF_END_DATE));
     	
-    	Location locationInstance = LocationDao.getInstance().getLocationById(location);  	
+    	Location locationInstance = LocationDao.getInstance().getLocationByName(location);  	
     	
     	origConf.setName(confName).setDescription(desc).setLocation(locationInstance).setStartDate(startDate).setEndDate(endDate);
     	
