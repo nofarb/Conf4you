@@ -16,7 +16,7 @@ public class EmailUtils {
 	
 	private static final String host = "smtp.gmail.com";
 	private static final String port = "587";
-	private static final String user = "conf.for.you@gmail.com";
+	private static final String user = "conf4u.dont.reply@gmail.com.";
 	private static final String password = "nofaralonelad";
 	
 	/**
